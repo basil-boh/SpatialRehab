@@ -7,9 +7,17 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## [Unreleased]
 
+### Removed
+
+- **mac2visionOS / Mac Link** stack for the hackathon: SPM dependency, multiplatform macOS target, Bonjour/local-network Info.plist keys, sandbox network entitlements, and bubble host/controller/smoke/stability UI files. Local dev is **visionOS Simulator only**.
+
 ### Added
 
 - Simple welcome screen in `ContentView.swift`: app icon, title, short description of the app's purpose (helping dementia patients remember home, medication, and daily routines), and a "Get Started" button, styled for a comfortable visionOS window (large text, generous spacing).
+
+### Changed
+
+- `project.yml` / `SpatialRehab.xcodeproj` restored to **visionOS-only**; `Xcode_README.md` and `.skills/VISIONOS_AGENTS.md` updated for simulator-first hackathon flow.
 - Default window size (900x600) set in `SpatialRehabApp.swift` for the welcome screen.
 - Installed [visionOSAgents](https://github.com/tomkrikorian/visionOSAgents) skills under **`.skills/`** (22 skills: RealityKit, ARKit, spatial SwiftUI, architecture, USD, SharePlay, etc.).
 - `.agents/skills` → symlink to `.skills` for agent-harness discovery (single copy of files).

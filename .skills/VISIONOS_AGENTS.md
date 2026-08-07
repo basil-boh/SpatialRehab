@@ -33,7 +33,10 @@ Use this table to decide what skill to use when starting a task:
 
 ### PROJECT
 
-// TODO: Outline the goal and features of the project
+**SpatialRehab** — calm visionOS companion for dementia rehab (home, medication, daily routines). Five-person team; see root `AGENTS.md` / `CLAUDE.md`.
+
+**Local development:** visionOS-only app; open `SpatialRehab.xcodeproj` in Xcode Beta and run the **visionOS Simulator**. See root `Xcode_README.md`. No Mac controller / mac2visionOS for the hackathon.
+
 // Linear Project: Mention the name or ID of the project if you're using Linear
 
 ## PLAN & EXECUTE
@@ -43,5 +46,6 @@ Use this table to decide what skill to use when starting a task:
 3. Plan the changes and order the work using the appropriate skills.
 4. Implement changes in small, verifiable steps.
 5. Review for consistency, style, and platform guidelines using /coding-standards-enforcer skill
-6. Use the MCP XCodeBuildMCP to verify the build runs without errors.
+6. Verify builds with Xcode / `xcodebuild` (`DEVELOPER_DIR` → Xcode-beta if needed): visionOS Simulator destination.
 7. If errors are found, fix them.
+8. Record file writes in root `CHANGELOG.md` (required by repo `AGENTS.md`).
