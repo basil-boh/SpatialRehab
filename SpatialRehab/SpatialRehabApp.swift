@@ -6,5 +6,6 @@ struct SpatialRehabApp: App {
         WindowGroup {
             ContentView()
         }
+        .defaultSize(width: 900, height: 600)
     }
 }
