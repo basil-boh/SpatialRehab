@@ -1,0 +1,47 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+xcuserdata/
+*.xcscmblueprint
+*.xcuserdatad
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# IDE
+*.swp
+*~
+.idea/
+
+# Env / secrets
+*.pem
+.env
+.env.*
+
+# xcodegen (keep project.yml; regenerate .xcodeproj if needed)
+# Uncomment if you prefer not to commit the generated project:
+# *.xcodeproj/
+# *.xcworkspace/
