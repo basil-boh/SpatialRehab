@@ -36,6 +36,9 @@ Icon?
 *~
 .idea/
 
+# Agent harness local state (oh-my-claudecode / OMC) — never commit
+.omc/
+
 # Env / secrets
 *.pem
 .env

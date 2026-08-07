@@ -17,6 +17,7 @@ struct SpatialRehabApp: App {
         WindowGroup {
             ContentView(session: teaSession)
         }
+        .defaultSize(width: 900, height: 600)
 
         ImmersiveSpace(id: ImmersiveSpaceID.teaTask) {
             ImmersiveTaskView(session: teaSession)

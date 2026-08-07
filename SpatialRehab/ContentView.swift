@@ -1,9 +1,8 @@
 import SwiftUI
 
-/// Main window: lets the person start the guided task and shows the current instruction
-/// once it's running. Stays open alongside the immersive space (visionOS supports both at
-/// once) so the instruction card is always in a predictable, user-repositionable window
-/// rather than pinned in 3D space.
+/// Welcome screen leads into the guided task. The window stays open alongside the
+/// immersive space (visionOS supports both at once) so the instruction card is always in a
+/// predictable, user-repositionable window rather than pinned in 3D space.
 struct ContentView: View {
     @ObservedObject var session: TaskSession
 
@@ -15,41 +14,62 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 28) {
-            Text("SpatialRehab")
-                .font(.largeTitle.bold())
-
-            Text("Prototype: Making a Cup of Tea")
-                .foregroundStyle(.secondary)
-
             if isImmersiveSpaceOpen {
                 GuidanceCardView(session: session)
-            } else {
-                Button(isOpeningImmersiveSpace ? "Starting…" : "Start Guided Task") {
-                    Task { await startImmersiveSpace() }
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.extraLarge)
-                .disabled(isOpeningImmersiveSpace)
 
-                // Surfaced instead of silently doing nothing — a failed/cancelled
-                // openImmersiveSpace() used to leave the screen looking unchanged, which
-                // was indistinguishable from the tap not registering at all.
-                if let immersiveSpaceErrorMessage {
-                    Text(immersiveSpaceErrorMessage)
-                        .font(.footnote)
-                        .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
-                }
-            }
-
-            if isImmersiveSpaceOpen {
                 Button("End Task", role: .destructive) {
                     Task { await endImmersiveSpace() }
                 }
                 .buttonStyle(.bordered)
+            } else {
+                welcomeContent
             }
         }
         .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var welcomeContent: some View {
+        VStack(spacing: 40) {
+            Image(systemName: "house.and.flag.fill")
+                .font(.system(size: 80))
+                .foregroundStyle(.tint)
+                .symbolRenderingMode(.hierarchical)
+
+            VStack(spacing: 16) {
+                Text("Welcome to SpatialRehab")
+                    .font(.system(size: 44, weight: .semibold))
+                    .multilineTextAlignment(.center)
+
+                Text("A calm companion to help you remember home, your medication, and your daily routine.")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 520)
+
+                Text("Prototype: Making a Cup of Tea")
+                    .font(.footnote)
+                    .foregroundStyle(.tertiary)
+            }
+
+            Button(isOpeningImmersiveSpace ? "Starting…" : "Get Started") {
+                Task { await startImmersiveSpace() }
+            }
+            .font(.title2)
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
+            .disabled(isOpeningImmersiveSpace)
+
+            // Surfaced instead of silently doing nothing — a failed/cancelled
+            // openImmersiveSpace() used to leave the screen looking unchanged, which was
+            // indistinguishable from the tap not registering at all.
+            if let immersiveSpaceErrorMessage {
+                Text(immersiveSpaceErrorMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+            }
+        }
     }
 
     private func startImmersiveSpace() async {
@@ -62,7 +82,7 @@ struct ContentView: View {
         case .opened:
             isImmersiveSpaceOpen = true
         case .userCancelled:
-            immersiveSpaceErrorMessage = "Cancelled — tap Start Guided Task to try again."
+            immersiveSpaceErrorMessage = "Cancelled — tap Get Started to try again."
         case .error:
             immersiveSpaceErrorMessage = "Couldn't start the guided task. Check Xcode's console for the underlying error, and that Hand Tracking / World Sensing permissions weren't denied in Settings."
         @unknown default:
