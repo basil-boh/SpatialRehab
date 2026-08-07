@@ -60,3 +60,5 @@ targets:
         UILaunchScreen: {}
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: true
+        NSWorldSensingUsageDescription: "SpatialRehab detects your tabletop to anchor guidance markers for each step of the task."
+        NSHandsTrackingUsageDescription: "SpatialRehab watches for your hand reaching the highlighted object so it can confirm each step for you."

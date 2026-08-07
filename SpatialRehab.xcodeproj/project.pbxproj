@@ -7,14 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D02385783F2C35C763A5E /* GuidanceCardView.swift */; };
+		114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */; };
+		1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */; };
+		2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */; };
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
+		BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5634B06A4388B5CAB30C5784 /* TaskSession.swift */; };
+		E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		061D02385783F2C35C763A5E /* GuidanceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidanceCardView.swift; sourceTree = "<group>"; };
+		0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveTaskView.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5634B06A4388B5CAB30C5784 /* TaskSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSession.swift; sourceTree = "<group>"; };
 		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandProximityTracker.swift; sourceTree = "<group>"; };
+		8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStep.swift; sourceTree = "<group>"; };
+		B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaTaskContent.swift; sourceTree = "<group>"; };
 		C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialRehabApp.swift; sourceTree = "<group>"; };
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -29,9 +41,20 @@
 			);
 			sourceTree = "<group>";
 		};
+		A21599DEB113797AEF2917DB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				061D02385783F2C35C763A5E /* GuidanceCardView.swift */,
+				0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		BEA191256B2FBC841F5D2087 /* SpatialRehab */ = {
 			isa = PBXGroup;
 			children = (
+				D94BBEBFFDC1ADC12EC8BD70 /* Models */,
+				A21599DEB113797AEF2917DB /* Views */,
 				DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */,
 				DC95DF015FBB8EFEE7176499 /* ContentView.swift */,
 				2CA909666A1E57D05F864904 /* Info.plist */,
@@ -46,6 +69,17 @@
 				5BA81EF00053FE815B5B6407 /* SpatialRehab.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D94BBEBFFDC1ADC12EC8BD70 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */,
+				5634B06A4388B5CAB30C5784 /* TaskSession.swift */,
+				8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */,
+				B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,7 +154,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
+				03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */,
+				114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */,
+				E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
+				BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */,
+				1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */,
+				2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
