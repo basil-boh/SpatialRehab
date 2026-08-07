@@ -21,3 +21,5 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 - `Xcode_README.md` — how to open, sign, and run on visionOS Simulator for teammates new to Xcode.
 - `AGENTS.md` — agent rule to always record edits in this changelog.
 - Root `.gitignore` for Xcode / macOS noise.
+- `AGENTS.md` — team roster (Aditya, Brian, JingTong, Nicole, Basil) with roles and deliverables.
+- `.gitignore` — ignore `.omc/` (oh-my-claudecode local agent state; should not be committed).

@@ -2,6 +2,18 @@
 
 Rules for any coding agent (human-directed or autonomous) working in this repository.
 
+## Team
+
+Five-person team. When work touches one of these areas, loop in (or attribute to) the responsible person.
+
+| Person | Responsibility | Deliverables |
+|---|---|---|
+| Aditya | 3D Assets & Environment — create interactive 3D models and scenes | Kitchen, bedroom, medicine bottles, groceries, furniture, hand-interactable objects |
+| Brian | UX/UI & Spatial Design — design the user experience and guidance | Menus, onboarding, arrows, highlights, prompts, progress indicators, accessibility, interaction flow |
+| JingTong | Apple Vision Pro Development — build the application in RealityKit/SwiftUI | Scene setup, object interactions, hand tracking, gaze input, game logic, scoring, data storage |
+| Nicole | Clinical Research & Content — ensure exercises are evidence-based | Research dementia rehabilitation, design cognitive exercises, validate task difficulty, define success metrics |
+| Basil | AI, Analytics & Integration — personalization and progress tracking | Adaptive difficulty, performance metrics, therapist dashboard, data visualization, presentation/demo support |
+
 ## CHANGELOG (required)
 
 **Always record edits in `CHANGELOG.md`.**
