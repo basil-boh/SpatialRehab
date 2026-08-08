@@ -6,12 +6,24 @@ import SwiftUI
 /// is disabled on this branch while baseline-metrics is the active focus — see
 /// `Docs/BaselineAssessment_Design.md`. `SpatialRehabApp` still declares the `ImmersiveSpace`
 /// scene and owns `teaSession`, so that work isn't deleted, just not entered from here for
-/// now. In its place, a dev-only button surfaces the raw data the baseline battery captured,
-/// for verifying scoring/capture without leaving the app.
+/// now. **Daily Practice** — the repeatable, leveled version of the baseline mini-games — is
+/// the main destination from here now; see `Docs/DailyPractice_Design.md`. A dev-only button
+/// still surfaces the raw baseline data for verifying scoring/capture without leaving the app.
 struct ContentView: View {
     @State private var showingBaselineResults = false
+    @State private var showingDailyPractice = false
 
     var body: some View {
+        Group {
+            if showingDailyPractice {
+                DailyPracticeHubView(onExit: { showingDailyPractice = false })
+            } else {
+                welcomeContent
+            }
+        }
+    }
+
+    private var welcomeContent: some View {
         VStack(spacing: 40) {
             Image(systemName: "house.and.flag.fill")
                 .font(.system(size: 80))
@@ -30,12 +42,19 @@ struct ContentView: View {
                     .frame(maxWidth: 520)
             }
 
-            Button("View Baseline Data (Dev)") {
-                showingBaselineResults = true
+            VStack(spacing: 16) {
+                Button("Daily Practice") {
+                    showingDailyPractice = true
+                }
+                .font(.title2)
+                .buttonStyle(.borderedProminent)
+                .controlSize(.extraLarge)
+
+                Button("View Baseline Data (Dev)") {
+                    showingBaselineResults = true
+                }
+                .buttonStyle(.bordered)
             }
-            .font(.title2)
-            .buttonStyle(.borderedProminent)
-            .controlSize(.extraLarge)
         }
         .padding(60)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

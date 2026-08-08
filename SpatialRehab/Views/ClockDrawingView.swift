@@ -11,6 +11,18 @@ import UIKit
 struct ClockDrawingView: View {
     let onComplete: (ClockDrawingResult) -> Void
 
+    /// Default reproduces the original baseline clock prompt exactly (free-recall, no
+    /// outline), so the existing call site (`ClockDrawingView(onComplete:)`) is unchanged.
+    /// Daily Practice passes a level-driven subject instead — see `DrawingSubjects`.
+    var subject: DrawingSubject = DrawingSubjects.all[0]
+
+    /// How visible the traceable outline is. Default matches the original fixed 0.25 used
+    /// before this was configurable. Daily Practice fades this across repeat cycles of the
+    /// subject list ("vanishing cues") — see `DrawingSubjects.outlineOpacity(forLevel:)`.
+    /// This view itself stays unaware of "levels"; it just renders whatever opacity it's
+    /// given, same as it stays unaware of what `subject` means beyond its two fields.
+    var outlineOpacity: Double = 0.25
+
     @State private var strokes: [[CGPoint]] = []
     @State private var currentStroke: [CGPoint] = []
     @State private var saveErrorMessage: String?
@@ -19,7 +31,7 @@ struct ClockDrawingView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text(BaselineAssessmentContent.ClockDrawing.promptText)
+            Text(subject.promptText)
                 .font(.system(size: 28, weight: .semibold, design: .rounded))
                 .multilineTextAlignment(.center)
 
@@ -61,12 +73,28 @@ struct ClockDrawingView: View {
     }
 
     private var canvas: some View {
-        Canvas { context, _ in
-            for stroke in strokes + [currentStroke] {
-                guard stroke.count > 1 else { continue }
-                var path = Path()
-                path.addLines(stroke)
-                context.stroke(path, with: .color(.black), style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+        ZStack {
+            // Faint traceable guide for every subject except the clock (kept free-recall,
+            // matching the standard Clock Drawing Test format). Baked into the saved PNG
+            // along with the strokes, so a later reviewer sees what was traced, not just the
+            // marks — see `ClockDrawingResult.subjectID` for the same info in text form.
+            if let outlineSymbolName = subject.outlineSymbolName {
+                Image(systemName: outlineSymbolName)
+                    .resizable()
+                    .scaledToFit()
+                    .symbolRenderingMode(.monochrome)
+                    .foregroundStyle(.gray.opacity(outlineOpacity))
+                    .padding(60)
+                    .allowsHitTesting(false)
+            }
+
+            Canvas { context, _ in
+                for stroke in strokes + [currentStroke] {
+                    guard stroke.count > 1 else { continue }
+                    var path = Path()
+                    path.addLines(stroke)
+                    context.stroke(path, with: .color(.black), style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+                }
             }
         }
     }
@@ -96,7 +124,9 @@ struct ClockDrawingView: View {
             return
         }
 
-        let fileName = "baseline-clock-\(Int(Date.now.timeIntervalSince1970)).png"
+        // Prefix kept generic (not "baseline-") — this view is now also used repeatedly from
+        // Daily Practice, not just the one-time baseline battery.
+        let fileName = "\(subject.id)-drawing-\(Int(Date.now.timeIntervalSince1970)).png"
         let fileURL = URL.documentsDirectory.appending(path: fileName)
 
         do {
@@ -106,7 +136,7 @@ struct ClockDrawingView: View {
             return
         }
 
-        onComplete(ClockDrawingResult(imageFileName: fileName, capturedAt: .now, score: nil))
+        onComplete(ClockDrawingResult(imageFileName: fileName, capturedAt: .now, subjectID: subject.id, score: nil))
     }
 }
 

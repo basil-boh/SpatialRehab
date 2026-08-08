@@ -7,6 +7,131 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## [Unreleased]
 
+### Fixed
+
+- (2026-08-09) Hub tile dot grids barely appeared to move: the difficulty schedule only
+  guaranteed one step forward every 3 completed rounds, which on a 30-dot grid read as "the
+  dots aren't moving" during normal testing (2 of every 3 rounds produced no visible change).
+  `PracticeProgressStore`'s `levelsPerScheduledDifficultyIncrease` changed from 3 to 1 — every
+  completed round now guarantees at least one step forward by default; performance can still
+  pull ahead or hold back on top of that.
+- (2026-08-09) Draw & Trace's hub tile had no dot grid at all (the only one of the four with
+  no visual progress indicator), since it has no difficulty scale to show. Added one anyway,
+  showing something else real and already bounded at 30: `GameProgress.visitedDrawingSubjectIDs`
+  — a permanent "collected" mark per subject, filling in as each of the 30 subjects gets drawn
+  for the first time. `PracticeProgressStore.recordCompletion` gained an optional
+  `visitedDrawingSubjectID` parameter; `PracticeGameContainerView` passes the current
+  drawing subject's id through it.
+
+### Added
+
+- (2026-08-09) Draw & Trace expanded from 11 subjects to 30 (matching the other three games'
+  1–30 scale), plus a real difficulty axis it previously had none of.
+  - `DrawingSubjects.all` grew from clock + 10 objects to clock + 29 objects (phone, letter,
+    bag, fork & knife, book, bell, lightbulb, scissors, glasses, shirt, suitcase, bed, shoe,
+    comb, bathtub, fan, backpack, camera, bicycle, added to the original dog/cat/house/
+    tree/sun/fish/car/cup/umbrella/key) — all verified against the installed SDK before use.
+  - New difficulty axis: **outline fading** (`DrawingSubjects.outlineOpacity(forLevel:)`),
+    based on the "vanishing cues" technique used in dementia memory care — the traceable
+    outline starts at its original fixed opacity (0.25) on the first pass through all 29
+    objects, fades a little on each subsequent full pass, floored at 0.06 so it's never
+    actually invisible. Chosen over trying to make the *shapes* harder, which isn't a
+    well-defined axis for a silhouette outline.
+  - `ClockDrawingView` takes a new `outlineOpacity` parameter (default 0.25, so the baseline
+    call site's appearance is unchanged) and stays unaware of "levels"/fading logic itself —
+    it just renders whatever opacity it's given.
+  - `Docs/DailyPractice_Design.md` updated with the rationale.
+- (2026-08-09) Difficulty widened from 5 levels to 30, and the difficulty rule now guarantees
+  gradual progress instead of only moving on a strong performance signal.
+  - `PracticeDifficulty.levelRange` is now `1...30` (was `1...5`); word memory, pattern
+    matching, and arithmetic content-scaling formulas rewritten for the wider range (word
+    bank kept at 22 words, pattern-matching symbol pool expanded from 8 to 12 verified SF
+    Symbols to support up to 12 pairs).
+  - `PracticeProgressStore.recordCompletion` now combines a **gradual schedule** (difficulty
+    has a floor that rises with `visibleLevel`, so it never sits flat regardless of score)
+    with the existing **performance nudge** (great performance pulls ahead of schedule,
+    struggling eases back) — fixes a real gap where scores in the "fine, not great, not
+    struggling" middle band left difficulty completely unchanged, which read as "the levels
+    aren't actually getting harder."
+  - `GameProgress.difficultyTier` renamed to `difficultyLevel` throughout.
+- (2026-08-09) `DailyPracticeHubView`'s per-tile dots now show **difficulty-level progress**
+  (a compact 10-column grid, filled up to the current level out of 30) instead of the old
+  7-day practice streak — the streak moved to its own screen, below.
+- (2026-08-09) New **Practice Calendar** screen (`PracticeCalendarView.swift`), reached via a
+  corner calendar button on `DailyPracticeHubView`:
+  - A month-grid calendar (green dot on any day something was practiced — the "GitHub
+    contributions" idea, reshaped into a familiar month layout rather than a week-column
+    heatmap) built from the union of all four games' practiced-day sets.
+  - A Duolingo-style current-streak counter (flame + "N days in a row"); an in-progress
+    streak still counts through today even before today's session happens, and a missed day
+    quietly resets it with no "you broke your streak" messaging anywhere.
+  - Permanent streak badges (7-day, 30-day) — tracked separately from the live streak
+    (`PracticeProgressStore.longestCombinedStreak()`, a persisted high-water mark) so a badge
+    stays earned even after a later missed day resets the current streak back to 0.
+  - A per-game breakdown list (each game's own current streak), satisfying "tracking for each
+    style of task" now that the hub tiles no longer show it directly.
+  - `Docs/DailyPractice_Design.md` updated throughout for all of the above.
+- (2026-08-08) Draw & Trace: the drawing game now cycles through a different subject each
+  level instead of only ever drawing the clock.
+  - `SpatialRehab/Models/DrawingSubject.swift` — level 1 stays the clock (free-recall, no
+    reference shown, unchanged Clock Drawing Test format); every level after cycles through
+    common animals/objects (dog, cat, house, tree, sun, fish, car, cup, umbrella, key), each
+    shown as a faint traceable SF Symbol silhouette. Tracing rather than pure recall is a
+    deliberate, gentler mechanic for this population, aimed at jogging recognition/naming of
+    everyday items.
+  - SF Symbol names were verified against the installed visionOS 27 SDK (compiled and ran a
+    small `UIImage(systemName:) != nil` check inside the Simulator) before use, not assumed —
+    `flower.fill`/`butterfly.fill` don't exist in this SDK and were dropped from the list.
+  - `ClockDrawingView` takes an optional `subject` parameter (default = the clock, so the
+    baseline call site is unchanged) and renders the outline behind the canvas, baked into
+    the saved PNG.
+  - `ClockDrawingResult` gained `subjectID` (defaults to `"clock"`) so a later reviewer knows
+    what was drawn, not just a bare sketch. Saved-file prefix now uses the subject id (e.g.
+    `dog-drawing-…png`) instead of a fixed `clock-drawing-` prefix.
+  - `PracticeGameKind.clockDrawing`'s hub title changed from "Draw a Clock" to "Draw & Trace"
+    to reflect the expanded scope.
+  - `Docs/DailyPractice_Design.md` updated with the mechanic rationale and known-gap
+    reasoning for why tracing (not recall) was chosen for the new subjects.
+- (2026-08-08) **Daily Practice** hub: a new, repeatable version of the four baseline-battery
+  mini-games (word memory, pattern matching, arithmetic, clock drawing), separate from the
+  one-time baseline battery — see `Docs/DailyPractice_Design.md` for the full rationale.
+  - Levels and difficulty are deliberately split: a **visible level** per game that only ever
+    climbs (never computed from performance, so it can never read as a grade), and a
+    **hidden, adaptive difficulty tier** (1–5) that drives actual content — word count, pair
+    count, arithmetic complexity — using each result type's already-computed `score`. The
+    tier number itself is never shown to the patient, only its effects. Reconciles "feels
+    like a real game with levels" with the existing hard rule that scores/right-wrong are
+    never surfaced to the patient.
+  - `PracticeGameKind.swift` — the four game identifiers + display metadata (title, icon,
+    tint, whether adaptive).
+  - `PracticeDifficulty.swift` — tier-scaled content generators. Word memory and arithmetic
+    generate fresh content each round (sampled from a larger word bank / generated within a
+    tier's number range) rather than reusing the baseline's fixed lists, so a daily-repeated
+    game doesn't get memorized instead of practiced.
+  - `PracticeProgressStore.swift` — local `UserDefaults` persistence (matching
+    `BaselineResultsStore`'s pattern) for each game's level, difficulty tier, and the set of
+    days it's been practiced — tracked **per game type**, not one combined streak, per the
+    product ask.
+  - `Views/DailyPracticeHubView.swift` — the hub: a tile per game showing its level and a
+    7-day practice-dot row (filled/empty only — never red, never a percentage, no
+    "you missed a day" messaging), plus a simple "X of 4 today" completion line.
+  - `Views/PracticeGameContainerView.swift` — generates one round's tier-scaled content,
+    hosts the relevant game view, records progress on completion, and shows a brief
+    purely-positive "Nice work! Level N" screen before returning to the hub.
+  - `WordMemoryGameView`, `PatternMatchingGameView`, `ArithmeticGameView` now take optional
+    content parameters (word lists / symbols / problems) defaulting to the exact baseline
+    content, so every existing baseline call site is unchanged — the Daily Practice hub
+    passes tier-scaled content instead, reusing the same views rather than duplicating them.
+  - Added a small in-round progress bar directly to `PatternMatchingGameView` (pairs found /
+    total) and `ArithmeticGameView` (problem N / total) — neutral positional information, not
+    a correctness signal, so it's a free improvement for the baseline flow too.
+  - `ContentView` now leads with a primary "Daily Practice" button; the existing "View
+    Baseline Data (Dev)" button stays, de-emphasized.
+  - `ClockDrawingView`'s saved-file prefix renamed from `baseline-clock-` to
+    `clock-drawing-`, since it's now also used repeatedly from Daily Practice, not just the
+    one-time baseline.
+  - Regenerated `SpatialRehab.xcodeproj` via `xcodegen generate` to register the new files.
+
 ### Removed
 
 - **mac2visionOS / Mac Link** stack for the hackathon: SPM dependency, multiplatform macOS target, Bonjour/local-network Info.plist keys, sandbox network entitlements, and bubble host/controller/smoke/stability UI files. Local dev is **visionOS Simulator only**.

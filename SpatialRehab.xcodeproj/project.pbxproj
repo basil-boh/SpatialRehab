@@ -11,13 +11,19 @@
 		055A02236D8E86AFB8B4D416 /* BaselineAssessmentContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182E1F7EF38311CE27E5D136 /* BaselineAssessmentContent.swift */; };
 		0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */; };
 		114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */; };
+		14531E1E26CE33341D2F024F /* DrawingSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2788CA49000DE28C3BCBD96B /* DrawingSubject.swift */; };
+		1C384F8F746D32FF870FDBBF /* PracticeCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160A3137AF840499FE86CE1E /* PracticeCalendarView.swift */; };
 		1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */; };
 		241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */; };
 		2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */; };
+		2D2922A7F09B819820BE381B /* PracticeProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A61391C91FB2B12F57494E5 /* PracticeProgressStore.swift */; };
+		30F03215FBB3FDDF577627A6 /* PracticeDifficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64149DE090C20F7E962AE /* PracticeDifficulty.swift */; };
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */; };
+		4A60C65887D952F50942CE7D /* DailyPracticeHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FD81E7BEEA31DB7375D401 /* DailyPracticeHubView.swift */; };
 		50B59D6F42CB227A59992951 /* ArithmeticGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */; };
 		54E345F2806BA2A5AFA0FB8C /* ArithmeticResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9746F6FB0D24798750A7F /* ArithmeticResult.swift */; };
+		5B0034826CD7E88483D2E068 /* PracticeGameContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B86C06F87A94BB2760C58D /* PracticeGameContainerView.swift */; };
 		67F6879C8FC2BD3A331960DA /* WordMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */; };
 		686AD077AC8A3234B17CCFEE /* BaselineResultsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */; };
 		79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */; };
@@ -25,6 +31,7 @@
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
 		BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5634B06A4388B5CAB30C5784 /* TaskSession.swift */; };
+		CBB38BF2BC1018B800D62DF7 /* PracticeGameKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222C096060CA41B840347AFE /* PracticeGameKind.swift */; };
 		E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5DCE25CFDF584104735BA /* SoundEffects.swift */; };
 		E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */; };
 		F63EAFB0A6608F6F1598A3CC /* BaselineAssessmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */; };
@@ -39,7 +46,11 @@
 		0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentView.swift; sourceTree = "<group>"; };
 		0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveTaskView.swift; sourceTree = "<group>"; };
 		13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsDebugView.swift; sourceTree = "<group>"; };
+		160A3137AF840499FE86CE1E /* PracticeCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeCalendarView.swift; sourceTree = "<group>"; };
 		182E1F7EF38311CE27E5D136 /* BaselineAssessmentContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentContent.swift; sourceTree = "<group>"; };
+		222C096060CA41B840347AFE /* PracticeGameKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeGameKind.swift; sourceTree = "<group>"; };
+		2788CA49000DE28C3BCBD96B /* DrawingSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingSubject.swift; sourceTree = "<group>"; };
+		2BB64149DE090C20F7E962AE /* PracticeDifficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeDifficulty.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryTrial.swift; sourceTree = "<group>"; };
 		35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryGameView.swift; sourceTree = "<group>"; };
@@ -50,6 +61,7 @@
 		6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingGameView.swift; sourceTree = "<group>"; };
 		7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingResult.swift; sourceTree = "<group>"; };
 		7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArithmeticGameView.swift; sourceTree = "<group>"; };
+		8A61391C91FB2B12F57494E5 /* PracticeProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressStore.swift; sourceTree = "<group>"; };
 		8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStep.swift; sourceTree = "<group>"; };
 		9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDrawingView.swift; sourceTree = "<group>"; };
 		B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaTaskContent.swift; sourceTree = "<group>"; };
@@ -57,7 +69,9 @@
 		C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialRehabApp.swift; sourceTree = "<group>"; };
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E0B86C06F87A94BB2760C58D /* PracticeGameContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeGameContainerView.swift; sourceTree = "<group>"; };
 		F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsStore.swift; sourceTree = "<group>"; };
+		F6FD81E7BEEA31DB7375D401 /* DailyPracticeHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPracticeHubView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -76,9 +90,12 @@
 				0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */,
 				13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */,
 				9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */,
+				F6FD81E7BEEA31DB7375D401 /* DailyPracticeHubView.swift */,
 				061D02385783F2C35C763A5E /* GuidanceCardView.swift */,
 				0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */,
 				6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */,
+				160A3137AF840499FE86CE1E /* PracticeCalendarView.swift */,
+				E0B86C06F87A94BB2760C58D /* PracticeGameContainerView.swift */,
 				35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */,
 			);
 			path = Views;
@@ -113,8 +130,12 @@
 				05CA12C25EC8062BBAFD3935 /* BaselineAssessmentSession.swift */,
 				F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */,
 				C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */,
+				2788CA49000DE28C3BCBD96B /* DrawingSubject.swift */,
 				5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */,
 				7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */,
+				2BB64149DE090C20F7E962AE /* PracticeDifficulty.swift */,
+				222C096060CA41B840347AFE /* PracticeGameKind.swift */,
+				8A61391C91FB2B12F57494E5 /* PracticeProgressStore.swift */,
 				54E5DCE25CFDF584104735BA /* SoundEffects.swift */,
 				5634B06A4388B5CAB30C5784 /* TaskSession.swift */,
 				8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */,
@@ -205,11 +226,18 @@
 				407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */,
 				79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
+				4A60C65887D952F50942CE7D /* DailyPracticeHubView.swift in Sources */,
+				14531E1E26CE33341D2F024F /* DrawingSubject.swift in Sources */,
 				03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */,
 				114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */,
 				E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */,
 				FE271E353F59EFA7EBB12F98 /* PatternMatchingGameView.swift in Sources */,
 				241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */,
+				1C384F8F746D32FF870FDBBF /* PracticeCalendarView.swift in Sources */,
+				30F03215FBB3FDDF577627A6 /* PracticeDifficulty.swift in Sources */,
+				5B0034826CD7E88483D2E068 /* PracticeGameContainerView.swift in Sources */,
+				CBB38BF2BC1018B800D62DF7 /* PracticeGameKind.swift in Sources */,
+				2D2922A7F09B819820BE381B /* PracticeProgressStore.swift in Sources */,
 				E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
 				BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */,
