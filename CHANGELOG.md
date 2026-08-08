@@ -10,9 +10,6 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 ### Added
 
 - **Who am I? name card** (`szehao-id-card`): dementia-friendly identity ritual. Welcome **Who am I?** opens nest + circle-draw pad (Simulator drag loop or **Summon** button). Completing an approx circle presents a glowing NRIC-style card (Lim Chio Bu / 林招母, birthday, emoji portrait) in a second window. **Family** flips to a soft yellow tree (Ah Pek + three children; Sze Hao under Mei Ling). Pinch photo → greeting turn with bilingual relation caption; **Sze Hao** plays a 4s demo line then auto-closes. **Put away** flies the card back to the nest. Files under `SpatialRehab/WhoAmI/`; windows `who-am-i` + `name-card`. `Xcode_README.md` lists the welcome entry.
-- **First-person VR walk (ImmersiveSpace)**: full immersion path toward Block 343 with **hand-tracking pinches** — left pinch = step / hold to keep walking, right pinch + hand L/R = turn (hold continues). Floating HUD, green destination door, **“You have arrived”** banner. Button fallback for Simulator. `HandPinchLocomotion` + `NSHandsTrackingUsageDescription`. Launch: **Walk in VR (first person)** → `yishun-vr-walk`.
-- **Yishun MapKit guided walk** (`szehao-mapkit-yishun-walking`): fixed walking route from Northpoint City → Block 343 Yishun Ave 11 using `MKDirections` + SwiftUI `Map` polyline, virtual walker progress with start/pause/next, dementia-friendly crossing prompts, MapKit Look Around along the path, curated traffic-light POIs with slow state cycles, and a volumetric placeholder RealityKit traffic light (named `RedLight` / `YellowLight` / `GreenLight` for a future USDZ swap). Entry from welcome via **Yishun Walking Route**; shared `WalkSessionModel` syncs map markers and the volume preview.
-- Files under `SpatialRehab/YishunWalk/` (route loader, session model, map, Look Around, guidance, Reality placeholder); `WindowGroup` ids `yishun-walk` and `traffic-light-preview` in `SpatialRehabApp.swift`.
 
 - Hummingbird volumetric window: `hummingbird_anim.usdz` added to the app bundle, a new `HummingbirdVolumeView.swift` displays it via `Model3D` with `.manipulable()` so it can be grabbed, moved, and rotated by hand, and a second `WindowGroup(id: "hummingbird")` with `.windowStyle(.volumetric)` declares the scene in `SpatialRehabApp.swift`. The "Get Started" button in `ContentView.swift` now opens it via `openWindow(id:)`.
 
@@ -22,6 +19,7 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Removed
 
+- **Yishun map / VR walk** from this branch (`szehao-id-card`): `SpatialRehab/YishunWalk/`, welcome walk buttons, immersive space, traffic-light volume, and hands-tracking usage string. That work stays on `szehao-mapkit-yishun-walking`.
 - **mac2visionOS / Mac Link** stack for the hackathon: SPM dependency, multiplatform macOS target, Bonjour/local-network Info.plist keys, sandbox network entitlements, and bubble host/controller/smoke/stability UI files. Local dev is **visionOS Simulator only**.
 
 ### Added

@@ -37,27 +37,6 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
 
-                Button("Walk in VR (first person)") {
-                    openWindow(id: "yishun-vr-launch")
-                }
-                .font(.title3)
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-
-                Text("Left pinch walk · Right pinch turn · Arrive at Block 343")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-
-                Button("Yishun Map (overview only)") {
-                    openWindow(id: "yishun-walk")
-                }
-                .font(.title3)
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-
                 Button("Hummingbird") {
                     openWindow(id: "hummingbird")
                 }

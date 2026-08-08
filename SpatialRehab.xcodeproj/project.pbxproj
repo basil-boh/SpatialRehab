@@ -8,112 +8,43 @@
 
 /* Begin PBXBuildFile section */
 		0AAAE41BD67300CAF2315685 /* FamilyTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6EE57D881C409ACF5CBFFA /* FamilyTreeView.swift */; };
-		0E4E958EE8D9DECB8A2FE2A0 /* ImmersiveWalkLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676315C57A4D2195A686539F /* ImmersiveWalkLaunchView.swift */; };
 		11DB9D3004E0C72F6C9ED37B /* WhoAmISessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDC232A80CE860AA6889840 /* WhoAmISessionModel.swift */; };
-		1B35E632BB0A2A3B1190BA58 /* ImmersiveWalkSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFE75E114F168E2E72CC5A /* ImmersiveWalkSpaceView.swift */; };
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		3F52A89A60CA8993963EAEB1 /* CircleDrawCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0D20D582FFEA00E2AD228 /* CircleDrawCanvas.swift */; };
 		5BBE385D30AD9D5118085EF5 /* hummingbird_anim.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */; };
-		5FBD6B0192FBDE81640016AD /* TrafficLightVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A3F11CC10204EA1A164B96 /* TrafficLightVolumeView.swift */; };
-		61372AEB7E8BA1D70314DA95 /* YishunWalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CE5F9340AB0CB5104B43E /* YishunWalkView.swift */; };
-		68113A4B620EE004420BCDC3 /* CrossingPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D62AFA1DD5BF6E839481FF /* CrossingPromptView.swift */; };
-		796CBC300DBCC55C1CFDB7CF /* YishunRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360009BCC0CFBD18D693EAD /* YishunRoute.swift */; };
-		7B83FB438E2D009FFF470F4B /* ImmersivePathWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B47685BFEE4EE64438AE815 /* ImmersivePathWorld.swift */; };
 		801B0B58870590FB8D0BDB1E /* PersonaModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9DA15EADC464BCB26120C2 /* PersonaModels.swift */; };
-		8BCA3ABCA269D3CDE14285A2 /* TrafficLightEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6AB7C72B9B7EAB6B56143ED /* TrafficLightEntity.swift */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
-		9AFF90EDFC6A5ACA57AF9B47 /* ImmersiveWalkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A32CE1D1BB90C4FDA2E013 /* ImmersiveWalkSession.swift */; };
-		A0430EE433764CBAA4F31601 /* TrafficLightState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6756A4FD21EB1D944B71577 /* TrafficLightState.swift */; };
 		A2F1E47DB8B41F31B9DB8496 /* HummingbirdVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */; };
-		ACB7B9A4B2092AFB91C28721 /* LookAroundWalkPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E2F701DBF0213EB7A214D /* LookAroundWalkPanel.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
 		B92E6BCA0CC6699F26629A0E /* WhoAmIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EC6F977098E34A6D7E1332 /* WhoAmIView.swift */; };
 		BA0D736E81E20FAF1E12A82D /* NestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF9E690E8CAEB5C6E90C886 /* NestView.swift */; };
-		BB6D4F21F26FA5AA3FB272EC /* TrafficLightPOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569721C50B2FD450ADBC4C76 /* TrafficLightPOI.swift */; };
-		D39966479993C1D060F54D33 /* StepListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0EE21C76AFD667D79A661A /* StepListView.swift */; };
-		D9C21067ABFBCDD4BE94C201 /* YishunRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562B129EDE66675D82C75DA /* YishunRouteMapView.swift */; };
-		EA4B3DFB717053C7ACC91B21 /* WalkSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58B612AC39DE0A9E74E15C7 /* WalkSessionModel.swift */; };
 		EF6A507D92BE9B88C6BA2C57 /* NameCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D9412F8BE153DA6ADA37E0 /* NameCardView.swift */; };
-		F0A32517AAB210DE5EC76007 /* HandPinchLocomotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915AF5C7EF517CCE3C3CC799 /* HandPinchLocomotion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		07D9412F8BE153DA6ADA37E0 /* NameCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameCardView.swift; sourceTree = "<group>"; };
-		0B47685BFEE4EE64438AE815 /* ImmersivePathWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersivePathWorld.swift; sourceTree = "<group>"; };
 		0E6EE57D881C409ACF5CBFFA /* FamilyTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTreeView.swift; sourceTree = "<group>"; };
 		12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HummingbirdVolumeView.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		2F5CE5F9340AB0CB5104B43E /* YishunWalkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YishunWalkView.swift; sourceTree = "<group>"; };
-		569721C50B2FD450ADBC4C76 /* TrafficLightPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLightPOI.swift; sourceTree = "<group>"; };
 		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDC232A80CE860AA6889840 /* WhoAmISessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoAmISessionModel.swift; sourceTree = "<group>"; };
-		6562B129EDE66675D82C75DA /* YishunRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YishunRouteMapView.swift; sourceTree = "<group>"; };
-		676315C57A4D2195A686539F /* ImmersiveWalkLaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveWalkLaunchView.swift; sourceTree = "<group>"; };
-		69A32CE1D1BB90C4FDA2E013 /* ImmersiveWalkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveWalkSession.swift; sourceTree = "<group>"; };
 		75C0D20D582FFEA00E2AD228 /* CircleDrawCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleDrawCanvas.swift; sourceTree = "<group>"; };
-		7B0EE21C76AFD667D79A661A /* StepListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepListView.swift; sourceTree = "<group>"; };
-		7B4E2F701DBF0213EB7A214D /* LookAroundWalkPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookAroundWalkPanel.swift; sourceTree = "<group>"; };
-		915AF5C7EF517CCE3C3CC799 /* HandPinchLocomotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandPinchLocomotion.swift; sourceTree = "<group>"; };
 		A0EC6F977098E34A6D7E1332 /* WhoAmIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoAmIView.swift; sourceTree = "<group>"; };
-		ABAFE75E114F168E2E72CC5A /* ImmersiveWalkSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveWalkSpaceView.swift; sourceTree = "<group>"; };
-		B6756A4FD21EB1D944B71577 /* TrafficLightState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLightState.swift; sourceTree = "<group>"; };
-		C360009BCC0CFBD18D693EAD /* YishunRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YishunRoute.swift; sourceTree = "<group>"; };
 		C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialRehabApp.swift; sourceTree = "<group>"; };
 		CBF9E690E8CAEB5C6E90C886 /* NestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestView.swift; sourceTree = "<group>"; };
-		D1A3F11CC10204EA1A164B96 /* TrafficLightVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLightVolumeView.swift; sourceTree = "<group>"; };
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E2D62AFA1DD5BF6E839481FF /* CrossingPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossingPromptView.swift; sourceTree = "<group>"; };
-		E58B612AC39DE0A9E74E15C7 /* WalkSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkSessionModel.swift; sourceTree = "<group>"; };
-		E6AB7C72B9B7EAB6B56143ED /* TrafficLightEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLightEntity.swift; sourceTree = "<group>"; };
 		EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = hummingbird_anim.usdz; sourceTree = "<group>"; };
 		FC9DA15EADC464BCB26120C2 /* PersonaModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		355805DB59696D530ECC91AC /* Immersive */ = {
-			isa = PBXGroup;
-			children = (
-				915AF5C7EF517CCE3C3CC799 /* HandPinchLocomotion.swift */,
-				0B47685BFEE4EE64438AE815 /* ImmersivePathWorld.swift */,
-				676315C57A4D2195A686539F /* ImmersiveWalkLaunchView.swift */,
-				69A32CE1D1BB90C4FDA2E013 /* ImmersiveWalkSession.swift */,
-				ABAFE75E114F168E2E72CC5A /* ImmersiveWalkSpaceView.swift */,
-			);
-			path = Immersive;
-			sourceTree = "<group>";
-		};
-		37739F2A6F20F10CB372D679 /* YishunWalk */ = {
-			isa = PBXGroup;
-			children = (
-				A056704B497E5866AE4A36AA /* Guidance */,
-				355805DB59696D530ECC91AC /* Immersive */,
-				7F34E75E6A9E7F4B0233B12C /* LookAround */,
-				D8F87B2A9B37C95C6CE992E8 /* Map */,
-				A6FE6F79FA8C0AF73FADA4E9 /* Reality */,
-				569721C50B2FD450ADBC4C76 /* TrafficLightPOI.swift */,
-				B6756A4FD21EB1D944B71577 /* TrafficLightState.swift */,
-				E58B612AC39DE0A9E74E15C7 /* WalkSessionModel.swift */,
-				C360009BCC0CFBD18D693EAD /* YishunRoute.swift */,
-				2F5CE5F9340AB0CB5104B43E /* YishunWalkView.swift */,
-			);
-			path = YishunWalk;
-			sourceTree = "<group>";
-		};
 		73FDC45FD292CED0C925D7FD = {
 			isa = PBXGroup;
 			children = (
 				BEA191256B2FBC841F5D2087 /* SpatialRehab */,
 				C431894527055F69A1655A24 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		7F34E75E6A9E7F4B0233B12C /* LookAround */ = {
-			isa = PBXGroup;
-			children = (
-				7B4E2F701DBF0213EB7A214D /* LookAroundWalkPanel.swift */,
-			);
-			path = LookAround;
 			sourceTree = "<group>";
 		};
 		8C9FAB3ACE75CFF19870CE07 /* WhoAmI */ = {
@@ -130,29 +61,10 @@
 			path = WhoAmI;
 			sourceTree = "<group>";
 		};
-		A056704B497E5866AE4A36AA /* Guidance */ = {
-			isa = PBXGroup;
-			children = (
-				E2D62AFA1DD5BF6E839481FF /* CrossingPromptView.swift */,
-				7B0EE21C76AFD667D79A661A /* StepListView.swift */,
-			);
-			path = Guidance;
-			sourceTree = "<group>";
-		};
-		A6FE6F79FA8C0AF73FADA4E9 /* Reality */ = {
-			isa = PBXGroup;
-			children = (
-				E6AB7C72B9B7EAB6B56143ED /* TrafficLightEntity.swift */,
-				D1A3F11CC10204EA1A164B96 /* TrafficLightVolumeView.swift */,
-			);
-			path = Reality;
-			sourceTree = "<group>";
-		};
 		BEA191256B2FBC841F5D2087 /* SpatialRehab */ = {
 			isa = PBXGroup;
 			children = (
 				8C9FAB3ACE75CFF19870CE07 /* WhoAmI */,
-				37739F2A6F20F10CB372D679 /* YishunWalk */,
 				DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */,
 				DC95DF015FBB8EFEE7176499 /* ContentView.swift */,
 				EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */,
@@ -169,14 +81,6 @@
 				5BA81EF00053FE815B5B6407 /* SpatialRehab.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D8F87B2A9B37C95C6CE992E8 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				6562B129EDE66675D82C75DA /* YishunRouteMapView.swift */,
-			);
-			path = Map;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,30 +157,14 @@
 			files = (
 				3F52A89A60CA8993963EAEB1 /* CircleDrawCanvas.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
-				68113A4B620EE004420BCDC3 /* CrossingPromptView.swift in Sources */,
 				0AAAE41BD67300CAF2315685 /* FamilyTreeView.swift in Sources */,
-				F0A32517AAB210DE5EC76007 /* HandPinchLocomotion.swift in Sources */,
 				A2F1E47DB8B41F31B9DB8496 /* HummingbirdVolumeView.swift in Sources */,
-				7B83FB438E2D009FFF470F4B /* ImmersivePathWorld.swift in Sources */,
-				0E4E958EE8D9DECB8A2FE2A0 /* ImmersiveWalkLaunchView.swift in Sources */,
-				9AFF90EDFC6A5ACA57AF9B47 /* ImmersiveWalkSession.swift in Sources */,
-				1B35E632BB0A2A3B1190BA58 /* ImmersiveWalkSpaceView.swift in Sources */,
-				ACB7B9A4B2092AFB91C28721 /* LookAroundWalkPanel.swift in Sources */,
 				EF6A507D92BE9B88C6BA2C57 /* NameCardView.swift in Sources */,
 				BA0D736E81E20FAF1E12A82D /* NestView.swift in Sources */,
 				801B0B58870590FB8D0BDB1E /* PersonaModels.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
-				D39966479993C1D060F54D33 /* StepListView.swift in Sources */,
-				8BCA3ABCA269D3CDE14285A2 /* TrafficLightEntity.swift in Sources */,
-				BB6D4F21F26FA5AA3FB272EC /* TrafficLightPOI.swift in Sources */,
-				A0430EE433764CBAA4F31601 /* TrafficLightState.swift in Sources */,
-				5FBD6B0192FBDE81640016AD /* TrafficLightVolumeView.swift in Sources */,
-				EA4B3DFB717053C7ACC91B21 /* WalkSessionModel.swift in Sources */,
 				11DB9D3004E0C72F6C9ED37B /* WhoAmISessionModel.swift in Sources */,
 				B92E6BCA0CC6699F26629A0E /* WhoAmIView.swift in Sources */,
-				796CBC300DBCC55C1CFDB7CF /* YishunRoute.swift in Sources */,
-				D9C21067ABFBCDD4BE94C201 /* YishunRouteMapView.swift in Sources */,
-				61372AEB7E8BA1D70314DA95 /* YishunWalkView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
