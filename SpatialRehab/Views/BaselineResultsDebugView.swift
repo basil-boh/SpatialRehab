@@ -15,22 +15,112 @@ import UIKit
 /// for a different meaning. This is a dev-only screen so palette choices weren't run through
 /// a formal colorblind-safety validator (see `.skills` dataviz guidance) — worth doing if
 /// this ever becomes a caregiver-facing surface.
+///
+/// The final section surfaces `GameRecommendationEngine`'s output (weakest-domain-first
+/// game suggestions). Deliberately kept here rather than shown to the patient: the
+/// suggested games (`StimulationGameCatalog`) don't have real screens built yet, so
+/// recommending one to the patient would point at something that isn't tappable — fine
+/// for a developer/caregiver to preview, not fine to promise a person with dementia.
 struct BaselineResultsDebugView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
             List {
+                reactionTimeSection
+                orientationSection
                 wordMemorySection
+                digitSpanSection
                 patternMatchingSection
+                trailMakingSection
                 arithmeticSection
                 clockDrawingSection
+                recommendationSection
             }
             .navigationTitle("Baseline Data (Dev)")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
                 }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var reactionTimeSection: some View {
+        Section("Reaction Time") {
+            if let result = BaselineResultsStore.loadReactionTimeResult() {
+                row("Average", "\(Int(result.averageReactionTimeMs.rounded())) ms")
+                BreakdownChart(items: result.reactionTimesMs.enumerated().map { index, ms in
+                    BreakdownItem(label: "Trial \(index + 1)", count: Int(ms.rounded()), color: .indigo)
+                })
+                .padding(.vertical, 6)
+            } else {
+                notCompletedRow
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var orientationSection: some View {
+        Section("Orientation") {
+            if let result = BaselineResultsStore.loadOrientationResult() {
+                HStack(alignment: .top, spacing: 20) {
+                    ScoreGauge(score: result.score, tint: .cyan)
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(Array(result.answers.enumerated()), id: \.offset) { _, answer in
+                            HStack(spacing: 8) {
+                                Image(systemName: answer.isCorrect ? "checkmark.circle.fill" : "circle")
+                                    .foregroundStyle(answer.isCorrect ? .green : .secondary)
+                                Text(answer.promptText)
+                                Spacer()
+                                Text(answer.selectedAnswer)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+                .padding(.vertical, 6)
+            } else {
+                notCompletedRow
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var digitSpanSection: some View {
+        Section("Digit Span") {
+            if let result = BaselineResultsStore.loadDigitSpanResult() {
+                HStack(alignment: .top, spacing: 20) {
+                    ScoreGauge(score: result.score, tint: .pink)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Target: \(result.targetSequence.map(String.init).joined(separator: " "))")
+                        Text("Entered: \(result.enteredSequence.map(String.init).joined(separator: " "))")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.vertical, 6)
+            } else {
+                notCompletedRow
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var trailMakingSection: some View {
+        Section("Trail Making") {
+            if let result = BaselineResultsStore.loadTrailMakingResult() {
+                HStack(spacing: 20) {
+                    ScoreGauge(score: result.score, tint: .mint)
+                    BreakdownChart(items: [
+                        BreakdownItem(label: "Dots", count: result.dotCount, color: .mint),
+                        BreakdownItem(label: "Errors", count: result.errorCount, color: .orange),
+                    ])
+                }
+                .padding(.vertical, 6)
+                row("Duration", "\(Int(result.durationSeconds.rounded())) s")
+            } else {
+                notCompletedRow
             }
         }
     }
@@ -122,6 +212,53 @@ struct BaselineResultsDebugView: View {
             } else {
                 notCompletedRow
             }
+        }
+    }
+
+    @ViewBuilder
+    private var recommendationSection: some View {
+        Section("Recommended Focus (Dev)") {
+            let recommendations = GameRecommendationEngine.currentRecommendations()
+            if recommendations.isEmpty {
+                notCompletedRow
+            } else {
+                BreakdownChart(items: recommendations.map {
+                    BreakdownItem(
+                        label: $0.domain.displayName,
+                        count: Int(($0.priority * 100).rounded()),
+                        color: domainColor($0.domain)
+                    )
+                })
+                .padding(.vertical, 6)
+
+                if let top = recommendations.first {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Top priority: \(top.domain.displayName)")
+                            .font(.subheadline.weight(.semibold))
+                        ForEach(top.games) { game in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(game.title)
+                                    .font(.callout.weight(.medium))
+                                Text(game.summary)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+        }
+    }
+
+    /// Reuses each domain's home game's identity color (word memory=blue,
+    /// arithmetic=teal, pattern matching=purple) so this section reads as the same
+    /// visual language as the score gauges above, not a fourth unrelated palette.
+    private func domainColor(_ domain: CognitiveDomain) -> Color {
+        switch domain {
+        case .memory: .blue
+        case .numeracy: .teal
+        case .executiveFunction: .purple
         }
     }
 
