@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "tall_hex_preserve_jar",
+  "root_prim": "/tall_hex_preserve_jar",
+  "links": [
+    {
+      "name": "glass_body",
+      "usd_path": "/tall_hex_preserve_jar/glass_body",
+      "mass": null
+    },
+    {
+      "name": "screw_lid",
+      "usd_path": "/tall_hex_preserve_jar/glass_body/screw_lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_lid",
+      "usd_path": "/tall_hex_preserve_jar/Joints/body_to_lid",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/tall_hex_preserve_jar/glass_body",
+      "child_path": "/tall_hex_preserve_jar/glass_body/screw_lid",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.191
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

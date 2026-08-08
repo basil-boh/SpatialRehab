@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "object": "secretary_drop_front_desk",
+  "root_prim": "/secretary_drop_front_desk",
+  "links": [
+    {
+      "name": "cabinet",
+      "usd_path": "/secretary_drop_front_desk/cabinet",
+      "mass": null
+    },
+    {
+      "name": "drop_front",
+      "usd_path": "/secretary_drop_front_desk/cabinet/drop_front",
+      "mass": null
+    },
+    {
+      "name": "writing_shelf",
+      "usd_path": "/secretary_drop_front_desk/cabinet/writing_shelf",
+      "mass": null
+    },
+    {
+      "name": "lower_drawer",
+      "usd_path": "/secretary_drop_front_desk/cabinet/lower_drawer",
+      "mass": null
+    },
+    {
+      "name": "upper_drawer",
+      "usd_path": "/secretary_drop_front_desk/cabinet/upper_drawer",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "cabinet_to_drop_front",
+      "usd_path": "/secretary_drop_front_desk/Joints/cabinet_to_drop_front",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/secretary_drop_front_desk/cabinet",
+      "child_path": "/secretary_drop_front_desk/cabinet/drop_front",
+      "origin_xyz": [
+        0.0,
+        -0.235,
+        0.76
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.5708,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_writing_shelf",
+      "usd_path": "/secretary_drop_front_desk/Joints/cabinet_to_writing_shelf",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/secretary_drop_front_desk/cabinet",
+      "child_path": "/secretary_drop_front_desk/cabinet/writing_shelf",
+      "origin_xyz": [
+        -0.165,
+        -0.005,
+        0.845
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.25,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_lower_drawer",
+      "usd_path": "/secretary_drop_front_desk/Joints/cabinet_to_lower_drawer",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/secretary_drop_front_desk/cabinet",
+      "child_path": "/secretary_drop_front_desk/cabinet/lower_drawer",
+      "origin_xyz": [
+        0.27,
+        -0.005,
+        1.005
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.2,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_upper_drawer",
+      "usd_path": "/secretary_drop_front_desk/Joints/cabinet_to_upper_drawer",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/secretary_drop_front_desk/cabinet",
+      "child_path": "/secretary_drop_front_desk/cabinet/upper_drawer",
+      "origin_xyz": [
+        0.27,
+        -0.005,
+        1.19
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.2,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

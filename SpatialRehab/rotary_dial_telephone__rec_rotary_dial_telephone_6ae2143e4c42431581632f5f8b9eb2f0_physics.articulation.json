@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "nineteen_fifties_rotary_phone",
+  "root_prim": "/nineteen_fifties_rotary_phone",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/nineteen_fifties_rotary_phone/body",
+      "mass": null
+    },
+    {
+      "name": "rotary_dial",
+      "usd_path": "/nineteen_fifties_rotary_phone/body/rotary_dial",
+      "mass": null
+    },
+    {
+      "name": "handset",
+      "usd_path": "/nineteen_fifties_rotary_phone/body/handset",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_rotary_dial",
+      "usd_path": "/nineteen_fifties_rotary_phone/Joints/body_to_rotary_dial",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/nineteen_fifties_rotary_phone/body",
+      "child_path": "/nineteen_fifties_rotary_phone/body/rotary_dial",
+      "origin_xyz": [
+        -0.0698606,
+        0.0,
+        0.0843541
+      ],
+      "origin_rpy": [
+        0.0,
+        -0.653,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 5.05,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_handset",
+      "usd_path": "/nineteen_fifties_rotary_phone/Joints/body_to_handset",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/nineteen_fifties_rotary_phone/body",
+      "child_path": "/nineteen_fifties_rotary_phone/body/handset",
+      "origin_xyz": [
+        0.045,
+        0.0,
+        0.15485
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.08,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

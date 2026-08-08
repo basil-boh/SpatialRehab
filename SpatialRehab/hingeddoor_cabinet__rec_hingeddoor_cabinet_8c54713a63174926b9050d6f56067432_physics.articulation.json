@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "bedside_cabinet_flip_tray",
+  "root_prim": "/bedside_cabinet_flip_tray",
+  "links": [
+    {
+      "name": "case",
+      "usd_path": "/bedside_cabinet_flip_tray/case",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/bedside_cabinet_flip_tray/case/door",
+      "mass": null
+    },
+    {
+      "name": "tray",
+      "usd_path": "/bedside_cabinet_flip_tray/case/tray",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "door_hinge",
+      "usd_path": "/bedside_cabinet_flip_tray/Joints/door_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/bedside_cabinet_flip_tray/case",
+      "child_path": "/bedside_cabinet_flip_tray/case/door",
+      "origin_xyz": [
+        -0.255,
+        -0.24,
+        0.34
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_hinge",
+      "usd_path": "/bedside_cabinet_flip_tray/Joints/tray_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/bedside_cabinet_flip_tray/case",
+      "child_path": "/bedside_cabinet_flip_tray/case/tray",
+      "origin_xyz": [
+        0.0,
+        -0.145,
+        0.13
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.45,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

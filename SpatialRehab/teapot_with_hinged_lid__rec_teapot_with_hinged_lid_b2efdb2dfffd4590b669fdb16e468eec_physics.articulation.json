@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "stainless_cafe_teapot",
+  "root_prim": "/stainless_cafe_teapot",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/stainless_cafe_teapot/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/stainless_cafe_teapot/body/lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_lid",
+      "usd_path": "/stainless_cafe_teapot/Joints/body_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/stainless_cafe_teapot/body",
+      "child_path": "/stainless_cafe_teapot/body/lid",
+      "origin_xyz": [
+        -0.055,
+        0.0,
+        0.117
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.43117,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

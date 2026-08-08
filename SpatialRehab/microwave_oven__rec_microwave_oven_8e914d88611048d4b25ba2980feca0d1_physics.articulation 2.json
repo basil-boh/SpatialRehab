@@ -1,0 +1,814 @@
+{
+  "schema_version": 1,
+  "object": "commercial_microwave",
+  "root_prim": "/commercial_microwave",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/commercial_microwave/body",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/commercial_microwave/body/door",
+      "mass": null
+    },
+    {
+      "name": "key_0_0",
+      "usd_path": "/commercial_microwave/body/key_0_0",
+      "mass": null
+    },
+    {
+      "name": "key_0_1",
+      "usd_path": "/commercial_microwave/body/key_0_1",
+      "mass": null
+    },
+    {
+      "name": "key_0_2",
+      "usd_path": "/commercial_microwave/body/key_0_2",
+      "mass": null
+    },
+    {
+      "name": "key_0_3",
+      "usd_path": "/commercial_microwave/body/key_0_3",
+      "mass": null
+    },
+    {
+      "name": "key_1_0",
+      "usd_path": "/commercial_microwave/body/key_1_0",
+      "mass": null
+    },
+    {
+      "name": "key_1_1",
+      "usd_path": "/commercial_microwave/body/key_1_1",
+      "mass": null
+    },
+    {
+      "name": "key_1_2",
+      "usd_path": "/commercial_microwave/body/key_1_2",
+      "mass": null
+    },
+    {
+      "name": "key_1_3",
+      "usd_path": "/commercial_microwave/body/key_1_3",
+      "mass": null
+    },
+    {
+      "name": "key_2_0",
+      "usd_path": "/commercial_microwave/body/key_2_0",
+      "mass": null
+    },
+    {
+      "name": "key_2_1",
+      "usd_path": "/commercial_microwave/body/key_2_1",
+      "mass": null
+    },
+    {
+      "name": "key_2_2",
+      "usd_path": "/commercial_microwave/body/key_2_2",
+      "mass": null
+    },
+    {
+      "name": "key_2_3",
+      "usd_path": "/commercial_microwave/body/key_2_3",
+      "mass": null
+    },
+    {
+      "name": "key_3_0",
+      "usd_path": "/commercial_microwave/body/key_3_0",
+      "mass": null
+    },
+    {
+      "name": "key_3_1",
+      "usd_path": "/commercial_microwave/body/key_3_1",
+      "mass": null
+    },
+    {
+      "name": "key_3_2",
+      "usd_path": "/commercial_microwave/body/key_3_2",
+      "mass": null
+    },
+    {
+      "name": "key_3_3",
+      "usd_path": "/commercial_microwave/body/key_3_3",
+      "mass": null
+    },
+    {
+      "name": "key_4_0",
+      "usd_path": "/commercial_microwave/body/key_4_0",
+      "mass": null
+    },
+    {
+      "name": "key_4_1",
+      "usd_path": "/commercial_microwave/body/key_4_1",
+      "mass": null
+    },
+    {
+      "name": "key_4_2",
+      "usd_path": "/commercial_microwave/body/key_4_2",
+      "mass": null
+    },
+    {
+      "name": "key_4_3",
+      "usd_path": "/commercial_microwave/body/key_4_3",
+      "mass": null
+    },
+    {
+      "name": "key_5_0",
+      "usd_path": "/commercial_microwave/body/key_5_0",
+      "mass": null
+    },
+    {
+      "name": "key_5_1",
+      "usd_path": "/commercial_microwave/body/key_5_1",
+      "mass": null
+    },
+    {
+      "name": "key_5_2",
+      "usd_path": "/commercial_microwave/body/key_5_2",
+      "mass": null
+    },
+    {
+      "name": "key_5_3",
+      "usd_path": "/commercial_microwave/body/key_5_3",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_door",
+      "usd_path": "/commercial_microwave/Joints/body_to_door",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/door",
+      "origin_xyz": [
+        -0.31,
+        -0.275,
+        0.2
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_0_0",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_0_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_0_0",
+      "origin_xyz": [
+        0.226,
+        -0.275,
+        0.265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_0_1",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_0_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_0_1",
+      "origin_xyz": [
+        0.252,
+        -0.275,
+        0.265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_0_2",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_0_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_0_2",
+      "origin_xyz": [
+        0.278,
+        -0.275,
+        0.265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_0_3",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_0_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_0_3",
+      "origin_xyz": [
+        0.304,
+        -0.275,
+        0.265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_1_0",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_1_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_1_0",
+      "origin_xyz": [
+        0.226,
+        -0.275,
+        0.23
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_1_1",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_1_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_1_1",
+      "origin_xyz": [
+        0.252,
+        -0.275,
+        0.23
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_1_2",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_1_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_1_2",
+      "origin_xyz": [
+        0.278,
+        -0.275,
+        0.23
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_1_3",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_1_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_1_3",
+      "origin_xyz": [
+        0.304,
+        -0.275,
+        0.23
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_2_0",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_2_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_2_0",
+      "origin_xyz": [
+        0.226,
+        -0.275,
+        0.195
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_2_1",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_2_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_2_1",
+      "origin_xyz": [
+        0.252,
+        -0.275,
+        0.195
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_2_2",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_2_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_2_2",
+      "origin_xyz": [
+        0.278,
+        -0.275,
+        0.195
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_2_3",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_2_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_2_3",
+      "origin_xyz": [
+        0.304,
+        -0.275,
+        0.195
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_3_0",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_3_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_3_0",
+      "origin_xyz": [
+        0.226,
+        -0.275,
+        0.16
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_3_1",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_3_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_3_1",
+      "origin_xyz": [
+        0.252,
+        -0.275,
+        0.16
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_3_2",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_3_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_3_2",
+      "origin_xyz": [
+        0.278,
+        -0.275,
+        0.16
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_3_3",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_3_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_3_3",
+      "origin_xyz": [
+        0.304,
+        -0.275,
+        0.16
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_4_0",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_4_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_4_0",
+      "origin_xyz": [
+        0.226,
+        -0.275,
+        0.125
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_4_1",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_4_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_4_1",
+      "origin_xyz": [
+        0.252,
+        -0.275,
+        0.125
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_4_2",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_4_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_4_2",
+      "origin_xyz": [
+        0.278,
+        -0.275,
+        0.125
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_4_3",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_4_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_4_3",
+      "origin_xyz": [
+        0.304,
+        -0.275,
+        0.125
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_5_0",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_5_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_5_0",
+      "origin_xyz": [
+        0.226,
+        -0.275,
+        0.09
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_5_1",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_5_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_5_1",
+      "origin_xyz": [
+        0.252,
+        -0.275,
+        0.09
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_5_2",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_5_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_5_2",
+      "origin_xyz": [
+        0.278,
+        -0.275,
+        0.09
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_key_5_3",
+      "usd_path": "/commercial_microwave/Joints/body_to_key_5_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_microwave/body",
+      "child_path": "/commercial_microwave/body/key_5_3",
+      "origin_xyz": [
+        0.304,
+        -0.275,
+        0.09
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

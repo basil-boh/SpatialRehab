@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "classic_hinged_teapot",
+  "root_prim": "/classic_hinged_teapot",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/classic_hinged_teapot/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/classic_hinged_teapot/body/lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "lid_hinge",
+      "usd_path": "/classic_hinged_teapot/Joints/lid_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/classic_hinged_teapot/body",
+      "child_path": "/classic_hinged_teapot/body/lid",
+      "origin_xyz": [
+        -0.083,
+        0.0,
+        0.16
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.22173,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "wide_family_cereal_box",
+  "root_prim": "/wide_family_cereal_box",
+  "links": [
+    {
+      "name": "carton",
+      "usd_path": "/wide_family_cereal_box/carton",
+      "mass": null
+    },
+    {
+      "name": "lid_flap",
+      "usd_path": "/wide_family_cereal_box/carton/lid_flap",
+      "mass": null
+    },
+    {
+      "name": "tuck_tab",
+      "usd_path": "/wide_family_cereal_box/carton/lid_flap/tuck_tab",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "carton_to_lid",
+      "usd_path": "/wide_family_cereal_box/Joints/carton_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/wide_family_cereal_box/carton",
+      "child_path": "/wide_family_cereal_box/carton/lid_flap",
+      "origin_xyz": [
+        0.0,
+        0.043,
+        0.315
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.95,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_to_tab",
+      "usd_path": "/wide_family_cereal_box/Joints/lid_to_tab",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/wide_family_cereal_box/carton/lid_flap",
+      "child_path": "/wide_family_cereal_box/carton/lid_flap/tuck_tab",
+      "origin_xyz": [
+        0.0,
+        -0.08256,
+        0.0
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 2.15,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

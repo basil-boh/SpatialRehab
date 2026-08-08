@@ -1,0 +1,366 @@
+{
+  "schema_version": 1,
+  "object": "panel_ready_dishwasher",
+  "root_prim": "/panel_ready_dishwasher",
+  "links": [
+    {
+      "name": "tub",
+      "usd_path": "/panel_ready_dishwasher/tub",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/panel_ready_dishwasher/tub/door",
+      "mass": null
+    },
+    {
+      "name": "lower_rack",
+      "usd_path": "/panel_ready_dishwasher/tub/lower_rack",
+      "mass": null
+    },
+    {
+      "name": "upper_rack",
+      "usd_path": "/panel_ready_dishwasher/tub/upper_rack",
+      "mass": null
+    },
+    {
+      "name": "utensil_tray",
+      "usd_path": "/panel_ready_dishwasher/tub/utensil_tray",
+      "mass": null
+    },
+    {
+      "name": "lower_spray_arm",
+      "usd_path": "/panel_ready_dishwasher/tub/lower_spray_arm",
+      "mass": null
+    },
+    {
+      "name": "upper_spray_arm",
+      "usd_path": "/panel_ready_dishwasher/tub/upper_spray_arm",
+      "mass": null
+    },
+    {
+      "name": "tine_bank_0",
+      "usd_path": "/panel_ready_dishwasher/tub/lower_rack/tine_bank_0",
+      "mass": null
+    },
+    {
+      "name": "tine_bank_1",
+      "usd_path": "/panel_ready_dishwasher/tub/lower_rack/tine_bank_1",
+      "mass": null
+    },
+    {
+      "name": "rinse_cap",
+      "usd_path": "/panel_ready_dishwasher/tub/door/rinse_cap",
+      "mass": null
+    },
+    {
+      "name": "start_button",
+      "usd_path": "/panel_ready_dishwasher/tub/door/start_button",
+      "mass": null
+    },
+    {
+      "name": "cancel_button",
+      "usd_path": "/panel_ready_dishwasher/tub/door/cancel_button",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "door_hinge",
+      "usd_path": "/panel_ready_dishwasher/Joints/door_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub",
+      "child_path": "/panel_ready_dishwasher/tub/door",
+      "origin_xyz": [
+        0.0,
+        -0.336,
+        0.052
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.65,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lower_rack_slide",
+      "usd_path": "/panel_ready_dishwasher/Joints/lower_rack_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub",
+      "child_path": "/panel_ready_dishwasher/tub/lower_rack",
+      "origin_xyz": [
+        0.0,
+        -0.01,
+        0.125
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.41,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "upper_rack_slide",
+      "usd_path": "/panel_ready_dishwasher/Joints/upper_rack_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub",
+      "child_path": "/panel_ready_dishwasher/tub/upper_rack",
+      "origin_xyz": [
+        0.0,
+        -0.01,
+        0.465
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.39,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "utensil_tray_slide",
+      "usd_path": "/panel_ready_dishwasher/Joints/utensil_tray_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub",
+      "child_path": "/panel_ready_dishwasher/tub/utensil_tray",
+      "origin_xyz": [
+        0.0,
+        -0.01,
+        0.7
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.36,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lower_spray_spin",
+      "usd_path": "/panel_ready_dishwasher/Joints/lower_spray_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub",
+      "child_path": "/panel_ready_dishwasher/tub/lower_spray_arm",
+      "origin_xyz": [
+        0.0,
+        -0.02,
+        0.108
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "upper_spray_spin",
+      "usd_path": "/panel_ready_dishwasher/Joints/upper_spray_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub",
+      "child_path": "/panel_ready_dishwasher/tub/upper_spray_arm",
+      "origin_xyz": [
+        0.0,
+        0.06,
+        0.392
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tine_bank_0_pivot",
+      "usd_path": "/panel_ready_dishwasher/Joints/tine_bank_0_pivot",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub/lower_rack",
+      "child_path": "/panel_ready_dishwasher/tub/lower_rack/tine_bank_0",
+      "origin_xyz": [
+        0.0,
+        -0.095,
+        0.078
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tine_bank_1_pivot",
+      "usd_path": "/panel_ready_dishwasher/Joints/tine_bank_1_pivot",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub/lower_rack",
+      "child_path": "/panel_ready_dishwasher/tub/lower_rack/tine_bank_1",
+      "origin_xyz": [
+        0.0,
+        0.085,
+        0.078
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "rinse_cap_spin",
+      "usd_path": "/panel_ready_dishwasher/Joints/rinse_cap_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub/door",
+      "child_path": "/panel_ready_dishwasher/tub/door/rinse_cap",
+      "origin_xyz": [
+        0.215,
+        0.025,
+        0.36
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "start_button_press",
+      "usd_path": "/panel_ready_dishwasher/Joints/start_button_press",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub/door",
+      "child_path": "/panel_ready_dishwasher/tub/door/start_button",
+      "origin_xyz": [
+        -0.07,
+        -0.059,
+        0.805
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cancel_button_press",
+      "usd_path": "/panel_ready_dishwasher/Joints/cancel_button_press",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/panel_ready_dishwasher/tub/door",
+      "child_path": "/panel_ready_dishwasher/tub/door/cancel_button",
+      "origin_xyz": [
+        0.07,
+        -0.059,
+        0.805
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.006,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

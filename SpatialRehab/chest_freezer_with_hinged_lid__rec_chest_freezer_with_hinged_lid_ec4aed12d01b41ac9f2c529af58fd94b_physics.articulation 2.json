@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "sliding_lid_chest_cooler",
+  "root_prim": "/sliding_lid_chest_cooler",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/sliding_lid_chest_cooler/body",
+      "mass": 6.0
+    },
+    {
+      "name": "lid",
+      "usd_path": "/sliding_lid_chest_cooler/body/lid",
+      "mass": 1.8
+    },
+    {
+      "name": "handle",
+      "usd_path": "/sliding_lid_chest_cooler/body/lid/handle",
+      "mass": 0.35
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_lid",
+      "usd_path": "/sliding_lid_chest_cooler/Joints/body_to_lid",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/sliding_lid_chest_cooler/body",
+      "child_path": "/sliding_lid_chest_cooler/body/lid",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.422
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.3,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_to_handle",
+      "usd_path": "/sliding_lid_chest_cooler/Joints/lid_to_handle",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/sliding_lid_chest_cooler/body/lid",
+      "child_path": "/sliding_lid_chest_cooler/body/lid/handle",
+      "origin_xyz": [
+        0.0,
+        -0.145,
+        0.055
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

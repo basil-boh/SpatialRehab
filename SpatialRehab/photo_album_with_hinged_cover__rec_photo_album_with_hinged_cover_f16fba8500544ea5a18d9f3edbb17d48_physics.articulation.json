@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "vintage_post_bound_photo_album",
+  "root_prim": "/vintage_post_bound_photo_album",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/vintage_post_bound_photo_album/body",
+      "mass": null
+    },
+    {
+      "name": "front_cover",
+      "usd_path": "/vintage_post_bound_photo_album/body/front_cover",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "spine_hinge",
+      "usd_path": "/vintage_post_bound_photo_album/Joints/spine_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/vintage_post_bound_photo_album/body",
+      "child_path": "/vintage_post_bound_photo_album/body/front_cover",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.049
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -1.0821,
+      "upper": 0.65,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

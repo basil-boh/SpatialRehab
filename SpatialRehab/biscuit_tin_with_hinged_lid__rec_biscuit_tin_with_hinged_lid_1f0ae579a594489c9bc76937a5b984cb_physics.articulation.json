@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "round_metal_biscuit_tin",
+  "root_prim": "/round_metal_biscuit_tin",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/round_metal_biscuit_tin/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/round_metal_biscuit_tin/body/lid",
+      "mass": null
+    },
+    {
+      "name": "front_latch",
+      "usd_path": "/round_metal_biscuit_tin/body/lid/front_latch",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_lid",
+      "usd_path": "/round_metal_biscuit_tin/Joints/body_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/round_metal_biscuit_tin/body",
+      "child_path": "/round_metal_biscuit_tin/body/lid",
+      "origin_xyz": [
+        0.0,
+        0.129,
+        0.094
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_to_front_latch",
+      "usd_path": "/round_metal_biscuit_tin/Joints/lid_to_front_latch",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/round_metal_biscuit_tin/body/lid",
+      "child_path": "/round_metal_biscuit_tin/body/lid/front_latch",
+      "origin_xyz": [
+        0.0,
+        -0.2535,
+        -0.006
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.7,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

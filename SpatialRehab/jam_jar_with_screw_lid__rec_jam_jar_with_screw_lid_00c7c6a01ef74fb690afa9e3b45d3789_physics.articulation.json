@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "squat_faceted_jam_jar",
+  "root_prim": "/squat_faceted_jam_jar",
+  "links": [
+    {
+      "name": "glass_jar",
+      "usd_path": "/squat_faceted_jam_jar/glass_jar",
+      "mass": null
+    },
+    {
+      "name": "screw_lid",
+      "usd_path": "/squat_faceted_jam_jar/glass_jar/screw_lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "lid_spin",
+      "usd_path": "/squat_faceted_jam_jar/Joints/lid_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/squat_faceted_jam_jar/glass_jar",
+      "child_path": "/squat_faceted_jam_jar/glass_jar/screw_lid",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.099
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "twice_daily_pill_organizer",
+  "root_prim": "/twice_daily_pill_organizer",
+  "links": [
+    {
+      "name": "base",
+      "usd_path": "/twice_daily_pill_organizer/base",
+      "mass": null
+    },
+    {
+      "name": "front_lid",
+      "usd_path": "/twice_daily_pill_organizer/base/front_lid",
+      "mass": null
+    },
+    {
+      "name": "rear_lid",
+      "usd_path": "/twice_daily_pill_organizer/base/rear_lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "front_lid_hinge",
+      "usd_path": "/twice_daily_pill_organizer/Joints/front_lid_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/twice_daily_pill_organizer/base",
+      "child_path": "/twice_daily_pill_organizer/base/front_lid",
+      "origin_xyz": [
+        0.0,
+        -0.006,
+        0.022
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "rear_lid_hinge",
+      "usd_path": "/twice_daily_pill_organizer/Joints/rear_lid_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/twice_daily_pill_organizer/base",
+      "child_path": "/twice_daily_pill_organizer/base/rear_lid",
+      "origin_xyz": [
+        0.0,
+        0.044,
+        0.022
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}
