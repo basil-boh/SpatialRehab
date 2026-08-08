@@ -13,6 +13,14 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- **Combined the two competing "what do I do now" panels** during Remember the Way. The
+  flat window (`ContentView.inActivity`) had its own static "Look at the table / Study the
+  glowing route…" text that never updated as the exercise progressed, floating alongside
+  the immersive space's own control panel (`RouteMemoryTableView.controlPanel`), which
+  already shows the real, phase-accurate prompt ("Take your time…", "Tap the corners…",
+  score feedback) plus the actual buttons — two instruction surfaces competing for
+  attention, one of them stale. The flat window now just says "Look around you" and defers
+  entirely to the immersive panel as the single source of in-the-moment guidance.
 - **Patient-first pass on Remember the Way** (dementia-perspective audit):
   - **Voice guidance** — `VoiceGuide.swift` (`AVSpeechSynthesizer`, en-SG voice, slowed rate) speaks every stage: study intro, draw instructions, feedback, step-inside guidance, and arrival ("You've reached home. Well done."). Speaker toggle on the panel; on `AppModel` for reuse by other activities.
   - **No more countdown** — study is fully self-paced ("Take your time. Press I'm ready when you know the way"); study duration recorded invisibly (`studySeconds`); pause/resume machinery removed.

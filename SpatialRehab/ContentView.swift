@@ -70,15 +70,18 @@ struct ContentView: View {
         }
     }
 
+    /// Deliberately generic, not step-specific — `RouteMemoryTableView.controlPanel` (the
+    /// floating panel in the immersive space itself) already shows the real, phase-accurate
+    /// instruction ("Take your time…", "Tap the corners…", the score feedback) plus the
+    /// actual buttons. This flat window used to duplicate that with its own static "Look at
+    /// the table / Study the glowing route…" text that never updated as the exercise
+    /// progressed — two competing, sometimes-contradictory instruction panels floating at
+    /// once. Combined into one: the immersive panel is now the single source of "what do I
+    /// do right now," and this window just points the person toward it.
     private var inActivity: some View {
         VStack(spacing: 16) {
-            Text("Look at the table")
+            Text("Look around you")
                 .font(.system(size: 44, weight: .semibold))
-
-            Text("Study the glowing route, then find the way home from memory.")
-                .font(.title2)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
         }
     }
 
