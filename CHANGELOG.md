@@ -13,6 +13,19 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- **Removed the flat window's leftover text during Remember the Way entirely** —
+  `ContentView.inActivity` is now `EmptyView()`. A generic "Look around you" (the previous
+  fix) was still a second surface competing for attention with the immersive control panel,
+  which already shows everything needed; now the flat window shows nothing while the person
+  is in the exercise.
+- **Branded intro screen** (`BaselineAssessmentView.introContent`, the first thing shown on
+  every launch): added a logo mark, the project name, and a short description above the
+  existing "A Few Quick Activities" section, so the very first screen reads as a real app
+  rather than jumping straight into "let's do some activities" with no context. The logo is
+  a house silhouette on a blue-to-indigo gradient badge, built from SF Symbols + SwiftUI
+  shapes rather than an imported SVG — Xcode can import a real SVG as a scalable vector
+  asset, but authoring one by hand with no design tooling to preview it wasn't a good trade;
+  this gets the same crisp vector scaling entirely in code.
 - **Combined the two competing "what do I do now" panels** during Remember the Way. The
   flat window (`ContentView.inActivity`) had its own static "Look at the table / Study the
   glowing route…" text that never updated as the exercise progressed, floating alongside
