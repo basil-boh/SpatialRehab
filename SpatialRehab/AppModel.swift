@@ -11,22 +11,11 @@ final class AppModel {
         case finished
     }
 
-    enum ActivityKind {
-        case touchTheDots
-        case wayfinding
-        case findHome
-        case routeMemory
-    }
-
     static let activitySpaceID = "ActivitySpace"
 
     var phase: SessionPhase = .welcome
-    var currentActivity: ActivityKind = .touchTheDots
-    /// Route-memory "step inside" flips the shared space to full immersion.
+    /// "Step inside" flips the shared space to full immersion.
     var routeMemoryInside = false
-    let dotsGame = TouchTheDotsGame()
-    let wayfinding = WayfindingExercise()
-    let findHome = FindHomeExercise()
     let routeMemory = RouteMemoryExercise()
     let voice = VoiceGuide()
 }

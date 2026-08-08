@@ -5,112 +5,58 @@ struct ContentView: View {
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
 
     var body: some View {
-        Group {
-            if appModel.phase == .inActivity && appModel.currentActivity == .findHome {
-                FindHomeView()
-            } else {
-                VStack(spacing: 40) {
-                    switch appModel.phase {
-                    case .welcome, .openingActivity:
-                        welcome
-                    case .inActivity:
-                        inActivity
-                    case .finished:
-                        finished
-                    }
-                }
-                .padding(60)
+        VStack(spacing: 40) {
+            switch appModel.phase {
+            case .welcome, .openingActivity:
+                welcome
+            case .inActivity:
+                inActivity
+            case .finished:
+                finished
             }
         }
+        .padding(60)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .task {
-            appModel.findHome.prepare()
-            if #available(visionOS 26.0, *) {
-                SpatialStreetCache.shared.warm(appModel.findHome.orderedSnapshotURLs)
-            }
-        }
-        .onChange(of: appModel.findHome.orderedSnapshotURLs) { _, urls in
-            if #available(visionOS 26.0, *) {
-                SpatialStreetCache.shared.warm(urls)
-            }
-        }
     }
 
     private var welcome: some View {
         VStack(spacing: 40) {
-            Image(systemName: "sparkles")
+            Image(systemName: "map.fill")
                 .font(.system(size: 80))
                 .foregroundStyle(.tint)
                 .symbolRenderingMode(.hierarchical)
 
-            Text("What shall we do today?")
-                .font(.system(size: 44, weight: .semibold))
+            VStack(spacing: 16) {
+                Text("Remember the Way")
+                    .font(.system(size: 44, weight: .semibold))
 
-            VStack(spacing: 20) {
-                activityButton(
-                    "Touch the Dots",
-                    systemImage: "hand.tap.fill",
-                    activity: .touchTheDots
-                )
-                activityButton(
-                    "Walk to the Bakery",
-                    systemImage: "figure.walk",
-                    activity: .wayfinding
-                )
-                activityButton(
-                    "Find Your Way Home",
-                    systemImage: "house.fill",
-                    activity: .findHome
-                )
-                activityButton(
-                    "Remember the Way",
-                    systemImage: "scribble.variable",
-                    activity: .routeMemory
-                )
+                Text("Watch the way home on the table, then find it again — and step into the street itself.")
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 560)
             }
-        }
-    }
 
-    private func activityButton(
-        _ title: String,
-        systemImage: String,
-        activity: AppModel.ActivityKind
-    ) -> some View {
-        Button {
-            Task { await startActivity(activity) }
-        } label: {
-            Label(title, systemImage: systemImage)
-                .font(.title2)
-                .frame(maxWidth: 380)
+            Button("Start") {
+                Task { await startActivity() }
+            }
+            .font(.title2)
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+            .controlSize(.extraLarge)
+            .disabled(appModel.phase == .openingActivity)
         }
-        .buttonStyle(.borderedProminent)
-        .buttonBorderShape(.capsule)
-        .controlSize(.extraLarge)
-        .disabled(appModel.phase == .openingActivity)
     }
 
     private var inActivity: some View {
         VStack(spacing: 16) {
-            Text("Look around you")
+            Text("Look at the table")
                 .font(.system(size: 44, weight: .semibold))
 
-            Text(inActivityGuidance)
-            .font(.title2)
-            .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
-        }
-    }
-
-    private var inActivityGuidance: String {
-        switch appModel.currentActivity {
-        case .touchTheDots:
-            return "Touch the glowing circle when you see it."
-        case .wayfinding:
-            return "Follow the glowing circles. Cross only when the light is green."
-        case .findHome:
-            return "Which way is home? Choose with the arrows below."
-        case .routeMemory:
-            return "Study the glowing route on the table, then draw it from memory."
+            Text("Study the glowing route, then find the way home from memory.")
+                .font(.title2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
         }
     }
 
@@ -125,14 +71,14 @@ struct ContentView: View {
                 Text("Well done!")
                     .font(.system(size: 44, weight: .semibold))
 
-                Text("That was a lovely warm-up. See you again soon.")
+                Text("You did wonderfully. See you again soon.")
                     .font(.title2)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
 
             Button("Play again") {
-                Task { await startActivity(appModel.currentActivity) }
+                Task { await startActivity() }
             }
             .font(.title2)
             .buttonStyle(.borderedProminent)
@@ -141,19 +87,9 @@ struct ContentView: View {
         }
     }
 
-    private func startActivity(_ activity: AppModel.ActivityKind) async {
-        appModel.currentActivity = activity
+    private func startActivity() async {
         appModel.phase = .openingActivity
-        switch activity {
-        case .touchTheDots:
-            appModel.dotsGame.reset()
-        case .findHome:
-            appModel.findHome.begin()
-        case .routeMemory:
-            appModel.routeMemory.begin()
-        case .wayfinding:
-            break
-        }
+        appModel.routeMemory.begin()
         switch await openImmersiveSpace(id: AppModel.activitySpaceID) {
         case .opened:
             appModel.phase = .inActivity

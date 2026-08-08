@@ -5,6 +5,12 @@ import RealityKit
 import UIKit
 import simd
 
+/// Demo route endpoints: Tiong Bahru Market → Eng Hoon Street ("home").
+enum DemoRoute {
+    static let start = CLLocationCoordinate2D(latitude: 1.28470, longitude: 103.83266)
+    static let home = CLLocationCoordinate2D(latitude: 1.28360, longitude: 103.83060)
+}
+
 /// Builds a life-size 3D neighborhood mesh from bundled OpenStreetMap data:
 /// real building footprints and heights, roads, and the walking route.
 /// All surfaces are procedurally textured — no external assets.
@@ -27,7 +33,7 @@ enum NeighborhoodWorld {
 
     /// ENU meters relative to the route start; north maps to -z, east to +x.
     static func enu(_ coordinate: CLLocationCoordinate2D) -> SIMD2<Float> {
-        let origin = FindHomeExercise.start
+        let origin = DemoRoute.start
         let lat0 = origin.latitude * .pi / 180
         let x = (coordinate.longitude - origin.longitude) * cos(lat0) * 111_320
         let z = -(coordinate.latitude - origin.latitude) * 110_574
@@ -849,95 +855,3 @@ enum NeighborhoodWorld {
     }
 }
 
-/// Owns the neighborhood scene graph and moves the world so the patient
-/// stands at each junction, facing their direction of travel.
-@MainActor
-final class NeighborhoodController {
-    let root = Entity()
-    private let world = Entity()
-    private var routeLegs: [ModelEntity] = []
-    private var built = false
-
-    func buildIfNeeded(route: MKRoute?) async {
-        guard !built, let route, let map = NeighborhoodWorld.load() else { return }
-        built = true
-
-        world.addChild(await NeighborhoodWorld.groundEntity())
-        if let sidewalks = await NeighborhoodWorld.sidewalksEntity(map.roads) {
-            world.addChild(sidewalks)
-        }
-        if let roads = await NeighborhoodWorld.roadsEntity(map.roads) {
-            world.addChild(roads)
-        }
-        if let markings = NeighborhoodWorld.laneMarkingsEntity(map.roads) {
-            world.addChild(markings)
-        }
-        if let walls = await NeighborhoodWorld.wallsEntity(map.buildings) {
-            world.addChild(walls)
-        }
-        if let roofs = NeighborhoodWorld.roofsEntity(map.buildings) {
-            world.addChild(roofs)
-        }
-        world.addChild(NeighborhoodWorld.lampsEntity(map.roads, map: map))
-        world.addChild(NeighborhoodWorld.treesEntity(map: map))
-        if let sky = await NeighborhoodWorld.skyEntity() {
-            world.addChild(sky)
-        }
-        world.addChild(NeighborhoodWorld.sunEntity())
-        world.addChild(NeighborhoodWorld.beaconEntity(at: FindHomeExercise.home))
-
-        // One glowing ribbon per route step, revealed only once walked, so the
-        // path ahead never gives the answer away.
-        for step in route.steps {
-            var coords = [CLLocationCoordinate2D](
-                repeating: kCLLocationCoordinate2DInvalid,
-                count: step.polyline.pointCount
-            )
-            step.polyline.getCoordinates(&coords, range: NSRange(location: 0, length: step.polyline.pointCount))
-            guard
-                coords.count >= 2,
-                let leg = NeighborhoodWorld.ribbonEntity(coords, width: 1.1, y: 0.06, color: .systemCyan)
-            else {
-                routeLegs.append(ModelEntity())
-                continue
-            }
-            leg.isEnabled = false
-            world.addChild(leg)
-            routeLegs.append(leg)
-        }
-
-        root.addChild(world)
-    }
-
-    func move(
-        to coordinate: CLLocationCoordinate2D,
-        heading: Double,
-        traveledLegs: Int,
-        animated: Bool
-    ) async {
-        if animated {
-            await fade(to: 0, over: 0.35)
-        }
-        for (index, leg) in routeLegs.enumerated() {
-            leg.isEnabled = index < traveledLegs
-        }
-        let target = NeighborhoodWorld.enu(coordinate)
-        let rotation = simd_quatf(angle: Float(heading * .pi / 180), axis: [0, 1, 0])
-        root.orientation = rotation
-        let rotated = rotation.act(SIMD3(target.x, 0, target.y))
-        root.position = [-rotated.x, 0, -rotated.z]
-        if animated {
-            await fade(to: 1, over: 0.35)
-        }
-    }
-
-    private func fade(to opacity: Float, over duration: TimeInterval) async {
-        let steps = 8
-        let start = root.components[OpacityComponent.self]?.opacity ?? 1
-        for step in 1...steps {
-            let progress = Float(step) / Float(steps)
-            root.components.set(OpacityComponent(opacity: start + (opacity - start) * progress))
-            try? await Task.sleep(for: .milliseconds(Int(duration * 1000) / steps))
-        }
-    }
-}

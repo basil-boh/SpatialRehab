@@ -404,14 +404,6 @@
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
 		FAB1E000000000000000B001 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A001 /* AppModel.swift */; };
-		FAB1E000000000000000B002 /* TouchTheDotsGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A002 /* TouchTheDotsGame.swift */; };
-		FAB1E000000000000000B003 /* TouchTheDotsSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A003 /* TouchTheDotsSpaceView.swift */; };
-		FAB1E000000000000000B004 /* WayfindingExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A004 /* WayfindingExercise.swift */; };
-		FAB1E000000000000000B005 /* WayfindingSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A005 /* WayfindingSpaceView.swift */; };
-		FAB1E000000000000000B006 /* FindHomeExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A006 /* FindHomeExercise.swift */; };
-		FAB1E000000000000000B007 /* FindHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A007 /* FindHomeView.swift */; };
-		FAB1E000000000000000B008 /* FindHomeImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A008 /* FindHomeImmersiveView.swift */; };
-		FAB1E000000000000000B009 /* DemoStreetPanorama.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A009 /* DemoStreetPanorama.jpg */; };
 		FAB1E000000000000000B00A /* NeighborhoodWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00A /* NeighborhoodWorld.swift */; };
 		FAB1E000000000000000B00B /* TiongBahruMap.json in Resources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00B /* TiongBahruMap.json */; };
 		FAB1E000000000000000B00C /* RouteMemoryExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00C /* RouteMemoryExercise.swift */; };
@@ -819,14 +811,6 @@
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A001 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A002 /* TouchTheDotsGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchTheDotsGame.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A003 /* TouchTheDotsSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchTheDotsSpaceView.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A004 /* WayfindingExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayfindingExercise.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A005 /* WayfindingSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayfindingSpaceView.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A006 /* FindHomeExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHomeExercise.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A007 /* FindHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHomeView.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A008 /* FindHomeImmersiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHomeImmersiveView.swift; sourceTree = "<group>"; };
-		FAB1E000000000000000A009 /* DemoStreetPanorama.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DemoStreetPanorama.jpg; sourceTree = "<group>"; };
 		FAB1E000000000000000A00A /* NeighborhoodWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborhoodWorld.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A00B /* TiongBahruMap.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TiongBahruMap.json; sourceTree = "<group>"; };
 		FAB1E000000000000000A00C /* RouteMemoryExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMemoryExercise.swift; sourceTree = "<group>"; };
@@ -849,14 +833,6 @@
 				DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */,
 				FAB1E000000000000000A001 /* AppModel.swift */,
 				DC95DF015FBB8EFEE7176499 /* ContentView.swift */,
-				FAB1E000000000000000A002 /* TouchTheDotsGame.swift */,
-				FAB1E000000000000000A003 /* TouchTheDotsSpaceView.swift */,
-				FAB1E000000000000000A004 /* WayfindingExercise.swift */,
-				FAB1E000000000000000A005 /* WayfindingSpaceView.swift */,
-				FAB1E000000000000000A006 /* FindHomeExercise.swift */,
-				FAB1E000000000000000A007 /* FindHomeView.swift */,
-				FAB1E000000000000000A008 /* FindHomeImmersiveView.swift */,
-				FAB1E000000000000000A009 /* DemoStreetPanorama.jpg */,
 				FAB1E000000000000000A00A /* NeighborhoodWorld.swift */,
 				FAB1E000000000000000A00B /* TiongBahruMap.json */,
 				FAB1E000000000000000A00C /* RouteMemoryExercise.swift */,
@@ -1329,7 +1305,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */,
-				FAB1E000000000000000B009 /* DemoStreetPanorama.jpg in Resources */,
 				FAB1E000000000000000B00B /* TiongBahruMap.json in Resources */,
 				48A2174730262DFE0041BCF1 /* bread_maker_with_hinged_lid__rec_bread_maker_with_hinged_lid_0040cadef29b4bba95f01db8a2373a5e.usdz in Resources */,
 				48A2174830262DFE0041BCF1 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862_physics.usdz in Resources */,
@@ -1737,13 +1712,6 @@
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
 				FAB1E000000000000000B001 /* AppModel.swift in Sources */,
-				FAB1E000000000000000B002 /* TouchTheDotsGame.swift in Sources */,
-				FAB1E000000000000000B003 /* TouchTheDotsSpaceView.swift in Sources */,
-				FAB1E000000000000000B004 /* WayfindingExercise.swift in Sources */,
-				FAB1E000000000000000B005 /* WayfindingSpaceView.swift in Sources */,
-				FAB1E000000000000000B006 /* FindHomeExercise.swift in Sources */,
-				FAB1E000000000000000B007 /* FindHomeView.swift in Sources */,
-				FAB1E000000000000000B008 /* FindHomeImmersiveView.swift in Sources */,
 				FAB1E000000000000000B00A /* NeighborhoodWorld.swift in Sources */,
 				FAB1E000000000000000B00C /* RouteMemoryExercise.swift in Sources */,
 				FAB1E000000000000000B00D /* RouteMemoryView.swift in Sources */,

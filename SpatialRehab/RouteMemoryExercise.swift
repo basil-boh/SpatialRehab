@@ -51,8 +51,8 @@ final class RouteMemoryExercise {
 
     var routeMidpoint: CLLocationCoordinate2D {
         CLLocationCoordinate2D(
-            latitude: (FindHomeExercise.start.latitude + FindHomeExercise.home.latitude) / 2,
-            longitude: (FindHomeExercise.start.longitude + FindHomeExercise.home.longitude) / 2
+            latitude: (DemoRoute.start.latitude + DemoRoute.home.latitude) / 2,
+            longitude: (DemoRoute.start.longitude + DemoRoute.home.longitude) / 2
         )
     }
 
@@ -169,8 +169,8 @@ final class RouteMemoryExercise {
 
     private func load() async {
         let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: FindHomeExercise.start))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: FindHomeExercise.home))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: DemoRoute.start))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: DemoRoute.home))
         request.transportType = .walking
         do {
             let response = try await MKDirections(request: request).calculate()

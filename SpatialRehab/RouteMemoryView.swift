@@ -479,9 +479,9 @@ struct RouteMemoryTableView: View {
                         }
                     }
                 }
-                Marker("Market", systemImage: "basket.fill", coordinate: FindHomeExercise.start)
+                Marker("Market", systemImage: "basket.fill", coordinate: DemoRoute.start)
                     .tint(.green)
-                Marker("Home", systemImage: "house.fill", coordinate: FindHomeExercise.home)
+                Marker("Home", systemImage: "house.fill", coordinate: DemoRoute.home)
                     .tint(.orange)
             }
             .mapStyle(.standard(elevation: .realistic, pointsOfInterest: .excludingAll))
@@ -600,7 +600,7 @@ struct RouteMemoryTableView: View {
     /// building volumes rise out of the flat map.
     private func buildMiniature(_ proxy: MapProxy) async {
         guard !miniatureBuilt else { return }
-        let origin = FindHomeExercise.start
+        let origin = DemoRoute.start
         let originEast = CLLocationCoordinate2D(
             latitude: origin.latitude,
             longitude: origin.longitude + 100 / (111_320 * cos(origin.latitude * .pi / 180))
@@ -674,7 +674,7 @@ struct RouteMemoryTableView: View {
                 extras.addChild(sky)
             }
             extras.addChild(NeighborhoodWorld.sunEntity())
-            extras.addChild(NeighborhoodWorld.beaconEntity(at: FindHomeExercise.home))
+            extras.addChild(NeighborhoodWorld.beaconEntity(at: DemoRoute.home))
 
             // Walking target: pinch the street/ground while inside. Lives in
             // extras so it only exists in life-size mode and can never
