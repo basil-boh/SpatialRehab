@@ -13,6 +13,14 @@ enum CognitiveDomain: String, CaseIterable, Codable, Hashable {
     case memory
     case numeracy
     case executiveFunction
+
+    var displayName: String {
+        switch self {
+        case .memory: "Memory"
+        case .numeracy: "Numeracy"
+        case .executiveFunction: "Executive Function"
+        }
+    }
 }
 
 /// One dated performance reading for a domain, in the `0...1` range (higher is better).

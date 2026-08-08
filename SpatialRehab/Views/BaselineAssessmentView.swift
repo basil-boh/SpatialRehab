@@ -16,10 +16,18 @@ struct BaselineAssessmentView: View {
             switch session.phase {
             case .intro:
                 introContent
+            case .reactionTime:
+                ReactionTimeGameView(onComplete: session.completeReactionTime)
+            case .orientation:
+                OrientationGameView(onComplete: session.completeOrientation)
             case .wordMemory:
                 WordMemoryGameView(onComplete: session.completeWordMemory)
+            case .digitSpan:
+                DigitSpanGameView(onComplete: session.completeDigitSpan)
             case .patternMatching:
                 PatternMatchingGameView(onComplete: session.completePatternMatching)
+            case .trailMaking:
+                TrailMakingGameView(onComplete: session.completeTrailMaking)
             case .arithmetic:
                 ArithmeticGameView(onComplete: session.completeArithmetic)
             case .clockDrawing:

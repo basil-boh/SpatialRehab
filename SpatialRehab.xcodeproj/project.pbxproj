@@ -7,35 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00551E8958FA62D6698D13C0 /* TrailMakingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0351A10FFF8B1242E0F29FBB /* TrailMakingResult.swift */; };
 		03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D02385783F2C35C763A5E /* GuidanceCardView.swift */; };
 		055A02236D8E86AFB8B4D416 /* BaselineAssessmentContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182E1F7EF38311CE27E5D136 /* BaselineAssessmentContent.swift */; };
 		0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */; };
 		114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */; };
 		1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */; };
 		241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */; };
-		30DCD5F54230A8E910316922 /* CognitiveDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */; };
-		CADE4B60BBEFF806AE8DEBCA /* StimulationGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627449E4C8004EDFD1C74E6D /* StimulationGame.swift */; };
-		45D4131DDE4D7DBBD200AD63 /* GameRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */; };
 		2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */; };
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */; };
+		4F8E249D610E9D6B7BC759E1 /* ScoreTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1532E9A9485ED331E5C6859 /* ScoreTrendChart.swift */; };
 		50B59D6F42CB227A59992951 /* ArithmeticGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */; };
 		54E345F2806BA2A5AFA0FB8C /* ArithmeticResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9746F6FB0D24798750A7F /* ArithmeticResult.swift */; };
 		67F6879C8FC2BD3A331960DA /* WordMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */; };
 		686AD077AC8A3234B17CCFEE /* BaselineResultsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */; };
+		6AB38CC2F4C9989A19ACFE8E /* StimulationGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC083DF645D3D3577AF6A17 /* StimulationGame.swift */; };
 		79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */; };
 		7C77020217ADA283CA90A874 /* WordMemoryTrial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */; };
+		8C075AF038DFCF95321FF6EB /* TrailMakingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49402441D1BBE4C7F1C57C92 /* TrailMakingGameView.swift */; };
+		927EE31C83994D7B755F1D85 /* OrientationGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B0C27AEE1048C3C54D53D1 /* OrientationGameView.swift */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
+		AC8F71E4A43769438BF9A7BE /* CaregiverDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABF02F9E935487590DB9F2D /* CaregiverDashboardView.swift */; };
+		AD6DB1FAA0B2753F7B3ADBFB /* ReactionTimeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A955CA2A474712F5A740AE30 /* ReactionTimeResult.swift */; };
+		B3E8DEB675344830FED1056F /* DigitSpanGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0B5E1CAE36F0BD22EF5BA /* DigitSpanGameView.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
 		BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5634B06A4388B5CAB30C5784 /* TaskSession.swift */; };
+		C405F87D5A4F4E211D37C2FE /* CognitiveDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C67D41FAC9ED2965ABF8ABB /* CognitiveDomain.swift */; };
+		CFAFE89067BA7983336D603F /* DigitSpanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E6810B609C8258627AF667 /* DigitSpanResult.swift */; };
+		D559213961B7EDCE47AB0EE4 /* GameRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34610A47C9BD0D613D085182 /* GameRecommendationEngine.swift */; };
+		DD3B70F3CDFB29AF5709338D /* OrientationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F9D06AF854D15A11CD286 /* OrientationResult.swift */; };
 		E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5DCE25CFDF584104735BA /* SoundEffects.swift */; };
 		E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */; };
+		EFE1F8239C0716459843F822 /* ReactionTimeGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC04B0395D1BC4B2DDE7DDD /* ReactionTimeGameView.swift */; };
 		F63EAFB0A6608F6F1598A3CC /* BaselineAssessmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */; };
 		F9408C111AF66965AFC32B2F /* BaselineAssessmentSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA12C25EC8062BBAFD3935 /* BaselineAssessmentSession.swift */; };
 		FE271E353F59EFA7EBB12F98 /* PatternMatchingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0351A10FFF8B1242E0F29FBB /* TrailMakingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailMakingResult.swift; sourceTree = "<group>"; };
 		05CA12C25EC8062BBAFD3935 /* BaselineAssessmentSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentSession.swift; sourceTree = "<group>"; };
 		061D02385783F2C35C763A5E /* GuidanceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidanceCardView.swift; sourceTree = "<group>"; };
 		08F9746F6FB0D24798750A7F /* ArithmeticResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArithmeticResult.swift; sourceTree = "<group>"; };
@@ -45,24 +56,33 @@
 		182E1F7EF38311CE27E5D136 /* BaselineAssessmentContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentContent.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryTrial.swift; sourceTree = "<group>"; };
+		34610A47C9BD0D613D085182 /* GameRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecommendationEngine.swift; sourceTree = "<group>"; };
 		35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryGameView.swift; sourceTree = "<group>"; };
+		49402441D1BBE4C7F1C57C92 /* TrailMakingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailMakingGameView.swift; sourceTree = "<group>"; };
 		54E5DCE25CFDF584104735BA /* SoundEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffects.swift; sourceTree = "<group>"; };
 		5634B06A4388B5CAB30C5784 /* TaskSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSession.swift; sourceTree = "<group>"; };
+		56E6810B609C8258627AF667 /* DigitSpanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitSpanResult.swift; sourceTree = "<group>"; };
 		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C67D41FAC9ED2965ABF8ABB /* CognitiveDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CognitiveDomain.swift; sourceTree = "<group>"; };
 		5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandProximityTracker.swift; sourceTree = "<group>"; };
 		6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingGameView.swift; sourceTree = "<group>"; };
 		7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingResult.swift; sourceTree = "<group>"; };
-		8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CognitiveDomain.swift; sourceTree = "<group>"; };
-		627449E4C8004EDFD1C74E6D /* StimulationGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StimulationGame.swift; sourceTree = "<group>"; };
-		8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecommendationEngine.swift; sourceTree = "<group>"; };
 		7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArithmeticGameView.swift; sourceTree = "<group>"; };
 		8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStep.swift; sourceTree = "<group>"; };
+		9ABF02F9E935487590DB9F2D /* CaregiverDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaregiverDashboardView.swift; sourceTree = "<group>"; };
 		9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDrawingView.swift; sourceTree = "<group>"; };
+		A955CA2A474712F5A740AE30 /* ReactionTimeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTimeResult.swift; sourceTree = "<group>"; };
 		B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaTaskContent.swift; sourceTree = "<group>"; };
 		C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDrawingResult.swift; sourceTree = "<group>"; };
 		C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialRehabApp.swift; sourceTree = "<group>"; };
+		CCC083DF645D3D3577AF6A17 /* StimulationGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StimulationGame.swift; sourceTree = "<group>"; };
+		D70F9D06AF854D15A11CD286 /* OrientationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationResult.swift; sourceTree = "<group>"; };
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DCC04B0395D1BC4B2DDE7DDD /* ReactionTimeGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTimeGameView.swift; sourceTree = "<group>"; };
+		E1532E9A9485ED331E5C6859 /* ScoreTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTrendChart.swift; sourceTree = "<group>"; };
+		E8B0C27AEE1048C3C54D53D1 /* OrientationGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationGameView.swift; sourceTree = "<group>"; };
+		EDB0B5E1CAE36F0BD22EF5BA /* DigitSpanGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitSpanGameView.swift; sourceTree = "<group>"; };
 		F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,10 +101,16 @@
 				7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */,
 				0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */,
 				13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */,
+				9ABF02F9E935487590DB9F2D /* CaregiverDashboardView.swift */,
 				9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */,
+				EDB0B5E1CAE36F0BD22EF5BA /* DigitSpanGameView.swift */,
 				061D02385783F2C35C763A5E /* GuidanceCardView.swift */,
 				0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */,
+				E8B0C27AEE1048C3C54D53D1 /* OrientationGameView.swift */,
 				6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */,
+				DCC04B0395D1BC4B2DDE7DDD /* ReactionTimeGameView.swift */,
+				E1532E9A9485ED331E5C6859 /* ScoreTrendChart.swift */,
+				49402441D1BBE4C7F1C57C92 /* TrailMakingGameView.swift */,
 				35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */,
 			);
 			path = Views;
@@ -119,15 +145,19 @@
 				05CA12C25EC8062BBAFD3935 /* BaselineAssessmentSession.swift */,
 				F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */,
 				C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */,
-				8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */,
-				8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */,
+				5C67D41FAC9ED2965ABF8ABB /* CognitiveDomain.swift */,
+				56E6810B609C8258627AF667 /* DigitSpanResult.swift */,
+				34610A47C9BD0D613D085182 /* GameRecommendationEngine.swift */,
 				5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */,
+				D70F9D06AF854D15A11CD286 /* OrientationResult.swift */,
 				7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */,
-				627449E4C8004EDFD1C74E6D /* StimulationGame.swift */,
+				A955CA2A474712F5A740AE30 /* ReactionTimeResult.swift */,
 				54E5DCE25CFDF584104735BA /* SoundEffects.swift */,
+				CCC083DF645D3D3577AF6A17 /* StimulationGame.swift */,
 				5634B06A4388B5CAB30C5784 /* TaskSession.swift */,
 				8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */,
 				B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */,
+				0351A10FFF8B1242E0F29FBB /* TrailMakingResult.swift */,
 				2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */,
 			);
 			path = Models;
@@ -211,22 +241,32 @@
 				F63EAFB0A6608F6F1598A3CC /* BaselineAssessmentView.swift in Sources */,
 				686AD077AC8A3234B17CCFEE /* BaselineResultsDebugView.swift in Sources */,
 				0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */,
+				AC8F71E4A43769438BF9A7BE /* CaregiverDashboardView.swift in Sources */,
 				407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */,
 				79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */,
-				30DCD5F54230A8E910316922 /* CognitiveDomain.swift in Sources */,
+				C405F87D5A4F4E211D37C2FE /* CognitiveDomain.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
-				45D4131DDE4D7DBBD200AD63 /* GameRecommendationEngine.swift in Sources */,
+				B3E8DEB675344830FED1056F /* DigitSpanGameView.swift in Sources */,
+				CFAFE89067BA7983336D603F /* DigitSpanResult.swift in Sources */,
+				D559213961B7EDCE47AB0EE4 /* GameRecommendationEngine.swift in Sources */,
 				03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */,
 				114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */,
 				E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */,
+				927EE31C83994D7B755F1D85 /* OrientationGameView.swift in Sources */,
+				DD3B70F3CDFB29AF5709338D /* OrientationResult.swift in Sources */,
 				FE271E353F59EFA7EBB12F98 /* PatternMatchingGameView.swift in Sources */,
 				241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */,
+				EFE1F8239C0716459843F822 /* ReactionTimeGameView.swift in Sources */,
+				AD6DB1FAA0B2753F7B3ADBFB /* ReactionTimeResult.swift in Sources */,
+				4F8E249D610E9D6B7BC759E1 /* ScoreTrendChart.swift in Sources */,
 				E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
-				CADE4B60BBEFF806AE8DEBCA /* StimulationGame.swift in Sources */,
+				6AB38CC2F4C9989A19ACFE8E /* StimulationGame.swift in Sources */,
 				BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */,
 				1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */,
 				2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */,
+				8C075AF038DFCF95321FF6EB /* TrailMakingGameView.swift in Sources */,
+				00551E8958FA62D6698D13C0 /* TrailMakingResult.swift in Sources */,
 				67F6879C8FC2BD3A331960DA /* WordMemoryGameView.swift in Sources */,
 				7C77020217ADA283CA90A874 /* WordMemoryTrial.swift in Sources */,
 			);

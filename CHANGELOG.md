@@ -20,6 +20,89 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- (2026-08-08) Caregiver progress dashboard, plus the history-tracking fix it depends on.
+  - `SpatialRehab/Models/BaselineResultsStore.swift` — rewritten from single-overwritten
+    values to **appended history arrays** per game. This was the top-priority known gap:
+    every prior session's result was silently discarded the moment the next one saved,
+    which undercut the entire "baseline to compare against" premise. `loadXResult()`
+    accessors are unchanged in signature (now return `.last` of the history); new
+    `loadXHistory()` accessors expose the full run. Migration caveat: old single-value
+    `UserDefaults` data doesn't decode as the new array shape, so it's silently dropped —
+    documented in the file and in `Docs/BaselineAssessment_Design.md`.
+  - `SpatialRehab/Views/ScoreTrendChart.swift` — two reusable Swift Charts components:
+    `ScoreTrendChart` (0–100% line chart, six games reuse this) and
+    `MillisecondTrendChart` (reaction time's raw-ms history, which doesn't normalize to a
+    percentage).
+  - `SpatialRehab/Views/CaregiverDashboardView.swift` — the actual caregiver-facing
+    screen: an overview card (session count, last-played date), one trend chart per
+    scoreable game (reusing each game's existing identity color from
+    `BaselineResultsDebugView` for visual continuity), and a horizontally-scrolling
+    clock-drawing thumbnail gallery (still unscored, but now browsable over time instead
+    of only the latest sketch). A "Raw Data" toolbar button opens the existing
+    `BaselineResultsDebugView` as a nested sheet.
+  - `ContentView.swift` — primary action ("View Progress") now opens
+    `CaregiverDashboardView` directly; the dev raw-data view is no longer reachable
+    straight from the home screen, only via the dashboard's toolbar.
+  - Verified by temporarily seeding 6 weeks of synthetic per-game history (multiple
+    `BaselineResultsStore.save()` calls with backdated `completedAt`/`capturedAt` values)
+    to confirm the trend charts render real multi-point lines and both axis-label styles
+    (percent, milliseconds) correctly — this sandbox can't interactively tap through the
+    games, so real gameplay data wasn't available to verify against. Seeding code was
+    then fully removed; the simulator was uninstalled/reinstalled afterward to clear the
+    synthetic data before finishing.
+- (2026-08-08) Removed all emoji from the UI (`ContentView.swift` had the only three:
+  a wave, a clipboard, a sprout). The wave was just decorative punctuation on the
+  greeting text and was dropped; the clipboard and sprout were standing in for icons, so
+  they became `Label`s with SF Symbols (`checklist`, `leaf.fill`) instead — consistent
+  with the SF Symbol icon language already used everywhere else in the app.
+- (2026-08-08) Tried and **reverted** a custom window redesign (`.windowStyle(.plain)` +
+  a custom gradient background, replacing the default system glass chrome). Reverted per
+  direct feedback ("don't like the current design") after one round: the light gradient
+  first attempted broke text legibility everywhere, because every screen's `.primary`/
+  `.secondary` text was relying on the system's default dark glass panel for contrast,
+  not any background of its own — worth remembering if this is attempted again: any
+  custom window background needs to either match the old backdrop's darkness or every
+  screen's text styling needs auditing at the same time, not after.
+- (2026-08-08) Expanded the baseline battery from 4 to 8 games and redesigned the
+  post-battery home screen.
+  - `SpatialRehab/Models/DigitSpanResult.swift`, `TrailMakingResult.swift`,
+    `OrientationResult.swift`, `ReactionTimeResult.swift` — new result models.
+  - `SpatialRehab/Views/DigitSpanGameView.swift` — sequential digit flash, then tap back
+    in order on a number pad; scored by position (partial credit), not all-or-nothing.
+  - `SpatialRehab/Views/TrailMakingGameView.swift` — tap 8 scattered numbered dots in
+    order; out-of-order taps do nothing visible, just counted silently as errors.
+  - `SpatialRehab/Views/OrientationGameView.swift` — day-of-week/time-of-day/month
+    questions computed live from the current date (not static content, unlike the other
+    games' placeholder content); deliberately excludes the classic MMSE "what season is
+    it?" question since seasons don't map onto this product's tropical/Singapore context.
+  - `SpatialRehab/Views/ReactionTimeGameView.swift` — shape flashes at a random position
+    after a random delay (prevents anticipation), tap it, 3 trials; opens the battery as a
+    literal warm-up per the product-vision doc's "Touch the dots" framing.
+  - Battery reordered to group related domains: reactionTime → orientation → wordMemory →
+    digitSpan → patternMatching → trailMaking → arithmetic → clockDrawing. None of the 4
+    new games feed `GameRecommendationEngine` — deliberately out of scope, see Docs.
+  - `BaselineAssessmentSession.Phase` gained `CaseIterable` + a `gameCount` computed
+    property (`allCases.count - 2`, excluding intro/summary) so nothing hardcodes "8".
+  - `BaselineResultsStore` gained `completedGameCount()` and save/load for the 4 new types.
+  - `BaselineResultsDebugView` gained 4 new sections (reaction time gets a bar chart of
+    raw ms readings instead of a gauge, matching clock drawing's precedent of not forcing
+    an arbitrary score where one doesn't naturally exist).
+  - `ContentView.swift` redesigned per a reference mockup: a single centered card with a
+    time-aware greeting, a section label, a subtitle, one primary action, and a real
+    "X of 8 activities completed" stat (via the new `completedGameCount()`) — adapted into
+    this app's existing rounded-rect/`regularMaterial` visual language rather than the
+    mockup's literal dashed-border/monospace wireframe styling. The primary action still
+    opens the dev results view, honestly labeled as a dev preview, not dressed up as a
+    real patient activity that doesn't exist yet.
+- (2026-08-08) Wired `GameRecommendationEngine` into `BaselineResultsDebugView` — a new
+  "Recommended Focus (Dev)" section shows each scored domain's priority as a bar chart
+  (reusing that domain's game's identity color: memory=blue, numeracy=teal, executive
+  function=purple) plus the top-priority domain's recommended games with their summaries.
+  Deliberately **not** shown to the patient yet: `StimulationGameCatalog`'s entries
+  ("Virtual Hawker Centre", "What Comes Next?", etc.) don't have real game screens built,
+  so recommending one to a person with dementia would point at something not tappable —
+  fine to preview here, not fine to promise on the patient-facing summary screen. Promote
+  once those games exist. Added `CognitiveDomain.displayName` for the section's labels.
 - (2026-08-08) Cognitive-stimulation game recommendation engine, closing the
   "no recommendation engine" gap noted in `Docs/BaselineAssessment_Design.md`. Ranking
   logic only — teammates still need to wire this into an actual session-selection UI.

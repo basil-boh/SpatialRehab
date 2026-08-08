@@ -39,14 +39,31 @@ using with real patients.
   easy to see/test; swap back to `@AppStorage("baseline.hasCompletedBaseline")` once the
   battery is stable — see the comment on `SpatialRehabApp.hasCompletedBaseline`.
 
-## Battery (v1 draft, 4 games)
+## Battery (v2, 8 games)
+
+Order: reaction time (warm-up) → orientation → word memory → digit span → pattern matching
+→ trail making → arithmetic → clock drawing. Related domains are grouped adjacently
+(memory games together, executive-function games together) rather than an arbitrary
+sequence; the battery opens with a literal warm-up and closes with the free-form drawing
+task.
 
 | # | Game | Format | Captured |
 |---|------|--------|----------|
-| 1 | Word memory | Study ~6 target words for ~10s, then tap all remembered words from a shuffled target+distractor grid | `targetWords`, `distractorWords`, `tappedWords`, `completedAt`; score computed as correct-taps / targets |
-| 2 | Pattern matching | Classic memory-flip: 6 pairs of symbol cards, flip two at a time to find matches | `pairCount`, `moveCount`, `completedAt`; score computed as pairs / moves (efficiency, not correctness) |
-| 3 | Arithmetic | Basic single-digit addition, tap the correct sum from 4 choices, one problem at a time | Per-problem `ArithmeticAnswer` (prompt, correct answer, selected answer), `completedAt`; score computed as correct / total |
-| 4 | Clock drawing | Free-draw prompt: "Draw a clock showing ten past eleven." | Rasterized PNG (`imageFileName`), `capturedAt`; `score` left `nil` for later review |
+| 1 | Reaction time | A shape flashes at a random position after a random delay, tap it, 3 trials | `reactionTimesMs`, `completedAt`; no `0...1` score — raw ms readings, like clock drawing this isn't forced into a percentage |
+| 2 | Orientation | 3 questions (day of week / time of day / month), computed from the current date, tap the answer from a few choices | Per-question `OrientationAnswer`, `completedAt`; score = correct / total |
+| 3 | Word memory | Study ~4 target words for ~10s, then tap all remembered words from a shuffled target+distractor grid (10 total) | `targetWords`, `distractorWords`, `tappedWords`, `completedAt`; score computed as correct-taps / targets |
+| 4 | Digit span | Watch a 4-digit sequence flash one digit at a time, then tap it back in order on a number pad | `targetSequence`, `enteredSequence`, `completedAt`; score = correctly-placed digits / sequence length |
+| 5 | Pattern matching | Classic memory-flip: 6 pairs of symbol cards, flip two at a time to find matches | `pairCount`, `moveCount`, `completedAt`; score computed as pairs / moves (efficiency, not correctness) |
+| 6 | Trail making | Tap 8 scattered, numbered dots in ascending order | `dotCount`, `errorCount`, `durationSeconds`, `completedAt`; score = dots / (dots + errors); duration captured but not scored — no visible time pressure |
+| 7 | Arithmetic | Basic single-digit addition, tap the correct sum from 4 choices, one problem at a time | Per-problem `ArithmeticAnswer` (prompt, correct answer, selected answer), `completedAt`; score computed as correct / total |
+| 8 | Clock drawing | Free-draw prompt: "Draw a clock showing ten past eleven." | Rasterized PNG (`imageFileName`), `capturedAt`; `score` left `nil` for later review |
+
+None of the four new games (reaction time, orientation, digit span, trail making) feed
+`GameRecommendationEngine` — `CognitiveDomain` stays at its original three cases
+(`.memory`/`.numeracy`/`.executiveFunction`) rather than growing new ones or merging a
+second game's score into an existing domain, which would need a real policy decision
+(average? most recent? which wins?) that wasn't asked for. Deliberately out of scope for
+this pass, not an oversight.
 
 Word list is **4 target words + 6 distractors** (10 in the recall grid), tuned on 2026-08-08:
 started at 6+6, briefly tried 4+4, then settled on 4+6 — a shorter study list than the
@@ -133,18 +150,50 @@ an actual session-selection UI is left for a teammate to build on top:
   a teammate wiring this into UI would use; `recommendations(from:)` stays a pure function
   for when this repo eventually gets a test target.
 
+**Wired into `BaselineResultsDebugView` (2026-08-08, same day)** — a "Recommended Focus
+(Dev)" section shows each domain's priority as a bar (reusing that domain's game's
+identity color for visual continuity with the score gauges above) plus the top-priority
+domain's recommended games. Deliberately kept dev-only: `StimulationGameCatalog`'s games
+aren't real, tappable screens yet, so surfacing them to the *patient* would recommend
+something broken. Promote this to the patient-facing summary once those games are built —
+at that point, frame it as a forward-looking suggestion only ("let's try X next"), never
+with the underlying priority/score number, to stay consistent with the no-score-to-patient
+principle above.
+
+## History tracking + caregiver dashboard (2026-08-08)
+
+`BaselineResultsStore` switched from single-overwritten-value storage to an **appended
+history array** per game — the previous version silently discarded a session's data the
+moment the next session finished, which undercut the entire premise of a comparison
+baseline. `loadXResult()` accessors still work (return the latest entry, `.last`), so no
+existing call site broke; new `loadXHistory()` accessors return the full run.
+
+`CaregiverDashboardView` is the payoff: a real, polished caregiver-facing screen (not a dev
+tool) showing a `ScoreTrendChart`/`MillisecondTrendChart` line chart per game across
+sessions, plus a clock-drawing thumbnail gallery (still unscored, but now at least browsable
+over time instead of only the latest sketch). `ContentView`'s primary action now opens this
+dashboard directly; the raw `BaselineResultsDebugView` dump moved one level deeper, behind a
+"Raw Data" toolbar button inside the dashboard, since the dashboard is what a caregiver
+should actually land on.
+
+**Migration caveat:** results saved before this change were single encoded values, not
+arrays — decoding old data as `[T]` fails silently (returns `[]`), so any pre-existing
+single-entry test data doesn't carry forward into the new history. Acceptable for local
+hackathon test data; a real migration would need to attempt both decode shapes.
+
 ## Known gaps (intentional, for a first prototype)
 
 - No automated clock-drawing scoring — see above. Only the rasterized PNG is kept, not
   stroke/vector data; a future auto-scorer wanting stroke-angle analysis would need a
-  different capture design than this one.
-- No persistence beyond local `UserDefaults` (`BaselineResultsStore`) — no export, backup,
-  or sync. Uninstalling the app loses all baseline data, including saved clock PNGs on disk.
-  No cleanup of orphaned image files if the first-launch flag is ever manually reset for QA.
-- No caregiver-facing review UI yet for the unscored clock drawings — expected to land with
-  the `feature/analytics` dashboard.
+  different capture design than this one. The caregiver dashboard's gallery makes the
+  sketches browsable over time, but scoring is still entirely manual/visual.
+- Still no export/backup/sync (`UserDefaults` only) — uninstalling the app loses all
+  baseline history, including saved clock PNGs on disk. No cleanup of orphaned image files
+  if the first-launch flag is ever manually reset for QA.
 - No automated tests — this repo has no test target; verification is manual/Simulator-based,
-  same as the tea-task prototype.
+  same as the tea-task prototype. The dashboard specifically was verified by temporarily
+  seeding synthetic multi-session data (see git history/CHANGELOG), not real gameplay, since
+  this sandbox has no way to interactively tap through the games.
 
 These are reasonable next slices, not oversights — flagging them explicitly so the next
 change knows where the seams are.
