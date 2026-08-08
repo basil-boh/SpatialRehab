@@ -9,6 +9,14 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- **Patient-first pass on Remember the Way** (dementia-perspective audit):
+  - **Voice guidance** — `VoiceGuide.swift` (`AVSpeechSynthesizer`, en-SG voice, slowed rate) speaks every stage: study intro, draw instructions, feedback, step-inside guidance, and arrival ("You've reached home. Well done."). Speaker toggle on the panel; on `AppModel` for reuse by other activities.
+  - **No more countdown** — study is fully self-paced ("Take your time. Press I'm ready when you know the way"); study duration recorded invisibly (`studySeconds`); pause/resume machinery removed.
+  - **Pinch-toggle walking** — pinch the street once to walk, again to rest (was: sustained pinch-hold, fatiguing for elderly hands); auto-stops with a spoken arrival at the end of the route.
+  - **Tap-the-corners draw mode (new default)** — the route's decision corners (≥25° heading change, capped at 7) appear as dots; the patient taps them in order and the real route reveals segment by segment (errorless, motorically gentle). Wrong-order taps pulse softly and are counted invisibly; feedback banded on wrong taps. Free tracing remains as the harder mode via a caregiver toggle in Adjust.
+  - **Real-time ink for free tracing** (user feedback) — the trace renders as a live screen-space stroke directly under the finger (same fixed-camera overlay trick as the route animation) instead of chunky decimated MapKit polyline updates; coordinates still captured underneath for scoring.
+  - **Calm grab returns** (user: grabbing yes, but intuitive) — visible metal grab bar under the table's front edge (gaze-glow affordance): while held, the table *eases* toward the hand (12 ms lerp loop — heavy-object feel that filters elderly hand tremor), never tilts or rotates, surface height clamped 0.05–1.35 m and lateral reach 0.45–2.3 m; on release it magnetically settles to the nearest sensible height (table or floor) over 0.45 s. Gesture scoped strictly to the bar; Adjust buttons kept as the accessible alternative; handle hidden in life-size mode.
+
 - **Wayfinding exercise — "Walk to the Bakery"** (second activity in the shared `ActivitySpace`):
   - `WayfindingExercise.swift` — `@Observable` model: traffic-light cycle (5 s red/green), waypoint progression, invisible metrics (taps-on-red inhibition errors, start/finish timestamps).
   - `WayfindingSpaceView.swift` — code-built street scene (sidewalks, road, zebra crossing, bakery storefront, primitive traffic light with named `redLamp`/`greenLamp` entities so the generated USDZ can drop in later). Locomotion = tap glowing waypoint → fade-out, world shifts, fade-in (no continuous motion, dementia-safe). Crossing waypoint gated on green light.

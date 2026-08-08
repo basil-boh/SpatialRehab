@@ -28,4 +28,5 @@ final class AppModel {
     let wayfinding = WayfindingExercise()
     let findHome = FindHomeExercise()
     let routeMemory = RouteMemoryExercise()
+    let voice = VoiceGuide()
 }

@@ -76,6 +76,12 @@ struct RouteMemoryTableView: View {
     @State private var routeScreenPoints: [CGPoint] = []
     @State private var drawProgress: CGFloat = 0
     @State private var animationTask: Task<Void, Never>?
+    @State private var liveTrace: [CGPoint] = []
+    @State private var announcedArrival = false
+    @State private var handle = Entity()
+    @State private var grabOffset: SIMD3<Float>?
+    @State private var grabTarget: SIMD3<Float>?
+    @State private var grabTask: Task<Void, Never>?
 
     private var exercise: RouteMemoryExercise { appModel.routeMemory }
 
@@ -88,6 +94,8 @@ struct RouteMemoryTableView: View {
                 rig.addChild(table)
                 tableEntity = table
             }
+            buildHandle()
+            rig.addChild(handle)
             if let controls = attachments.entity(for: "controls") {
                 controls.position = [0, 1.45, -1.65]
                 content.add(controls)
@@ -97,19 +105,49 @@ struct RouteMemoryTableView: View {
             Attachment(id: "controls") { controlPanel }
         }
         .gesture(
-            DragGesture(minimumDistance: 0)
+            TapGesture()
                 .targetedToEntity(walkSurface)
-                .onChanged { _ in
-                    guard insideMode else { return }
-                    isWalking = true
-                }
                 .onEnded { _ in
-                    isWalking = false
+                    guard insideMode else { return }
+                    isWalking.toggle()
                 }
         )
-        .onChange(of: exercise.state) { _, _ in
-            if exercise.state == .studying {
+        .gesture(
+            DragGesture()
+                .targetedToEntity(handle)
+                .onChanged { value in
+                    guard !insideMode else { return }
+                    let location = value.convert(value.location3D, from: .local, to: .scene)
+                    if grabOffset == nil {
+                        grabOffset = rig.position - location
+                        startGrabLoop()
+                    }
+                    grabTarget = constrainRigPosition(location + (grabOffset ?? .zero))
+                }
+                .onEnded { _ in
+                    grabOffset = nil
+                    grabTarget = nil
+                    settleTable()
+                }
+        )
+        .onChange(of: exercise.state) { _, newState in
+            switch newState {
+            case .studying:
                 startRouteAnimation()
+                appModel.voice.speak(
+                    "This is the market at Tiong Bahru. Take your time, and watch the glowing way home. Press I'm ready when you know it."
+                )
+            case .drawing:
+                liveTrace = []
+                appModel.voice.speak(
+                    exercise.drawMode == .tapCorners
+                        ? "Now tap the corners of the way home, one after another."
+                        : "Now draw the way home on the table with your finger."
+                )
+            case .scored:
+                appModel.voice.speak(exercise.feedback)
+            default:
+                break
             }
         }
         .onDisappear {
@@ -122,7 +160,69 @@ struct RouteMemoryTableView: View {
         }
     }
 
-    // MARK: - Caregiver table adjustments (buttons only — no free gestures)
+    // MARK: - Calm grab (heavy-object feel, level, clamped, magnetic rest)
+
+    private func buildHandle() {
+        let bar = ModelEntity(
+            mesh: .generateBox(size: [0.44, 0.03, 0.075], cornerRadius: 0.015),
+            materials: [SimpleMaterial(color: UIColor(white: 0.88, alpha: 1), isMetallic: true)]
+        )
+        handle.addChild(bar)
+        handle.position = [0, 0.82, -0.44]
+        handle.components.set(CollisionComponent(shapes: [.generateBox(size: [0.54, 0.1, 0.16])]))
+        handle.components.set(InputTargetComponent())
+        handle.components.set(HoverEffectComponent())
+    }
+
+    /// The table eases toward the hand instead of tracking it rigidly —
+    /// filters tremor and feels like moving a heavy floating object.
+    private func startGrabLoop() {
+        grabTask?.cancel()
+        grabTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .milliseconds(12))
+                guard let target = grabTarget else { return }
+                rig.position += (target - rig.position) * 0.12
+            }
+        }
+    }
+
+    /// Keep the table's surface within a comfortable, reachable envelope;
+    /// never tilted, never rotated.
+    private func constrainRigPosition(_ position: SIMD3<Float>) -> SIMD3<Float> {
+        var center = position + rigScale * Self.tablePivot
+        center.y = min(max(center.y, 0.05), 1.35)
+        let planar = SIMD2(center.x, center.z)
+        let radius = simd_length(planar)
+        if radius > 0.01 {
+            let clamped = min(max(radius, 0.45), 2.3)
+            let direction = planar / radius
+            center.x = direction.x * clamped
+            center.z = direction.y * clamped
+        }
+        return center - rigScale * Self.tablePivot
+    }
+
+    /// On release, gently settle to the nearest sensible height — table
+    /// height or on the floor — keeping wherever they placed it laterally.
+    private func settleTable() {
+        grabTask?.cancel()
+        var center = rig.position + rigScale * Self.tablePivot
+        center.y = abs(center.y - 0.05) < abs(center.y - 0.85) ? 0.05 : 0.85
+        let position = center - rigScale * Self.tablePivot
+        rig.move(
+            to: Transform(
+                scale: SIMD3(repeating: rigScale),
+                rotation: rig.orientation,
+                translation: position
+            ),
+            relativeTo: nil,
+            duration: 0.45,
+            timingFunction: .easeOut
+        )
+    }
+
+    // MARK: - Caregiver table adjustments
 
     private func adjustScale(by factor: Float) {
         guard !insideMode else { return }
@@ -150,8 +250,13 @@ struct RouteMemoryTableView: View {
         guard miniatureBuilt, miniatureScale > 0 else { return }
         insideMode = true
         appModel.routeMemoryInside = true
-        exercise.pauseStudy()
         showAdjust = false
+        announcedArrival = false
+        grabTask?.cancel()
+        grabOffset = nil
+        grabTarget = nil
+        handle.isEnabled = false
+        appModel.voice.speak("Let's stand in the street. Pinch once to walk, and pinch again to rest.")
         tableEntity?.isEnabled = false
         insideExtras?.isEnabled = true
         isWalking = false
@@ -187,7 +292,7 @@ struct RouteMemoryTableView: View {
         appModel.routeMemoryInside = false
         walkTask?.cancel()
         isWalking = false
-        exercise.resumeStudy()
+        appModel.voice.stop()
         rigScale = 1
         rig.move(to: .identity, relativeTo: nil, duration: 1.2, timingFunction: .easeInOut)
         city.move(
@@ -204,6 +309,7 @@ struct RouteMemoryTableView: View {
             try? await Task.sleep(for: .seconds(1.2))
             insideExtras?.isEnabled = false
             tableEntity?.isEnabled = true
+            handle.isEnabled = true
         }
     }
 
@@ -308,6 +414,11 @@ struct RouteMemoryTableView: View {
             let step = speed * 2.2 * dt
             let oldSegment = path.segment(at: walkDistance)
             var s = min(walkDistance + step, path.total)
+            if s >= path.total, !announcedArrival {
+                announcedArrival = true
+                isWalking = false
+                appModel.voice.speak("You've reached home. Well done.")
+            }
             let newSegment = path.segment(at: s)
 
             if newSegment > oldSegment {
@@ -352,9 +463,21 @@ struct RouteMemoryTableView: View {
                     MapPolyline(route.polyline)
                         .stroke(.cyan, lineWidth: 6)
                 }
-                if exercise.drawnPath.count >= 2 {
+                if exercise.state == .scored, exercise.drawMode == .freeTrace,
+                   exercise.drawnPath.count >= 2 {
                     MapPolyline(coordinates: exercise.drawnPath)
                         .stroke(.orange, lineWidth: 6)
+                }
+                if exercise.state == .drawing, exercise.drawMode == .tapCorners {
+                    if exercise.revealedRoute.count >= 2 {
+                        MapPolyline(coordinates: exercise.revealedRoute)
+                            .stroke(.orange, lineWidth: 7)
+                    }
+                    ForEach(exercise.cornerTargets) { target in
+                        Annotation("", coordinate: target.coordinate) {
+                            cornerDot(for: target)
+                        }
+                    }
                 }
                 Marker("Market", systemImage: "basket.fill", coordinate: FindHomeExercise.start)
                     .tint(.green)
@@ -365,13 +488,26 @@ struct RouteMemoryTableView: View {
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
+                        if liveTrace.isEmpty
+                            || hypot(
+                                value.location.x - liveTrace[liveTrace.count - 1].x,
+                                value.location.y - liveTrace[liveTrace.count - 1].y
+                            ) > 4 {
+                            liveTrace.append(value.location)
+                        }
                         if let coordinate = proxy.convert(value.location, from: .local) {
                             exercise.addDrawnPoint(coordinate)
                         }
                     },
-                isEnabled: exercise.state == .drawing
+                isEnabled: exercise.state == .drawing && exercise.drawMode == .freeTrace
             )
             .overlay {
+                // Live ink: raw screen-space stroke, instant under the finger.
+                if exercise.state == .drawing, exercise.drawMode == .freeTrace, liveTrace.count >= 2 {
+                    RoutePathShape(points: liveTrace)
+                        .stroke(.orange, style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
+                        .allowsHitTesting(false)
+                }
                 if exercise.state == .studying, routeScreenPoints.count >= 2 {
                     RoutePathShape(points: routeScreenPoints)
                         .trim(from: 0, to: drawProgress)
@@ -394,6 +530,26 @@ struct RouteMemoryTableView: View {
         }
         .frame(width: Self.mapSize.width, height: Self.mapSize.height)
         .clipShape(RoundedRectangle(cornerRadius: 48))
+    }
+
+    private func cornerDot(for target: RouteMemoryExercise.CornerTarget) -> some View {
+        let done = target.id < exercise.nextCornerIndex
+        let wrong = exercise.lastWrongTapID == target.id
+        return Circle()
+            .fill(done ? Color.cyan : Color.white.opacity(0.9))
+            .frame(width: 36, height: 36)
+            .overlay {
+                Circle().strokeBorder(
+                    Color.orange.opacity(wrong ? 1.0 : 0.7),
+                    lineWidth: wrong ? 5 : 2
+                )
+            }
+            .scaleEffect(wrong ? 1.25 : 1)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: wrong)
+            .animation(.easeOut(duration: 0.25), value: done)
+            .onTapGesture {
+                exercise.tapCorner(id: target.id)
+            }
     }
 
     /// Draws the route out over ~4.5 s with a glowing head, holds, and
@@ -563,13 +719,17 @@ struct RouteMemoryTableView: View {
 
             if exercise.state == .studying || exercise.state == .drawing || exercise.state == .scored {
                 if insideMode {
-                    Button("Back to table") {
-                        backToTable()
+                    HStack(spacing: 16) {
+                        Button("Back to table") {
+                            backToTable()
+                        }
+                        .font(.title3)
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+
+                        voiceButton
                     }
-                    .font(.title3)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.large)
                 } else {
                     HStack(spacing: 16) {
                         Button("Step inside") {
@@ -590,6 +750,8 @@ struct RouteMemoryTableView: View {
                         .buttonStyle(.bordered)
                         .buttonBorderShape(.capsule)
                         .controlSize(.large)
+
+                        voiceButton
                     }
 
                     if showAdjust {
@@ -640,6 +802,13 @@ struct RouteMemoryTableView: View {
                             }
                             .buttonStyle(.bordered)
                             .buttonBorderShape(.circle)
+
+                            Button(exercise.drawMode == .tapCorners ? "Mode: Tap corners" : "Mode: Trace") {
+                                exercise.toggleDrawMode()
+                            }
+                            .font(.title3)
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.capsule)
                         }
                     }
                 }
@@ -663,7 +832,7 @@ struct RouteMemoryTableView: View {
                 .controlSize(.extraLarge)
 
         case .studying:
-            Button("I'm ready to draw") { exercise.startDrawing() }
+            Button("I'm ready") { exercise.startDrawing() }
                 .font(.title3)
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
@@ -672,17 +841,22 @@ struct RouteMemoryTableView: View {
 
         case .drawing:
             HStack(spacing: 20) {
-                Button("Start over") { exercise.clearDrawing() }
-                    .font(.title3)
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.extraLarge)
-                Button("I'm done") { exercise.finishDrawing() }
-                    .font(.title3)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.extraLarge)
-                    .disabled(exercise.drawnPath.count < 2)
+                Button("Start over") {
+                    exercise.clearDrawing()
+                    liveTrace = []
+                }
+                .font(.title3)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                if exercise.drawMode == .freeTrace {
+                    Button("I'm done") { exercise.finishDrawing() }
+                        .font(.title3)
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.extraLarge)
+                        .disabled(exercise.drawnPath.count < 2)
+                }
             }
 
         case .scored:
@@ -706,9 +880,25 @@ struct RouteMemoryTableView: View {
         }
     }
 
+    private var voiceButton: some View {
+        Button {
+            appModel.voice.toggle()
+        } label: {
+            Label(
+                appModel.voice.isEnabled ? "Voice on" : "Voice off",
+                systemImage: appModel.voice.isEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill"
+            )
+            .labelStyle(.iconOnly)
+            .font(.title3)
+            .frame(width: 54, height: 54)
+        }
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.circle)
+    }
+
     private var prompt: String {
         if insideMode {
-            return "Pinch and hold to walk toward the red pin. Let go to rest."
+            return "Pinch once to walk toward the red pin. Pinch again to rest."
         }
         switch exercise.state {
         case .idle, .loading:
@@ -716,9 +906,11 @@ struct RouteMemoryTableView: View {
         case .failed:
             return "We couldn't load the route right now."
         case .studying:
-            return "Remember the way home — \(exercise.remainingStudySeconds) s"
+            return "Take your time. Press I'm ready when you know the way."
         case .drawing:
-            return "Now draw the way home on the table."
+            return exercise.drawMode == .tapCorners
+                ? "Tap the corners of the way home, one after another."
+                : "Now draw the way home on the table."
         case .scored:
             return exercise.feedback
         }

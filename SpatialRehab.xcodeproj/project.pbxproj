@@ -416,6 +416,7 @@
 		FAB1E000000000000000B00B /* TiongBahruMap.json in Resources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00B /* TiongBahruMap.json */; };
 		FAB1E000000000000000B00C /* RouteMemoryExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00C /* RouteMemoryExercise.swift */; };
 		FAB1E000000000000000B00D /* RouteMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00D /* RouteMemoryView.swift */; };
+		FAB1E000000000000000B00E /* VoiceGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00E /* VoiceGuide.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -830,6 +831,7 @@
 		FAB1E000000000000000A00B /* TiongBahruMap.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TiongBahruMap.json; sourceTree = "<group>"; };
 		FAB1E000000000000000A00C /* RouteMemoryExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMemoryExercise.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A00D /* RouteMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMemoryView.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A00E /* VoiceGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceGuide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -859,6 +861,7 @@
 				FAB1E000000000000000A00B /* TiongBahruMap.json */,
 				FAB1E000000000000000A00C /* RouteMemoryExercise.swift */,
 				FAB1E000000000000000A00D /* RouteMemoryView.swift */,
+				FAB1E000000000000000A00E /* VoiceGuide.swift */,
 				2CA909666A1E57D05F864904 /* Info.plist */,
 				C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */,
 				48A216B430262DFD0041BCF1 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_06ff8882ac1f45f6b590d64ec0ab0d85.usdz */,
@@ -1744,6 +1747,7 @@
 				FAB1E000000000000000B00A /* NeighborhoodWorld.swift in Sources */,
 				FAB1E000000000000000B00C /* RouteMemoryExercise.swift in Sources */,
 				FAB1E000000000000000B00D /* RouteMemoryView.swift in Sources */,
+				FAB1E000000000000000B00E /* VoiceGuide.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
