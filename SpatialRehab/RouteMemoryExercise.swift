@@ -106,9 +106,26 @@ final class RouteMemoryExercise {
         }
     }
 
+    /// Pauses the study countdown (e.g. while the patient walks the
+    /// life-size world) without losing remaining time.
+    func pauseStudy() {
+        countdownTask?.cancel()
+        countdownTask = nil
+    }
+
+    func resumeStudy() {
+        guard state == .studying, countdownTask == nil else { return }
+        startCountdown()
+    }
+
     private func startStudy() {
         remainingStudySeconds = Self.studyDuration
         state = .studying
+        startCountdown()
+    }
+
+    private func startCountdown() {
+        countdownTask?.cancel()
         countdownTask = Task { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(1))

@@ -701,13 +701,36 @@ enum NeighborhoodWorld {
         return container
     }
 
-    static func beaconEntity(at coordinate: CLLocationCoordinate2D) -> ModelEntity {
-        var material = UnlitMaterial(color: .systemOrange)
-        material.blending = .transparent(opacity: 0.45)
-        let beacon = ModelEntity(mesh: .generateCylinder(height: 90, radius: 1.3), materials: [material])
+    /// Classic map pin floating above the destination, visible over the
+    /// rooftops, with a faint light column so it can be found from anywhere.
+    static func beaconEntity(at coordinate: CLLocationCoordinate2D) -> Entity {
         let position = enu(coordinate)
-        beacon.position = [position.x, 45, position.y]
-        return beacon
+        let container = Entity()
+
+        let pinRed = UnlitMaterial(color: UIColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1))
+        let tip = ModelEntity(mesh: .generateCone(height: 5.2, radius: 1.7), materials: [pinRed])
+        tip.orientation = simd_quatf(angle: .pi, axis: [1, 0, 0])
+        tip.position = [position.x, 20.6, position.y]
+        container.addChild(tip)
+
+        let head = ModelEntity(mesh: .generateSphere(radius: 2.5), materials: [pinRed])
+        head.position = [position.x, 24.6, position.y]
+        container.addChild(head)
+
+        let dot = ModelEntity(
+            mesh: .generateSphere(radius: 0.9),
+            materials: [UnlitMaterial(color: .white)]
+        )
+        dot.position = [position.x, 24.6, position.y - 2.0]
+        container.addChild(dot)
+
+        var columnMaterial = UnlitMaterial(color: UIColor(red: 1.0, green: 0.35, blue: 0.3, alpha: 1))
+        columnMaterial.blending = .transparent(opacity: 0.22)
+        let column = ModelEntity(mesh: .generateCylinder(height: 60, radius: 0.9), materials: [columnMaterial])
+        column.position = [position.x, 30, position.y]
+        container.addChild(column)
+
+        return container
     }
 
     // MARK: - Geometry utilities

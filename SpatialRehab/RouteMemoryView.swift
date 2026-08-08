@@ -43,16 +43,36 @@ struct RouteMemoryTableView: View {
 
     @State private var camera: MapCameraPosition = .camera(RouteMemoryTableView.tableCamera)
     @State private var rig = Entity()
-    @State private var handle = Entity()
+    @State private var city = Entity()
+    @State private var walkSurface = Entity()
     @State private var tableEntity: Entity?
-    @State private var miniatureEntity: Entity?
+    @State private var showAdjust = false
     @State private var miniatureScale: Float = 1
     @State private var miniatureBuilt = false
     @State private var rigScale: Float = 1
     @State private var insideMode = false
-    @State private var dragOffset: SIMD3<Float>?
-    @State private var magnifyStartScale: Float?
     @State private var insideExtras: Entity?
+    @State private var walkPath: WalkPath?
+    @State private var walkDistance: Float = 0
+    @State private var isWalking = false
+    @State private var walkTask: Task<Void, Never>?
+
+    /// Simplified, arc-length-parameterized route in ENU meters.
+    struct WalkPath {
+        let points: [SIMD2<Float>]
+        let cumulative: [Float]
+        let headings: [Float]
+
+        var total: Float { cumulative.last ?? 0 }
+
+        func segment(at s: Float) -> Int {
+            var index = 0
+            for i in 0..<(cumulative.count - 1) where cumulative[i] <= s {
+                index = i
+            }
+            return min(index, headings.count - 1)
+        }
+    }
     @State private var routeScreenPoints: [CGPoint] = []
     @State private var drawProgress: CGFloat = 0
     @State private var animationTask: Task<Void, Never>?
@@ -68,8 +88,6 @@ struct RouteMemoryTableView: View {
                 rig.addChild(table)
                 tableEntity = table
             }
-            buildHandle()
-            rig.addChild(handle)
             if let controls = attachments.entity(for: "controls") {
                 controls.position = [0, 1.45, -1.65]
                 content.add(controls)
@@ -79,44 +97,19 @@ struct RouteMemoryTableView: View {
             Attachment(id: "controls") { controlPanel }
         }
         .gesture(
-            DragGesture()
-                .targetedToEntity(handle)
-                .onChanged { value in
-                    guard !insideMode else { return }
-                    let location = value.convert(value.location3D, from: .local, to: .scene)
-                    if dragOffset == nil {
-                        dragOffset = rig.position - location
-                    }
-                    rig.position = location + (dragOffset ?? .zero)
+            DragGesture(minimumDistance: 0)
+                .targetedToEntity(walkSurface)
+                .onChanged { _ in
+                    guard insideMode else { return }
+                    isWalking = true
                 }
                 .onEnded { _ in
-                    dragOffset = nil
+                    isWalking = false
                 }
         )
-        .gesture(
-            MagnifyGesture()
-                .targetedToAnyEntity()
-                .onChanged { value in
-                    guard !insideMode else { return }
-                    if magnifyStartScale == nil {
-                        magnifyStartScale = rigScale
-                    }
-                    setRigScale(min(max((magnifyStartScale ?? 1) * Float(value.magnification), 0.3), 3))
-                }
-                .onEnded { _ in
-                    magnifyStartScale = nil
-                }
-        )
-        .onChange(of: exercise.state) { _, newState in
-            if newState == .studying {
+        .onChange(of: exercise.state) { _, _ in
+            if exercise.state == .studying {
                 startRouteAnimation()
-            }
-            // The buildings' input target would intercept gaze meant for
-            // drawing on the map beneath them.
-            if newState == .drawing {
-                miniatureEntity?.components.remove(InputTargetComponent.self)
-            } else {
-                miniatureEntity?.components.set(InputTargetComponent())
             }
         }
         .onDisappear {
@@ -129,28 +122,7 @@ struct RouteMemoryTableView: View {
         }
     }
 
-    private func buildHandle() {
-        let bar = ModelEntity(
-            mesh: .generateBox(size: [0.42, 0.028, 0.07], cornerRadius: 0.014),
-            materials: [SimpleMaterial(color: UIColor(white: 0.85, alpha: 1), isMetallic: true)]
-        )
-        handle.addChild(bar)
-        handle.position = [0, 0.82, -0.46]
-        handle.components.set(CollisionComponent(shapes: [.generateBox(size: [0.5, 0.09, 0.14])]))
-        handle.components.set(InputTargetComponent())
-        handle.components.set(HoverEffectComponent())
-    }
-
-    // MARK: - Scale and life-size
-
-    /// Live scale about the table center; used by both the pinch gesture and
-    /// the buttons.
-    private func setRigScale(_ newScale: Float) {
-        let pivotWorld = rig.position + rigScale * Self.tablePivot
-        rig.scale = SIMD3(repeating: newScale)
-        rig.position = pivotWorld - newScale * Self.tablePivot
-        rigScale = newScale
-    }
+    // MARK: - Caregiver table adjustments (buttons only — no free gestures)
 
     private func adjustScale(by factor: Float) {
         guard !insideMode else { return }
@@ -170,54 +142,59 @@ struct RouteMemoryTableView: View {
         )
     }
 
-    /// Grows the rig until the miniature reaches 1:1 — the patient stands in
-    /// the life-size neighborhood, route start at their feet, roads and the
-    /// glowing route on their real floor. The map surface and handle hide
-    /// (the map texture cannot survive that magnification), and the height
-    /// exaggeration animates back to true scale.
+    /// Grows the rig until the miniature reaches 1:1 — the patient (seated)
+    /// lands at the route start facing along the glowing ribbon, and can
+    /// pinch-and-hold to glide home. The map surface and handle hide, and
+    /// the height exaggeration animates back to true scale.
     private func stepInside() {
-        guard let miniature = miniatureEntity, miniatureScale > 0 else { return }
+        guard miniatureBuilt, miniatureScale > 0 else { return }
         insideMode = true
         appModel.routeMemoryInside = true
+        exercise.pauseStudy()
+        showAdjust = false
         tableEntity?.isEnabled = false
-        handle.isEnabled = false
         insideExtras?.isEnabled = true
-        let lifeSize = 1 / miniatureScale
-        let target = SIMD3<Float>(0, 0, -1.5)
-        let newPosition = target - lifeSize * miniature.position
+        isWalking = false
+        walkDistance = 0
+        walkPath = buildWalkPath()
+
         rig.move(
-            to: Transform(
-                scale: SIMD3(repeating: lifeSize),
-                rotation: rig.orientation,
-                translation: newPosition
-            ),
+            to: walkTransform(at: 0),
             relativeTo: nil,
             duration: 1.6,
             timingFunction: .easeInOut
         )
-        miniature.move(
+        city.move(
             to: Transform(
                 scale: SIMD3(repeating: miniatureScale),
-                rotation: miniature.orientation,
-                translation: miniature.position
+                rotation: city.orientation,
+                translation: city.position
             ),
             relativeTo: rig,
             duration: 1.6,
             timingFunction: .easeInOut
         )
+        walkTask?.cancel()
+        walkTask = Task {
+            try? await Task.sleep(for: .seconds(1.7))
+            await runWalkLoop()
+        }
     }
 
     private func backToTable() {
-        guard let miniature = miniatureEntity else { return }
+        guard miniatureBuilt else { return }
         insideMode = false
         appModel.routeMemoryInside = false
+        walkTask?.cancel()
+        isWalking = false
+        exercise.resumeStudy()
         rigScale = 1
         rig.move(to: .identity, relativeTo: nil, duration: 1.2, timingFunction: .easeInOut)
-        miniature.move(
+        city.move(
             to: Transform(
                 scale: [miniatureScale, miniatureScale * 1.7, miniatureScale],
-                rotation: miniature.orientation,
-                translation: miniature.position
+                rotation: city.orientation,
+                translation: city.position
             ),
             relativeTo: rig,
             duration: 1.2,
@@ -227,7 +204,144 @@ struct RouteMemoryTableView: View {
             try? await Task.sleep(for: .seconds(1.2))
             insideExtras?.isEnabled = false
             tableEntity?.isEnabled = true
-            handle.isEnabled = true
+        }
+    }
+
+    /// Gentle preset placements instead of freeform grabbing.
+    private func placeTable(onFloor: Bool) {
+        guard !insideMode else { return }
+        let offset: SIMD3<Float> = onFloor ? [0, -0.80, 0.2] : .zero
+        let position = offset + (1 - rigScale) * Self.tablePivot
+        rig.move(
+            to: Transform(
+                scale: SIMD3(repeating: rigScale),
+                rotation: rig.orientation,
+                translation: position
+            ),
+            relativeTo: nil,
+            duration: 0.8,
+            timingFunction: .easeInOut
+        )
+    }
+
+    private func resetTable() {
+        guard !insideMode else { return }
+        rigScale = 1
+        rig.move(to: .identity, relativeTo: nil, duration: 0.6, timingFunction: .easeInOut)
+    }
+
+    // MARK: - Seated walking
+
+    /// Simplify the route: keep vertices only where the heading changes
+    /// meaningfully, so micro-bends don't cause visible snaps.
+    private func buildWalkPath() -> WalkPath? {
+        let raw = exercise.routePoints.map(NeighborhoodWorld.enu)
+        guard raw.count >= 2 else { return nil }
+
+        var points: [SIMD2<Float>] = [raw[0]]
+        for i in 1..<(raw.count - 1) {
+            guard let last = points.last else { break }
+            let d1 = raw[i] - last
+            let d2 = raw[i + 1] - raw[i]
+            guard simd_length(d1) > 0.3, simd_length(d2) > 0.3 else { continue }
+            let turn = normalizedDegrees(heading(of: d2) - heading(of: d1))
+            if abs(turn) >= 10 || simd_length(d1) > 30 {
+                points.append(raw[i])
+            }
+        }
+        points.append(raw[raw.count - 1])
+        guard points.count >= 2 else { return nil }
+
+        var cumulative: [Float] = [0]
+        var headings: [Float] = []
+        for i in 0..<(points.count - 1) {
+            let d = points[i + 1] - points[i]
+            cumulative.append(cumulative[i] + simd_length(d))
+            headings.append(heading(of: d))
+        }
+        return WalkPath(points: points, cumulative: cumulative, headings: headings)
+    }
+
+    private func heading(of direction: SIMD2<Float>) -> Float {
+        atan2(direction.x, -direction.y) * 180 / .pi
+    }
+
+    private func normalizedDegrees(_ angle: Float) -> Float {
+        var value = angle.truncatingRemainder(dividingBy: 360)
+        if value > 180 { value -= 360 }
+        if value < -180 { value += 360 }
+        return value
+    }
+
+    /// Rig transform that puts route position `s` at the seated patient's
+    /// origin with the direction of travel straight ahead.
+    private func walkTransform(at s: Float) -> Transform {
+        guard let path = walkPath, miniatureBuilt else { return .identity }
+        let lifeSize = 1 / miniatureScale
+        let segment = path.segment(at: s)
+        let a = path.points[segment]
+        let b = path.points[segment + 1]
+        let segmentLength = max(path.cumulative[segment + 1] - path.cumulative[segment], 0.001)
+        let t = min(max((s - path.cumulative[segment]) / segmentLength, 0), 1)
+        let p = a + (b - a) * t
+        let rotation = simd_quatf(angle: path.headings[segment] * .pi / 180, axis: [0, 1, 0])
+        let miniLocal = city.position + miniatureScale * SIMD3(p.x, 0, p.y)
+        return Transform(
+            scale: SIMD3(repeating: lifeSize),
+            rotation: rotation,
+            translation: -rotation.act(lifeSize * miniLocal)
+        )
+    }
+
+    /// 60 Hz glide: constant slow velocity while the pinch is held, tiny
+    /// heading changes snap invisibly, sharp corners take a blink turn.
+    private func runWalkLoop() async {
+        var speed: Float = 0
+        while !Task.isCancelled, insideMode {
+            try? await Task.sleep(for: .milliseconds(16))
+            guard let path = walkPath else { continue }
+            let dt: Float = 0.016
+            let target: Float = isWalking && walkDistance < path.total ? 1 : 0
+            speed += (target - speed) * min(1, dt / 0.15)
+            guard speed > 0.02 else { continue }
+
+            let step = speed * 1.1 * dt
+            let oldSegment = path.segment(at: walkDistance)
+            var s = min(walkDistance + step, path.total)
+            let newSegment = path.segment(at: s)
+
+            if newSegment > oldSegment {
+                let turn = normalizedDegrees(path.headings[newSegment] - path.headings[oldSegment])
+                if abs(turn) > 25 {
+                    // Blink turn: brief fade instead of a rotating world.
+                    s = path.cumulative[newSegment] + 0.01
+                    walkDistance = s
+                    speed = 0
+                    await fadeRig(to: 0, over: 0.12)
+                    applyWalkTransform(at: s)
+                    await fadeRig(to: 1, over: 0.12)
+                    continue
+                }
+            }
+            walkDistance = s
+            applyWalkTransform(at: s)
+        }
+    }
+
+    private func applyWalkTransform(at s: Float) {
+        let transform = walkTransform(at: s)
+        rig.orientation = transform.rotation
+        rig.position = transform.translation
+        rig.scale = transform.scale
+    }
+
+    private func fadeRig(to opacity: Float, over duration: TimeInterval) async {
+        let steps = 6
+        let start = rig.components[OpacityComponent.self]?.opacity ?? 1
+        for step in 1...steps {
+            let progress = Float(step) / Float(steps)
+            rig.components.set(OpacityComponent(opacity: start + (opacity - start) * progress))
+            try? await Task.sleep(for: .milliseconds(Int(duration * 1000) / steps))
         }
     }
 
@@ -371,7 +485,7 @@ struct RouteMemoryTableView: View {
             }
             guard !visible.isEmpty else { continue }
 
-            let miniature = Entity()
+            let miniature = city
             if let walls = await NeighborhoodWorld.wallsEntity(visible) {
                 miniature.addChild(walls)
             }
@@ -405,16 +519,20 @@ struct RouteMemoryTableView: View {
             }
             extras.addChild(NeighborhoodWorld.sunEntity())
             extras.addChild(NeighborhoodWorld.beaconEntity(at: FindHomeExercise.home))
+
+            // Walking target: pinch the street/ground while inside. Lives in
+            // extras so it only exists in life-size mode and can never
+            // intercept table-scale or panel input.
+            walkSurface.components.set(CollisionComponent(
+                shapes: [.generateBox(size: [700, 0.2, 700])]
+            ))
+            walkSurface.components.set(InputTargetComponent())
+            extras.addChild(walkSurface)
+
             extras.isEnabled = false
             miniature.addChild(extras)
             insideExtras = extras
 
-            // Two-hand pinch scaling targets the miniature's bounds.
-            let bounds = miniature.visualBounds(relativeTo: miniature)
-            miniature.components.set(CollisionComponent(
-                shapes: [.generateBox(size: bounds.extents).offsetBy(translation: bounds.center)]
-            ))
-            miniature.components.set(InputTargetComponent())
 
             let scale = pointsPerWorldMeter / Self.pointsPerPhysicalMeter
             miniature.scale = [scale, scale * 1.7, scale]
@@ -428,7 +546,6 @@ struct RouteMemoryTableView: View {
             // Reparent to the rig (same world pose) so hiding the map plane
             // in life-size mode leaves the buildings standing.
             miniature.setParent(rig, preservingWorldTransform: true)
-            miniatureEntity = miniature
             miniatureScale = scale
             miniatureBuilt = true
             return
@@ -445,39 +562,86 @@ struct RouteMemoryTableView: View {
             controls
 
             if exercise.state == .studying || exercise.state == .drawing || exercise.state == .scored {
-                HStack(spacing: 16) {
-                    Button {
-                        adjustScale(by: 1 / 1.35)
-                    } label: {
-                        Label("Smaller", systemImage: "minus.magnifyingglass")
-                            .labelStyle(.iconOnly)
-                            .font(.title2)
-                            .frame(width: 60, height: 60)
-                    }
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.circle)
-                    .disabled(insideMode)
-
-                    Button {
-                        adjustScale(by: 1.35)
-                    } label: {
-                        Label("Bigger", systemImage: "plus.magnifyingglass")
-                            .labelStyle(.iconOnly)
-                            .font(.title2)
-                            .frame(width: 60, height: 60)
-                    }
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.circle)
-                    .disabled(insideMode)
-
-                    Button(insideMode ? "Back to table" : "Step inside") {
-                        insideMode ? backToTable() : stepInside()
+                if insideMode {
+                    Button("Back to table") {
+                        backToTable()
                     }
                     .font(.title3)
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
                     .controlSize(.large)
-                    .disabled(!miniatureBuilt || exercise.state == .drawing)
+                } else {
+                    HStack(spacing: 16) {
+                        Button("Step inside") {
+                            stepInside()
+                        }
+                        .font(.title3)
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+                        .disabled(!miniatureBuilt || exercise.state == .drawing)
+
+                        Button {
+                            showAdjust.toggle()
+                        } label: {
+                            Label("Adjust table", systemImage: "slider.horizontal.3")
+                                .font(.title3)
+                        }
+                        .buttonStyle(.bordered)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+                    }
+
+                    if showAdjust {
+                        HStack(spacing: 14) {
+                            Button {
+                                adjustScale(by: 1 / 1.3)
+                            } label: {
+                                Label("Smaller", systemImage: "minus.magnifyingglass")
+                                    .labelStyle(.iconOnly)
+                                    .font(.title3)
+                                    .frame(width: 54, height: 54)
+                            }
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.circle)
+
+                            Button {
+                                adjustScale(by: 1.3)
+                            } label: {
+                                Label("Bigger", systemImage: "plus.magnifyingglass")
+                                    .labelStyle(.iconOnly)
+                                    .font(.title3)
+                                    .frame(width: 54, height: 54)
+                            }
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.circle)
+
+                            Button("Table height") {
+                                placeTable(onFloor: false)
+                            }
+                            .font(.title3)
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.capsule)
+
+                            Button("On the floor") {
+                                placeTable(onFloor: true)
+                            }
+                            .font(.title3)
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.capsule)
+
+                            Button {
+                                resetTable()
+                            } label: {
+                                Label("Reset", systemImage: "arrow.counterclockwise")
+                                    .labelStyle(.iconOnly)
+                                    .font(.title3)
+                                    .frame(width: 54, height: 54)
+                            }
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.circle)
+                        }
+                    }
                 }
             }
         }
@@ -504,6 +668,7 @@ struct RouteMemoryTableView: View {
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
+                .disabled(insideMode)
 
         case .drawing:
             HStack(spacing: 20) {
@@ -542,6 +707,9 @@ struct RouteMemoryTableView: View {
     }
 
     private var prompt: String {
+        if insideMode {
+            return "Pinch and hold to walk toward the red pin. Let go to rest."
+        }
         switch exercise.state {
         case .idle, .loading:
             return "Remember the Way"
