@@ -21,24 +21,11 @@ struct FamilyTreeView: View {
             treeStem
                 .frame(height: 36)
 
-            HStack(spacing: 20) {
+            HStack(alignment: .top, spacing: 20) {
                 ForEach(children) { child in
                     VStack(spacing: 10) {
                         personCard(child)
-                        if child.id == DemoPersona.meiLingID, session.showExpandedGrandchild {
-                            connectorDown
-                            if let szeHao = DemoPersona.member(id: DemoPersona.szeHaoID) {
-                                personCard(szeHao, compact: true)
-                                    .transition(.scale.combined(with: .opacity))
-                            }
-                        } else if child.id == DemoPersona.meiLingID {
-                            Text("Pinch for grandchild")
-                                .font(.caption2)
-                                .foregroundStyle(.tertiary)
-                                .frame(height: 14)
-                        } else {
-                            Color.clear.frame(height: 14)
-                        }
+                        grandchildSlot(for: child)
                     }
                 }
             }
@@ -79,6 +66,29 @@ struct FamilyTreeView: View {
         Rectangle()
             .fill(Color.orange.opacity(0.45))
             .frame(width: 2, height: 16)
+    }
+
+    /// Fixed-height slot under every child so the tree never re-lays-out
+    /// when the grandchild appears — cards and stem lines stay put.
+    @ViewBuilder
+    private func grandchildSlot(for child: FamilyMember) -> some View {
+        VStack(spacing: 6) {
+            if child.id == DemoPersona.meiLingID {
+                if session.showExpandedGrandchild,
+                   let szeHao = DemoPersona.member(id: DemoPersona.szeHaoID) {
+                    connectorDown
+                    personCard(szeHao, compact: true)
+                        .transition(.opacity.combined(with: .scale(scale: 0.92)))
+                } else {
+                    Text("Pinch for grandchild")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                        .padding(.top, 4)
+                }
+            }
+        }
+        .frame(height: 185, alignment: .top)
+        .animation(.easeInOut(duration: 0.35), value: session.showExpandedGrandchild)
     }
 
     private func personCard(_ member: FamilyMember, isSelf: Bool = false, compact: Bool = false) -> some View {
@@ -146,7 +156,5 @@ struct FamilyTreeView: View {
         }
         .buttonStyle(.plain)
         .buttonBorderShape(.roundedRectangle(radius: 18))
-        .hoverEffect()
-        .contentShape(.hoverEffect, RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }

@@ -15,13 +15,14 @@ struct NameCardView: View {
                         insertion: .scale(scale: 0.92).combined(with: .opacity),
                         removal: .opacity
                     ))
+            } else if session.cardSide == .face {
+                // Gentle crossfade between sides — a 3D flip z-fights the
+                // window glass on device and mirrors the tree mid-turn.
+                faceSide
+                    .transition(.opacity.combined(with: .scale(scale: 0.97)))
             } else {
-                cardBody
-                    .rotation3DEffect(
-                        .degrees(session.cardSide == .tree ? 180 : 0),
-                        axis: (x: 0, y: 1, z: 0),
-                        perspective: 0.45
-                    )
+                FamilyTreeView(session: session)
+                    .transition(.opacity.combined(with: .scale(scale: 0.97)))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -47,6 +48,7 @@ struct NameCardView: View {
         .offset(y: session.phase == .puttingAway ? 80 : 0)
         .animation(.spring(response: 0.55, dampingFraction: 0.82), value: session.phase)
         .animation(.easeInOut(duration: 0.45), value: session.playingMemberID)
+        .animation(.easeInOut(duration: 0.45), value: session.cardSide)
         .onChange(of: session.isCardWindowOpen) { _, open in
             if !open {
                 dismissWindow(id: "name-card")
@@ -60,16 +62,6 @@ struct NameCardView: View {
                 session.glowProgress = 0
                 session.playingMemberID = nil
             }
-        }
-    }
-
-    @ViewBuilder
-    private var cardBody: some View {
-        if session.cardSide == .face {
-            faceSide
-        } else {
-            FamilyTreeView(session: session)
-                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
         }
     }
 

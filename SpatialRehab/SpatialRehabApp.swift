@@ -26,6 +26,6 @@ struct SpatialRehabApp: App {
         WindowGroup(id: "name-card") {
             NameCardView(session: whoAmISession)
         }
-        .defaultSize(width: 640, height: 560)
+        .defaultSize(width: 660, height: 760)
     }
 }

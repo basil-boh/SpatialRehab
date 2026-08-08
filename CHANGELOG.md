@@ -7,6 +7,10 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Family tree glitching** (`szehao-id-card`): three compounding causes — the card's `rotation3DEffect` flip z-fought the window's glass material on device (and pre-mirrored the tree for the whole turn); person cards stacked an extra `.hoverEffect()`/`.contentShape(.hoverEffect,…)` on Buttons that already have their own gaze highlight (two competing glows shimmering); and the tree re-laid-out when the grandchild expanded, detaching the stem connector lines. Now: the face/tree sides **crossfade** (calmer for dementia users too), the duplicate hover modifiers are removed (button border shape still shapes the highlight), and every child column reserves a fixed 185 pt grandchild slot so nothing moves when Sze Hao fades in. `name-card` window default size raised to 660×760 so the tree fits without compression.
+
 ### Added
 
 - **Who am I? name card** (`szehao-id-card`): dementia-friendly identity ritual. Welcome **Who am I?** opens nest + circle-draw pad (Simulator drag loop or **Summon** button). Completing an approx circle presents a glowing NRIC-style card (Lim Chio Bu / 林招母, birthday, emoji portrait) in a second window. **Family** flips to a soft yellow tree (Ah Pek + three children; Sze Hao under Mei Ling). Pinch photo → greeting turn with bilingual relation caption; **Sze Hao** plays a 4s demo line then auto-closes. **Put away** flies the card back to the nest. Files under `SpatialRehab/WhoAmI/`; windows `who-am-i` + `name-card`. `Xcode_README.md` lists the welcome entry.

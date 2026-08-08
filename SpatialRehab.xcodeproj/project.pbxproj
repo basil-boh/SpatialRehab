@@ -26,7 +26,7 @@
 		0E6EE57D881C409ACF5CBFFA /* FamilyTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTreeView.swift; sourceTree = "<group>"; };
 		12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HummingbirdVolumeView.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDC232A80CE860AA6889840 /* WhoAmISessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoAmISessionModel.swift; sourceTree = "<group>"; };
 		75C0D20D582FFEA00E2AD228 /* CircleDrawCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleDrawCanvas.swift; sourceTree = "<group>"; };
 		A0EC6F977098E34A6D7E1332 /* WhoAmIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoAmIView.swift; sourceTree = "<group>"; };
@@ -114,7 +114,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					9C43EF49CEE355740DBB0D6E = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -243,7 +242,7 @@
 				ASSETCATALOG_COMPILER_GLOBALACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82785P97XY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpatialRehab/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SpatialRehab;
@@ -271,7 +270,7 @@
 				ASSETCATALOG_COMPILER_GLOBALACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82785P97XY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpatialRehab/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SpatialRehab;
