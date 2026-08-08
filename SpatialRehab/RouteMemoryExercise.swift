@@ -15,58 +15,109 @@ final class RouteMemoryExercise {
         case failed
     }
 
-    static let studyDuration = 30
+    /// Tap-the-corners is the errorless default; free tracing is the
+    /// harder level a caregiver can enable.
+    enum DrawMode: Equatable {
+        case tapCorners
+        case freeTrace
+    }
+
+    struct CornerTarget: Identifiable {
+        let id: Int
+        let coordinate: CLLocationCoordinate2D
+        let routePointIndex: Int
+    }
 
     private(set) var state: State = .idle
+    var drawMode: DrawMode = .tapCorners
     private(set) var route: MKRoute?
-    private(set) var remainingStudySeconds = RouteMemoryExercise.studyDuration
+    private(set) var routePoints: [CLLocationCoordinate2D] = []
+
+    // Free-trace state.
     private(set) var drawnPath: [CLLocationCoordinate2D] = []
     private(set) var averageErrorMeters: Double?
+
+    // Tap-corners state.
+    private(set) var cornerTargets: [CornerTarget] = []
+    private(set) var nextCornerIndex = 0
+    private(set) var wrongOrderTaps = 0
+    private(set) var lastWrongTapID: Int?
+
+    // Invisible metrics — never shown to the patient.
+    private(set) var studyStartedAt: Date?
+    private(set) var studySeconds: Double?
     private(set) var startedAt: Date?
     private(set) var completedAt: Date?
-    private var countdownTask: Task<Void, Never>?
-    private(set) var routePoints: [CLLocationCoordinate2D] = []
 
     var routeMidpoint: CLLocationCoordinate2D {
         CLLocationCoordinate2D(
-            latitude: (FindHomeExercise.start.latitude + FindHomeExercise.home.latitude) / 2,
-            longitude: (FindHomeExercise.start.longitude + FindHomeExercise.home.longitude) / 2
+            latitude: (DemoRoute.start.latitude + DemoRoute.home.latitude) / 2,
+            longitude: (DemoRoute.start.longitude + DemoRoute.home.longitude) / 2
         )
     }
 
+    /// Route revealed so far in tap-corners mode: real route geometry up to
+    /// the last correctly tapped corner.
+    var revealedRoute: [CLLocationCoordinate2D] {
+        guard nextCornerIndex > 0, !cornerTargets.isEmpty else { return [] }
+        let lastIndex = cornerTargets[nextCornerIndex - 1].routePointIndex
+        return Array(routePoints.prefix(through: min(lastIndex, routePoints.count - 1)))
+    }
+
     var feedback: String {
-        guard let error = averageErrorMeters else { return "" }
-        switch error {
-        case ..<25: return "Amazing! You remembered the whole way home."
-        case ..<50: return "Well done — that's very close to the real route."
-        default: return "Good try! Let's study the route once more."
+        switch drawMode {
+        case .tapCorners:
+            switch wrongOrderTaps {
+            case 0: return "Amazing! You remembered every corner of the way home."
+            case 1...2: return "Well done — you found the way home."
+            default: return "Good try! Let's look at the way together once more."
+            }
+        case .freeTrace:
+            guard let error = averageErrorMeters else { return "" }
+            switch error {
+            case ..<25: return "Amazing! You remembered the whole way home."
+            case ..<50: return "Well done — that's very close to the real route."
+            default: return "Good try! Let's study the route once more."
+            }
         }
     }
 
     func begin() {
-        countdownTask?.cancel()
         state = .loading
         drawnPath = []
         averageErrorMeters = nil
-        remainingStudySeconds = Self.studyDuration
+        nextCornerIndex = 0
+        wrongOrderTaps = 0
+        lastWrongTapID = nil
+        studyStartedAt = nil
+        studySeconds = nil
         startedAt = .now
         completedAt = nil
         Task { await load() }
     }
 
-    func stop() {
-        countdownTask?.cancel()
-        countdownTask = nil
-    }
+    func stop() {}
 
+    /// Study is self-paced — no countdown, no time pressure. How long they
+    /// looked is recorded invisibly.
     func startDrawing() {
         guard state == .studying else { return }
-        countdownTask?.cancel()
+        if let studyStartedAt {
+            studySeconds = Date.now.timeIntervalSince(studyStartedAt)
+        }
+        nextCornerIndex = 0
+        drawnPath = []
         state = .drawing
     }
 
+    func toggleDrawMode() {
+        drawMode = drawMode == .tapCorners ? .freeTrace : .tapCorners
+    }
+
+    // MARK: - Free trace
+
     func addDrawnPoint(_ coordinate: CLLocationCoordinate2D) {
-        guard state == .drawing else { return }
+        guard state == .drawing, drawMode == .freeTrace else { return }
         if let last = drawnPath.last {
             let lastENU = NeighborhoodWorld.enu(last)
             let nextENU = NeighborhoodWorld.enu(coordinate)
@@ -78,19 +129,48 @@ final class RouteMemoryExercise {
     func clearDrawing() {
         guard state == .drawing else { return }
         drawnPath = []
+        nextCornerIndex = 0
     }
 
     func finishDrawing() {
-        guard state == .drawing, drawnPath.count >= 2 else { return }
-        averageErrorMeters = score()
+        guard state == .drawing, drawMode == .freeTrace, drawnPath.count >= 2 else { return }
+        averageErrorMeters = scoreTrace()
         completedAt = .now
         state = .scored
     }
 
+    // MARK: - Tap the corners
+
+    func tapCorner(id: Int) {
+        guard state == .drawing, drawMode == .tapCorners else { return }
+        guard cornerTargets.indices.contains(id) else { return }
+
+        if id == nextCornerIndex {
+            lastWrongTapID = nil
+            nextCornerIndex += 1
+            if nextCornerIndex >= cornerTargets.count {
+                completedAt = .now
+                state = .scored
+            }
+        } else if id > nextCornerIndex {
+            // Gentle wrong-order beat, counted invisibly.
+            wrongOrderTaps += 1
+            lastWrongTapID = id
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(1))
+                if lastWrongTapID == id {
+                    lastWrongTapID = nil
+                }
+            }
+        }
+    }
+
+    // MARK: - Loading
+
     private func load() async {
         let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: FindHomeExercise.start))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: FindHomeExercise.home))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: DemoRoute.start))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: DemoRoute.home))
         request.transportType = .walking
         do {
             let response = try await MKDirections(request: request).calculate()
@@ -100,48 +180,44 @@ final class RouteMemoryExercise {
             }
             self.route = route
             routePoints = Self.coordinates(of: route.polyline)
-            startStudy()
+            cornerTargets = Self.cornerTargets(from: routePoints)
+            studyStartedAt = .now
+            state = .studying
         } catch {
             state = .failed
         }
     }
 
-    /// Pauses the study countdown (e.g. while the patient walks the
-    /// life-size world) without losing remaining time.
-    func pauseStudy() {
-        countdownTask?.cancel()
-        countdownTask = nil
-    }
-
-    func resumeStudy() {
-        guard state == .studying, countdownTask == nil else { return }
-        startCountdown()
-    }
-
-    private func startStudy() {
-        remainingStudySeconds = Self.studyDuration
-        state = .studying
-        startCountdown()
-    }
-
-    private func startCountdown() {
-        countdownTask?.cancel()
-        countdownTask = Task { [weak self] in
-            while !Task.isCancelled {
-                try? await Task.sleep(for: .seconds(1))
-                guard let self, !Task.isCancelled else { return }
-                self.remainingStudySeconds -= 1
-                if self.remainingStudySeconds <= 0 {
-                    self.state = .drawing
-                    return
-                }
+    /// Decision corners along the route (heading change ≥ 25°) plus home,
+    /// capped so the tap task stays gentle.
+    private static func cornerTargets(from points: [CLLocationCoordinate2D]) -> [CornerTarget] {
+        guard points.count >= 2 else { return [] }
+        var picks: [Int] = []
+        var lastKept = 0
+        for i in 1..<(points.count - 1) {
+            let d1 = NeighborhoodWorld.enu(points[i]) - NeighborhoodWorld.enu(points[lastKept])
+            let d2 = NeighborhoodWorld.enu(points[i + 1]) - NeighborhoodWorld.enu(points[i])
+            guard simd_length(d1) > 8, simd_length(d2) > 3 else { continue }
+            let h1 = atan2(d1.x, -d1.y) * 180 / .pi
+            let h2 = atan2(d2.x, -d2.y) * 180 / .pi
+            var delta = (h2 - h1).truncatingRemainder(dividingBy: 360)
+            if delta > 180 { delta -= 360 }
+            if delta < -180 { delta += 360 }
+            if abs(delta) >= 25 {
+                picks.append(i)
+                lastKept = i
             }
+        }
+        picks.append(points.count - 1)
+        let capped = picks.count > 7 ? Array(picks.prefix(6)) + [points.count - 1] : picks
+        return capped.enumerated().map { order, pointIndex in
+            CornerTarget(id: order, coordinate: points[pointIndex], routePointIndex: pointIndex)
         }
     }
 
     /// Mean distance in meters from each drawn point to the nearest segment
     /// of the real route.
-    private func score() -> Double {
+    private func scoreTrace() -> Double {
         let segments = zip(routePoints, routePoints.dropFirst()).map {
             (NeighborhoodWorld.enu($0), NeighborhoodWorld.enu($1))
         }

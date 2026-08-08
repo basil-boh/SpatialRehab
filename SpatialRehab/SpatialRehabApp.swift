@@ -11,7 +11,7 @@ struct SpatialRehabApp: App {
 
     /// Gates the baseline assessment within a single run: starts `false` every launch, flips
     /// to `true` once the person finishes (or exits) the battery, so the rest of that session
-    /// goes to the normal activity-picker home screen (`ContentView`). Plain `@State`, not
+    /// goes to the normal Remember the Way home screen (`ContentView`). Plain `@State`, not
     /// persisted, **for now** — while this is under active development it's more useful to
     /// see the assessment on every launch than to have it silently skip itself after the
     /// first run. Swap back to `@AppStorage("baseline.hasCompletedBaseline")` once the
@@ -20,13 +20,13 @@ struct SpatialRehabApp: App {
     @State private var hasCompletedBaseline = false
     @State private var baselineSession = BaselineAssessmentSession()
 
-    /// Shared state for the wayfinding-activities branch's activity system: which activity
-    /// is selected, its session phase, and each activity's own sub-model.
+    /// Shared state for the wayfinding-activities branch's Remember the Way exercise
+    /// (session phase, the route-memory sub-model, voice guidance).
     @State private var appModel = AppModel()
 
     /// Pinned to `.mixed` for the tea-task space specifically (see `teaSession` above) —
-    /// separate from `appModel`'s own per-activity immersion style below, since the two
-    /// systems don't share a space.
+    /// separate from `appModel`'s own immersion style below, since the two systems don't
+    /// share a space.
     @State private var immersionStyle: any ImmersionStyle = .mixed
 
     var body: some Scene {
@@ -46,32 +46,12 @@ struct SpatialRehabApp: App {
         .defaultSize(width: 900, height: 780)
 
         ImmersiveSpace(id: AppModel.activitySpaceID) {
-            switch appModel.currentActivity {
-            case .touchTheDots:
-                TouchTheDotsSpaceView()
-                    .environment(appModel)
-            case .wayfinding:
-                WayfindingSpaceView()
-                    .environment(appModel)
-            case .findHome:
-                if #available(visionOS 26.0, *) {
-                    FindHomeImmersiveView()
-                        .environment(appModel)
-                } else {
-                    EmptyView()
-                }
-            case .routeMemory:
-                RouteMemoryTableView()
-                    .environment(appModel)
-            }
+            RouteMemoryTableView()
+                .environment(appModel)
         }
         .immersionStyle(
             selection: Binding(
-                get: {
-                    appModel.currentActivity == .findHome || appModel.routeMemoryInside
-                        ? .full
-                        : .mixed
-                },
+                get: { appModel.routeMemoryInside ? .full : .mixed },
                 set: { _ in }
             ),
             in: .mixed, .full
