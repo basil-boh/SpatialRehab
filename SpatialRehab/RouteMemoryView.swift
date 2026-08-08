@@ -305,7 +305,7 @@ struct RouteMemoryTableView: View {
             speed += (target - speed) * min(1, dt / 0.15)
             guard speed > 0.02 else { continue }
 
-            let step = speed * 1.1 * dt
+            let step = speed * 2.2 * dt
             let oldSegment = path.segment(at: walkDistance)
             var s = min(walkDistance + step, path.total)
             let newSegment = path.segment(at: s)
