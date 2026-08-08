@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.openWindow) private var openWindow
+
     var body: some View {
         VStack(spacing: 40) {
             Image(systemName: "house.and.flag.fill")
@@ -20,10 +22,36 @@ struct ContentView: View {
                     .frame(maxWidth: 520)
             }
 
-            Button("Get Started") {}
+            VStack(spacing: 16) {
+                Button("Walk in VR (first person)") {
+                    openWindow(id: "yishun-vr-launch")
+                }
                 .font(.title2)
                 .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
+
+                Text("Left pinch walk · Right pinch turn · Arrive at Block 343")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+
+                Button("Yishun Map (overview only)") {
+                    openWindow(id: "yishun-walk")
+                }
+                .font(.title3)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+
+                Button("Hummingbird") {
+                    openWindow(id: "hummingbird")
+                }
+                .font(.title3)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+            }
         }
         .padding(60)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

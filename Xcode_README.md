@@ -78,6 +78,12 @@ You do **not** need extra capabilities or packages for the scaffold to run on th
 2. Choose a **visionOS Simulator** (e.g. **Apple Vision Pro**).
 3. Press **Play** (▶), or **Product → Run**, or `Cmd + R`.
 4. Wait for the simulator to boot. You should see a welcome window: **SpatialRehab**.
+5. From the welcome screen:
+   - **Walk in VR (first person)** — immersive path; **left hand pinch** to walk (hold = continuous), **right hand pinch** to turn L/R; green **You have arrived** at Block 343. Hand tracking needs a real Vision Pro; Simulator uses Step/Left/Right buttons.
+   - **Yishun Map Route** — MapKit overview (polyline, Look Around, traffic-light coaching). Toolbar **Signal preview** for volumetric light.
+   - **Hummingbird** — existing volumetric USDZ demo.
+
+Network access is required for `MKDirections` and Look Around imagery.
 
 If you have no visionOS runtime: **Xcode → Settings → Platforms** and install **visionOS**.
 
@@ -95,7 +101,7 @@ If you have no visionOS runtime: **Xcode → Settings → Platforms** and instal
 |---------|--------|
 | **Product name** | SpatialRehab |
 | **Platform** | visionOS only |
-| **Minimum deployment** | visionOS **2.0** |
+| **Minimum deployment** | visionOS **26.0** (raised from 2.0 for the `.manipulable()` hand-interaction API) |
 | **Language / UI** | Swift + SwiftUI |
 | **Entry point** | `SpatialRehab/SpatialRehabApp.swift` |
 | **Main UI** | `SpatialRehab/ContentView.swift` (welcome screen) |
@@ -116,8 +122,16 @@ SpatialRehab/                      ← repo root
 └── SpatialRehab/                  ← app source
     ├── SpatialRehabApp.swift
     ├── ContentView.swift
+    ├── HummingbirdVolumeView.swift
+    ├── YishunWalk/                ← MapKit walking demo (Yishun route)
     ├── Info.plist
     └── Assets.xcassets/
+```
+
+After adding Swift files under `SpatialRehab/`, regenerate the Xcode project if needed:
+
+```bash
+xcodegen generate
 ```
 
 ---

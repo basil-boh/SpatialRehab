@@ -27,5 +27,7 @@
 	</dict>
 	<key>UILaunchScreen</key>
 	<dict/>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>SpatialRehab uses hand tracking so you can walk and turn in the first-person Yishun practice walk with pinch gestures.</string>
 </dict>
 </plist>

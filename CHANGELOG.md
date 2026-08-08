@@ -7,6 +7,18 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## [Unreleased]
 
+### Added
+
+- **First-person VR walk (ImmersiveSpace)**: full immersion path toward Block 343 with **hand-tracking pinches** — left pinch = step / hold to keep walking, right pinch + hand L/R = turn (hold continues). Floating HUD, green destination door, **“You have arrived”** banner. Button fallback for Simulator. `HandPinchLocomotion` + `NSHandsTrackingUsageDescription`. Launch: **Walk in VR (first person)** → `yishun-vr-walk`.
+- **Yishun MapKit guided walk** (`szehao-mapkit-yishun-walking`): fixed walking route from Northpoint City → Block 343 Yishun Ave 11 using `MKDirections` + SwiftUI `Map` polyline, virtual walker progress with start/pause/next, dementia-friendly crossing prompts, MapKit Look Around along the path, curated traffic-light POIs with slow state cycles, and a volumetric placeholder RealityKit traffic light (named `RedLight` / `YellowLight` / `GreenLight` for a future USDZ swap). Entry from welcome via **Yishun Walking Route**; shared `WalkSessionModel` syncs map markers and the volume preview.
+- Files under `SpatialRehab/YishunWalk/` (route loader, session model, map, Look Around, guidance, Reality placeholder); `WindowGroup` ids `yishun-walk` and `traffic-light-preview` in `SpatialRehabApp.swift`.
+
+- Hummingbird volumetric window: `hummingbird_anim.usdz` added to the app bundle, a new `HummingbirdVolumeView.swift` displays it via `Model3D` with `.manipulable()` so it can be grabbed, moved, and rotated by hand, and a second `WindowGroup(id: "hummingbird")` with `.windowStyle(.volumetric)` declares the scene in `SpatialRehabApp.swift`. The "Get Started" button in `ContentView.swift` now opens it via `openWindow(id:)`.
+
+### Changed
+
+- `project.yml` minimum deployment raised from visionOS **2.0** to **26.0** — required by the `.manipulable()` gesture API used for hand interaction with the hummingbird model. This narrows device/OS support versus the prior floor; revisit if older visionOS targets become a requirement.
+
 ### Removed
 
 - **mac2visionOS / Mac Link** stack for the hackathon: SPM dependency, multiplatform macOS target, Bonjour/local-network Info.plist keys, sandbox network entitlements, and bubble host/controller/smoke/stability UI files. Local dev is **visionOS Simulator only**.
