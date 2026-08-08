@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "single_door_mirrored_wardrobe",
+  "root_prim": "/single_door_mirrored_wardrobe",
+  "links": [
+    {
+      "name": "carcass",
+      "usd_path": "/single_door_mirrored_wardrobe/carcass",
+      "mass": null
+    },
+    {
+      "name": "mirror_door",
+      "usd_path": "/single_door_mirrored_wardrobe/carcass/mirror_door",
+      "mass": null
+    },
+    {
+      "name": "drawer_0",
+      "usd_path": "/single_door_mirrored_wardrobe/carcass/drawer_0",
+      "mass": null
+    },
+    {
+      "name": "drawer_1",
+      "usd_path": "/single_door_mirrored_wardrobe/carcass/drawer_1",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "door_hinge",
+      "usd_path": "/single_door_mirrored_wardrobe/Joints/door_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/single_door_mirrored_wardrobe/carcass",
+      "child_path": "/single_door_mirrored_wardrobe/carcass/mirror_door",
+      "origin_xyz": [
+        -0.514,
+        -0.294,
+        0.975
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "drawer_0_slide",
+      "usd_path": "/single_door_mirrored_wardrobe/Joints/drawer_0_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/single_door_mirrored_wardrobe/carcass",
+      "child_path": "/single_door_mirrored_wardrobe/carcass/drawer_0",
+      "origin_xyz": [
+        0.365,
+        -0.294,
+        0.615
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "drawer_1_slide",
+      "usd_path": "/single_door_mirrored_wardrobe/Joints/drawer_1_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/single_door_mirrored_wardrobe/carcass",
+      "child_path": "/single_door_mirrored_wardrobe/carcass/drawer_1",
+      "origin_xyz": [
+        0.365,
+        -0.294,
+        1.305
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

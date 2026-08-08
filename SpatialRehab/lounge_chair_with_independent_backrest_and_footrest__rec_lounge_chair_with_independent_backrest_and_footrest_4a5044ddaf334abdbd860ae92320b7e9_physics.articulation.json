@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "reclining_lounge_chair",
+  "root_prim": "/reclining_lounge_chair",
+  "links": [
+    {
+      "name": "seat_base",
+      "usd_path": "/reclining_lounge_chair/seat_base",
+      "mass": null
+    },
+    {
+      "name": "backrest",
+      "usd_path": "/reclining_lounge_chair/seat_base/backrest",
+      "mass": null
+    },
+    {
+      "name": "footrest",
+      "usd_path": "/reclining_lounge_chair/seat_base/footrest",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "back_hinge",
+      "usd_path": "/reclining_lounge_chair/Joints/back_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/reclining_lounge_chair/seat_base",
+      "child_path": "/reclining_lounge_chair/seat_base/backrest",
+      "origin_xyz": [
+        -0.465,
+        0.0,
+        0.505
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.610865,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "footrest_hinge",
+      "usd_path": "/reclining_lounge_chair/Joints/footrest_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/reclining_lounge_chair/seat_base",
+      "child_path": "/reclining_lounge_chair/seat_base/footrest",
+      "origin_xyz": [
+        0.485,
+        0.0,
+        0.49
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.39626,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "object": "cold_press_smoothie_blender",
+  "root_prim": "/cold_press_smoothie_blender",
+  "links": [
+    {
+      "name": "base",
+      "usd_path": "/cold_press_smoothie_blender/base",
+      "mass": null
+    },
+    {
+      "name": "jar",
+      "usd_path": "/cold_press_smoothie_blender/base/jar",
+      "mass": null
+    },
+    {
+      "name": "blade",
+      "usd_path": "/cold_press_smoothie_blender/base/jar/blade",
+      "mass": null
+    },
+    {
+      "name": "fill_cap",
+      "usd_path": "/cold_press_smoothie_blender/base/jar/fill_cap",
+      "mass": null
+    },
+    {
+      "name": "speed_dial",
+      "usd_path": "/cold_press_smoothie_blender/base/speed_dial",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "base_to_jar",
+      "usd_path": "/cold_press_smoothie_blender/Joints/base_to_jar",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cold_press_smoothie_blender/base",
+      "child_path": "/cold_press_smoothie_blender/base/jar",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.183
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.42,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "jar_to_blade",
+      "usd_path": "/cold_press_smoothie_blender/Joints/jar_to_blade",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/cold_press_smoothie_blender/base/jar",
+      "child_path": "/cold_press_smoothie_blender/base/jar/blade",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.096
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "jar_to_fill_cap",
+      "usd_path": "/cold_press_smoothie_blender/Joints/jar_to_fill_cap",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cold_press_smoothie_blender/base/jar",
+      "child_path": "/cold_press_smoothie_blender/base/jar/fill_cap",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.462
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 6.28319,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "base_to_speed_dial",
+      "usd_path": "/cold_press_smoothie_blender/Joints/base_to_speed_dial",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cold_press_smoothie_blender/base",
+      "child_path": "/cold_press_smoothie_blender/base/speed_dial",
+      "origin_xyz": [
+        -0.07,
+        -0.148,
+        0.084
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -2.25,
+      "upper": 2.25,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

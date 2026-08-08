@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "cereal_box_top_flaps",
+  "root_prim": "/cereal_box_top_flaps",
+  "links": [
+    {
+      "name": "box",
+      "usd_path": "/cereal_box_top_flaps/box",
+      "mass": null
+    },
+    {
+      "name": "outer_flap",
+      "usd_path": "/cereal_box_top_flaps/box/outer_flap",
+      "mass": null
+    },
+    {
+      "name": "inner_flap",
+      "usd_path": "/cereal_box_top_flaps/box/inner_flap",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "rear_hinge",
+      "usd_path": "/cereal_box_top_flaps/Joints/rear_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cereal_box_top_flaps/box",
+      "child_path": "/cereal_box_top_flaps/box/outer_flap",
+      "origin_xyz": [
+        0.0,
+        0.0325,
+        0.305
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 2.05949,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "front_hinge",
+      "usd_path": "/cereal_box_top_flaps/Joints/front_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cereal_box_top_flaps/box",
+      "child_path": "/cereal_box_top_flaps/box/inner_flap",
+      "origin_xyz": [
+        0.0,
+        -0.03,
+        0.305
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.8326,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

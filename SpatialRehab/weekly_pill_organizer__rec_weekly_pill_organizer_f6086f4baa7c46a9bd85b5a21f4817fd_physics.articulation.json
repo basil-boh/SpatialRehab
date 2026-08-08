@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "object": "twice_daily_pill_organizer",
+  "root_prim": "/twice_daily_pill_organizer",
+  "links": [
+    {
+      "name": "tray",
+      "usd_path": "/twice_daily_pill_organizer/tray",
+      "mass": null
+    },
+    {
+      "name": "front_lid",
+      "usd_path": "/twice_daily_pill_organizer/tray/front_lid",
+      "mass": null
+    },
+    {
+      "name": "rear_lid",
+      "usd_path": "/twice_daily_pill_organizer/tray/rear_lid",
+      "mass": null
+    },
+    {
+      "name": "tablet_0",
+      "usd_path": "/twice_daily_pill_organizer/tray/tablet_0",
+      "mass": null
+    },
+    {
+      "name": "tablet_1",
+      "usd_path": "/twice_daily_pill_organizer/tray/tablet_1",
+      "mass": null
+    },
+    {
+      "name": "capsule_0",
+      "usd_path": "/twice_daily_pill_organizer/tray/capsule_0",
+      "mass": null
+    },
+    {
+      "name": "capsule_1",
+      "usd_path": "/twice_daily_pill_organizer/tray/capsule_1",
+      "mass": null
+    },
+    {
+      "name": "tablet_2",
+      "usd_path": "/twice_daily_pill_organizer/tray/tablet_2",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "tray_to_front_lid",
+      "usd_path": "/twice_daily_pill_organizer/Joints/tray_to_front_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/front_lid",
+      "origin_xyz": [
+        0.0,
+        -0.0544,
+        0.0265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -1.12,
+      "upper": 0.22,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_rear_lid",
+      "usd_path": "/twice_daily_pill_organizer/Joints/tray_to_rear_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/rear_lid",
+      "origin_xyz": [
+        0.0,
+        0.0544,
+        0.0265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.25,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_tablet_0",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/tablet_0",
+      "origin_xyz": [
+        -0.1185,
+        -0.023,
+        0.0094
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_tablet_1",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/tablet_1",
+      "origin_xyz": [
+        -0.07,
+        -0.03,
+        0.0093
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_capsule_0",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/capsule_0",
+      "origin_xyz": [
+        0.0,
+        -0.022,
+        0.0112
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.45
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_capsule_1",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/capsule_1",
+      "origin_xyz": [
+        0.075,
+        -0.029,
+        0.0112
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.35
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_tablet_2",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/twice_daily_pill_organizer/tray",
+      "child_path": "/twice_daily_pill_organizer/tray/tablet_2",
+      "origin_xyz": [
+        0.1165,
+        -0.024,
+        0.0095
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

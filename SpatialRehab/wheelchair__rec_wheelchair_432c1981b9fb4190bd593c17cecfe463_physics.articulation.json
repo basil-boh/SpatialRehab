@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "object": "premium_consumer_wheelchair",
+  "root_prim": "/premium_consumer_wheelchair",
+  "links": [
+    {
+      "name": "frame",
+      "usd_path": "/premium_consumer_wheelchair/frame",
+      "mass": null
+    },
+    {
+      "name": "left_drive_wheel",
+      "usd_path": "/premium_consumer_wheelchair/frame/left_drive_wheel",
+      "mass": null
+    },
+    {
+      "name": "right_drive_wheel",
+      "usd_path": "/premium_consumer_wheelchair/frame/right_drive_wheel",
+      "mass": null
+    },
+    {
+      "name": "left_caster_yoke",
+      "usd_path": "/premium_consumer_wheelchair/frame/left_caster_yoke",
+      "mass": null
+    },
+    {
+      "name": "left_caster_wheel",
+      "usd_path": "/premium_consumer_wheelchair/frame/left_caster_yoke/left_caster_wheel",
+      "mass": null
+    },
+    {
+      "name": "right_caster_yoke",
+      "usd_path": "/premium_consumer_wheelchair/frame/right_caster_yoke",
+      "mass": null
+    },
+    {
+      "name": "right_caster_wheel",
+      "usd_path": "/premium_consumer_wheelchair/frame/right_caster_yoke/right_caster_wheel",
+      "mass": null
+    },
+    {
+      "name": "backrest",
+      "usd_path": "/premium_consumer_wheelchair/frame/backrest",
+      "mass": null
+    },
+    {
+      "name": "left_footrest",
+      "usd_path": "/premium_consumer_wheelchair/frame/left_footrest",
+      "mass": null
+    },
+    {
+      "name": "right_footrest",
+      "usd_path": "/premium_consumer_wheelchair/frame/right_footrest",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "left_drive_spin",
+      "usd_path": "/premium_consumer_wheelchair/Joints/left_drive_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/left_drive_wheel",
+      "origin_xyz": [
+        -0.315,
+        0.365,
+        0.315
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_drive_spin",
+      "usd_path": "/premium_consumer_wheelchair/Joints/right_drive_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/right_drive_wheel",
+      "origin_xyz": [
+        -0.315,
+        -0.365,
+        0.315
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_caster_swivel",
+      "usd_path": "/premium_consumer_wheelchair/Joints/left_caster_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/left_caster_yoke",
+      "origin_xyz": [
+        0.385,
+        0.275,
+        0.345
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_caster_spin",
+      "usd_path": "/premium_consumer_wheelchair/Joints/left_caster_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame/left_caster_yoke",
+      "child_path": "/premium_consumer_wheelchair/frame/left_caster_yoke/left_caster_wheel",
+      "origin_xyz": [
+        -0.045,
+        0.0,
+        -0.205
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_caster_swivel",
+      "usd_path": "/premium_consumer_wheelchair/Joints/right_caster_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/right_caster_yoke",
+      "origin_xyz": [
+        0.385,
+        -0.275,
+        0.345
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_caster_spin",
+      "usd_path": "/premium_consumer_wheelchair/Joints/right_caster_spin",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame/right_caster_yoke",
+      "child_path": "/premium_consumer_wheelchair/frame/right_caster_yoke/right_caster_wheel",
+      "origin_xyz": [
+        -0.045,
+        0.0,
+        -0.205
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "back_hinge",
+      "usd_path": "/premium_consumer_wheelchair/Joints/back_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/backrest",
+      "origin_xyz": [
+        -0.245,
+        0.0,
+        0.535
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": -0.18,
+      "upper": 0.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_footrest_swing",
+      "usd_path": "/premium_consumer_wheelchair/Joints/left_footrest_swing",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/left_footrest",
+      "origin_xyz": [
+        0.435,
+        0.245,
+        0.44
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": -0.15,
+      "upper": 1.15,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_footrest_swing",
+      "usd_path": "/premium_consumer_wheelchair/Joints/right_footrest_swing",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/premium_consumer_wheelchair/frame",
+      "child_path": "/premium_consumer_wheelchair/frame/right_footrest",
+      "origin_xyz": [
+        0.435,
+        -0.245,
+        0.44
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": -0.15,
+      "upper": 1.15,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

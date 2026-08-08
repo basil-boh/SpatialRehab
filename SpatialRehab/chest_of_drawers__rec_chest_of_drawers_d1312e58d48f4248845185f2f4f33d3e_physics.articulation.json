@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "object": "five_drawer_walnut_tallboy",
+  "root_prim": "/five_drawer_walnut_tallboy",
+  "links": [
+    {
+      "name": "cabinet",
+      "usd_path": "/five_drawer_walnut_tallboy/cabinet",
+      "mass": null
+    },
+    {
+      "name": "drawer_0",
+      "usd_path": "/five_drawer_walnut_tallboy/cabinet/drawer_0",
+      "mass": null
+    },
+    {
+      "name": "drawer_1",
+      "usd_path": "/five_drawer_walnut_tallboy/cabinet/drawer_1",
+      "mass": null
+    },
+    {
+      "name": "drawer_2",
+      "usd_path": "/five_drawer_walnut_tallboy/cabinet/drawer_2",
+      "mass": null
+    },
+    {
+      "name": "drawer_3",
+      "usd_path": "/five_drawer_walnut_tallboy/cabinet/drawer_3",
+      "mass": null
+    },
+    {
+      "name": "drawer_4",
+      "usd_path": "/five_drawer_walnut_tallboy/cabinet/drawer_4",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "cabinet_to_drawer_0",
+      "usd_path": "/five_drawer_walnut_tallboy/Joints/cabinet_to_drawer_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/five_drawer_walnut_tallboy/cabinet",
+      "child_path": "/five_drawer_walnut_tallboy/cabinet/drawer_0",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.2775
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.28,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_1",
+      "usd_path": "/five_drawer_walnut_tallboy/Joints/cabinet_to_drawer_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/five_drawer_walnut_tallboy/cabinet",
+      "child_path": "/five_drawer_walnut_tallboy/cabinet/drawer_1",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.534
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.28,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_2",
+      "usd_path": "/five_drawer_walnut_tallboy/Joints/cabinet_to_drawer_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/five_drawer_walnut_tallboy/cabinet",
+      "child_path": "/five_drawer_walnut_tallboy/cabinet/drawer_2",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.7655
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.28,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_3",
+      "usd_path": "/five_drawer_walnut_tallboy/Joints/cabinet_to_drawer_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/five_drawer_walnut_tallboy/cabinet",
+      "child_path": "/five_drawer_walnut_tallboy/cabinet/drawer_3",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.972
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.28,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_4",
+      "usd_path": "/five_drawer_walnut_tallboy/Joints/cabinet_to_drawer_4",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/five_drawer_walnut_tallboy/cabinet",
+      "child_path": "/five_drawer_walnut_tallboy/cabinet/drawer_4",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        1.156
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.28,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

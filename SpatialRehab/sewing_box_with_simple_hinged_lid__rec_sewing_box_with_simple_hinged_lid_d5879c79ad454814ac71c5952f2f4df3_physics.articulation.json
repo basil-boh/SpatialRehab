@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "cost_optimized_sewing_box",
+  "root_prim": "/cost_optimized_sewing_box",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/cost_optimized_sewing_box/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/cost_optimized_sewing_box/body/lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_lid",
+      "usd_path": "/cost_optimized_sewing_box/Joints/body_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cost_optimized_sewing_box/body",
+      "child_path": "/cost_optimized_sewing_box/body/lid",
+      "origin_xyz": [
+        0.0,
+        0.128,
+        0.1225
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.85,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "compact_dorm_microwave",
+  "root_prim": "/compact_dorm_microwave",
+  "links": [
+    {
+      "name": "cabinet",
+      "usd_path": "/compact_dorm_microwave/cabinet",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/compact_dorm_microwave/cabinet/door",
+      "mass": null
+    },
+    {
+      "name": "knob",
+      "usd_path": "/compact_dorm_microwave/cabinet/knob",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "door_hinge",
+      "usd_path": "/compact_dorm_microwave/Joints/door_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/compact_dorm_microwave/cabinet",
+      "child_path": "/compact_dorm_microwave/cabinet/door",
+      "origin_xyz": [
+        -0.205,
+        -0.185,
+        0.13
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.92,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "knob_shaft",
+      "usd_path": "/compact_dorm_microwave/Joints/knob_shaft",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/compact_dorm_microwave/cabinet",
+      "child_path": "/compact_dorm_microwave/cabinet/knob",
+      "origin_xyz": [
+        0.1625,
+        -0.17,
+        0.145
+      ],
+      "origin_rpy": [
+        1.5708,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 5.2,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

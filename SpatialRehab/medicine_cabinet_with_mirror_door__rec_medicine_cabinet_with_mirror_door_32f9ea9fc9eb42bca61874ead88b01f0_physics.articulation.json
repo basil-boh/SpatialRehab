@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "corner_medicine_cabinet",
+  "root_prim": "/corner_medicine_cabinet",
+  "links": [
+    {
+      "name": "steel_body",
+      "usd_path": "/corner_medicine_cabinet/steel_body",
+      "mass": 5.2
+    },
+    {
+      "name": "mirror_door",
+      "usd_path": "/corner_medicine_cabinet/steel_body/mirror_door",
+      "mass": 2.4
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_door",
+      "usd_path": "/corner_medicine_cabinet/Joints/body_to_door",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/corner_medicine_cabinet/steel_body",
+      "child_path": "/corner_medicine_cabinet/steel_body/mirror_door",
+      "origin_xyz": [
+        -0.348485,
+        -0.00848528,
+        0.0
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.785398
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.75,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

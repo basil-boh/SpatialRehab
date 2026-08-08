@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "vintage_biscuit_tin",
+  "root_prim": "/vintage_biscuit_tin",
+  "links": [
+    {
+      "name": "tin_body",
+      "usd_path": "/vintage_biscuit_tin/tin_body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/vintage_biscuit_tin/tin_body/lid",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "lid_hinge",
+      "usd_path": "/vintage_biscuit_tin/Joints/lid_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/vintage_biscuit_tin/tin_body",
+      "child_path": "/vintage_biscuit_tin/tin_body/lid",
+      "origin_xyz": [
+        0.0,
+        0.085,
+        0.097
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.65,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

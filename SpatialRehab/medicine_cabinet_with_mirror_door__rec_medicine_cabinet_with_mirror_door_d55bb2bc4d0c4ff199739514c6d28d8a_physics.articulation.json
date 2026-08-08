@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "wall_medicine_cabinet",
+  "root_prim": "/wall_medicine_cabinet",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/wall_medicine_cabinet/body",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/wall_medicine_cabinet/body/door",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_door",
+      "usd_path": "/wall_medicine_cabinet/Joints/body_to_door",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/wall_medicine_cabinet/body",
+      "child_path": "/wall_medicine_cabinet/body/door",
+      "origin_xyz": [
+        -0.25,
+        -0.0925,
+        0.0
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -1.15
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": -1.15,
+      "upper": 0.0,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "articulated_desk_lamp",
+  "root_prim": "/articulated_desk_lamp",
+  "links": [
+    {
+      "name": "base",
+      "usd_path": "/articulated_desk_lamp/base",
+      "mass": 2.8
+    },
+    {
+      "name": "lower_arm",
+      "usd_path": "/articulated_desk_lamp/base/lower_arm",
+      "mass": 0.45
+    },
+    {
+      "name": "upper_arm",
+      "usd_path": "/articulated_desk_lamp/base/lower_arm/upper_arm",
+      "mass": 0.36
+    },
+    {
+      "name": "lamp_head",
+      "usd_path": "/articulated_desk_lamp/base/lower_arm/upper_arm/lamp_head",
+      "mass": 0.42
+    }
+  ],
+  "joints": [
+    {
+      "name": "base_to_lower_arm",
+      "usd_path": "/articulated_desk_lamp/Joints/base_to_lower_arm",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/articulated_desk_lamp/base",
+      "child_path": "/articulated_desk_lamp/base/lower_arm",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.155
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -0.7,
+      "upper": 0.95,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lower_arm_to_upper_arm",
+      "usd_path": "/articulated_desk_lamp/Joints/lower_arm_to_upper_arm",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/articulated_desk_lamp/base/lower_arm",
+      "child_path": "/articulated_desk_lamp/base/lower_arm/upper_arm",
+      "origin_xyz": [
+        0.23,
+        0.0,
+        0.36
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -1.1,
+      "upper": 1.2,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "upper_arm_to_lamp_head",
+      "usd_path": "/articulated_desk_lamp/Joints/upper_arm_to_lamp_head",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/articulated_desk_lamp/base/lower_arm/upper_arm",
+      "child_path": "/articulated_desk_lamp/base/lower_arm/upper_arm/lamp_head",
+      "origin_xyz": [
+        0.28,
+        0.0,
+        0.27
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": -1.05,
+      "upper": 1.05,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

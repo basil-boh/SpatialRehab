@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "object": "classic_four_drawer_dresser",
+  "root_prim": "/classic_four_drawer_dresser",
+  "links": [
+    {
+      "name": "cabinet",
+      "usd_path": "/classic_four_drawer_dresser/cabinet",
+      "mass": null
+    },
+    {
+      "name": "drawer_0",
+      "usd_path": "/classic_four_drawer_dresser/cabinet/drawer_0",
+      "mass": null
+    },
+    {
+      "name": "drawer_1",
+      "usd_path": "/classic_four_drawer_dresser/cabinet/drawer_1",
+      "mass": null
+    },
+    {
+      "name": "drawer_2",
+      "usd_path": "/classic_four_drawer_dresser/cabinet/drawer_2",
+      "mass": null
+    },
+    {
+      "name": "drawer_3",
+      "usd_path": "/classic_four_drawer_dresser/cabinet/drawer_3",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "cabinet_to_drawer_0",
+      "usd_path": "/classic_four_drawer_dresser/Joints/cabinet_to_drawer_0",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/classic_four_drawer_dresser/cabinet",
+      "child_path": "/classic_four_drawer_dresser/cabinet/drawer_0",
+      "origin_xyz": [
+        0.0,
+        -0.256,
+        0.21
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_1",
+      "usd_path": "/classic_four_drawer_dresser/Joints/cabinet_to_drawer_1",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/classic_four_drawer_dresser/cabinet",
+      "child_path": "/classic_four_drawer_dresser/cabinet/drawer_1",
+      "origin_xyz": [
+        0.0,
+        -0.256,
+        0.394
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_2",
+      "usd_path": "/classic_four_drawer_dresser/Joints/cabinet_to_drawer_2",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/classic_four_drawer_dresser/cabinet",
+      "child_path": "/classic_four_drawer_dresser/cabinet/drawer_2",
+      "origin_xyz": [
+        0.0,
+        -0.256,
+        0.578
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "cabinet_to_drawer_3",
+      "usd_path": "/classic_four_drawer_dresser/Joints/cabinet_to_drawer_3",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/classic_four_drawer_dresser/cabinet",
+      "child_path": "/classic_four_drawer_dresser/cabinet/drawer_3",
+      "origin_xyz": [
+        0.0,
+        -0.256,
+        0.762
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

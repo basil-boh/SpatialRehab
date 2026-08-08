@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "amber_pharmacy_pill_bottle",
+  "root_prim": "/amber_pharmacy_pill_bottle",
+  "links": [
+    {
+      "name": "bottle",
+      "usd_path": "/amber_pharmacy_pill_bottle/bottle",
+      "mass": null
+    },
+    {
+      "name": "cap",
+      "usd_path": "/amber_pharmacy_pill_bottle/bottle/cap",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "bottle_to_cap",
+      "usd_path": "/amber_pharmacy_pill_bottle/Joints/bottle_to_cap",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/amber_pharmacy_pill_bottle/bottle",
+      "child_path": "/amber_pharmacy_pill_bottle/bottle/cap",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.082
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

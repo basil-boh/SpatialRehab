@@ -1,0 +1,430 @@
+{
+  "schema_version": 1,
+  "object": "conference_office_chair",
+  "root_prim": "/conference_office_chair",
+  "links": [
+    {
+      "name": "star_base",
+      "usd_path": "/conference_office_chair/star_base",
+      "mass": null
+    },
+    {
+      "name": "gas_column",
+      "usd_path": "/conference_office_chair/star_base/gas_column",
+      "mass": null
+    },
+    {
+      "name": "seat_support",
+      "usd_path": "/conference_office_chair/star_base/gas_column/seat_support",
+      "mass": null
+    },
+    {
+      "name": "backrest",
+      "usd_path": "/conference_office_chair/star_base/gas_column/seat_support/backrest",
+      "mass": null
+    },
+    {
+      "name": "caster_0_fork",
+      "usd_path": "/conference_office_chair/star_base/caster_0_fork",
+      "mass": null
+    },
+    {
+      "name": "caster_0_wheel",
+      "usd_path": "/conference_office_chair/star_base/caster_0_fork/caster_0_wheel",
+      "mass": null
+    },
+    {
+      "name": "caster_1_fork",
+      "usd_path": "/conference_office_chair/star_base/caster_1_fork",
+      "mass": null
+    },
+    {
+      "name": "caster_1_wheel",
+      "usd_path": "/conference_office_chair/star_base/caster_1_fork/caster_1_wheel",
+      "mass": null
+    },
+    {
+      "name": "caster_2_fork",
+      "usd_path": "/conference_office_chair/star_base/caster_2_fork",
+      "mass": null
+    },
+    {
+      "name": "caster_2_wheel",
+      "usd_path": "/conference_office_chair/star_base/caster_2_fork/caster_2_wheel",
+      "mass": null
+    },
+    {
+      "name": "caster_3_fork",
+      "usd_path": "/conference_office_chair/star_base/caster_3_fork",
+      "mass": null
+    },
+    {
+      "name": "caster_3_wheel",
+      "usd_path": "/conference_office_chair/star_base/caster_3_fork/caster_3_wheel",
+      "mass": null
+    },
+    {
+      "name": "caster_4_fork",
+      "usd_path": "/conference_office_chair/star_base/caster_4_fork",
+      "mass": null
+    },
+    {
+      "name": "caster_4_wheel",
+      "usd_path": "/conference_office_chair/star_base/caster_4_fork/caster_4_wheel",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "caster_0_swivel",
+      "usd_path": "/conference_office_chair/Joints/caster_0_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base",
+      "child_path": "/conference_office_chair/star_base/caster_0_fork",
+      "origin_xyz": [
+        0.505,
+        0.0,
+        0.175
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_0_roll",
+      "usd_path": "/conference_office_chair/Joints/caster_0_roll",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/caster_0_fork",
+      "child_path": "/conference_office_chair/star_base/caster_0_fork/caster_0_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_1_swivel",
+      "usd_path": "/conference_office_chair/Joints/caster_1_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base",
+      "child_path": "/conference_office_chair/star_base/caster_1_fork",
+      "origin_xyz": [
+        0.156054,
+        0.480284,
+        0.175
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        1.25664
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_1_roll",
+      "usd_path": "/conference_office_chair/Joints/caster_1_roll",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/caster_1_fork",
+      "child_path": "/conference_office_chair/star_base/caster_1_fork/caster_1_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_2_swivel",
+      "usd_path": "/conference_office_chair/Joints/caster_2_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base",
+      "child_path": "/conference_office_chair/star_base/caster_2_fork",
+      "origin_xyz": [
+        -0.408554,
+        0.296832,
+        0.175
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        2.51327
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_2_roll",
+      "usd_path": "/conference_office_chair/Joints/caster_2_roll",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/caster_2_fork",
+      "child_path": "/conference_office_chair/star_base/caster_2_fork/caster_2_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_3_swivel",
+      "usd_path": "/conference_office_chair/Joints/caster_3_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base",
+      "child_path": "/conference_office_chair/star_base/caster_3_fork",
+      "origin_xyz": [
+        -0.408554,
+        -0.296832,
+        0.175
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        3.76991
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_3_roll",
+      "usd_path": "/conference_office_chair/Joints/caster_3_roll",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/caster_3_fork",
+      "child_path": "/conference_office_chair/star_base/caster_3_fork/caster_3_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_4_swivel",
+      "usd_path": "/conference_office_chair/Joints/caster_4_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base",
+      "child_path": "/conference_office_chair/star_base/caster_4_fork",
+      "origin_xyz": [
+        0.156054,
+        -0.480284,
+        0.175
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        5.02655
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_4_roll",
+      "usd_path": "/conference_office_chair/Joints/caster_4_roll",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/caster_4_fork",
+      "child_path": "/conference_office_chair/star_base/caster_4_fork/caster_4_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "height_slide",
+      "usd_path": "/conference_office_chair/Joints/height_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base",
+      "child_path": "/conference_office_chair/star_base/gas_column",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.25
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.11,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "seat_swivel",
+      "usd_path": "/conference_office_chair/Joints/seat_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/gas_column",
+      "child_path": "/conference_office_chair/star_base/gas_column/seat_support",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.18
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "back_tilt",
+      "usd_path": "/conference_office_chair/Joints/back_tilt",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/conference_office_chair/star_base/gas_column/seat_support",
+      "child_path": "/conference_office_chair/star_base/gas_column/seat_support/backrest",
+      "origin_xyz": [
+        -0.265,
+        0.0,
+        0.155
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -0.1,
+      "upper": 0.38,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

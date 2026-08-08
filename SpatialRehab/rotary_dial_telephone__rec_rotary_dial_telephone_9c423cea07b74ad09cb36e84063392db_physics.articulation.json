@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "seventies_rotary_desk_telephone",
+  "root_prim": "/seventies_rotary_desk_telephone",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/seventies_rotary_desk_telephone/body",
+      "mass": null
+    },
+    {
+      "name": "dial",
+      "usd_path": "/seventies_rotary_desk_telephone/body/dial",
+      "mass": null
+    },
+    {
+      "name": "handset",
+      "usd_path": "/seventies_rotary_desk_telephone/body/handset",
+      "mass": null
+    },
+    {
+      "name": "cord",
+      "usd_path": "/seventies_rotary_desk_telephone/body/cord",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_dial",
+      "usd_path": "/seventies_rotary_desk_telephone/Joints/body_to_dial",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seventies_rotary_desk_telephone/body",
+      "child_path": "/seventies_rotary_desk_telephone/body/dial",
+      "origin_xyz": [
+        0.0,
+        -0.05358,
+        0.10015
+      ],
+      "origin_rpy": [
+        0.418879,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 5.1,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_handset",
+      "usd_path": "/seventies_rotary_desk_telephone/Joints/body_to_handset",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/seventies_rotary_desk_telephone/body",
+      "child_path": "/seventies_rotary_desk_telephone/body/handset",
+      "origin_xyz": [
+        0.0,
+        0.077,
+        0.132
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_cord",
+      "usd_path": "/seventies_rotary_desk_telephone/Joints/body_to_cord",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/seventies_rotary_desk_telephone/body",
+      "child_path": "/seventies_rotary_desk_telephone/body/cord",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

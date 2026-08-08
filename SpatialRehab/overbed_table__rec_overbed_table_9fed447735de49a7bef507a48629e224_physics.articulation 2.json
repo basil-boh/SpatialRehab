@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "object": "hospital_overbed_table",
+  "root_prim": "/hospital_overbed_table",
+  "links": [
+    {
+      "name": "base_frame",
+      "usd_path": "/hospital_overbed_table/base_frame",
+      "mass": null
+    },
+    {
+      "name": "inner_column",
+      "usd_path": "/hospital_overbed_table/base_frame/inner_column",
+      "mass": null
+    },
+    {
+      "name": "support_head",
+      "usd_path": "/hospital_overbed_table/base_frame/inner_column/support_head",
+      "mass": null
+    },
+    {
+      "name": "tray",
+      "usd_path": "/hospital_overbed_table/base_frame/inner_column/support_head/tray",
+      "mass": null
+    },
+    {
+      "name": "release_lever",
+      "usd_path": "/hospital_overbed_table/base_frame/inner_column/support_head/tray/release_lever",
+      "mass": null
+    },
+    {
+      "name": "caster_0",
+      "usd_path": "/hospital_overbed_table/base_frame/caster_0",
+      "mass": null
+    },
+    {
+      "name": "lock_tab_0",
+      "usd_path": "/hospital_overbed_table/base_frame/lock_tab_0",
+      "mass": null
+    },
+    {
+      "name": "caster_1",
+      "usd_path": "/hospital_overbed_table/base_frame/caster_1",
+      "mass": null
+    },
+    {
+      "name": "lock_tab_1",
+      "usd_path": "/hospital_overbed_table/base_frame/lock_tab_1",
+      "mass": null
+    },
+    {
+      "name": "caster_2",
+      "usd_path": "/hospital_overbed_table/base_frame/caster_2",
+      "mass": null
+    },
+    {
+      "name": "lock_tab_2",
+      "usd_path": "/hospital_overbed_table/base_frame/lock_tab_2",
+      "mass": null
+    },
+    {
+      "name": "caster_3",
+      "usd_path": "/hospital_overbed_table/base_frame/caster_3",
+      "mass": null
+    },
+    {
+      "name": "lock_tab_3",
+      "usd_path": "/hospital_overbed_table/base_frame/lock_tab_3",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "column_lift",
+      "usd_path": "/hospital_overbed_table/Joints/column_lift",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/inner_column",
+      "origin_xyz": [
+        0.0,
+        0.26,
+        0.55
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.22,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "head_mount",
+      "usd_path": "/hospital_overbed_table/Joints/head_mount",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame/inner_column",
+      "child_path": "/hospital_overbed_table/base_frame/inner_column/support_head",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.43
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_tilt",
+      "usd_path": "/hospital_overbed_table/Joints/tray_tilt",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame/inner_column/support_head",
+      "child_path": "/hospital_overbed_table/base_frame/inner_column/support_head/tray",
+      "origin_xyz": [
+        0.0,
+        -0.02,
+        0.09
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -0.18,
+      "upper": 0.55,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lever_pivot",
+      "usd_path": "/hospital_overbed_table/Joints/lever_pivot",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame/inner_column/support_head/tray",
+      "child_path": "/hospital_overbed_table/base_frame/inner_column/support_head/tray/release_lever",
+      "origin_xyz": [
+        0.0,
+        -0.492,
+        0.006
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.55,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_spin_0",
+      "usd_path": "/hospital_overbed_table/Joints/caster_spin_0",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/caster_0",
+      "origin_xyz": [
+        -0.325,
+        -0.3,
+        0.046
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lock_tab_pivot_0",
+      "usd_path": "/hospital_overbed_table/Joints/lock_tab_pivot_0",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/lock_tab_0",
+      "origin_xyz": [
+        -0.405,
+        -0.28,
+        0.102
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.85,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_spin_1",
+      "usd_path": "/hospital_overbed_table/Joints/caster_spin_1",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/caster_1",
+      "origin_xyz": [
+        0.325,
+        -0.3,
+        0.046
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lock_tab_pivot_1",
+      "usd_path": "/hospital_overbed_table/Joints/lock_tab_pivot_1",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/lock_tab_1",
+      "origin_xyz": [
+        0.405,
+        -0.28,
+        0.102
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.85,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_spin_2",
+      "usd_path": "/hospital_overbed_table/Joints/caster_spin_2",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/caster_2",
+      "origin_xyz": [
+        -0.325,
+        0.3,
+        0.046
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lock_tab_pivot_2",
+      "usd_path": "/hospital_overbed_table/Joints/lock_tab_pivot_2",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/lock_tab_2",
+      "origin_xyz": [
+        -0.405,
+        0.32,
+        0.102
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.85,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "caster_spin_3",
+      "usd_path": "/hospital_overbed_table/Joints/caster_spin_3",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/caster_3",
+      "origin_xyz": [
+        0.325,
+        0.3,
+        0.046
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lock_tab_pivot_3",
+      "usd_path": "/hospital_overbed_table/Joints/lock_tab_pivot_3",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hospital_overbed_table/base_frame",
+      "child_path": "/hospital_overbed_table/base_frame/lock_tab_3",
+      "origin_xyz": [
+        0.405,
+        0.32,
+        0.102
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.85,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

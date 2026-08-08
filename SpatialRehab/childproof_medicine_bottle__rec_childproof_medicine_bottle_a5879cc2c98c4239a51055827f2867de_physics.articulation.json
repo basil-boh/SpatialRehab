@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "white_prescription_bottle",
+  "root_prim": "/white_prescription_bottle",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/white_prescription_bottle/body",
+      "mass": null
+    },
+    {
+      "name": "cap",
+      "usd_path": "/white_prescription_bottle/body/cap",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_cap",
+      "usd_path": "/white_prescription_bottle/Joints/body_to_cap",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/white_prescription_bottle/body",
+      "child_path": "/white_prescription_bottle/body/cap",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.083
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

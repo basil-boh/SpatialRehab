@@ -1,0 +1,430 @@
+{
+  "schema_version": 1,
+  "object": "seven_day_pill_organizer",
+  "root_prim": "/seven_day_pill_organizer",
+  "links": [
+    {
+      "name": "tray",
+      "usd_path": "/seven_day_pill_organizer/tray",
+      "mass": null
+    },
+    {
+      "name": "lid_0",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_0",
+      "mass": null
+    },
+    {
+      "name": "lid_1",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_1",
+      "mass": null
+    },
+    {
+      "name": "lid_2",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_2",
+      "mass": null
+    },
+    {
+      "name": "lid_3",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_3",
+      "mass": null
+    },
+    {
+      "name": "lid_4",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_4",
+      "mass": null
+    },
+    {
+      "name": "lid_5",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_5",
+      "mass": null
+    },
+    {
+      "name": "lid_6",
+      "usd_path": "/seven_day_pill_organizer/tray/lid_6",
+      "mass": null
+    },
+    {
+      "name": "tablet_0",
+      "usd_path": "/seven_day_pill_organizer/tray/tablet_0",
+      "mass": null
+    },
+    {
+      "name": "capsule_0",
+      "usd_path": "/seven_day_pill_organizer/tray/capsule_0",
+      "mass": null
+    },
+    {
+      "name": "tablet_1",
+      "usd_path": "/seven_day_pill_organizer/tray/tablet_1",
+      "mass": null
+    },
+    {
+      "name": "tablet_2",
+      "usd_path": "/seven_day_pill_organizer/tray/tablet_2",
+      "mass": null
+    },
+    {
+      "name": "capsule_1",
+      "usd_path": "/seven_day_pill_organizer/tray/capsule_1",
+      "mass": null
+    },
+    {
+      "name": "tablet_3",
+      "usd_path": "/seven_day_pill_organizer/tray/tablet_3",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "lid_0_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_0_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_0",
+      "origin_xyz": [
+        -0.078,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.48,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_1_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_1_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_1",
+      "origin_xyz": [
+        -0.052,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -1.48,
+      "upper": 0.0,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_2_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_2_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_2",
+      "origin_xyz": [
+        -0.026,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.48,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_3_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_3_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_3",
+      "origin_xyz": [
+        0.0,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -1.48,
+      "upper": 0.0,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_4_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_4_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_4",
+      "origin_xyz": [
+        0.026,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.48,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_5_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_5_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_5",
+      "origin_xyz": [
+        0.052,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -1.48,
+      "upper": 0.0,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_6_hinge",
+      "usd_path": "/seven_day_pill_organizer/Joints/lid_6_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/lid_6",
+      "origin_xyz": [
+        0.078,
+        0.0275,
+        0.027
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.48,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tablet_0_rest",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/tablet_0",
+      "origin_xyz": [
+        -0.0565,
+        -0.007,
+        0.0058
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "capsule_0_rest",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/capsule_0",
+      "origin_xyz": [
+        -0.0475,
+        0.006,
+        0.0074
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.65
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tablet_1_rest",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/tablet_1",
+      "origin_xyz": [
+        -0.005,
+        0.006,
+        0.0058
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.4
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tablet_2_rest",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/tablet_2",
+      "origin_xyz": [
+        0.004,
+        -0.006,
+        0.0058
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.1
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "capsule_1_rest",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/capsule_1",
+      "origin_xyz": [
+        0.048,
+        -0.005,
+        0.0074
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.7
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tablet_3_rest",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/seven_day_pill_organizer/tray",
+      "child_path": "/seven_day_pill_organizer/tray/tablet_3",
+      "origin_xyz": [
+        0.057,
+        0.007,
+        0.0058
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.85
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

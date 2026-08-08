@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "thick_family_photo_album",
+  "root_prim": "/thick_family_photo_album",
+  "links": [
+    {
+      "name": "album_body",
+      "usd_path": "/thick_family_photo_album/album_body",
+      "mass": null
+    },
+    {
+      "name": "front_cover",
+      "usd_path": "/thick_family_photo_album/album_body/front_cover",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "spine_hinge",
+      "usd_path": "/thick_family_photo_album/Joints/spine_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/thick_family_photo_album/album_body",
+      "child_path": "/thick_family_photo_album/album_body/front_cover",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.076
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -0.523599,
+      "upper": 2.05949,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

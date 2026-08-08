@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "vintage_glass_medicine_bottle",
+  "root_prim": "/vintage_glass_medicine_bottle",
+  "links": [
+    {
+      "name": "bottle",
+      "usd_path": "/vintage_glass_medicine_bottle/bottle",
+      "mass": null
+    },
+    {
+      "name": "cap",
+      "usd_path": "/vintage_glass_medicine_bottle/bottle/cap",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "cap_twist",
+      "usd_path": "/vintage_glass_medicine_bottle/Joints/cap_twist",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/vintage_glass_medicine_bottle/bottle",
+      "child_path": "/vintage_glass_medicine_bottle/bottle/cap",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.123
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}
