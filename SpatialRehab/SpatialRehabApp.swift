@@ -4,6 +4,7 @@ import SwiftUI
 struct SpatialRehabApp: App {
     @State private var walkSession = WalkSessionModel()
     @State private var immersiveWalk = ImmersiveWalkSession()
+    @State private var whoAmISession = WhoAmISessionModel()
     @State private var immersionStyle: ImmersionStyle = .full
 
     var body: some Scene {
@@ -43,5 +44,17 @@ struct SpatialRehabApp: App {
                 .environment(immersiveWalk)
         }
         .immersionStyle(selection: $immersionStyle, in: .full)
+
+        // “Who am I?” — nest + circle summon (name card opens as a second window).
+        WindowGroup(id: "who-am-i") {
+            WhoAmIView()
+                .environment(whoAmISession)
+        }
+        .defaultSize(width: 1100, height: 720)
+
+        WindowGroup(id: "name-card") {
+            NameCardView(session: whoAmISession)
+        }
+        .defaultSize(width: 640, height: 560)
     }
 }

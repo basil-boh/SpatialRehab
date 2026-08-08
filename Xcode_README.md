@@ -79,6 +79,7 @@ You do **not** need extra capabilities or packages for the scaffold to run on th
 3. Press **Play** (▶), or **Product → Run**, or `Cmd + R`.
 4. Wait for the simulator to boot. You should see a welcome window: **SpatialRehab**.
 5. From the welcome screen:
+   - **Who am I?** — draw a circle (or tap **Summon**) to open Lim Chio Bu’s name card; **Family** flips to the tree; pinch **Sze Hao** for a short auto-closing greeting. **Put away** returns the card to the nest.
    - **Walk in VR (first person)** — immersive path; **left hand pinch** to walk (hold = continuous), **right hand pinch** to turn L/R; green **You have arrived** at Block 343. Hand tracking needs a real Vision Pro; Simulator uses Step/Left/Right buttons.
    - **Yishun Map Route** — MapKit overview (polyline, Look Around, traffic-light coaching). Toolbar **Signal preview** for volumetric light.
    - **Hummingbird** — existing volumetric USDZ demo.

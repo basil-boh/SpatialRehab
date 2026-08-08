@@ -23,13 +23,27 @@ struct ContentView: View {
             }
 
             VStack(spacing: 16) {
-                Button("Walk in VR (first person)") {
-                    openWindow(id: "yishun-vr-launch")
+                Button("Who am I?") {
+                    openWindow(id: "who-am-i")
                 }
                 .font(.title2)
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
+                .tint(.orange)
+
+                Text("Draw a circle · name card · family greetings")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+
+                Button("Walk in VR (first person)") {
+                    openWindow(id: "yishun-vr-launch")
+                }
+                .font(.title3)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
 
                 Text("Left pinch walk · Right pinch turn · Arrive at Block 343")
                     .font(.callout)
