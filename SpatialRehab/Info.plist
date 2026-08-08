@@ -20,6 +20,10 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSWorldSensingUsageDescription</key>
+	<string>SpatialRehab detects your tabletop to anchor guidance markers for each step of the task.</string>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>SpatialRehab watches for your hand reaching the highlighted object so it can confirm each step for you.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
