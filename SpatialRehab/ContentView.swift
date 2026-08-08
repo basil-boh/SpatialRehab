@@ -70,19 +70,16 @@ struct ContentView: View {
         }
     }
 
-    /// Deliberately generic, not step-specific — `RouteMemoryTableView.controlPanel` (the
-    /// floating panel in the immersive space itself) already shows the real, phase-accurate
-    /// instruction ("Take your time…", "Tap the corners…", the score feedback) plus the
-    /// actual buttons. This flat window used to duplicate that with its own static "Look at
-    /// the table / Study the glowing route…" text that never updated as the exercise
-    /// progressed — two competing, sometimes-contradictory instruction panels floating at
-    /// once. Combined into one: the immersive panel is now the single source of "what do I
-    /// do right now," and this window just points the person toward it.
+    /// Empty on purpose — `RouteMemoryTableView.controlPanel` (the floating panel in the
+    /// immersive space itself) already shows the real, phase-accurate instruction ("Take
+    /// your time…", "Tap the corners…", the score feedback) plus the actual buttons. This
+    /// flat window used to duplicate that with its own text (first specific and stale, then
+    /// a generic "Look around you") floating alongside the immersive panel — still a second
+    /// surface competing for attention even once it stopped saying anything wrong. Now it
+    /// shows nothing at all while the person's in the activity; the immersive panel is the
+    /// only thing there.
     private var inActivity: some View {
-        VStack(spacing: 16) {
-            Text("Look around you")
-                .font(.system(size: 44, weight: .semibold))
-        }
+        EmptyView()
     }
 
     private var finished: some View {
