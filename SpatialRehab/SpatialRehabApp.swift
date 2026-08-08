@@ -2,9 +2,10 @@ import SwiftUI
 
 @main
 struct SpatialRehabApp: App {
-    /// Single shared session for the "Making Tea" prototype task. Owned at the app level so
-    /// the 2D window (instructions) and the immersive space (spatial markers) stay in sync
-    /// without any extra plumbing.
+    /// Session for the "Making Tea" prototype task's `ImmersiveSpace` scene below. Not
+    /// currently reachable from `ContentView` — its "Get Started" flow is disabled while
+    /// baseline-metrics is the active focus (see `ContentView.swift`) — but kept declared
+    /// here so the scene/session still exist for teammates continuing that work.
     @StateObject private var teaSession = TaskSession(steps: TeaTaskContent.steps)
 
     /// Gates the baseline assessment within a single run: starts `false` every launch, flips
@@ -26,7 +27,7 @@ struct SpatialRehabApp: App {
     var body: some Scene {
         WindowGroup {
             if hasCompletedBaseline {
-                ContentView(session: teaSession)
+                ContentView()
             } else {
                 BaselineAssessmentView(session: baselineSession, onFinished: {
                     hasCompletedBaseline = true

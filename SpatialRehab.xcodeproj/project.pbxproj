@@ -19,6 +19,7 @@
 		50B59D6F42CB227A59992951 /* ArithmeticGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */; };
 		54E345F2806BA2A5AFA0FB8C /* ArithmeticResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9746F6FB0D24798750A7F /* ArithmeticResult.swift */; };
 		67F6879C8FC2BD3A331960DA /* WordMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */; };
+		686AD077AC8A3234B17CCFEE /* BaselineResultsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */; };
 		79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */; };
 		7C77020217ADA283CA90A874 /* WordMemoryTrial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
@@ -37,6 +38,7 @@
 		08F9746F6FB0D24798750A7F /* ArithmeticResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArithmeticResult.swift; sourceTree = "<group>"; };
 		0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentView.swift; sourceTree = "<group>"; };
 		0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveTaskView.swift; sourceTree = "<group>"; };
+		13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsDebugView.swift; sourceTree = "<group>"; };
 		182E1F7EF38311CE27E5D136 /* BaselineAssessmentContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentContent.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryTrial.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			children = (
 				7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */,
 				0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */,
+				13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */,
 				9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */,
 				061D02385783F2C35C763A5E /* GuidanceCardView.swift */,
 				0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */,
@@ -197,6 +200,7 @@
 				055A02236D8E86AFB8B4D416 /* BaselineAssessmentContent.swift in Sources */,
 				F9408C111AF66965AFC32B2F /* BaselineAssessmentSession.swift in Sources */,
 				F63EAFB0A6608F6F1598A3CC /* BaselineAssessmentView.swift in Sources */,
+				686AD077AC8A3234B17CCFEE /* BaselineResultsDebugView.swift in Sources */,
 				0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */,
 				407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */,
 				79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */,

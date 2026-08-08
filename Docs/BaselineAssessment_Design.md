@@ -90,6 +90,20 @@ feedback:
   system sound than the shared `playTap()` used by pattern-matching/arithmetic), since word
   selections happen more rapidly/repeatedly than the other games' taps.
 
+### Dev-only results view, AR task disabled for now (2026-08-08)
+
+`ContentView` (reached after the battery finishes) previously opened the AR "Making Tea"
+guided task via its "Get Started" button. That's disabled while baseline-metrics is the
+active focus — the button now opens `BaselineResultsDebugView` instead, a raw dump of
+everything `BaselineResultsStore` has captured (word lists, tapped words, pattern-matching
+move count, arithmetic per-problem answers, the clock-drawing timestamp and saved sketch
+image itself). This is explicitly a **developer tool**, not a caregiver-facing feature —
+the patient-facing summary screen at the end of the battery still shows no score at all,
+unchanged from the no-punishment principle above. `SpatialRehabApp` still declares the
+`ImmersiveSpace` scene and owns `teaSession`; the AR task's source files are untouched, just
+not entered from this screen right now, so re-enabling it later is a small, localized change
+in `ContentView.swift`.
+
 ## Known gaps (intentional, for a first prototype)
 
 - No automated clock-drawing scoring — see above. Only the rasterized PNG is kept, not

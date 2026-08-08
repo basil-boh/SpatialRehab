@@ -20,6 +20,16 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- (2026-08-08) `ContentView.swift`'s "Get Started" flow — which previously opened the AR
+  "Making Tea" immersive task — is disabled while baseline-metrics is the active focus.
+  Replaced with a dev-only "View Baseline Data (Dev)" button that presents the new
+  `SpatialRehab/Views/BaselineResultsDebugView.swift`: a raw data dump (target/tapped
+  words, pattern-matching pairs/moves, arithmetic per-problem answers, clock-drawing
+  capture timestamp + saved sketch image) read directly from `BaselineResultsStore`, for
+  verifying scoring/capture without leaving the app. The patient-facing baseline summary
+  screen still shows **no score** — this is a separate, explicitly dev-only surface.
+  `SpatialRehabApp` still declares the `ImmersiveSpace` scene and owns `teaSession` so the
+  AR task isn't deleted, just unreachable from this entry point for now.
 - (2026-08-08) Word-memory game refinements: a visible study countdown (number + progress
   bar) instead of a silent timer, selected words now highlight in **green only** (removed
   the per-word pastel color palette added earlier the same day), and word taps use a new

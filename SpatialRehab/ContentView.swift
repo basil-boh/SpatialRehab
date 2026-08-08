@@ -1,35 +1,17 @@
 import SwiftUI
 
-/// Welcome screen leads into the guided task. The window stays open alongside the
-/// immersive space (visionOS supports both at once) so the instruction card is always in a
-/// predictable, user-repositionable window rather than pinned in 3D space.
+/// Welcome screen shown after the baseline assessment finishes.
+///
+/// The AR "Making Tea" guided task (previously launched from here via the immersive space)
+/// is disabled on this branch while baseline-metrics is the active focus — see
+/// `Docs/BaselineAssessment_Design.md`. `SpatialRehabApp` still declares the `ImmersiveSpace`
+/// scene and owns `teaSession`, so that work isn't deleted, just not entered from here for
+/// now. In its place, a dev-only button surfaces the raw data the baseline battery captured,
+/// for verifying scoring/capture without leaving the app.
 struct ContentView: View {
-    @ObservedObject var session: TaskSession
-
-    @State private var isImmersiveSpaceOpen = false
-    @State private var isOpeningImmersiveSpace = false
-    @State private var immersiveSpaceErrorMessage: String?
-    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
-    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @State private var showingBaselineResults = false
 
     var body: some View {
-        VStack(spacing: 28) {
-            if isImmersiveSpaceOpen {
-                GuidanceCardView(session: session)
-
-                Button("End Task", role: .destructive) {
-                    Task { await endImmersiveSpace() }
-                }
-                .buttonStyle(.bordered)
-            } else {
-                welcomeContent
-            }
-        }
-        .padding(40)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    private var welcomeContent: some View {
         VStack(spacing: 40) {
             Image(systemName: "house.and.flag.fill")
                 .font(.system(size: 80))
@@ -46,56 +28,23 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 520)
-
-                Text("Prototype: Making a Cup of Tea")
-                    .font(.footnote)
-                    .foregroundStyle(.tertiary)
             }
 
-            Button(isOpeningImmersiveSpace ? "Starting…" : "Get Started") {
-                Task { await startImmersiveSpace() }
+            Button("View Baseline Data (Dev)") {
+                showingBaselineResults = true
             }
             .font(.title2)
             .buttonStyle(.borderedProminent)
             .controlSize(.extraLarge)
-            .disabled(isOpeningImmersiveSpace)
-
-            // Surfaced instead of silently doing nothing — a failed/cancelled
-            // openImmersiveSpace() used to leave the screen looking unchanged, which was
-            // indistinguishable from the tap not registering at all.
-            if let immersiveSpaceErrorMessage {
-                Text(immersiveSpaceErrorMessage)
-                    .font(.footnote)
-                    .foregroundStyle(.red)
-                    .multilineTextAlignment(.center)
-            }
         }
-    }
-
-    private func startImmersiveSpace() async {
-        session.reset()
-        immersiveSpaceErrorMessage = nil
-        isOpeningImmersiveSpace = true
-        let result = await openImmersiveSpace(id: ImmersiveSpaceID.teaTask)
-        isOpeningImmersiveSpace = false
-        switch result {
-        case .opened:
-            isImmersiveSpaceOpen = true
-        case .userCancelled:
-            immersiveSpaceErrorMessage = "Cancelled — tap Get Started to try again."
-        case .error:
-            immersiveSpaceErrorMessage = "Couldn't start the guided task. Check Xcode's console for the underlying error, and that Hand Tracking / World Sensing permissions weren't denied in Settings."
-        @unknown default:
-            immersiveSpaceErrorMessage = "Something unexpected happened opening the guided task."
+        .padding(60)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .sheet(isPresented: $showingBaselineResults) {
+            BaselineResultsDebugView()
         }
-    }
-
-    private func endImmersiveSpace() async {
-        await dismissImmersiveSpace()
-        isImmersiveSpaceOpen = false
     }
 }
 
 #Preview(windowStyle: .automatic) {
-    ContentView(session: TaskSession(steps: TeaTaskContent.steps))
+    ContentView()
 }
