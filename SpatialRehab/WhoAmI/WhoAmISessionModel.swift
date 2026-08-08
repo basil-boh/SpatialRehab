@@ -152,6 +152,18 @@ final class WhoAmISessionModel {
 
         playingMemberID = member.id
         videoProgress = 0
+
+        if member.videoURL != nil {
+            // Real video: the player calls finishGreeting when playback ends;
+            // this is only a safety net if loading stalls.
+            let id = member.id
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(30))
+                finishGreeting(for: id)
+            }
+            return
+        }
+
         let duration: Duration = .seconds(4)
         let steps = 40
         Task { @MainActor in
@@ -164,6 +176,14 @@ final class WhoAmISessionModel {
                 playingMemberID = nil
                 videoProgress = 0
             }
+        }
+    }
+
+    func finishGreeting(for id: FamilyMember.ID) {
+        guard playingMemberID == id else { return }
+        withAnimation(.easeInOut(duration: 0.4)) {
+            playingMemberID = nil
+            videoProgress = 0
         }
     }
 

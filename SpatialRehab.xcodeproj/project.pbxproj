@@ -12,6 +12,7 @@
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		3F52A89A60CA8993963EAEB1 /* CircleDrawCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0D20D582FFEA00E2AD228 /* CircleDrawCanvas.swift */; };
 		5BBE385D30AD9D5118085EF5 /* hummingbird_anim.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */; };
+		FAB1E000000000000000B001 /* szehao_greeting.mov in Resources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A001 /* szehao_greeting.mov */; };
 		801B0B58870590FB8D0BDB1E /* PersonaModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9DA15EADC464BCB26120C2 /* PersonaModels.swift */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
 		A2F1E47DB8B41F31B9DB8496 /* HummingbirdVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */; };
@@ -35,6 +36,7 @@
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = hummingbird_anim.usdz; sourceTree = "<group>"; };
+		FAB1E000000000000000A001 /* szehao_greeting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = szehao_greeting.mov; sourceTree = "<group>"; };
 		FC9DA15EADC464BCB26120C2 /* PersonaModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +59,7 @@
 				FC9DA15EADC464BCB26120C2 /* PersonaModels.swift */,
 				5BDC232A80CE860AA6889840 /* WhoAmISessionModel.swift */,
 				A0EC6F977098E34A6D7E1332 /* WhoAmIView.swift */,
+				FAB1E000000000000000A001 /* szehao_greeting.mov */,
 			);
 			path = WhoAmI;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 			files = (
 				B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */,
 				5BBE385D30AD9D5118085EF5 /* hummingbird_anim.usdz in Resources */,
+				FAB1E000000000000000B001 /* szehao_greeting.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

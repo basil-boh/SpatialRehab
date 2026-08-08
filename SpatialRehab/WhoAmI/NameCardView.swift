@@ -1,4 +1,37 @@
+import AVKit
 import SwiftUI
+
+/// Plays a bundled family greeting once, then reports completion.
+struct GreetingVideoView: View {
+    let url: URL
+    let onFinished: () -> Void
+
+    @State private var player = AVPlayer()
+
+    var body: some View {
+        VideoPlayer(player: player)
+            .frame(height: 280)
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .strokeBorder(.orange.opacity(0.4), lineWidth: 2)
+            }
+            .onAppear {
+                player.replaceCurrentItem(with: AVPlayerItem(url: url))
+                player.play()
+            }
+            .onReceive(NotificationCenter.default.publisher(
+                for: AVPlayerItem.didPlayToEndTimeNotification
+            )) { note in
+                if (note.object as? AVPlayerItem) === player.currentItem {
+                    onFinished()
+                }
+            }
+            .onDisappear {
+                player.pause()
+            }
+    }
+}
 
 /// Floating NRIC-style card: face side, family flip side, and greeting video turn.
 struct NameCardView: View {
@@ -156,33 +189,39 @@ struct NameCardView: View {
                 .tracking(1.2)
                 .foregroundStyle(.secondary)
 
-            ZStack {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color.orange.opacity(0.25),
-                                Color.yellow.opacity(0.15),
-                                Color.orange.opacity(0.2),
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
+            if let member, let url = member.videoURL {
+                GreetingVideoView(url: url) {
+                    session.finishGreeting(for: member.id)
+                }
+            } else {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.orange.opacity(0.25),
+                                    Color.yellow.opacity(0.15),
+                                    Color.orange.opacity(0.2),
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
                         )
-                    )
-                    .frame(height: 220)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(.orange.opacity(0.4), lineWidth: 2)
-                    }
+                        .frame(height: 220)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .strokeBorder(.orange.opacity(0.4), lineWidth: 2)
+                        }
 
-                VStack(spacing: 12) {
-                    Text(member?.emoji ?? "👤")
-                        .font(.system(size: 80))
-                    if member?.hasGreetingVideo == true {
-                        Image(systemName: "play.circle.fill")
-                            .font(.title)
-                            .foregroundStyle(.orange)
-                            .symbolEffect(.pulse, options: .repeating)
+                    VStack(spacing: 12) {
+                        Text(member?.emoji ?? "👤")
+                            .font(.system(size: 80))
+                        if member?.hasGreetingVideo == true {
+                            Image(systemName: "play.circle.fill")
+                                .font(.title)
+                                .foregroundStyle(.orange)
+                                .symbolEffect(.pulse, options: .repeating)
+                        }
                     }
                 }
             }
@@ -213,10 +252,12 @@ struct NameCardView: View {
                 }
             }
 
-            ProgressView(value: session.videoProgress)
-                .tint(.orange)
-                .padding(.horizontal, 40)
-                .padding(.top, 8)
+            if member?.videoURL == nil {
+                ProgressView(value: session.videoProgress)
+                    .tint(.orange)
+                    .padding(.horizontal, 40)
+                    .padding(.top, 8)
+            }
 
             Text("Closes automatically")
                 .font(.caption)

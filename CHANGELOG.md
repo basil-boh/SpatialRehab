@@ -7,6 +7,10 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## [Unreleased]
 
+### Added
+
+- **Real greeting video for the grandson**: `szehao_greeting.mov` (9.4 MB, 3.7 s, 1080p HEVC) bundled under `WhoAmI/`; pinching Sze Hao now plays the actual video via `AVKit` (`GreetingVideoView`) — the greeting auto-closes when playback genuinely ends (`didPlayToEndTime`, 30 s safety net) instead of the fake 4 s progress loop; fake progress bar hidden for real videos. `FamilyMember` gained `videoFileName`/`videoURL` so more family videos are one-line additions.
+
 ### Fixed
 
 - **Family tree glitching** (`szehao-id-card`): three compounding causes — the card's `rotation3DEffect` flip z-fought the window's glass material on device (and pre-mirrored the tree for the whole turn); person cards stacked an extra `.hoverEffect()`/`.contentShape(.hoverEffect,…)` on Buttons that already have their own gaze highlight (two competing glows shimmering); and the tree re-laid-out when the grandchild expanded, detaching the stem connector lines. Now: the face/tree sides **crossfade** (calmer for dementia users too), the duplicate hover modifiers are removed (button border shape still shapes the highlight), and every child column reserves a fixed 185 pt grandchild slot so nothing moves when Sze Hao fades in. `name-card` window default size raised to 660×760 so the tree fits without compression.

@@ -81,6 +81,7 @@ enum DemoPersona {
             birthday: calendarDate(year: 1998, month: 6, day: 1),
             hasGreetingVideo: true,
             videoLine: "Hi, I'm Sze Hao. Love u Grandma.",
+            videoFileName: "szehao_greeting",
             childrenIDs: []
         ),
     ]
@@ -124,10 +125,17 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     let birthday: Date?
     let hasGreetingVideo: Bool
     let videoLine: String?
+    var videoFileName: String? = nil
     let childrenIDs: [ID]
 
     var bilingualRelation: String {
         "\(relationEnglish) · \(relationChinese)"
+    }
+
+    /// Bundled greeting video, when one has been recorded.
+    var videoURL: URL? {
+        guard let videoFileName else { return nil }
+        return Bundle.main.url(forResource: videoFileName, withExtension: "mov")
     }
 
     var formattedBirthday: String? {
