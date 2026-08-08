@@ -12,22 +12,25 @@
 		0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */; };
 		114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */; };
 		1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */; };
+		22987470ADE6C3FC06E298E3 /* PeopleCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C805005992F2584F7324D7 /* PeopleCardView.swift */; };
 		241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */; };
-		30DCD5F54230A8E910316922 /* CognitiveDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */; };
-		CADE4B60BBEFF806AE8DEBCA /* StimulationGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627449E4C8004EDFD1C74E6D /* StimulationGame.swift */; };
-		45D4131DDE4D7DBBD200AD63 /* GameRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */; };
 		2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */; };
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */; };
 		50B59D6F42CB227A59992951 /* ArithmeticGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */; };
 		54E345F2806BA2A5AFA0FB8C /* ArithmeticResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9746F6FB0D24798750A7F /* ArithmeticResult.swift */; };
+		5FD22381EA3F6AD3FA31C4DA /* MyPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BCFBB06B4E6DA8640BB3F1 /* MyPeopleView.swift */; };
 		67F6879C8FC2BD3A331960DA /* WordMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */; };
 		686AD077AC8A3234B17CCFEE /* BaselineResultsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */; };
+		6AB38CC2F4C9989A19ACFE8E /* StimulationGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC083DF645D3D3577AF6A17 /* StimulationGame.swift */; };
 		79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */; };
 		7C77020217ADA283CA90A874 /* WordMemoryTrial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */; };
+		941F8DCD9CB583235CB32DD6 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714AA033C39F33885AA3435F /* Person.swift */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
 		BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5634B06A4388B5CAB30C5784 /* TaskSession.swift */; };
+		C405F87D5A4F4E211D37C2FE /* CognitiveDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C67D41FAC9ED2965ABF8ABB /* CognitiveDomain.swift */; };
+		D559213961B7EDCE47AB0EE4 /* GameRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34610A47C9BD0D613D085182 /* GameRecommendationEngine.swift */; };
 		E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5DCE25CFDF584104735BA /* SoundEffects.swift */; };
 		E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */; };
 		F63EAFB0A6608F6F1598A3CC /* BaselineAssessmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */; };
@@ -45,22 +48,25 @@
 		182E1F7EF38311CE27E5D136 /* BaselineAssessmentContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineAssessmentContent.swift; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2E56A3229FEBD4FC42F01B64 /* WordMemoryTrial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryTrial.swift; sourceTree = "<group>"; };
+		34610A47C9BD0D613D085182 /* GameRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecommendationEngine.swift; sourceTree = "<group>"; };
 		35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemoryGameView.swift; sourceTree = "<group>"; };
+		42BCFBB06B4E6DA8640BB3F1 /* MyPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPeopleView.swift; sourceTree = "<group>"; };
 		54E5DCE25CFDF584104735BA /* SoundEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffects.swift; sourceTree = "<group>"; };
 		5634B06A4388B5CAB30C5784 /* TaskSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSession.swift; sourceTree = "<group>"; };
 		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C67D41FAC9ED2965ABF8ABB /* CognitiveDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CognitiveDomain.swift; sourceTree = "<group>"; };
 		5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandProximityTracker.swift; sourceTree = "<group>"; };
+		63C805005992F2584F7324D7 /* PeopleCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCardView.swift; sourceTree = "<group>"; };
 		6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingGameView.swift; sourceTree = "<group>"; };
+		714AA033C39F33885AA3435F /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingResult.swift; sourceTree = "<group>"; };
-		8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CognitiveDomain.swift; sourceTree = "<group>"; };
-		627449E4C8004EDFD1C74E6D /* StimulationGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StimulationGame.swift; sourceTree = "<group>"; };
-		8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecommendationEngine.swift; sourceTree = "<group>"; };
 		7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArithmeticGameView.swift; sourceTree = "<group>"; };
 		8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStep.swift; sourceTree = "<group>"; };
 		9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDrawingView.swift; sourceTree = "<group>"; };
 		B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaTaskContent.swift; sourceTree = "<group>"; };
 		C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDrawingResult.swift; sourceTree = "<group>"; };
 		C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialRehabApp.swift; sourceTree = "<group>"; };
+		CCC083DF645D3D3577AF6A17 /* StimulationGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StimulationGame.swift; sourceTree = "<group>"; };
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsStore.swift; sourceTree = "<group>"; };
@@ -84,7 +90,10 @@
 				9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */,
 				061D02385783F2C35C763A5E /* GuidanceCardView.swift */,
 				0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */,
+				42BCFBB06B4E6DA8640BB3F1 /* MyPeopleView.swift */,
 				6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */,
+				63C805005992F2584F7324D7 /* PeopleCardView.swift */,
+				714AA033C39F33885AA3435F /* Person.swift */,
 				35FC5720485AE6E3161A9DBF /* WordMemoryGameView.swift */,
 			);
 			path = Views;
@@ -119,12 +128,12 @@
 				05CA12C25EC8062BBAFD3935 /* BaselineAssessmentSession.swift */,
 				F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */,
 				C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */,
-				8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */,
-				8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */,
+				5C67D41FAC9ED2965ABF8ABB /* CognitiveDomain.swift */,
+				34610A47C9BD0D613D085182 /* GameRecommendationEngine.swift */,
 				5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */,
 				7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */,
-				627449E4C8004EDFD1C74E6D /* StimulationGame.swift */,
 				54E5DCE25CFDF584104735BA /* SoundEffects.swift */,
+				CCC083DF645D3D3577AF6A17 /* StimulationGame.swift */,
 				5634B06A4388B5CAB30C5784 /* TaskSession.swift */,
 				8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */,
 				B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */,
@@ -213,17 +222,20 @@
 				0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */,
 				407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */,
 				79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */,
-				30DCD5F54230A8E910316922 /* CognitiveDomain.swift in Sources */,
+				C405F87D5A4F4E211D37C2FE /* CognitiveDomain.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
-				45D4131DDE4D7DBBD200AD63 /* GameRecommendationEngine.swift in Sources */,
+				D559213961B7EDCE47AB0EE4 /* GameRecommendationEngine.swift in Sources */,
 				03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */,
 				114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */,
 				E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */,
+				5FD22381EA3F6AD3FA31C4DA /* MyPeopleView.swift in Sources */,
 				FE271E353F59EFA7EBB12F98 /* PatternMatchingGameView.swift in Sources */,
 				241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */,
+				22987470ADE6C3FC06E298E3 /* PeopleCardView.swift in Sources */,
+				941F8DCD9CB583235CB32DD6 /* Person.swift in Sources */,
 				E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
-				CADE4B60BBEFF806AE8DEBCA /* StimulationGame.swift in Sources */,
+				6AB38CC2F4C9989A19ACFE8E /* StimulationGame.swift in Sources */,
 				BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */,
 				1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */,
 				2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */,
