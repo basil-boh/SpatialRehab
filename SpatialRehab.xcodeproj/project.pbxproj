@@ -13,6 +13,9 @@
 		114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */; };
 		1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */; };
 		241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */; };
+		30DCD5F54230A8E910316922 /* CognitiveDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */; };
+		CADE4B60BBEFF806AE8DEBCA /* StimulationGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627449E4C8004EDFD1C74E6D /* StimulationGame.swift */; };
+		45D4131DDE4D7DBBD200AD63 /* GameRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */; };
 		2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A2B7785C04A705F90EE3C /* TeaTaskContent.swift */; };
 		36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */; };
 		407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */; };
@@ -49,6 +52,9 @@
 		5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandProximityTracker.swift; sourceTree = "<group>"; };
 		6F3203D4BB918A74A8C62475 /* PatternMatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingGameView.swift; sourceTree = "<group>"; };
 		7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternMatchingResult.swift; sourceTree = "<group>"; };
+		8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CognitiveDomain.swift; sourceTree = "<group>"; };
+		627449E4C8004EDFD1C74E6D /* StimulationGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StimulationGame.swift; sourceTree = "<group>"; };
+		8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecommendationEngine.swift; sourceTree = "<group>"; };
 		7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArithmeticGameView.swift; sourceTree = "<group>"; };
 		8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStep.swift; sourceTree = "<group>"; };
 		9B2957141E174DF253EE3CCA /* ClockDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDrawingView.swift; sourceTree = "<group>"; };
@@ -113,8 +119,11 @@
 				05CA12C25EC8062BBAFD3935 /* BaselineAssessmentSession.swift */,
 				F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */,
 				C1917E8731CB37205B1CED42 /* ClockDrawingResult.swift */,
+				8B63BA8E939148BF7FDDEA5D /* CognitiveDomain.swift */,
+				8830FE9AA90122D8928A368E /* GameRecommendationEngine.swift */,
 				5E4990A5D723C1E8499CB7FA /* HandProximityTracker.swift */,
 				7EB12C677E1DB3AE2BB42E3F /* PatternMatchingResult.swift */,
+				627449E4C8004EDFD1C74E6D /* StimulationGame.swift */,
 				54E5DCE25CFDF584104735BA /* SoundEffects.swift */,
 				5634B06A4388B5CAB30C5784 /* TaskSession.swift */,
 				8F2A01C6E8953D6DADC57F64 /* TaskStep.swift */,
@@ -204,7 +213,9 @@
 				0AB21B107C2B6A62FF47C372 /* BaselineResultsStore.swift in Sources */,
 				407AFF4EEF49C610082C663F /* ClockDrawingResult.swift in Sources */,
 				79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */,
+				30DCD5F54230A8E910316922 /* CognitiveDomain.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
+				45D4131DDE4D7DBBD200AD63 /* GameRecommendationEngine.swift in Sources */,
 				03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */,
 				114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */,
 				E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */,
@@ -212,6 +223,7 @@
 				241E86B0F8392720D58A7650 /* PatternMatchingResult.swift in Sources */,
 				E17CB36A80965B8752891F21 /* SoundEffects.swift in Sources */,
 				36DD585A85BA09AF7A61E69E /* SpatialRehabApp.swift in Sources */,
+				CADE4B60BBEFF806AE8DEBCA /* StimulationGame.swift in Sources */,
 				BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */,
 				1E011BC0E414CAC3247FE7A5 /* TaskStep.swift in Sources */,
 				2AE5BC2601EF8F4A0759B051 /* TeaTaskContent.swift in Sources */,

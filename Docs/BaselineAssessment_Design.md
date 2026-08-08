@@ -48,7 +48,10 @@ using with real patients.
 | 3 | Arithmetic | Basic single-digit addition, tap the correct sum from 4 choices, one problem at a time | Per-problem `ArithmeticAnswer` (prompt, correct answer, selected answer), `completedAt`; score computed as correct / total |
 | 4 | Clock drawing | Free-draw prompt: "Draw a clock showing ten past eleven." | Rasterized PNG (`imageFileName`), `capturedAt`; `score` left `nil` for later review |
 
-Word list, distractor set, study duration (`BaselineAssessmentContent.WordMemory`), the
+Word list is **4 target words + 6 distractors** (10 in the recall grid), tuned on 2026-08-08:
+started at 6+6, briefly tried 4+4, then settled on 4+6 — a shorter study list than the
+original but the same distractor pressure. Word list, distractor
+set, study duration (`BaselineAssessmentContent.WordMemory`), the
 pattern-matching symbol set, and the arithmetic problem list are placeholders, not validated
 for difficulty (e.g. whether word distractors should be semantically related to targets,
 which materially changes test difficulty; or whether the arithmetic problems are calibrated
@@ -104,6 +107,32 @@ unchanged from the no-punishment principle above. `SpatialRehabApp` still declar
 not entered from this screen right now, so re-enabling it later is a small, localized change
 in `ContentView.swift`.
 
+### Game recommendation engine (2026-08-08)
+
+`GameRecommendationEngine` (`SpatialRehab/Models/`) ranks cognitive-stimulation games by
+which measured domain is currently weakest, closing the "no recommendation engine" gap
+noted below. Scope is deliberately narrow — this is the ranking logic only; wiring it into
+an actual session-selection UI is left for a teammate to build on top:
+
+- **Three domains, not four** — `CognitiveDomain` covers `.memory` (word memory),
+  `.numeracy` (arithmetic), and `.executiveFunction` (pattern matching), the three trials
+  that produce an automatic `score`. Clock drawing has no case here — it stays unscored
+  until a caregiver reviews it (see above), so there is no automatic reading to rank it
+  with; it simply never appears in a recommendation rather than being defaulted to 0 and
+  incorrectly treated as the weakest domain.
+- **Weighted comparison, not a trained model** — a single patient produces at most a
+  handful of readings per domain, nowhere near enough to fit anything meaningful, and a
+  caregiver needs to be able to see *why* a domain was picked. `priority = 1 - score`,
+  sorted descending, is the entire ranking rule.
+- **`StimulationGame`/`StimulationGameCatalog`** hold the games each domain maps to
+  (titles drawn from the product-vision doc's ability→exercise table); these are metadata
+  only, not built game views.
+- **`BaselineResultsStore.currentDomainScores()`** bridges the existing store's three
+  scored trials into the engine's input shape without modifying `BaselineResultsStore`
+  itself. `GameRecommendationEngine.currentRecommendations()` is the one-call entry point
+  a teammate wiring this into UI would use; `recommendations(from:)` stays a pure function
+  for when this repo eventually gets a test target.
+
 ## Known gaps (intentional, for a first prototype)
 
 - No automated clock-drawing scoring — see above. Only the rasterized PNG is kept, not
@@ -112,8 +141,6 @@ in `ContentView.swift`.
 - No persistence beyond local `UserDefaults` (`BaselineResultsStore`) — no export, backup,
   or sync. Uninstalling the app loses all baseline data, including saved clock PNGs on disk.
   No cleanup of orphaned image files if the first-launch flag is ever manually reset for QA.
-- No recommendation engine — using the baseline to personalize later exercises (the
-  original motivation for capturing it at all) is explicitly out of scope for this task.
 - No caregiver-facing review UI yet for the unscored clock drawings — expected to land with
   the `feature/analytics` dashboard.
 - No automated tests — this repo has no test target; verification is manual/Simulator-based,

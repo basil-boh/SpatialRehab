@@ -20,6 +20,36 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- (2026-08-08) Cognitive-stimulation game recommendation engine, closing the
+  "no recommendation engine" gap noted in `Docs/BaselineAssessment_Design.md`. Ranking
+  logic only — teammates still need to wire this into an actual session-selection UI.
+  - `SpatialRehab/Models/CognitiveDomain.swift` — `CognitiveDomain` (`.memory`,
+    `.numeracy`, `.executiveFunction`) and `DomainScore` (a dated `0...1` reading).
+  - `SpatialRehab/Models/StimulationGame.swift` — `StimulationGame` metadata and
+    `StimulationGameCatalog`, mapping each domain to games from the product-vision doc's
+    ability→exercise table.
+  - `SpatialRehab/Models/GameRecommendationEngine.swift` — ranks domains by
+    `priority = 1 - score` (weakest first); a plain weighted comparison, not a trained
+    model, since one patient never has enough sessions to fit anything meaningful. Also
+    adds `BaselineResultsStore.currentDomainScores()`, bridging the three scored trials
+    (word memory, arithmetic, pattern matching) into the engine's input shape. Clock
+    drawing stays excluded — no domain case exists for it while it's unscored, so it's
+    never treated as a false "weakest" domain by default.
+- (2026-08-08) Word-memory list tuned to **4 target words + 6 distractors** (10 in the
+  recall grid) in `BaselineAssessmentContent.WordMemory` — briefly tried 4+4 first, then
+  restored distractors to 6 per follow-up feedback while keeping the shorter 4-word study
+  list. `studyDurationSeconds` (10s) unchanged throughout.
+- (2026-08-08) `BaselineResultsDebugView` now renders each game's data as a colored circular
+  `Gauge` (percentage score, one fixed identity hue per game — blue/purple/teal) plus a Swift
+  Charts horizontal `BarMark` breakdown, instead of plain text rows:
+  - Word Memory: Correct/Missed/Extra-taps counts (green/gray/orange).
+  - Pattern Matching: Ideal moves vs Actual moves.
+  - Arithmetic: per-problem checkmark/circle row (green = correct) alongside the gauge.
+  - Clock Drawing unchanged — no chart, since it's deliberately unscored; shows a neutral
+    "not scored" icon instead of fabricating a graph for a number that doesn't exist.
+  Colors are status-based (green/gray/orange always mean correct/missed/flagged, never
+  reused for anything else) — this is a dev-only screen, so the palette wasn't run through
+  a formal colorblind-safety validator; worth doing if this ever becomes caregiver-facing.
 - (2026-08-08) `ContentView.swift`'s "Get Started" flow — which previously opened the AR
   "Making Tea" immersive task — is disabled while baseline-metrics is the active focus.
   Replaced with a dev-only "View Baseline Data (Dev)" button that presents the new

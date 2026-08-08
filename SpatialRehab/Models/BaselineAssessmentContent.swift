@@ -7,7 +7,7 @@ import Foundation
 /// `Docs/BaselineAssessment_Design.md`.
 enum BaselineAssessmentContent {
     enum WordMemory {
-        static let targetWords = ["Apple", "River", "Chair", "Garden", "Pencil", "Cloud"]
+        static let targetWords = ["Apple", "River", "Chair", "Garden"]
         static let distractorWords = ["Table", "Ocean", "Window", "Ladder", "Basket", "Mountain"]
         static let studyDurationSeconds: TimeInterval = 10
     }
