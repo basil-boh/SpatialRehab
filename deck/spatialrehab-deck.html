@@ -501,8 +501,16 @@
     margin: 0 auto 14px;
   }
   .member .nm { font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; }
-  .member .role { margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--accent); line-height: 1.35; }
-  .member .del { margin-top: 8px; font-size: 12px; line-height: 1.45; color: var(--ink-2); }
+  .member .role {
+    margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--accent);
+    line-height: 1.35;
+    min-height: 2.7em;   /* exactly two lines, so every description starts level */
+    text-wrap: balance;
+  }
+  .member .del {
+    margin-top: 8px; font-size: 12px; line-height: 1.45; color: var(--ink-2);
+    text-wrap: pretty;
+  }
 
   /* ============ Slide 12 — Close ============ */
   .s-close { text-align: center; }
@@ -1033,14 +1041,14 @@
           <div class="member">
             <div class="av" aria-hidden="true">J</div>
             <p class="nm">JingTong</p>
-            <p class="role">Apple Vision Pro Development</p>
+            <p class="role">Apple&nbsp;Vision&nbsp;Pro Development</p>
             <p class="del">RealityKit scene setup, hand and gaze input.</p>
           </div>
           <div class="member">
             <div class="av" aria-hidden="true">N</div>
             <p class="nm">Nicole</p>
             <p class="role">Clinical Research &amp; Product Management</p>
-            <p class="del">Evidence-based exercise design and validation, plus product direction and scope.</p>
+            <p class="del">Evidence-based exercise design and validation, plus product direction.</p>
           </div>
           <div class="member">
             <div class="av" aria-hidden="true">B</div>

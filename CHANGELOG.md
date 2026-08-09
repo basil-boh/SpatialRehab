@@ -7,6 +7,18 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Fixed
+
+- **Team slide cards no longer misalign** (`deck/template.html`). Role labels wrapped to one or
+  two lines depending on length, so each description started at a different height and the row
+  read as ragged. `.member .role` now reserves `min-height: 2.7em`, exactly two lines at its
+  size and line-height, so every description begins on the same baseline whatever the role is
+  called. Added `text-wrap: balance` on the role so two-line roles split evenly rather than
+  orphaning a word, `text-wrap: pretty` on the description, and non-breaking spaces in
+  "Apple Vision Pro" so balancing cannot split the product name. Nicole's description was
+  trimmed to one clause so the block weights sit closer together.
+
+
 ### Added
 
 - **New deck slide 3, "Why it matters"**, on functional independence, inserted between the
