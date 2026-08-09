@@ -7,6 +7,27 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Changed
+
+- **Deck copy revised after a review pass** (`deck/template.html`):
+  - Slide 2 no longer uses medication as the example of a fraying routine. There is no
+    medication feature in the Swift sources, and none on the `README.md` roadmap, so leading
+    the problem slide with it promised something the deck never pays off. (3D assets for it
+    do exist: pill organisers, medicine bottles, a medicine cabinet.)
+  - Dropped the word "battery" on slides 5 and 10. It is clinical jargon and reads like a
+    device battery; both now say "eight games".
+  - Slide 7 reframed as the patient's own notebook rather than an instruction: the card reads
+    "This is me" instead of "This is you", a "My notes" chip joins the mock, and the copy
+    covers letting them write their own notes and reminders about each person. Flagged
+    honestly as the next step, since `Person.note` is currently authored in code
+    (`Views/MyPeopleView.swift`).
+  - Slide 10 lost "not from what looks good on stage", gained a "Cognitive stimulation" label
+    over the existing figures, and gained a seated-physical-activity block: chair-based
+    movement as a fall-safe way to raise activity, 3 to 4 times a week, 30 to 45 minutes,
+    past 12 weeks. Tagged "Planned" because no exercise feature exists yet.
+  - Spelling made consistent (programme, not program).
+
+
 ### Added
 
 - **Presentation deck checked into the repo** at `deck/`, so the whole team can edit it rather
