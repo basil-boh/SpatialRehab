@@ -49,62 +49,88 @@ struct ContentView: View {
 
     private var welcome: some View {
         VStack(spacing: 40) {
-            Image(systemName: "map.fill")
+            Image(systemName: "sparkles")
                 .font(.system(size: 80))
                 .foregroundStyle(.tint)
                 .symbolRenderingMode(.hierarchical)
 
-            VStack(spacing: 16) {
-                Text("Remember the Way")
-                    .font(.system(size: 44, weight: .semibold))
+            Text("What shall we do today?")
+                .font(.system(size: 44, weight: .semibold))
 
-                Text("Watch the way home on the table, then find it again — and step into the street itself.")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 560)
+            VStack(spacing: 20) {
+                Button {
+                    Task { await startActivity(.routeMemory) }
+                } label: {
+                    Label("Remember the Way", systemImage: "map.fill")
+                        .font(.title2)
+                        .frame(maxWidth: 400)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .disabled(appModel.phase == .openingActivity)
+
+                Button {
+                    Task { await startActivity(.coffee) }
+                } label: {
+                    Label("Make a Cup of Kopi", systemImage: "cup.and.saucer.fill")
+                        .font(.title2)
+                        .frame(maxWidth: 400)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .disabled(appModel.phase == .openingActivity)
+
+                Button {
+                    Task { await startActivity(.mahjong) }
+                } label: {
+                    Label("Play Mahjong Pairs", systemImage: "square.grid.3x3.fill")
+                        .font(.title2)
+                        .frame(maxWidth: 400)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .disabled(appModel.phase == .openingActivity)
             }
 
-            Button("Start") {
-                Task { await startActivity() }
-            }
-            .font(.title2)
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.capsule)
-            .controlSize(.extraLarge)
-            .disabled(appModel.phase == .openingActivity)
+            HStack(spacing: 16) {
+                Button {
+                    showingDailyPractice = true
+                } label: {
+                    Label("Daily Practice", systemImage: "checklist")
+                }
+                .buttonStyle(.bordered)
 
-            Button {
-                showingDailyPractice = true
-            } label: {
-                Label("Daily Practice", systemImage: "checklist")
+                Button {
+                    showingDashboard = true
+                } label: {
+                    Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
+                }
+                .buttonStyle(.bordered)
             }
-            .buttonStyle(.bordered)
-
-            Button {
-                showingDashboard = true
-            } label: {
-                Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
-            }
-            .buttonStyle(.bordered)
             // "Who am I?" is deliberately not in this stack — it lives in the main
             // window's bottom ornament (see `SpatialRehabApp`), so it sits in the same
             // spot on every screen instead of moving with each screen's layout.
         }
     }
 
-    /// Practically unreachable — `startActivity()` dismisses this whole window
-    /// (`dismissWindow(id: SceneID.main)`) the moment `.inActivity` begins, since
-    /// `RouteMemoryTableView.controlPanel` (the floating panel in the immersive space
-    /// itself) already shows the real, phase-accurate instruction ("Take your time…",
-    /// "Tap the corners…", the score feedback) plus the actual buttons. A flat window
-    /// used to float alongside that panel showing its own text (first specific and stale,
-    /// then a generic "Look around you", then nothing) — still a second surface competing
-    /// for attention even once it stopped saying anything wrong, so now the window itself
-    /// is gone rather than just empty. Kept as a harmless fallback for the brief window
-    /// between the phase flipping and the dismiss taking effect.
+    /// Guidance while the kopi or mahjong activity runs — those spaces keep this window
+    /// open as their instruction surface. Unreachable for Remember the Way: that activity
+    /// dismisses this whole window (`AppModel.startWayHome`) because
+    /// `RouteMemoryTableView.controlPanel` already carries the real, phase-accurate
+    /// instructions and a second surface just competed for attention.
     private var inActivity: some View {
-        EmptyView()
+        VStack(spacing: 16) {
+            Text("Look at the table")
+                .font(.system(size: 44, weight: .semibold))
+
+            Text(inActivityGuidance)
+                .font(.title2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
     }
 
     private var finished: some View {
@@ -125,7 +151,7 @@ struct ContentView: View {
             }
 
             Button("Play again") {
-                Task { await startActivity() }
+                Task { await startActivity(appModel.currentActivity) }
             }
             .font(.title2)
             .buttonStyle(.borderedProminent)
@@ -159,10 +185,44 @@ struct ContentView: View {
         }
     }
 
-    private func startActivity() async {
-        // Shared with the name card's "Show me the way home" — see AppModel.startWayHome
-        // for why the main window is dismissed on success.
-        await appModel.startWayHome(openImmersiveSpace: openImmersiveSpace, dismissWindow: dismissWindow)
+    private var inActivityGuidance: String {
+        switch appModel.currentActivity {
+        case .routeMemory:
+            return "Study the glowing route, then find the way home from memory."
+        case .coffee:
+            return "Follow the glowing tags and make your kopi, one step at a time."
+        case .mahjong:
+            return "Pick up a tile and place it beside its twin."
+        }
+    }
+
+    private func startActivity(_ activity: AppModel.ActivityKind) async {
+        // Remember the Way dismisses this window (its immersive control panel is the
+        // only guidance surface) and is shared with the name card's "Show me the way
+        // home" — see AppModel.startWayHome. Kopi and mahjong keep the window open as
+        // their guidance surface (`inActivity` above).
+        if activity == .routeMemory {
+            await appModel.startWayHome(openImmersiveSpace: openImmersiveSpace, dismissWindow: dismissWindow)
+            return
+        }
+        appModel.phase = .openingActivity
+        appModel.currentActivity = activity
+        switch activity {
+        case .routeMemory:
+            appModel.routeMemory.begin()
+        case .coffee:
+            appModel.coffee.begin()
+        case .mahjong:
+            appModel.mahjong.begin()
+        }
+        switch await openImmersiveSpace(id: AppModel.activitySpaceID) {
+        case .opened:
+            appModel.phase = .inActivity
+        case .userCancelled, .error:
+            appModel.phase = .welcome
+        @unknown default:
+            appModel.phase = .welcome
+        }
     }
 }
 

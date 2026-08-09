@@ -7,6 +7,19 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Changed
+
+- **Merged `feature/wayfinding-activities` (kopi + mahjong) into `feature/whoami-card-redesign`**.
+  Reconciliations: the shared immersive space keeps Aditya's `currentActivity` routing with the
+  Who-am-I environment injected around it; `startActivity` routes Remember the Way through
+  `AppModel.startWayHome` (window dismissed, immersive panel is the guidance) while kopi/mahjong
+  keep the main window open showing Aditya's per-activity guidance; `startWayHome` now sets
+  `currentActivity = .routeMemory` so the card's "way home" can't reopen a previous game;
+  deployment target stays **26.2** (their 26.0 code runs on it); the welcome screen shows the
+  three activity buttons plus Daily Practice / Caregiver Dashboard, with Who am I? staying in
+  the window ornament; hands-tracking usage description in `project.yml` merged to cover both
+  branches' uses (`Info.plist` is xcodegen-generated, so the wording lives there).
+
 ### Added
 
 - **Persistent "Who am I?" button everywhere except the baseline assessment** (user request:
@@ -84,6 +97,70 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   changes vs upstream build-setting changes touched different regions). Also corrected
   upstream's "What you should see after launch" list, which still described **Who am I?** as an
   inline home-screen button — it is a window ornament as of the change logged under Added above.
+
+- **Coffee rebuilt around the assets' real anatomy** (user: pour physics "not there", use the USDZ assets properly; anatomy discovered by inspecting the USDCs + `.articulation.json` manifests):
+  - Streams now emit from each vessel's **named spout entity** (`pour_spout` on the kettle and milk jug) instead of a bounds guess; pour threshold eased to ~54°.
+  - The mug's **own internal `coffee` liquid mesh** (prismatic fill joint in the asset) rises and tints through water → kopi-o → kopi-c — the fake overlay cylinder is gone; the kettle's `water_column` and the jug's `milk` mesh **visibly deplete** as they pour.
+  - The sugar bowl's **hinged lid swings open** when tilted and its **five real `sugar_cube` entities tumble out** with physics — cubes that land in the mug dissolve into the coffee (2 completes the step); misses stay scattered on the table. The coffee tin's lid opens for the grounds.
+  - **Steam wisps** curl off the mug once the hot water is in; lids close on settle; reset restores cubes, lids, and fill levels.
+- **Real Singapore Mahjong rules** (friend's review: game wasn't playing to the actual rules; full SG rules provided by user):
+  - `MahjongRules.swift` — pure rules engine over the SG148 taxonomy (bamboo/dots/char suits, dragons + winds as honors, flowers/seasons/animals as bonus): backtracking hand decomposition for the **real win condition — four sets (chows/pongs) plus one eye**, winning-tile search (tenpai detection), chow-option enumeration, and an isolation-based discard suggester.
+  - **Flowers/seasons/animals behave per the rules**: never held — they fly to the exposed area with a spoken explanation and a replacement is drawn from the far wall (patient's automatic; opponents expose theirs after the deal).
+  - **Claims**: after every opponent discard the engine checks the patient's hand — **Mahjong! / Pong! / Chow!** buttons appear (chow only from Mei Mei on the left, per the rules), 12 s window then auto-pass, claimed melds animate to the exposed area and count toward the four sets. Win-on-discard supported.
+  - **Kind but honest**: the deal is a verified genuine tenpai (three sets + eye + waiting pair), draw kindness ramps toward actual winning tiles, opponents preferentially feed pongable tiles, and Mei Mei may throw the winning tile after turn three. The final reveal lays the real 14-tile hand face-up: "Mahjong! Four sets and a pair."
+  - Consciously deferred: kongs, fan scoring, banker/prevailing-wind rotation, pay-all scenarios (documented for future work).
+- **Authentic wall procedure + no racks** (user's detailed corrections, Q&A confirmed pong+chow and accept-any-draw):
+  - **Strict shared draw order**: top tile then bottom tile of each stack, marching around the wall from the patient's right — the glow marks the true next-in-order tile and the three opponents visibly draw in exact sequence; the patient may take any wall tile (chosen house rule, zero friction).
+  - **Kindness went invisible**: instead of glowing arbitrary lucky tiles, the engine silently swaps two face-down wall tiles so the next-in-order tile is a winning one — physically undetectable, procedurally perfect.
+  - **Racks removed** (all four seats): tiles stand directly on the felt, as at a real home table; free self-arrangement of the hand unchanged.
+  - **Pong-assist**: the claimable discarded tile itself glows in the river while the Pong/Chow/Mahjong buttons and voice prompt run; claimed melds remain open at the side of the hand.
+  - **Hand drop pad**: a soft green pad ("Put tiles here") beside the hand row — a drawn wall tile dropped there becomes the draw AND auto-slots into the first free position in the row; the patient's own tiles dropped there re-join the neat line. Stray wall tiles now glide back to their wall slot instead of lying loose.
+
+### Fixed
+
+- **Discards not deducting** (user report): the discard target was a small invisible rectangle over the glow pad — tiles thrown anywhere else in the middle silently stayed in the hand. Now any central table area accepts the throw (like a real toss to the middle; the glowing pad remains just a suggestion), and throwing before drawing gets a spoken rules correction ("First take the shining tile from the wall") with the tile returning to the row.
+- **Smoothness pass** (user: "still feels a little jarring"):
+  - `VoiceGuide` now **queues** utterances instead of cutting the current sentence off mid-word (interrupt only on explicit `interrupting: true`); short pre-utterance breath added. Benefits every activity.
+  - **Pour flow ramps with tilt** (0…1 per vessel, eased both directions): the stream's width, arc speed, splash rate, grain count, and the pour-hiss volume all scale with how far the vessel is actually tipped — no more binary on/off at a threshold angle.
+  - Released items **settle with distance-scaled travel time** (0.3–0.85 s) instead of a fixed-speed glide, so nothing reads as teleporting.
+  - Ghost demos **fade in and out** (~0.25 s opacity ramps) instead of popping.
+- **Mahjong v5 — proper four-seat table** (per the newly installed `.claude/skills/mahjong-ui-components` skill; the user's download link 404'd so the skill was installed from their pasted content):
+  - Standard tile geometry (3.4 cm height normalization, 2.8 cm spacing), square table with per-side rims, **four racks and four seats** — the patient (East) plus three named opponents: **Ah Hua** (right), **Uncle Lim** (across), **Mei Mei** (left), each with 13 standing face-away tiles.
+  - **Hollow-square wall**: double-stacked columns on all four sides, sized to exactly the 96 tiles remaining after four deals — assembled from the wash in waves.
+  - **Per-seat 3×6 discard rivers** oriented to their owners; the patient discards into their own glowing river pad (replaces the shared center circle); melds sort to the patient's far right (skill convention).
+  - **Humanized AI turns** (skill: 0.6–1.5 s + 5 mm hover): each opponent visibly draws from their side of the wall, hesitates over a tile, and discards to their river with a clack; their hand closes the gap. AIs never win.
+  - **Rack placement fix** (user report): dropping a tile on the wooden rack strip now seats it into the hand line at that spot; patient hand tiles keep the skill's −15° ergonomic pitch.
+  - Consciously NOT adopted from the skill: Riichi scoring, steals (Pon/Chii/Kan), dead wall, anti-cheat culling — the SG148 set and the dementia audience keep rules at "two sets wins," errorless.
+
+- `NSHandsTrackingUsageDescription` in `Info.plist` — required privacy text for the new `HandWashTracker` (ARKit `HandTrackingProvider`) that feeds real palm positions to the mahjong wash phase.
+- **Mahjong "full RealityKit" naturalness pass** (built via parallel agent workflow + orchestrator integration):
+  - `MahjongAudio.swift` — fully procedural table soundscape (44.1 kHz buffers synthesized at setup): tile **clack** (noise burst + 1.8–2.2 kHz ping, 5-buffer/5-node round-robin pool so rapid clacks overlap), softer pick-up **click**, two-note meld **chime** (E5→A5), and a seamless 2 s **wash rumble** loop (low-passed noise bed + 48 randomized micro-clacks, crossfaded seam).
+  - `HandWashTracker.swift` — ARKit `HandTrackingProvider` per the repo skill: exposes live palm positions (wrist→middleFingerMetacarpal offset), silent no-op on simulator/denied auth.
+  - **Wash with your real hands**: during the opening wash the tile carpet flees the patient's palms (repulsion within 15 cm at table height) over a gentle ambient swirl fallback, with wash rumble + throttled clacks while pushing.
+  - Sounds wired through the whole game: wall-building waves clack, deal clicks per tile, draw landing clack, meld chime, every discard clack.
+  - **Free rack arrangement**: the hand no longer auto-sorts — the drawn tile lands at the rack's end like a real draw, and any hand tile re-slots at whatever position it's released (index from drop x), exactly how experienced players manage their rack.
+- **Mahjong v4 — free placement + crash-proof ceremony** (user: still couldn't grab freely, fixed slots are anti-mahjong, table looked bugged):
+  - Root cause of the mess: the whole ceremony ran inside RealityView's make closure; SwiftUI task cancellation collapsed every stagger to zero and stranded the wash pile. Ceremony now runs in `.task` with cancellation-guarded pauses and a **deterministic instant-finish** (every tile's final transform precomputed up front — on any interruption the table completes itself correctly).
+  - **Zones, not slots**: every tile always grabbable and stays wherever it's placed (settled upright on the felt, clamped to the table, clack on landing). Bringing ANY wall tile to your side of the table = your draw; dropping one of your tiles in the circle = your discard; everything else just lies there like a real table. No snap-backs anywhere.
+  - Extraction reverted to `clone(recursive:)` — the path that provably preserves tile face materials (the white-blob tiles came from the detach path).
+  - Hand-tracker start no longer blocks the ceremony (fires in a background task; palms join the wash whenever authorization lands).
+
+- **"Play Mahjong Pairs" activity** (third activity) — find-the-twins matching with the generated SG148 mahjong assets:
+  - Twelve real tiles (6 pairs from high-contrast faces) extracted from `mahjong_full_set_sg148.usdz` by prim name via the bundled `.tiles.json` manifest, cloned, normalized, and dealt onto a felt-topped table in a shuffled grid.
+  - **Physical matching**: tiles are picked up with the system grab and set down beside their twin; matched pairs lift and fly side-by-side onto the real `mahjong_tile_rack`; wrong pairings get a gentle spoken redirect and settle back to their slot; loose drops settle home.
+  - **Stuck support**: after 18 s without progress, cyan rings glow under one unmatched pair with a spoken hint (hint count recorded invisibly, alongside wrong attempts and duration).
+  - Voice intro/praise/celebration; panel shows pairs progress; simulator smoke test confirms tile faces render and extraction works.
+- **Reworked to full mahjong vs the computer** (user feedback: sparse pairs looked wrong — missing manifest faces silently dropped pairs; wants all 148 tiles + an opponent):
+  - All 148 tiles dealt onto a proper table: patient's rack with 13 standing sorted tiles (dealt as 4 pairs + 5 singles — near-melds from the start), computer's rack across the table with tiles facing away, and **walls of the remaining 122 tiles** (three rows each side + far rows, backs to the center).
+  - Turn loop: the next wall tile glows → patient physically picks it up → snaps into the sorted hand → voice evaluates ("that matches yours — keep it!") → three-of-a-kind **melds slide forward automatically** → discard by carrying any hand tile to the glowing center circle → the computer visibly draws and discards → repeat. **Two melds = "Mahjong!"** win.
+  - Wall draws invisibly rigged toward the patient's pairs; discard suggestion glows (their choice still free); wrong drops counted invisibly; faces now driven entirely from the runtime manifest (no hardcoded face names — the earlier missing-tiles bug is structurally gone).
+  - Note: the dice seen on the rack in device testing are modeled into the `mahjong_tile_rack` asset itself.
+- **Mahjong v3 — proper ritual + fixed pickup** (user: couldn't grab tiles; wants the opening shuffle and a proper look):
+  - **Grab fix**: every tile re-wrapped with a base pivot and a hit box computed from its real bounds (`visualBounds`-derived collision) — the v2 pivot-offset boxes floated away from the visuals, which is why tiles couldn't be picked up.
+  - **Opening ceremony**: all 148 tiles spill face-down into the center → traditional **wash** (two slow swirls, voice: "First, we wash the tiles — just like at home") → tiles fly into **four proper walls, two tiles high, lying face-down** → animated deal of 13 to each rack.
+  - **Agency**: the whole hand is always grabbable; any of the six nearest top wall tiles may be drawn (glow = suggested lucky tile, rigging preserved); stray wall tiles tuck themselves back; melds and discards now lie **face-up flat** in the middle like a real game; wooden rim added around the felt.
+  - Face-up/face-down orientations are single constants (`faceUp`/`faceDown`) in case the tile pivot proves flipped on device.
+- **Ceremony cleanup** (user: "tiles just lying around, not smooth"): root cause was 148 tiles sent at 122 wall slots — 26 orphans stayed scattered mid-table. Now every tile's destination (hand/opponent/wall) is decided **before** any placement, wall slots extend to exactly match the wall count, the wash is a tidy non-overlapping face-down carpet that rotates gently (no interpenetration/z-fighting), and all flights run in staggered waves (walls 10-per-wave, deal tile-by-tile) instead of 148 simultaneous animations.
 
 ### Fixed
 
@@ -269,6 +346,23 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   overlapping rotated squares) after the user asked for "some geometric shape." Each round
   presented rendered-preview mockups before implementing. `assets/logo.svg` kept in sync
   with the in-app mark at every step.
+- **"Make a Cup of Kopi" activity** — guided ADL (activity of daily living) coffee-making on a virtual wooden table, using the generated USDZ assets (water kettle, coffee tin with scoop, sugar bowl, milk jug, coffee mug, teaspoon; auto-normalized to real-world sizes from their bounds):
+  - Five-step guided sequence (hot water → coffee → sugar → milk → stir) with spoken instructions and praise per step; wrong picks get a gentle spoken redirect and an invisible metric (`CoffeeExercise`).
+  - **Floating tags on every asset** (name + role, orange-highlighted and enlarged on the current step) so the patient always knows what each thing is — a fully guided process.
+  - **3D step demonstrations**: a translucent ghost of the current item lifts, tips over the mug, and returns, looping until the patient taps the real item; the real pour shows a colored stream and the mug's liquid visibly rises and darkens (water → kopi-o → kopi-c) with a stirring finale.
+  - Glow ring under the current item, cyan; tap targets padded around each asset's bounds.
+  - Welcome screen offers both activities again (`ActivityKind.routeMemory` / `.coffee`); coffee runs in mixed immersion (patient's real room).
+- **Physical pouring rework** (user: "actually hold and pour… like the real world"; deployment target raised **2.0 → 26.0** for `ManipulationComponent`):
+  - Items are genuinely **picked up** with the system's natural grab (pinch-hold, follows the wrist, hand-to-hand transfer); tilting a held vessel past ~63° emits physics droplets/grains from its lip (position + velocity follow the vessel's actual tilt direction; dynamic bodies, ≤70 live, 30 Hz simulation loop).
+  - Droplets that land in the mug's catch volume fill it (level + color mix computed from actual caught counts: water → kopi-o → kopi-c); misses bounce on the table's static collision and fade. Steps complete when enough of the *right* ingredient is really poured in (water 22, coffee 14, sugar 10, milk 16).
+  - **Stirring is real**: hold the teaspoon in the mug and move it in circles — angular travel is accumulated (2 full turns completes).
+  - Wrong-ingredient pours get one gentle spoken note per step and an invisible metric; released items **settle gently upright onto the table** (clamped to its surface) instead of floating or toppling — errorless physicality.
+  - Ghost demos, floating tags, glow ring, and voice guidance all retained; tap-to-pour removed.
+- **Realistic pour rendering** (user: droplet beads ≠ liquid):
+  - `PourEffects` — water/milk render as a **continuous ballistic stream**: tapered 14-segment tube along the real parabola from the vessel's lip (velocity from actual tilt), translucent PBR water / opaque cream milk; splash droplets pool at the impact point; fill accounting switches to stream-ticks-on-target (water 70, milk 50).
+  - Coffee/sugar pour as dense fine grains (3 mm, 4/tick) with physics, replacing pebble-sized drops.
+  - Mug liquid is now **translucent PBR** while it's just water, turning opaque as coffee/milk mix in.
+  - `PourSound` — procedural pouring hiss (looped filtered brown noise via `AVAudioEngine`), ramped on while a stream flows.
 
 ### Removed
 

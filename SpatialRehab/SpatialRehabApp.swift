@@ -69,12 +69,21 @@ struct SpatialRehabApp: App {
         .defaultSize(width: 900, height: 780)
 
         ImmersiveSpace(id: AppModel.activitySpaceID) {
-            RouteMemoryTableView()
-                .environment(appModel)
-                // For the `WhoAmIButton` in the control panel — the main window (and its
-                // ornament) is dismissed while this space is open, so the panel is the
-                // only place left to reach the name card from.
-                .environment(whoAmISession)
+            Group {
+                switch appModel.currentActivity {
+                case .routeMemory:
+                    RouteMemoryTableView()
+                case .coffee:
+                    CoffeeActivityView()
+                case .mahjong:
+                    MahjongActivityView()
+                }
+            }
+            .environment(appModel)
+            // For the `WhoAmIButton` in RouteMemoryTableView's control panel — the main
+            // window (and its ornament) is dismissed while that activity runs, so the
+            // panel is the only place left to reach the name card from.
+            .environment(whoAmISession)
         }
         .immersionStyle(
             selection: Binding(

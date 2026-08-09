@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "stovetop_water_kettle",
+  "root_prim": "/stovetop_water_kettle",
+  "links": [
+    {
+      "name": "kettle",
+      "usd_path": "/stovetop_water_kettle/kettle",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/stovetop_water_kettle/kettle/lid",
+      "mass": null
+    },
+    {
+      "name": "water_column",
+      "usd_path": "/stovetop_water_kettle/kettle/water_column",
+      "mass": null
+    },
+    {
+      "name": "pour_spout",
+      "usd_path": "/stovetop_water_kettle/kettle/pour_spout",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "lid_hinge",
+      "usd_path": "/stovetop_water_kettle/Joints/lid_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/stovetop_water_kettle/kettle",
+      "child_path": "/stovetop_water_kettle/kettle/lid",
+      "origin_xyz": [
+        0.0,
+        -0.063,
+        0.194
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.25,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "water_slide",
+      "usd_path": "/stovetop_water_kettle/Joints/water_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/stovetop_water_kettle/kettle",
+      "child_path": "/stovetop_water_kettle/kettle/water_column",
+      "origin_xyz": [
+        0.0,
+        0.1238,
+        0.047
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.05,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "spout_anchor",
+      "usd_path": "/stovetop_water_kettle/Joints/spout_anchor",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/stovetop_water_kettle/kettle",
+      "child_path": "/stovetop_water_kettle/kettle/pour_spout",
+      "origin_xyz": [
+        0.226,
+        0.0,
+        0.141
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

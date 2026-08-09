@@ -1,0 +1,597 @@
+{
+  "tile_count": 148,
+  "tiles": [
+    {
+      "prim": "/mahjong_set/tile_000_dots_1",
+      "face": "dots_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_001_dots_1",
+      "face": "dots_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_002_dots_1",
+      "face": "dots_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_003_dots_1",
+      "face": "dots_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_004_dots_2",
+      "face": "dots_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_005_dots_2",
+      "face": "dots_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_006_dots_2",
+      "face": "dots_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_007_dots_2",
+      "face": "dots_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_008_dots_3",
+      "face": "dots_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_009_dots_3",
+      "face": "dots_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_010_dots_3",
+      "face": "dots_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_011_dots_3",
+      "face": "dots_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_012_dots_4",
+      "face": "dots_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_013_dots_4",
+      "face": "dots_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_014_dots_4",
+      "face": "dots_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_015_dots_4",
+      "face": "dots_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_016_dots_5",
+      "face": "dots_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_017_dots_5",
+      "face": "dots_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_018_dots_5",
+      "face": "dots_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_019_dots_5",
+      "face": "dots_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_020_dots_6",
+      "face": "dots_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_021_dots_6",
+      "face": "dots_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_022_dots_6",
+      "face": "dots_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_023_dots_6",
+      "face": "dots_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_024_dots_7",
+      "face": "dots_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_025_dots_7",
+      "face": "dots_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_026_dots_7",
+      "face": "dots_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_027_dots_7",
+      "face": "dots_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_028_dots_8",
+      "face": "dots_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_029_dots_8",
+      "face": "dots_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_030_dots_8",
+      "face": "dots_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_031_dots_8",
+      "face": "dots_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_032_dots_9",
+      "face": "dots_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_033_dots_9",
+      "face": "dots_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_034_dots_9",
+      "face": "dots_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_035_dots_9",
+      "face": "dots_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_036_bamboo_1",
+      "face": "bamboo_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_037_bamboo_1",
+      "face": "bamboo_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_038_bamboo_1",
+      "face": "bamboo_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_039_bamboo_1",
+      "face": "bamboo_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_040_bamboo_2",
+      "face": "bamboo_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_041_bamboo_2",
+      "face": "bamboo_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_042_bamboo_2",
+      "face": "bamboo_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_043_bamboo_2",
+      "face": "bamboo_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_044_bamboo_3",
+      "face": "bamboo_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_045_bamboo_3",
+      "face": "bamboo_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_046_bamboo_3",
+      "face": "bamboo_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_047_bamboo_3",
+      "face": "bamboo_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_048_bamboo_4",
+      "face": "bamboo_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_049_bamboo_4",
+      "face": "bamboo_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_050_bamboo_4",
+      "face": "bamboo_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_051_bamboo_4",
+      "face": "bamboo_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_052_bamboo_5",
+      "face": "bamboo_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_053_bamboo_5",
+      "face": "bamboo_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_054_bamboo_5",
+      "face": "bamboo_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_055_bamboo_5",
+      "face": "bamboo_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_056_bamboo_6",
+      "face": "bamboo_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_057_bamboo_6",
+      "face": "bamboo_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_058_bamboo_6",
+      "face": "bamboo_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_059_bamboo_6",
+      "face": "bamboo_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_060_bamboo_7",
+      "face": "bamboo_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_061_bamboo_7",
+      "face": "bamboo_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_062_bamboo_7",
+      "face": "bamboo_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_063_bamboo_7",
+      "face": "bamboo_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_064_bamboo_8",
+      "face": "bamboo_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_065_bamboo_8",
+      "face": "bamboo_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_066_bamboo_8",
+      "face": "bamboo_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_067_bamboo_8",
+      "face": "bamboo_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_068_bamboo_9",
+      "face": "bamboo_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_069_bamboo_9",
+      "face": "bamboo_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_070_bamboo_9",
+      "face": "bamboo_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_071_bamboo_9",
+      "face": "bamboo_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_072_char_1",
+      "face": "char_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_073_char_1",
+      "face": "char_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_074_char_1",
+      "face": "char_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_075_char_1",
+      "face": "char_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_076_char_2",
+      "face": "char_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_077_char_2",
+      "face": "char_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_078_char_2",
+      "face": "char_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_079_char_2",
+      "face": "char_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_080_char_3",
+      "face": "char_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_081_char_3",
+      "face": "char_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_082_char_3",
+      "face": "char_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_083_char_3",
+      "face": "char_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_084_char_4",
+      "face": "char_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_085_char_4",
+      "face": "char_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_086_char_4",
+      "face": "char_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_087_char_4",
+      "face": "char_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_088_char_5",
+      "face": "char_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_089_char_5",
+      "face": "char_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_090_char_5",
+      "face": "char_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_091_char_5",
+      "face": "char_5"
+    },
+    {
+      "prim": "/mahjong_set/tile_092_char_6",
+      "face": "char_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_093_char_6",
+      "face": "char_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_094_char_6",
+      "face": "char_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_095_char_6",
+      "face": "char_6"
+    },
+    {
+      "prim": "/mahjong_set/tile_096_char_7",
+      "face": "char_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_097_char_7",
+      "face": "char_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_098_char_7",
+      "face": "char_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_099_char_7",
+      "face": "char_7"
+    },
+    {
+      "prim": "/mahjong_set/tile_100_char_8",
+      "face": "char_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_101_char_8",
+      "face": "char_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_102_char_8",
+      "face": "char_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_103_char_8",
+      "face": "char_8"
+    },
+    {
+      "prim": "/mahjong_set/tile_104_char_9",
+      "face": "char_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_105_char_9",
+      "face": "char_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_106_char_9",
+      "face": "char_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_107_char_9",
+      "face": "char_9"
+    },
+    {
+      "prim": "/mahjong_set/tile_108_wind_east",
+      "face": "wind_east"
+    },
+    {
+      "prim": "/mahjong_set/tile_109_wind_east",
+      "face": "wind_east"
+    },
+    {
+      "prim": "/mahjong_set/tile_110_wind_east",
+      "face": "wind_east"
+    },
+    {
+      "prim": "/mahjong_set/tile_111_wind_east",
+      "face": "wind_east"
+    },
+    {
+      "prim": "/mahjong_set/tile_112_wind_south",
+      "face": "wind_south"
+    },
+    {
+      "prim": "/mahjong_set/tile_113_wind_south",
+      "face": "wind_south"
+    },
+    {
+      "prim": "/mahjong_set/tile_114_wind_south",
+      "face": "wind_south"
+    },
+    {
+      "prim": "/mahjong_set/tile_115_wind_south",
+      "face": "wind_south"
+    },
+    {
+      "prim": "/mahjong_set/tile_116_wind_west",
+      "face": "wind_west"
+    },
+    {
+      "prim": "/mahjong_set/tile_117_wind_west",
+      "face": "wind_west"
+    },
+    {
+      "prim": "/mahjong_set/tile_118_wind_west",
+      "face": "wind_west"
+    },
+    {
+      "prim": "/mahjong_set/tile_119_wind_west",
+      "face": "wind_west"
+    },
+    {
+      "prim": "/mahjong_set/tile_120_wind_north",
+      "face": "wind_north"
+    },
+    {
+      "prim": "/mahjong_set/tile_121_wind_north",
+      "face": "wind_north"
+    },
+    {
+      "prim": "/mahjong_set/tile_122_wind_north",
+      "face": "wind_north"
+    },
+    {
+      "prim": "/mahjong_set/tile_123_wind_north",
+      "face": "wind_north"
+    },
+    {
+      "prim": "/mahjong_set/tile_124_dragon_red",
+      "face": "dragon_red"
+    },
+    {
+      "prim": "/mahjong_set/tile_125_dragon_red",
+      "face": "dragon_red"
+    },
+    {
+      "prim": "/mahjong_set/tile_126_dragon_red",
+      "face": "dragon_red"
+    },
+    {
+      "prim": "/mahjong_set/tile_127_dragon_red",
+      "face": "dragon_red"
+    },
+    {
+      "prim": "/mahjong_set/tile_128_dragon_green",
+      "face": "dragon_green"
+    },
+    {
+      "prim": "/mahjong_set/tile_129_dragon_green",
+      "face": "dragon_green"
+    },
+    {
+      "prim": "/mahjong_set/tile_130_dragon_green",
+      "face": "dragon_green"
+    },
+    {
+      "prim": "/mahjong_set/tile_131_dragon_green",
+      "face": "dragon_green"
+    },
+    {
+      "prim": "/mahjong_set/tile_132_dragon_white",
+      "face": "dragon_white"
+    },
+    {
+      "prim": "/mahjong_set/tile_133_dragon_white",
+      "face": "dragon_white"
+    },
+    {
+      "prim": "/mahjong_set/tile_134_dragon_white",
+      "face": "dragon_white"
+    },
+    {
+      "prim": "/mahjong_set/tile_135_dragon_white",
+      "face": "dragon_white"
+    },
+    {
+      "prim": "/mahjong_set/tile_136_flower_1",
+      "face": "flower_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_137_flower_2",
+      "face": "flower_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_138_flower_3",
+      "face": "flower_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_139_flower_4",
+      "face": "flower_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_140_season_1",
+      "face": "season_1"
+    },
+    {
+      "prim": "/mahjong_set/tile_141_season_2",
+      "face": "season_2"
+    },
+    {
+      "prim": "/mahjong_set/tile_142_season_3",
+      "face": "season_3"
+    },
+    {
+      "prim": "/mahjong_set/tile_143_season_4",
+      "face": "season_4"
+    },
+    {
+      "prim": "/mahjong_set/tile_144_animal_cat",
+      "face": "animal_cat"
+    },
+    {
+      "prim": "/mahjong_set/tile_145_animal_rat",
+      "face": "animal_rat"
+    },
+    {
+      "prim": "/mahjong_set/tile_146_animal_rooster",
+      "face": "animal_rooster"
+    },
+    {
+      "prim": "/mahjong_set/tile_147_animal_centipede",
+      "face": "animal_centipede"
+    }
+  ]
+}

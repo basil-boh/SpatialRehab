@@ -12,12 +12,21 @@ final class AppModel {
         case finished
     }
 
+    enum ActivityKind {
+        case routeMemory
+        case coffee
+        case mahjong
+    }
+
     static let activitySpaceID = "ActivitySpace"
 
     var phase: SessionPhase = .welcome
+    var currentActivity: ActivityKind = .routeMemory
     /// "Step inside" flips the shared space to full immersion.
     var routeMemoryInside = false
     let routeMemory = RouteMemoryExercise()
+    let coffee = CoffeeExercise()
+    let mahjong = MahjongExercise()
     let voice = VoiceGuide()
 
     /// Starts the Remember the Way activity: begins the exercise, opens the shared
@@ -33,6 +42,9 @@ final class AppModel {
     ) async {
         guard phase != .openingActivity, phase != .inActivity else { return }
         phase = .openingActivity
+        // The shared space routes on this — without it, "way home" after a kopi or
+        // mahjong session would reopen that activity instead.
+        currentActivity = .routeMemory
         routeMemory.begin()
         switch await openImmersiveSpace(id: Self.activitySpaceID) {
         case .opened:
