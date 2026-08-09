@@ -7,6 +7,29 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-10
 
+### Added
+
+- **The Remember the Way slide now shows a real 3D map of Tiong Bahru** instead of the abstract
+  block diagram. New `deck/build_map.py` reads the app's own `SpatialRehab/TiongBahruMap.json`
+  (the Overpass extract `NeighborhoodWorld.swift` meshes at runtime) and emits `deck/map.svg`:
+  135 real building footprints extruded by their real `building:levels`, 381 real road
+  segments, and a route found by Dijkstra over the walkable street graph, so the line follows
+  actual Tiong Bahru streets rather than an invented path. `build.py` inlines it at a new
+  `<!--__MAP_SVG__-->` marker.
+  - Asked for as "the 3D Apple Maps overview with the animated line". A live Apple map is not
+    possible here: MapKit JS needs an Apple Developer JWT and loads its script and tiles from
+    external hosts, which the Artifact content policy blocks outright, and the same applies to
+    Google and Mapbox. Building from the app's own OSM data gives the same read, ships with no
+    network calls, and is the geometry the product actually renders.
+  - Projection is a shallow isometric (`ISO_Y = 0.34`) rather than true 2:1, which reads as a
+    map tilt and fits the slide's wide, short frame. Painter's algorithm sorts buildings back
+    to front; walls are shaded by edge orientation so the extrusion reads as 3D.
+  - Animation reworked for the new geometry: roads fade in, the massing rises, the route draws
+    itself along the streets via an SVG mask wipe, the home pin lands, then a marker walks the
+    route on a loop. Still disabled under `prefers-reduced-motion`.
+  - Map data © OpenStreetMap contributors, credited under the map as ODbL requires.
+
+
 ### Fixed
 
 - **Deck backgrounds looked soft; the pipeline was the main culprit, not the photographs.**

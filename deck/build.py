@@ -2,7 +2,8 @@
 """Build the presentation deck.
 
 Reads template.html, replaces the /*__PHOTO_CSS__*/ marker with one CSS rule per
-background carrying a base64 data URI, and writes spatialrehab-deck.html.
+background carrying a base64 data URI, inlines map.svg at the <!--__MAP_SVG__-->
+marker, and writes spatialrehab-deck.html.
 
 The backgrounds have to be embedded rather than linked: the deck is published as
 a Claude Artifact, which runs under a policy that blocks every external host, so
@@ -19,6 +20,7 @@ import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MARKER = "/*__PHOTO_CSS__*/"
+MAP_MARKER = "<!--__MAP_SVG__-->"
 
 photos = json.load(open(os.path.join(HERE, "photos.json")))
 
@@ -44,6 +46,12 @@ if missing:
                      % ", ".join(sorted(missing)))
 
 page = template.replace(MARKER, "\n  ".join(rules))
+
+map_path = os.path.join(HERE, "map.svg")
+if MAP_MARKER in page:
+    if not os.path.exists(map_path):
+        raise SystemExit("missing map.svg — run: python3 deck/build_map.py")
+    page = page.replace(MAP_MARKER, open(map_path).read())
 dest = os.path.join(HERE, "spatialrehab-deck.html")
 open(dest, "w").write(page)
 
