@@ -67,8 +67,23 @@ python3 deck/build.py
 the cropped, blurred, graded result into `backgrounds/`. Commit the changed `backgrounds/*.jpg`
 along with your edit.
 
-Photographs are from Unsplash under its free licence. Every photographer is credited by name on
-the closing slide — **keep that list in sync** if you swap a photo.
+### Where the photographs come from
+
+All thirteen backdrops are Singapore government healthcare photography, from the Ministry of
+Health, Age Well SG and the Agency for Integrated Care, used under a partnership arrangement
+Basil has with those bodies. The closing slide credits them; **keep that credit accurate** if
+you swap an image.
+
+Two cautions if you add more from the same sites:
+
+- Not everything on a `.gov.sg` site is the government's own. Several images there are
+  commercial stock the agency licensed for its own use (one was literally named
+  `Depositphotos_...`), and a partnership does not extend to those. Prefer files whose names
+  look like first-party photography, such as `AIC-Day1-2019-PhotoLibrary-...` or
+  `MOH_20_Oct_2022___1475.jpg`.
+- These are photographs of identifiable people. Consent obtained for a government health
+  campaign does not automatically cover a third party's pitch deck, so check before using a
+  new one in anything public-facing.
 
 ## House style
 

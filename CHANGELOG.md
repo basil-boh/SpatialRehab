@@ -7,6 +7,29 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Changed
+
+- **All 13 deck backdrops replaced with Singapore government healthcare photography** (MOH,
+  Age Well SG, Agency for Integrated Care), replacing the Unsplash set, on Basil's instruction
+  that a partnership with those bodies covers the usage. Closing-slide credit rewritten to
+  "courtesy of the Ministry of Health, Age Well SG and the Agency for Integrated Care,
+  Singapore. Used with permission."
+  - Mapping is subject-matched: an elderly woman with a Singapore flag opens and closes the
+    deck, an active-ageing-centre exercise class backs the baseline games, three men walking
+    in a park back Remember the Way, AIC's resistance-band photo backs the physical-activity
+    panel, and a grandfather with his grandchild backs the name card.
+  - 11 images cover 13 slides. `photos.json` gained a `slides` list (was a single `slide`) so
+    one image can back more than one, and `bake.py` now URL-encodes sources and only appends
+    Unsplash sizing params to Unsplash hosts, since the government filenames contain spaces.
+  - **Deliberately excluded** `Depositphotos_613877344_L.jpg` from moh.gov.sg. It is commercial
+    stock MOH licensed for its own use; an MOH partnership is not the stock library's grant to
+    give. Several other files on those sites look like licensed stock too (descriptive
+    filenames, "-transformed" suffixes) and were used per instruction, but are flagged in
+    `deck/README.md` for anyone adding more.
+  - Centre wash on the two centred slides strengthened slightly (0.92/0.80/0.32) because the
+    new title portrait sat directly behind the wordmark.
+
+
 ### Fixed
 
 - **Team slide cards no longer misalign** (`deck/template.html`). Role labels wrapped to one or

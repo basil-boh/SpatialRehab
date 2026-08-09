@@ -6,6 +6,7 @@ backgrounds/ are committed, so building the deck does not require this script.
 
 For each entry in photos.json: download the original if it is not already in
 .sources/ (untracked), crop it to the slide aspect, blur it, and grade it.
+One image may back more than one slide, hence "slides" is a list.
 Blurring here rather than in CSS keeps the published page cheap to render and
 makes a screenshot look exactly like the live deck.
 
@@ -14,6 +15,7 @@ Then:             python3 deck/bake.py && python3 deck/build.py
 """
 import json
 import os
+import urllib.parse
 import urllib.request
 
 from PIL import Image, ImageEnhance, ImageFilter
@@ -33,7 +35,10 @@ total = 0
 for tag, spec in photos.items():
     original = os.path.join(SOURCES, tag + ".jpg")
     if not os.path.exists(original):
-        url = spec["source"] + "?w=1900&q=80&fm=jpg"
+        url = spec["source"]
+        if "images.unsplash.com" in url:
+            url += "?w=1900&q=80&fm=jpg"      # ask Unsplash for a sensible size
+        url = urllib.parse.quote(url, safe=":/?&=%")   # gov filenames contain spaces
         urllib.request.urlretrieve(urllib.request.Request(url, headers=UA).full_url, original)
 
     im = Image.open(original).convert("RGB")
@@ -60,6 +65,7 @@ for tag, spec in photos.items():
     im.save(dest, quality=60, optimize=True, progressive=True)
     size = os.path.getsize(dest)
     total += size
-    print("%-9s slide %-2d %6.1f KB   %s" % (tag, spec["slide"], size / 1024, spec["credit"]))
+    slides = ", ".join(str(n) for n in spec["slides"])
+    print("%-9s slide %-6s %6.1f KB   %s" % (tag, slides, size / 1024, spec["credit"]))
 
 print("total              %6.1f KB across %d frames" % (total / 1024, len(photos)))
