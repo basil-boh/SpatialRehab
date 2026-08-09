@@ -5,6 +5,16 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-09
+
+### Removed
+
+- **Hummingbird volumetric demo** (merged in from `szehao-id-card`): `HummingbirdVolumeView.swift`,
+  `hummingbird_anim.usdz`, its `WindowGroup(id: "hummingbird")` scene in `SpatialRehabApp.swift`,
+  and the "Hummingbird" button on both `ContentView` screens. `project.yml` / `SpatialRehab.xcodeproj`
+  minimum deployment lowered back from visionOS **26.0** to **2.0** — `.manipulable()` (the reason
+  for the earlier raise) was only used by this view.
+
 ## 2026-08-08
 
 ### Added

@@ -80,7 +80,6 @@ You do **not** need extra capabilities or packages for the scaffold to run on th
 4. Wait for the simulator to boot. You should see a welcome window: **SpatialRehab**.
 5. From the welcome screen:
    - **Who am I?** — draw a circle (or tap **Summon**) to open Lim Chio Bu’s name card; **Family** flips to the tree; pinch **Sze Hao** for a short auto-closing greeting. **Put away** returns the card to the nest.
-   - **Hummingbird** — volumetric USDZ demo (grab / rotate).
 
 If you have no visionOS runtime: **Xcode → Settings → Platforms** and install **visionOS**.
 
@@ -98,7 +97,7 @@ If you have no visionOS runtime: **Xcode → Settings → Platforms** and instal
 |---------|--------|
 | **Product name** | SpatialRehab |
 | **Platform** | visionOS only |
-| **Minimum deployment** | visionOS **26.0** (raised from 2.0 for the `.manipulable()` hand-interaction API) |
+| **Minimum deployment** | visionOS **2.0** |
 | **Language / UI** | Swift + SwiftUI |
 | **Entry point** | `SpatialRehab/SpatialRehabApp.swift` |
 | **Main UI** | `SpatialRehab/ContentView.swift` (welcome screen) |
@@ -119,7 +118,6 @@ SpatialRehab/                      ← repo root
 └── SpatialRehab/                  ← app source
     ├── SpatialRehabApp.swift
     ├── ContentView.swift
-    ├── HummingbirdVolumeView.swift
     ├── YishunWalk/                ← MapKit walking demo (Yishun route)
     ├── Info.plist
     └── Assets.xcassets/

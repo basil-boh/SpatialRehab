@@ -96,13 +96,6 @@ struct ContentView: View {
             }
             .buttonStyle(.bordered)
             .tint(.orange)
-
-            Button {
-                openWindow(id: "hummingbird")
-            } label: {
-                Label("Hummingbird", systemImage: "bird.fill")
-            }
-            .buttonStyle(.bordered)
         }
     }
 
@@ -167,13 +160,6 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
                 .tint(.orange)
-
-                Button {
-                    openWindow(id: "hummingbird")
-                } label: {
-                    Label("Hummingbird", systemImage: "bird.fill")
-                }
-                .buttonStyle(.bordered)
             }
 
             Label(

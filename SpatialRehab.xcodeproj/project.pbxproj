@@ -167,7 +167,6 @@
 		5A412ACB95BB86BA2AC62820 /* tackle_box_with_simple_hinged_lid__rec_tackle_box_with_simple_hinged_lid_a750c95f7f1a44728f3bdbe0571c4092 2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 5CBF5F75BCB771E1385E75E2 /* tackle_box_with_simple_hinged_lid__rec_tackle_box_with_simple_hinged_lid_a750c95f7f1a44728f3bdbe0571c4092 2.usdz */; };
 		5A5F43D68465E419061AED70 /* weekly_pill_organizer__rec_weekly_pill_organizer_ef7c39ed478a47d4b28df6af47fc1641_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E2CDE44632DDFF78D3E1FA /* weekly_pill_organizer__rec_weekly_pill_organizer_ef7c39ed478a47d4b28df6af47fc1641_physics.articulation.json */; };
 		5B0034826CD7E88483D2E068 /* PracticeGameContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B86C06F87A94BB2760C58D /* PracticeGameContainerView.swift */; };
-		5BBE385D30AD9D5118085EF5 /* hummingbird_anim.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */; };
 		5C83B3835EF3A8AE5857D16F /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_e5dc3c29d5f94a81ac9f3250e93b33b3_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = FE1A85F03739667E7AE77B45 /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_e5dc3c29d5f94a81ac9f3250e93b33b3_physics.articulation.json */; };
 		5D351459280E984B78E6B702 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = B6CC5E0C4531E6DB92572002 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.articulation.json */; };
 		5D53939A3B4607ED4AAFF01A /* overbed_table__rec_overbed_table_9fed447735de49a7bef507a48629e224_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AE81C80617DA764B81F7392 /* overbed_table__rec_overbed_table_9fed447735de49a7bef507a48629e224_physics.articulation.json */; };
@@ -300,7 +299,6 @@
 		A234E506BEDFB0459CD2974D /* teapot_with_hinged_lid__rec_teapot_with_hinged_lid_09fb7698eaec4a808c1ed865215659f3_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 6CC1EC2A8537808718BC5D11 /* teapot_with_hinged_lid__rec_teapot_with_hinged_lid_09fb7698eaec4a808c1ed865215659f3_physics.usdz */; };
 		A24067BA1E3520E6CEA42EAE /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_a975ebda9d434afe8331ec8576c7adbe_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = AEA4C7931017CABA5B007A7F /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_a975ebda9d434afe8331ec8576c7adbe_physics.articulation.json */; };
 		A28883D7A793B0168EE3FE39 /* drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5175FD72A342CC77E100F184 /* drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc_physics.articulation.json */; };
-		A2F1E47DB8B41F31B9DB8496 /* HummingbirdVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */; };
 		A35F3DCC44F15B9F6D208CE6 /* electric_kettle_with_hinged_lid__rec_electric_kettle_with_hinged_lid_645d8d7f49bc40ff899c98369703b961_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 647C2F001A7E9A4042FE19E9 /* electric_kettle_with_hinged_lid__rec_electric_kettle_with_hinged_lid_645d8d7f49bc40ff899c98369703b961_physics.articulation.json */; };
 		A5C901BE48DACB8AED1939E7 /* sewing_box_with_simple_hinged_lid__rec_sewing_box_with_simple_hinged_lid_d5879c79ad454814ac71c5952f2f4df3_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 4D25E10CA53ED30F09DAA013 /* sewing_box_with_simple_hinged_lid__rec_sewing_box_with_simple_hinged_lid_d5879c79ad454814ac71c5952f2f4df3_physics.usdz */; };
 		A5FBC07485C0735B319936A7 /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c_physics.articulation 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 78883926D163EE2E6ED429B3 /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c_physics.articulation 2.json */; };
@@ -496,7 +494,6 @@
 		0F84A6E8D8CF62CE45ACFD10 /* ImmersiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveTaskView.swift; sourceTree = "<group>"; };
 		0FF6C4B70C16917C928A1828 /* tackle_box_with_simple_hinged_lid__rec_tackle_box_with_simple_hinged_lid_611ad526a8234eae8bb5853993ef545b_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = tackle_box_with_simple_hinged_lid__rec_tackle_box_with_simple_hinged_lid_611ad526a8234eae8bb5853993ef545b_physics.usdz; sourceTree = "<group>"; };
 		11ABABB758F1912E3779DAD7 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.usdz; sourceTree = "<group>"; };
-		12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HummingbirdVolumeView.swift; sourceTree = "<group>"; };
 		12D03B41D060B01D2C4CAF0B /* office_chair__rec_office_chair_a2b415a194414139a5181e474dfb93dd.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = office_chair__rec_office_chair_a2b415a194414139a5181e474dfb93dd.usdz; sourceTree = "<group>"; };
 		12E960C91F19722AFD64C464 /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_a975ebda9d434afe8331ec8576c7adbe_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = mailbox_with_front_access_door__rec_mailbox_with_front_access_door_a975ebda9d434afe8331ec8576c7adbe_physics.usdz; sourceTree = "<group>"; };
 		13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsDebugView.swift; sourceTree = "<group>"; };
@@ -895,7 +892,6 @@
 		EDB0B5E1CAE36F0BD22EF5BA /* DigitSpanGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitSpanGameView.swift; sourceTree = "<group>"; };
 		EF2D66EE6E113226F4D37BEE /* chest_freezer_with_hinged_lid__rec_chest_freezer_with_hinged_lid_fae9484d57ad4302b8e9122624bc4e17_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = chest_freezer_with_hinged_lid__rec_chest_freezer_with_hinged_lid_fae9484d57ad4302b8e9122624bc4e17_physics.usdz; sourceTree = "<group>"; };
 		EFC41DA04D547831D02F6D4F /* drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = "drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc 2.usdz"; sourceTree = "<group>"; };
-		EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = hummingbird_anim.usdz; sourceTree = "<group>"; };
 		F04F9388015BC5ECE4793BE4 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_f3c7ad3114cb4d3c9a2de478641c85ba_physics 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = "conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_f3c7ad3114cb4d3c9a2de478641c85ba_physics 2.usdz"; sourceTree = "<group>"; };
 		F09364DCF4DAA6BCD3477EAB /* lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_4a5044ddaf334abdbd860ae92320b7e9_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_4a5044ddaf334abdbd860ae92320b7e9_physics.usdz; sourceTree = "<group>"; };
 		F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsStore.swift; sourceTree = "<group>"; };
@@ -1173,8 +1169,6 @@
 				61D9D6886D4171A4361A36AB /* hingeddoor_cabinet__rec_hingeddoor_cabinet_c32af168963b4c37abfb1dbf00d098cf_physics.articulation.json */,
 				933B5A84499F77412F47137B /* hingeddoor_cabinet__rec_hingeddoor_cabinet_c32af168963b4c37abfb1dbf00d098cf_physics.usdz */,
 				BA3C5F100596D0265808F95D /* hingeddoor_cabinet__rec_hingeddoor_cabinet_c32af168963b4c37abfb1dbf00d098cf.usdz */,
-				EFC89DBD2AFF6B2826035D59 /* hummingbird_anim.usdz */,
-				12013D1193F0BFF634D1024E /* HummingbirdVolumeView.swift */,
 				2CA909666A1E57D05F864904 /* Info.plist */,
 				AC7586D25F7D5D3B90CF71E0 /* jam_jar_with_screw_lid__rec_jam_jar_with_screw_lid_00c7c6a01ef74fb690afa9e3b45d3789_physics.articulation.json */,
 				FA1A2E89C8F07D13D93049E1 /* jam_jar_with_screw_lid__rec_jam_jar_with_screw_lid_00c7c6a01ef74fb690afa9e3b45d3789_physics.usdz */,
@@ -1679,7 +1673,6 @@
 				99737641122A75E692EFAC56 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_c32af168963b4c37abfb1dbf00d098cf_physics.articulation 2.json in Resources */,
 				B0DDEB28625079A7D0485F28 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_c32af168963b4c37abfb1dbf00d098cf_physics.articulation.json in Resources */,
 				5E13ACDEC7B1D8372FF6BEF6 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_c32af168963b4c37abfb1dbf00d098cf_physics.usdz in Resources */,
-				5BBE385D30AD9D5118085EF5 /* hummingbird_anim.usdz in Resources */,
 				80DC81035FD83EE11258CBDA /* jam_jar_with_screw_lid__rec_jam_jar_with_screw_lid_00c7c6a01ef74fb690afa9e3b45d3789.usdz in Resources */,
 				45765D4553F110B7774DFD2A /* jam_jar_with_screw_lid__rec_jam_jar_with_screw_lid_00c7c6a01ef74fb690afa9e3b45d3789_physics.articulation.json in Resources */,
 				ED2808231DE13A0A9A253E35 /* jam_jar_with_screw_lid__rec_jam_jar_with_screw_lid_00c7c6a01ef74fb690afa9e3b45d3789_physics.usdz in Resources */,
@@ -1917,7 +1910,6 @@
 				D559213961B7EDCE47AB0EE4 /* GameRecommendationEngine.swift in Sources */,
 				03462927D2F35B845CA523B4 /* GuidanceCardView.swift in Sources */,
 				114782B37F5C95DCA3A6E001 /* HandProximityTracker.swift in Sources */,
-				A2F1E47DB8B41F31B9DB8496 /* HummingbirdVolumeView.swift in Sources */,
 				E9AB649B21D094C4EF3FD414 /* ImmersiveTaskView.swift in Sources */,
 				5FD22381EA3F6AD3FA31C4DA /* MyPeopleView.swift in Sources */,
 				EF6A507D92BE9B88C6BA2C57 /* NameCardView.swift in Sources */,
@@ -2020,7 +2012,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 26.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -2048,7 +2040,7 @@
 				SDKROOT = xros;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 26.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -2076,7 +2068,7 @@
 				SDKROOT = xros;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 26.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -2134,7 +2126,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 26.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};

@@ -69,12 +69,6 @@ struct SpatialRehabApp: App {
         }
         .immersionStyle(selection: $immersionStyle, in: .mixed)
 
-        WindowGroup(id: "hummingbird") {
-            HummingbirdVolumeView()
-        }
-        .windowStyle(.volumetric)
-        .defaultSize(width: 0.6, height: 0.6, depth: 0.6, in: .meters)
-
         // “Who am I?” — nest + circle summon (name card opens as a second window).
         WindowGroup(id: "who-am-i") {
             WhoAmIView()
