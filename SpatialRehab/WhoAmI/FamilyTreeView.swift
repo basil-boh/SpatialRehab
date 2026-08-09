@@ -120,6 +120,20 @@ struct FamilyTreeView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 12)
                 .reveal(revealed, step: 8, reduceMotion: reduceMotion)
+
+            // Explicit way back — tapping your own tile also flips, but a labeled
+            // button is the affordance a disoriented person can actually find.
+            Button {
+                session.flipToFace()
+            } label: {
+                Label("Back to my card · 返回名片", systemImage: "chevron.backward")
+                    .font(.title3.weight(.medium))
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+            .controlSize(.large)
+            .padding(.top, 14)
+            .reveal(revealed, step: 9, reduceMotion: reduceMotion)
         }
         .padding(28)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -130,18 +144,18 @@ struct FamilyTreeView: View {
             .allowsHitTesting(false)
         }
         .background {
+            // Plain translucent wash, deliberately NOT a material: this panel sits on the
+            // card's glass and tiles sit on it, and stacking materials on materials is
+            // what caused the intermittent gray "shadow box" during interaction
+            // (user screenshot, 2026-08-09). The window glass is the one material layer.
             RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .fill(.thinMaterial)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 28, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [.yellow.opacity(0.10), .orange.opacity(0.07)],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                }
+                .fill(
+                    LinearGradient(
+                        colors: [.yellow.opacity(0.12), .orange.opacity(0.08)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
                 .overlay(alignment: .bottomTrailing) {
                     Image(systemName: "tree")
                         .font(.system(size: 180, weight: .ultraLight))
@@ -230,12 +244,11 @@ struct FamilyTreeView: View {
     private var heartNode: some View {
         ZStack {
             Circle()
-                .fill(.thinMaterial)
+                .fill(.white.opacity(0.85))
                 .frame(width: 30, height: 30)
                 .overlay {
-                    Circle().strokeBorder(.orange.opacity(0.4), lineWidth: 1)
+                    Circle().strokeBorder(.orange.opacity(0.45), lineWidth: 1)
                 }
-                .shadow(color: .orange.opacity(0.25), radius: 8)
             Image(systemName: "heart.fill")
                 .font(.system(size: 13))
                 .foregroundStyle(.pink.opacity(0.85))
@@ -311,7 +324,7 @@ struct FamilyTreeView: View {
                         .foregroundStyle(.secondary)
                     Text(isSelf ? "You · 您自己" : member.bilingualRelation)
                         .font(.caption2)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(isSelf ? .green : .orange)
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
@@ -320,14 +333,18 @@ struct FamilyTreeView: View {
             }
             .padding(generation.padding)
             .background {
+                // Solid translucent fill, no material and no shadow — see the panel
+                // background note above for the compositing artifact both caused.
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(.regularMaterial)
+                    .fill(.white.opacity(isSelf ? 0.4 : 0.32))
                     .overlay {
                         if isSelf {
+                            // Green, not the family amber, so "this one is me" reads
+                            // at a glance.
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .fill(
                                     LinearGradient(
-                                        colors: [.orange.opacity(0.12), .yellow.opacity(0.06)],
+                                        colors: [.green.opacity(0.16), .mint.opacity(0.08)],
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
                                     )
@@ -337,11 +354,10 @@ struct FamilyTreeView: View {
                     .overlay {
                         RoundedRectangle(cornerRadius: 20, style: .continuous)
                             .strokeBorder(
-                                isSelf ? .orange.opacity(0.55) : .orange.opacity(0.18),
-                                lineWidth: isSelf ? 1.5 : 1
+                                isSelf ? .green.opacity(0.65) : .orange.opacity(0.22),
+                                lineWidth: isSelf ? 2 : 1
                             )
                     }
-                    .shadow(color: .black.opacity(0.08), radius: 8, y: 3)
             }
             // `transform…`, not `anchorPreference`: the plain setter would REPLACE the
             // avatar anchor registered inside this same subtree, and with the husband's
@@ -382,7 +398,7 @@ struct FamilyTreeView: View {
         .overlay {
             Circle()
                 .strokeBorder(
-                    isSelf ? Color.orange.opacity(0.9) : Color.orange.opacity(0.35),
+                    isSelf ? Color.green.opacity(0.9) : Color.orange.opacity(0.35),
                     lineWidth: isSelf ? 2.5 : 1.5
                 )
         }
@@ -403,7 +419,7 @@ struct FamilyTreeView: View {
                 .accessibilityLabel("Has a video greeting")
             }
         }
-        .shadow(color: .orange.opacity(isSelf ? 0.3 : 0.12), radius: isSelf ? 10 : 5, y: 2)
+        .shadow(color: isSelf ? .green.opacity(0.3) : .orange.opacity(0.12), radius: isSelf ? 10 : 5, y: 2)
         .transformAnchorPreference(key: TileAnchorKey.self, value: .bounds) { dict, anchor in
             dict[avatarKey(member.id)] = anchor
         }

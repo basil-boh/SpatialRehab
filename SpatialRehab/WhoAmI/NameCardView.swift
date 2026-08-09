@@ -52,6 +52,9 @@ struct NameCardView: View {
     @State private var revealed = false
     /// One-shot sheen position: -1 parked off the leading edge, 1 off the trailing edge.
     @State private var sheenPhase: CGFloat = -1
+    /// The sheen layer only exists while it sweeps — a permanently mounted
+    /// `.plusLighter` layer over glass invites compositing artifacts.
+    @State private var sheenActive = false
     /// Gentle breathing glow behind the portrait.
     @State private var portraitGlow = false
 
@@ -100,11 +103,9 @@ struct NameCardView: View {
                     lineWidth: 1
                 )
         }
-        .shadow(
-            color: .orange.opacity(session.phase == .presenting ? 0.45 : 0.18),
-            radius: session.phase == .presenting ? 40 : 22,
-            y: 8
-        )
+        // No .shadow on the card: it is a material surface, and shadowing a material
+        // forces offscreen compositing that intermittently renders as a gray box on
+        // device (user screenshot, 2026-08-09). The window's own glass provides depth.
         .scaleEffect(session.phase == .presenting ? 1.04 : (session.phase == .puttingAway ? 0.55 : 1.0))
         .opacity(session.phase == .puttingAway ? 0.15 : 1.0)
         .offset(y: session.phase == .puttingAway ? 80 : 0)
@@ -159,10 +160,10 @@ struct NameCardView: View {
     }
 
     /// One-shot diagonal light sweep when the card presents. Purely decorative,
-    /// so it is skipped entirely under Reduce Motion.
+    /// so it is skipped entirely under Reduce Motion, and unmounted once done.
     @ViewBuilder
     private var sheen: some View {
-        if !reduceMotion {
+        if !reduceMotion, sheenActive {
             GeometryReader { geo in
                 LinearGradient(
                     colors: [.clear, .white.opacity(0.28), .clear],
@@ -188,8 +189,13 @@ struct NameCardView: View {
         withAnimation(.spring(response: 0.6, dampingFraction: 0.85).delay(0.15)) {
             revealed = true
         }
+        sheenActive = true
         withAnimation(.easeInOut(duration: 1.1).delay(0.45)) {
             sheenPhase = 1.6
+        }
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(2))
+            sheenActive = false
         }
         withAnimation(.easeInOut(duration: 3.2).repeatForever(autoreverses: true).delay(0.8)) {
             portraitGlow = true
@@ -215,6 +221,7 @@ struct NameCardView: View {
         VStack(spacing: 20) {
             revealStyle(header, step: 0)
             revealStyle(hairline, step: 0)
+            revealStyle(todayStrip, step: 1)
 
             HStack(alignment: .center, spacing: 30) {
                 revealStyle(portrait, step: 1)
@@ -246,6 +253,18 @@ struct NameCardView: View {
 
             revealStyle(homeAndWork, step: 5)
 
+            if let aboutMe = owner.aboutMe {
+                revealStyle(
+                    Text(aboutMe)
+                        .font(.system(.callout, design: .serif))
+                        .italic()
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity),
+                    step: 6
+                )
+            }
+
             Spacer(minLength: 4)
 
             revealStyle(hairline, step: 6)
@@ -257,24 +276,30 @@ struct NameCardView: View {
         .frame(maxWidth: 700)
     }
 
-    /// ID-card style data zone: where home is, and what their life's work was.
+    /// ID-card style data zone: where home is, what their life's work was, and who
+    /// to call when help is needed.
     @ViewBuilder
     private var homeAndWork: some View {
-        if owner.homeAddress != nil || owner.occupation != nil {
+        let rows: [(icon: String, label: String, value: String)] = [
+            owner.homeAddress.map { ("house.fill", "HOME · 住址", $0) },
+            owner.occupation.map { ("briefcase.fill", "LIFE'S WORK · 职业", $0) },
+            owner.emergencyContact.map { ("phone.fill", "IF YOU NEED HELP · 求助", $0) },
+        ].compactMap { $0 }
+
+        if !rows.isEmpty {
             VStack(spacing: 0) {
-                if let address = owner.homeAddress {
-                    detailRow(icon: "house.fill", label: "HOME · 住址", value: address)
-                }
-                if owner.homeAddress != nil, owner.occupation != nil {
-                    Divider()
-                        .overlay(.orange.opacity(0.15))
-                        .padding(.leading, 64)
-                }
-                if let occupation = owner.occupation {
-                    detailRow(icon: "briefcase.fill", label: "LIFE'S WORK · 职业", value: occupation)
+                ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
+                    if index > 0 {
+                        Divider()
+                            .overlay(.orange.opacity(0.15))
+                            .padding(.leading, 64)
+                    }
+                    detailRow(icon: row.icon, label: row.label, value: row.value)
                 }
             }
-            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            // Solid translucent fill, not a material — this zone sits on the card's
+            // glass, and nesting materials is what glitched the tree side.
+            .background(.white.opacity(0.3), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
                     .strokeBorder(.orange.opacity(0.2), lineWidth: 1)
@@ -325,6 +350,43 @@ struct NameCardView: View {
                 .padding(.vertical, 5)
                 .background(.orange.opacity(0.1), in: .capsule)
         }
+    }
+
+    /// Reality-orientation strip: dementia erodes temporal orientation first, so the
+    /// card leads with what day it is, in both languages. Recomputed on each render —
+    /// the card is short-lived, so no midnight-refresh plumbing is needed.
+    private var todayStrip: some View {
+        Label {
+            Text(todayLine)
+                .font(.callout.weight(.medium))
+        } icon: {
+            Image(systemName: "sun.max.fill")
+                .font(.callout)
+                .foregroundStyle(.orange)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(.white.opacity(0.3), in: .capsule)
+        .overlay {
+            Capsule().strokeBorder(.orange.opacity(0.2), lineWidth: 1)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var todayLine: String {
+        let english = Date.now.formatted(
+            Date.FormatStyle()
+                .weekday(.wide)
+                .day()
+                .month(.wide)
+                .locale(Locale(identifier: "en_SG"))
+        )
+        let chineseWeekday = Date.now.formatted(
+            Date.FormatStyle()
+                .weekday(.wide)
+                .locale(Locale(identifier: "zh_CN"))
+        )
+        return "Today is \(english) · \(chineseWeekday)"
     }
 
     private var hairline: some View {
@@ -380,6 +442,9 @@ struct NameCardView: View {
             if let age = owner.age {
                 chip(icon: "heart.fill", text: "\(age) years young · \(age)岁")
             }
+            if let icNumber = owner.icNumber {
+                chip(icon: "person.text.rectangle", text: "IC · \(icNumber)")
+            }
         }
     }
 
@@ -394,7 +459,7 @@ struct NameCardView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
-        .background(.thinMaterial, in: .capsule)
+        .background(.white.opacity(0.3), in: .capsule)
         .overlay {
             Capsule().strokeBorder(.orange.opacity(0.25), lineWidth: 1)
         }

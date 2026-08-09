@@ -22,6 +22,9 @@ enum DemoPersona {
         photoName: "whoami-owner",
         homeAddress: "Blk 5 Banda Street #08-42, Singapore 050005",
         occupation: "Retired schoolteacher · 退休教师",
+        icNumber: "S1234567D",
+        emergencyContact: "Mei Ling (daughter · 女儿) · 8123 4567",
+        aboutMe: "Loves gardening, morning taiji, and a good bowl of laksa · 爱园艺、晨间太极和叻沙",
         childrenIDs: []
     )
 
@@ -135,6 +138,14 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     var homeAddress: String? = nil
     /// Life's work, for reminiscence — shown on the card face when known.
     var occupation: String? = nil
+    /// NRIC, shown as a chip on the card face. Demo data uses an obviously
+    /// fictional number — never ship a real one in the repo.
+    var icNumber: String? = nil
+    /// Who to call when help is needed — the most useful field on real dementia
+    /// ID cards; shown as its own row in the card's data zone.
+    var emergencyContact: String? = nil
+    /// One reminiscence line (person-centred care) — shown under the data zone.
+    var aboutMe: String? = nil
     let childrenIDs: [ID]
 
     var bilingualRelation: String {

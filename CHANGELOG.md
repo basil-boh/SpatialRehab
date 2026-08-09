@@ -142,6 +142,35 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   composed cards inside the tree-sized window; the face portrait scaled up to 220×264 to
   match.
 
+- **Intermittent gray "shadow box" over the family tree during interaction** (user report
+  with screenshot: "it looks a bit glitchy… a shadow box appearing occasionally when I
+  interact"). Root cause: three stacked material layers (window glass → tree panel
+  `.thinMaterial` → tile `.regularMaterial`) plus `.shadow` applied to material-filled
+  shapes — visionOS materials sample the backdrop and don't nest reliably, and shadowing
+  a material forces offscreen compositing that intermittently flattens to a gray plate.
+  The card's `.ultraThinMaterial` is now the *only* material: the tree panel became a
+  plain gradient wash, tiles/heart node/face chips/data zone use solid translucent white
+  fills, the card-level orange `.shadow` and tile shadows are gone (remaining shadows sit
+  on images/gradients only, which is safe), and the face's `.plusLighter` sheen layer now
+  unmounts two seconds after its one-shot sweep instead of living over the glass forever.
+
+- **Family tree: self tile highlighted in green, and an explicit back button** (user
+  requests). The "You" tile's tint, border, avatar ring, glow, and `You · 您自己` label all
+  switched from the family amber to green so "this one is me" reads at a glance — everyone
+  else stays orange. A bordered `Back to my card · 返回名片` capsule now sits at the bottom
+  of the tree (tapping your own tile still flips back too, but a labeled button is the
+  affordance a disoriented person can actually find).
+
+- **Card face: IC number, emergency contact, today's date, and an "About me" line** (user
+  request; extras chosen from suggested options). `FamilyMember` gained `icNumber`,
+  `emergencyContact`, and `aboutMe`. The NRIC (fictional `S1234567D` for the demo — never
+  ship a real one) joins the birthday/age chips; "IF YOU NEED HELP · 求助" (call Mei Ling)
+  became a third data-zone row, with the zone's rows refactored into a data-driven
+  `ForEach`; a reality-orientation strip under the header shows "Today is Saturday, 9
+  August · 星期六" bilingually (recomputed per render — the card is short-lived, so no
+  midnight-refresh plumbing); and a serif-italic reminiscence line (gardening, taiji,
+  laksa) sits under the data zone for person-centred warmth.
+
 - **"Who am I?" no longer requires drawing a circle** — that gesture-summon ritual (draw a
   circle over a glowing nest to open the name card) wasn't the intended interaction and was
   removed: `WhoAmIView.swift`, `NestView.swift`, and `CircleDrawCanvas.swift` are deleted,
