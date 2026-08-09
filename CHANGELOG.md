@@ -7,6 +7,74 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-08
 
+### Added
+
+- **Simplified the control panel while stepped inside Remember the Way, and made it
+  draggable** (user report: "when i click on step inside it doesnt allow me to move unless
+  i click on im ready... it should just show the button to back to table and also allows me
+  to shift this window to the side or wherever i want").
+  - `RouteMemoryView.swift` (`controlPanel`) — the `exercise.state`-driven `controls` block
+    (which still rendered a disabled "I'm ready" button while inside, since `exercise.state`
+    stays `.studying`) is now skipped entirely while `insideMode`; the panel shows only its
+    prompt text and "Back to table" + the voice toggle, matching what's actually available.
+    The disabled "I'm ready" button sitting there was likely the real cause of "can't move
+    unless I click I'm ready" — it read as a required step even though it was inert.
+  - New `controlsAnchor`/`controlsHandle` entities — the panel attachment now parents under
+    `controlsAnchor` instead of attaching to the scene root directly, and a small metal grab
+    bar (`buildControlsHandle()`, same visual language as the table's own handle) sits just
+    below it with its own `CollisionComponent`/`InputTargetComponent`. A new
+    `DragGesture().targetedToEntity(controlsHandle)` moves `controlsAnchor` (and the panel
+    with it) directly under the hand — a dedicated handle rather than making the whole glass
+    panel draggable, so dragging can't be confused with, or steal touches from, the panel's
+    own buttons.
+  - Verified with a temporary auto-triggering `.task` (this sandbox has no tap automation
+    for the visionOS Simulator, so "Step inside" couldn't be tapped through directly):
+    screenshotted the panel post-step-inside showing only the prompt and "Back to table",
+    with the new drag handle visible underneath. Both temporary triggers fully removed
+    afterward.
+
+- **Main window now dismisses entirely during Remember the Way**, instead of floating an
+  empty glass pane behind the holographic table (user report, with a screenshot: "when i
+  click the navigation button it currently shows this empty window here"). Previously
+  `ContentView.inActivity` rendered `EmptyView()` while `.inActivity`, but the window chrome
+  itself — the blank glass rectangle — still hung there next to
+  `RouteMemoryTableView.controlPanel`, which already carries all the real guidance.
+  - `SpatialRehabApp.swift` — the main `WindowGroup` now has an explicit
+    `id: SceneID.main` (new `SceneID` enum, same pattern as `ImmersiveSpaceID`); a
+    `WindowGroup` with no id can't be targeted by `dismissWindow`/`openWindow`.
+  - `ContentView.startActivity()` calls `dismissWindow(id: SceneID.main)` right after the
+    immersive space opens successfully and `phase` flips to `.inActivity`.
+  - `RouteMemoryTableView.onDisappear` calls `openWindow(id: SceneID.main)` unconditionally,
+    covering every way the immersive space can close: the "Done" button (phase already
+    `.finished` by then), a system/gesture dismissal (phase reset to `.welcome` in the same
+    handler), or a step-inside interruption.
+  - Verified with a temporary auto-triggering harness in `SpatialRehabApp.swift` (this
+    sandbox has no tap automation for the visionOS Simulator, so "Start"/"Done" can't be
+    tapped through directly): screenshotted the window present on launch, gone once the
+    immersive space opened, and back once it closed. Harness fully removed afterward.
+
+- **Professional `README.md`** for the repo root — project pitch, feature tour, architecture
+  overview, setup instructions, team roster, and roadmap, styled after a teammate-approved
+  reference README. Screenshots captured via the simulator (`assets/screenshots/`); logo
+  exported as a standalone `assets/logo.svg` mirroring the in-app mark.
+- **Two-step intro flow** (`BaselineAssessmentView`): the brand screen (logo, name,
+  description) is now its own step with a "Next" button, separate from "A Few Quick
+  Activities" — previously both were stacked on one screen. Local `IntroStep` enum, not
+  part of `BaselineAssessmentSession.Phase` (pure intro sequencing, nothing worth persisting
+  or resuming).
+- **Redesigned the intro logo mark three times**, per direct feedback ("i dont like this
+  home logo"), then ("i still dont like the logo"), then ("i want some geometric shape or
+  something"): house-silhouette badge → three offset layered panes (read as an indistinct
+  blob at intro size) → an orbiting-node mark (ring, center dot, glowing node — the user's
+  pick from a first round of four options) → the final **faceted hexagon** — six triangular
+  facets at varying blue-over-indigo opacity around a shared center, brightest at the
+  upper-left to read as a cut gem catching light, drawn with `Canvas` (the same primitive
+  `ClockDrawingView` already uses) rather than stacked `Shape`s. Chosen from a second round
+  of four geometric-specifically options (faceted hexagon, isometric cube, faceted triangle,
+  overlapping rotated squares) after the user asked for "some geometric shape." Each round
+  presented rendered-preview mockups before implementing. `assets/logo.svg` kept in sync
+  with the in-app mark at every step.
+
 ### Removed
 
 - **App focused to a single activity — Remember the Way**: deleted Touch the Dots, Walk to the Bakery, and Find Your Way Home (files, pbxproj entries, `ActivityKind` routing, `SpatialStreetCache` warming, `DemoStreetPanorama.jpg`). Shared route coordinates moved from `FindHomeExercise` to a small `DemoRoute` enum in `NeighborhoodWorld.swift`; unused `NeighborhoodController` removed. Welcome screen is now a single calm Start into the exercise (one thing on screen — finally matching our own patient-mode rule). Prior activities remain in git history if ever wanted back.

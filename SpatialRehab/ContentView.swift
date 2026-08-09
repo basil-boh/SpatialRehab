@@ -20,6 +20,7 @@ struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
     @State private var showingDashboard = false
     @State private var showingDailyPractice = false
 
@@ -105,14 +106,16 @@ struct ContentView: View {
         }
     }
 
-    /// Empty on purpose — `RouteMemoryTableView.controlPanel` (the floating panel in the
-    /// immersive space itself) already shows the real, phase-accurate instruction ("Take
-    /// your time…", "Tap the corners…", the score feedback) plus the actual buttons. This
-    /// flat window used to duplicate that with its own text (first specific and stale, then
-    /// a generic "Look around you") floating alongside the immersive panel — still a second
-    /// surface competing for attention even once it stopped saying anything wrong. Now it
-    /// shows nothing at all while the person's in the activity; the immersive panel is the
-    /// only thing there.
+    /// Practically unreachable — `startActivity()` dismisses this whole window
+    /// (`dismissWindow(id: SceneID.main)`) the moment `.inActivity` begins, since
+    /// `RouteMemoryTableView.controlPanel` (the floating panel in the immersive space
+    /// itself) already shows the real, phase-accurate instruction ("Take your time…",
+    /// "Tap the corners…", the score feedback) plus the actual buttons. A flat window
+    /// used to float alongside that panel showing its own text (first specific and stale,
+    /// then a generic "Look around you", then nothing) — still a second surface competing
+    /// for attention even once it stopped saying anything wrong, so now the window itself
+    /// is gone rather than just empty. Kept as a harmless fallback for the brief window
+    /// between the phase flipping and the dismiss taking effect.
     private var inActivity: some View {
         EmptyView()
     }
@@ -188,6 +191,12 @@ struct ContentView: View {
         switch await openImmersiveSpace(id: AppModel.activitySpaceID) {
         case .opened:
             appModel.phase = .inActivity
+            // The immersive space's own control panel (`RouteMemoryTableView.controlPanel`)
+            // is the only guidance surface during the activity — this flat window has
+            // nothing to show while `.inActivity` (see `inActivity` below), so rather than
+            // float an empty glass pane behind the table, dismiss it entirely.
+            // `RouteMemoryTableView.onDisappear` reopens it once the activity ends.
+            dismissWindow(id: SceneID.main)
         case .userCancelled, .error:
             appModel.phase = .welcome
         @unknown default:

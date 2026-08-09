@@ -37,6 +37,7 @@ struct RouteMemoryTableView: View {
 
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @Environment(\.openWindow) private var openWindow
 
     /// Table center in rig-local space; scaling pivots around this point.
     private static let tablePivot = SIMD3<Float>(0, 0.85, -0.95)
@@ -56,6 +57,12 @@ struct RouteMemoryTableView: View {
     @State private var walkDistance: Float = 0
     @State private var isWalking = false
     @State private var walkTask: Task<Void, Never>?
+
+    /// Parent for the control panel + its drag handle, so dragging the handle moves both
+    /// together without disturbing the panel's own internal layout.
+    @State private var controlsAnchor = Entity()
+    @State private var controlsHandle = Entity()
+    @State private var controlsDragOffset: SIMD3<Float>?
 
     /// Simplified, arc-length-parameterized route in ENU meters.
     struct WalkPath {
@@ -96,10 +103,13 @@ struct RouteMemoryTableView: View {
             }
             buildHandle()
             rig.addChild(handle)
+            content.add(controlsAnchor)
             if let controls = attachments.entity(for: "controls") {
                 controls.position = [0, 1.45, -1.65]
-                content.add(controls)
+                controlsAnchor.addChild(controls)
             }
+            buildControlsHandle()
+            controlsAnchor.addChild(controlsHandle)
         } attachments: {
             Attachment(id: "tableMap") { tableMap }
             Attachment(id: "controls") { controlPanel }
@@ -130,6 +140,20 @@ struct RouteMemoryTableView: View {
                     settleTable()
                 }
         )
+        .gesture(
+            DragGesture()
+                .targetedToEntity(controlsHandle)
+                .onChanged { value in
+                    let location = value.convert(value.location3D, from: .local, to: .scene)
+                    if controlsDragOffset == nil {
+                        controlsDragOffset = controlsAnchor.position - location
+                    }
+                    controlsAnchor.position = location + (controlsDragOffset ?? .zero)
+                }
+                .onEnded { _ in
+                    controlsDragOffset = nil
+                }
+        )
         .onChange(of: exercise.state) { _, newState in
             switch newState {
             case .studying:
@@ -157,6 +181,12 @@ struct RouteMemoryTableView: View {
             if appModel.phase == .inActivity {
                 appModel.phase = .welcome
             }
+            // Covers every way this view can disappear — the "Done" button below (phase
+            // already `.finished` by the time this fires), a system/gesture dismissal of
+            // the space (phase set to `.welcome` just above), or a step-inside interruption
+            // — `ContentView.startActivity()` dismissed this window when the activity
+            // began, so it needs to come back regardless of which exit path was taken.
+            openWindow(id: SceneID.main)
         }
     }
 
@@ -172,6 +202,22 @@ struct RouteMemoryTableView: View {
         handle.components.set(CollisionComponent(shapes: [.generateBox(size: [0.54, 0.1, 0.16])]))
         handle.components.set(InputTargetComponent())
         handle.components.set(HoverEffectComponent())
+    }
+
+    /// Small grab bar under the control panel, same visual language as the table's handle
+    /// above — separate from the panel's own glass surface (rather than making the whole
+    /// panel draggable) so it can't be confused with, or steal drags from, the panel's own
+    /// buttons.
+    private func buildControlsHandle() {
+        let bar = ModelEntity(
+            mesh: .generateBox(size: [0.22, 0.025, 0.06], cornerRadius: 0.012),
+            materials: [SimpleMaterial(color: UIColor(white: 0.88, alpha: 1), isMetallic: true)]
+        )
+        controlsHandle.addChild(bar)
+        controlsHandle.position = [0, 1.08, -1.65]
+        controlsHandle.components.set(CollisionComponent(shapes: [.generateBox(size: [0.32, 0.08, 0.12])]))
+        controlsHandle.components.set(InputTargetComponent())
+        controlsHandle.components.set(HoverEffectComponent())
     }
 
     /// The table eases toward the hand instead of tracking it rigidly —
@@ -715,7 +761,14 @@ struct RouteMemoryTableView: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 640)
 
-            controls
+            // Skipped while inside — `controls` switches on `exercise.state`, which is
+            // still `.studying` at this point, so it would show a disabled "I'm ready"
+            // button that has nothing to do with the life-size world and reads as if it's
+            // required before movement works. "Back to table" below is the only action
+            // that makes sense here.
+            if !insideMode {
+                controls
+            }
 
             if exercise.state == .studying || exercise.state == .drawing || exercise.state == .scored {
                 if insideMode {

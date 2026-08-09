@@ -34,7 +34,10 @@ struct SpatialRehabApp: App {
     @State private var whoAmISession = WhoAmISessionModel()
 
     var body: some Scene {
-        WindowGroup {
+        // Explicit id so `ContentView`/`RouteMemoryTableView` can dismiss and reopen this
+        // specific window around the immersive activity (see `SceneID.main`) — a
+        // `WindowGroup` with no id can't be targeted by `dismissWindow`/`openWindow`.
+        WindowGroup(id: SceneID.main) {
             if hasCompletedBaseline {
                 ContentView()
                     .environment(appModel)
@@ -89,4 +92,9 @@ struct SpatialRehabApp: App {
 /// Centralized so the window and the space agree on the identifier.
 enum ImmersiveSpaceID {
     static let teaTask = "TeaTaskSpace"
+}
+
+/// Centralized so call sites dismissing/reopening the main window agree on the identifier.
+enum SceneID {
+    static let main = "MainWindow"
 }
