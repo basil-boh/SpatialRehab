@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "mahjong_tile_rack",
+  "root_prim": "/mahjong_tile_rack",
+  "links": [
+    {
+      "name": "rack",
+      "usd_path": "/mahjong_tile_rack/rack",
+      "mass": null
+    },
+    {
+      "name": "tile_0",
+      "usd_path": "/mahjong_tile_rack/rack/tile_0",
+      "mass": null
+    },
+    {
+      "name": "tile_1",
+      "usd_path": "/mahjong_tile_rack/rack/tile_1",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "rack_to_tile_0",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/mahjong_tile_rack/rack",
+      "child_path": "/mahjong_tile_rack/rack/tile_0",
+      "origin_xyz": [
+        -0.016,
+        0.0185,
+        0.043
+      ],
+      "origin_rpy": [
+        -0.191986,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "rack_to_tile_1",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/mahjong_tile_rack/rack",
+      "child_path": "/mahjong_tile_rack/rack/tile_1",
+      "origin_xyz": [
+        0.016,
+        0.0185,
+        0.043
+      ],
+      "origin_rpy": [
+        -0.191986,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

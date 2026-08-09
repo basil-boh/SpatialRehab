@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "object": "hinged_sugar_bowl",
+  "root_prim": "/hinged_sugar_bowl",
+  "links": [
+    {
+      "name": "bowl",
+      "usd_path": "/hinged_sugar_bowl/bowl",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/hinged_sugar_bowl/bowl/lid",
+      "mass": null
+    },
+    {
+      "name": "sugar_cube_0",
+      "usd_path": "/hinged_sugar_bowl/bowl/sugar_cube_0",
+      "mass": null
+    },
+    {
+      "name": "sugar_cube_1",
+      "usd_path": "/hinged_sugar_bowl/bowl/sugar_cube_1",
+      "mass": null
+    },
+    {
+      "name": "sugar_cube_2",
+      "usd_path": "/hinged_sugar_bowl/bowl/sugar_cube_2",
+      "mass": null
+    },
+    {
+      "name": "sugar_cube_3",
+      "usd_path": "/hinged_sugar_bowl/bowl/sugar_cube_3",
+      "mass": null
+    },
+    {
+      "name": "sugar_cube_4",
+      "usd_path": "/hinged_sugar_bowl/bowl/sugar_cube_4",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "bowl_to_lid",
+      "usd_path": "/hinged_sugar_bowl/Joints/bowl_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/hinged_sugar_bowl/bowl",
+      "child_path": "/hinged_sugar_bowl/bowl/lid",
+      "origin_xyz": [
+        0.0,
+        0.087,
+        0.08
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.36136,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "bowl_to_sugar_cube_0",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/hinged_sugar_bowl/bowl",
+      "child_path": "/hinged_sugar_bowl/bowl/sugar_cube_0",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.0245
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "bowl_to_sugar_cube_1",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/hinged_sugar_bowl/bowl",
+      "child_path": "/hinged_sugar_bowl/bowl/sugar_cube_1",
+      "origin_xyz": [
+        0.021,
+        0.0,
+        0.0245
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "bowl_to_sugar_cube_2",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/hinged_sugar_bowl/bowl",
+      "child_path": "/hinged_sugar_bowl/bowl/sugar_cube_2",
+      "origin_xyz": [
+        -0.021,
+        0.0,
+        0.0245
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "bowl_to_sugar_cube_3",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/hinged_sugar_bowl/bowl",
+      "child_path": "/hinged_sugar_bowl/bowl/sugar_cube_3",
+      "origin_xyz": [
+        0.0,
+        0.021,
+        0.0245
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "bowl_to_sugar_cube_4",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/hinged_sugar_bowl/bowl",
+      "child_path": "/hinged_sugar_bowl/bowl/sugar_cube_4",
+      "origin_xyz": [
+        0.0,
+        -0.021,
+        0.0245
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

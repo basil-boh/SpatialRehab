@@ -12,8 +12,17 @@ struct SpatialRehabApp: App {
         .defaultSize(width: 900, height: 600)
 
         ImmersiveSpace(id: AppModel.activitySpaceID) {
-            RouteMemoryTableView()
-                .environment(appModel)
+            switch appModel.currentActivity {
+            case .routeMemory:
+                RouteMemoryTableView()
+                    .environment(appModel)
+            case .coffee:
+                CoffeeActivityView()
+                    .environment(appModel)
+            case .mahjong:
+                MahjongActivityView()
+                    .environment(appModel)
+            }
         }
         .immersionStyle(
             selection: Binding(

@@ -401,6 +401,87 @@
 		48A219C330262FB10041BCF1 /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701_physics 2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A2182630262FB00041BCF1 /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701_physics 2.usdz */; };
 		48A219C430262FB10041BCF1 /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_a975ebda9d434afe8331ec8576c7adbe_physics 2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A2185C30262FB00041BCF1 /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_a975ebda9d434afe8331ec8576c7adbe_physics 2.usdz */; };
 		48A219C530262FB10041BCF1 /* toaster_oven__rec_toaster_oven_b7924b610ed54f96ba47823b4f872969_physics.articulation 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A218AB30262FB00041BCF1 /* toaster_oven__rec_toaster_oven_b7924b610ed54f96ba47823b4f872969_physics.articulation 2.json */; };
+		48A219DB302727570041BCF1 /* milk_jug_with_fill_level_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D0302727570041BCF1 /* milk_jug_with_fill_level_physics.usdz */; };
+		48A219DC302727570041BCF1 /* coffee_tin_with_scoop.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219CC302727570041BCF1 /* coffee_tin_with_scoop.usdz */; };
+		48A219DD302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D3302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.usdz */; };
+		48A219DE302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D4302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.articulation.json */; };
+		48A219DF302727570041BCF1 /* coffee_carafe_with_fill_level_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219C8302727570041BCF1 /* coffee_carafe_with_fill_level_physics.articulation.json */; };
+		48A219E0302727570041BCF1 /* coffee_tin_with_scoop_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219CD302727570041BCF1 /* coffee_tin_with_scoop_physics.usdz */; };
+		48A219E1302727570041BCF1 /* teaspoon_on_rest_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D7302727570041BCF1 /* teaspoon_on_rest_physics.articulation.json */; };
+		48A219E2302727570041BCF1 /* water_kettle_with_fill_level_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D9302727570041BCF1 /* water_kettle_with_fill_level_physics.usdz */; };
+		48A219E3302727570041BCF1 /* teaspoon_on_rest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D5302727570041BCF1 /* teaspoon_on_rest.usdz */; };
+		48A219E4302727570041BCF1 /* coffee_carafe_with_fill_level_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219C7302727570041BCF1 /* coffee_carafe_with_fill_level_physics.usdz */; };
+		48A219E5302727570041BCF1 /* coffee_mug_with_fill_level_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219CA302727570041BCF1 /* coffee_mug_with_fill_level_physics.usdz */; };
+		48A219E6302727570041BCF1 /* water_kettle_with_fill_level.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D8302727570041BCF1 /* water_kettle_with_fill_level.usdz */; };
+		48A219E7302727570041BCF1 /* water_kettle_with_fill_level_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219DA302727570041BCF1 /* water_kettle_with_fill_level_physics.articulation.json */; };
+		48A219E8302727570041BCF1 /* coffee_tin_with_scoop_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219CE302727570041BCF1 /* coffee_tin_with_scoop_physics.articulation.json */; };
+		48A219E9302727570041BCF1 /* milk_jug_with_fill_level.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219CF302727570041BCF1 /* milk_jug_with_fill_level.usdz */; };
+		48A219EA302727570041BCF1 /* coffee_mug_with_fill_level_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219CB302727570041BCF1 /* coffee_mug_with_fill_level_physics.articulation.json */; };
+		48A219EB302727570041BCF1 /* sugar_bowl_with_free_cubes.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D2302727570041BCF1 /* sugar_bowl_with_free_cubes.usdz */; };
+		48A219EC302727570041BCF1 /* milk_jug_with_fill_level_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D1302727570041BCF1 /* milk_jug_with_fill_level_physics.articulation.json */; };
+		48A219ED302727570041BCF1 /* coffee_carafe_with_fill_level.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219C6302727570041BCF1 /* coffee_carafe_with_fill_level.usdz */; };
+		48A219EE302727570041BCF1 /* teaspoon_on_rest_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219D6302727570041BCF1 /* teaspoon_on_rest_physics.usdz */; };
+		48A219EF302727570041BCF1 /* coffee_mug_with_fill_level.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219C9302727570041BCF1 /* coffee_mug_with_fill_level.usdz */; };
+		48A21A2D30285B980041BCF1 /* mahjong_tile_rack.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F530285B980041BCF1 /* mahjong_tile_rack.usdz */; };
+		48A21A2E30285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F130285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.usdz */; };
+		48A21A2F30285B980041BCF1 /* wind_north.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2630285B980041BCF1 /* wind_north.png */; };
+		48A21A3030285B980041BCF1 /* mahjong_full_set_sg148.tiles.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F430285B980041BCF1 /* mahjong_full_set_sg148.tiles.json */; };
+		48A21A3130285B980041BCF1 /* bamboo_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0630285B980041BCF1 /* bamboo_8.png */; };
+		48A21A3230285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F230285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.articulation.json */; };
+		48A21A3330285B980041BCF1 /* season_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2230285B980041BCF1 /* season_2.png */; };
+		48A21A3430285B980041BCF1 /* wallet_with_free_coins_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2C30285B980041BCF1 /* wallet_with_free_coins_physics.articulation.json */; };
+		48A21A3530285B980041BCF1 /* bamboo_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0330285B980041BCF1 /* bamboo_5.png */; };
+		48A21A3630285B980041BCF1 /* bamboo_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0030285B980041BCF1 /* bamboo_2.png */; };
+		48A21A3730285B980041BCF1 /* mahjong_tile_rack_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F630285B980041BCF1 /* mahjong_tile_rack_physics.usdz */; };
+		48A21A3830285B980041BCF1 /* animal_cat.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A219FB30285B980041BCF1 /* animal_cat.png */; };
+		48A21A3930285B980041BCF1 /* dots_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1730285B980041BCF1 /* dots_7.png */; };
+		48A21A3A30285B980041BCF1 /* char_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0F30285B980041BCF1 /* char_8.png */; };
+		48A21A3B30285B980041BCF1 /* char_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1030285B980041BCF1 /* char_9.png */; };
+		48A21A3C30285B980041BCF1 /* animal_rooster.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A219FE30285B980041BCF1 /* animal_rooster.png */; };
+		48A21A3D30285B980041BCF1 /* bamboo_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0230285B980041BCF1 /* bamboo_4.png */; };
+		48A21A3E30285B980041BCF1 /* flower_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1D30285B980041BCF1 /* flower_1.png */; };
+		48A21A3F30285B980041BCF1 /* char_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0830285B980041BCF1 /* char_1.png */; };
+		48A21A4030285B980041BCF1 /* season_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2130285B980041BCF1 /* season_1.png */; };
+		48A21A4130285B980041BCF1 /* animal_centipede.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A219FC30285B980041BCF1 /* animal_centipede.png */; };
+		48A21A4230285B980041BCF1 /* char_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0930285B980041BCF1 /* char_2.png */; };
+		48A21A4330285B980041BCF1 /* char_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0C30285B980041BCF1 /* char_5.png */; };
+		48A21A4430285B980041BCF1 /* char_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0E30285B980041BCF1 /* char_7.png */; };
+		48A21A4530285B980041BCF1 /* dots_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1330285B980041BCF1 /* dots_3.png */; };
+		48A21A4630285B980041BCF1 /* bamboo_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0730285B980041BCF1 /* bamboo_9.png */; };
+		48A21A4730285B980041BCF1 /* dots_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1830285B980041BCF1 /* dots_8.png */; };
+		48A21A4830285B980041BCF1 /* season_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2330285B980041BCF1 /* season_3.png */; };
+		48A21A4930285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219FA30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.articulation.json */; };
+		48A21A4A30285B980041BCF1 /* animal_rat.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A219FD30285B980041BCF1 /* animal_rat.png */; };
+		48A21A4B30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F830285B980041BCF1 /* mahjong_tile_tray_with_free_tiles.usdz */; };
+		48A21A4C30285B980041BCF1 /* bamboo_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0530285B980041BCF1 /* bamboo_7.png */; };
+		48A21A4D30285B980041BCF1 /* mahjong_full_set_sg148.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F330285B980041BCF1 /* mahjong_full_set_sg148.usdz */; };
+		48A21A4E30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F930285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.usdz */; };
+		48A21A4F30285B980041BCF1 /* dots_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1430285B980041BCF1 /* dots_4.png */; };
+		48A21A5030285B980041BCF1 /* mahjong_case_with_hinged_lid.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F030285B980041BCF1 /* mahjong_case_with_hinged_lid.usdz */; };
+		48A21A5130285B980041BCF1 /* char_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0D30285B980041BCF1 /* char_6.png */; };
+		48A21A5230285B980041BCF1 /* wind_west.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2830285B980041BCF1 /* wind_west.png */; };
+		48A21A5330285B980041BCF1 /* wind_south.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2730285B980041BCF1 /* wind_south.png */; };
+		48A21A5430285B980041BCF1 /* char_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0B30285B980041BCF1 /* char_4.png */; };
+		48A21A5530285B980041BCF1 /* wallet_with_free_coins.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2A30285B980041BCF1 /* wallet_with_free_coins.usdz */; };
+		48A21A5630285B980041BCF1 /* bamboo_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0130285B980041BCF1 /* bamboo_3.png */; };
+		48A21A5730285B980041BCF1 /* season_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2430285B980041BCF1 /* season_4.png */; };
+		48A21A5830285B980041BCF1 /* flower_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2030285B980041BCF1 /* flower_4.png */; };
+		48A21A5930285B980041BCF1 /* bamboo_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0430285B980041BCF1 /* bamboo_6.png */; };
+		48A21A5A30285B980041BCF1 /* bamboo_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A219FF30285B980041BCF1 /* bamboo_1.png */; };
+		48A21A5B30285B980041BCF1 /* wind_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2530285B980041BCF1 /* wind_east.png */; };
+		48A21A5C30285B980041BCF1 /* mahjong_tile_rack_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 48A219F730285B980041BCF1 /* mahjong_tile_rack_physics.articulation.json */; };
+		48A21A5D30285B980041BCF1 /* dragon_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1C30285B980041BCF1 /* dragon_white.png */; };
+		48A21A5E30285B980041BCF1 /* flower_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1E30285B980041BCF1 /* flower_2.png */; };
+		48A21A5F30285B980041BCF1 /* wallet_with_free_coins_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A2B30285B980041BCF1 /* wallet_with_free_coins_physics.usdz */; };
+		48A21A6030285B980041BCF1 /* dots_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1530285B980041BCF1 /* dots_5.png */; };
+		48A21A6130285B980041BCF1 /* dots_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1930285B980041BCF1 /* dots_9.png */; };
+		48A21A6230285B980041BCF1 /* dragon_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1A30285B980041BCF1 /* dragon_green.png */; };
+		48A21A6330285B980041BCF1 /* dragon_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1B30285B980041BCF1 /* dragon_red.png */; };
+		48A21A6430285B980041BCF1 /* dots_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1230285B980041BCF1 /* dots_2.png */; };
+		48A21A6530285B980041BCF1 /* dots_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1630285B980041BCF1 /* dots_6.png */; };
+		48A21A6630285B980041BCF1 /* char_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A0A30285B980041BCF1 /* char_3.png */; };
+		48A21A6730285B980041BCF1 /* flower_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1F30285B980041BCF1 /* flower_3.png */; };
+		48A21A6830285B980041BCF1 /* dots_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A21A1130285B980041BCF1 /* dots_1.png */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
 		B6300836AD45996D388E7D28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */; };
 		FAB1E000000000000000B001 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A001 /* AppModel.swift */; };
@@ -409,6 +490,12 @@
 		FAB1E000000000000000B00C /* RouteMemoryExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00C /* RouteMemoryExercise.swift */; };
 		FAB1E000000000000000B00D /* RouteMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00D /* RouteMemoryView.swift */; };
 		FAB1E000000000000000B00E /* VoiceGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00E /* VoiceGuide.swift */; };
+		FAB1E000000000000000B00F /* CoffeeExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A00F /* CoffeeExercise.swift */; };
+		FAB1E000000000000000B010 /* CoffeeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A010 /* CoffeeActivityView.swift */; };
+		FAB1E000000000000000B011 /* MahjongExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A011 /* MahjongExercise.swift */; };
+		FAB1E000000000000000B012 /* MahjongActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A012 /* MahjongActivityView.swift */; };
+		FAB1E000000000000000B013 /* MahjongAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A013 /* MahjongAudio.swift */; };
+		FAB1E000000000000000B014 /* HandWashTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A014 /* HandWashTracker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -806,6 +893,87 @@
 		48A218CD30262FB00041BCF1 /* wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b 2.usdz"; sourceTree = "<group>"; };
 		48A218CE30262FB00041BCF1 /* wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b_physics 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b_physics 2.usdz"; sourceTree = "<group>"; };
 		48A218CF30262FB00041BCF1 /* wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b_physics.articulation 2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b_physics.articulation 2.json"; sourceTree = "<group>"; };
+		48A219C6302727570041BCF1 /* coffee_carafe_with_fill_level.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_carafe_with_fill_level.usdz; sourceTree = "<group>"; };
+		48A219C7302727570041BCF1 /* coffee_carafe_with_fill_level_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_carafe_with_fill_level_physics.usdz; sourceTree = "<group>"; };
+		48A219C8302727570041BCF1 /* coffee_carafe_with_fill_level_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = coffee_carafe_with_fill_level_physics.articulation.json; sourceTree = "<group>"; };
+		48A219C9302727570041BCF1 /* coffee_mug_with_fill_level.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_mug_with_fill_level.usdz; sourceTree = "<group>"; };
+		48A219CA302727570041BCF1 /* coffee_mug_with_fill_level_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_mug_with_fill_level_physics.usdz; sourceTree = "<group>"; };
+		48A219CB302727570041BCF1 /* coffee_mug_with_fill_level_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = coffee_mug_with_fill_level_physics.articulation.json; sourceTree = "<group>"; };
+		48A219CC302727570041BCF1 /* coffee_tin_with_scoop.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_tin_with_scoop.usdz; sourceTree = "<group>"; };
+		48A219CD302727570041BCF1 /* coffee_tin_with_scoop_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_tin_with_scoop_physics.usdz; sourceTree = "<group>"; };
+		48A219CE302727570041BCF1 /* coffee_tin_with_scoop_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = coffee_tin_with_scoop_physics.articulation.json; sourceTree = "<group>"; };
+		48A219CF302727570041BCF1 /* milk_jug_with_fill_level.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = milk_jug_with_fill_level.usdz; sourceTree = "<group>"; };
+		48A219D0302727570041BCF1 /* milk_jug_with_fill_level_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = milk_jug_with_fill_level_physics.usdz; sourceTree = "<group>"; };
+		48A219D1302727570041BCF1 /* milk_jug_with_fill_level_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = milk_jug_with_fill_level_physics.articulation.json; sourceTree = "<group>"; };
+		48A219D2302727570041BCF1 /* sugar_bowl_with_free_cubes.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = sugar_bowl_with_free_cubes.usdz; sourceTree = "<group>"; };
+		48A219D3302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = sugar_bowl_with_free_cubes_physics.usdz; sourceTree = "<group>"; };
+		48A219D4302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sugar_bowl_with_free_cubes_physics.articulation.json; sourceTree = "<group>"; };
+		48A219D5302727570041BCF1 /* teaspoon_on_rest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = teaspoon_on_rest.usdz; sourceTree = "<group>"; };
+		48A219D6302727570041BCF1 /* teaspoon_on_rest_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = teaspoon_on_rest_physics.usdz; sourceTree = "<group>"; };
+		48A219D7302727570041BCF1 /* teaspoon_on_rest_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = teaspoon_on_rest_physics.articulation.json; sourceTree = "<group>"; };
+		48A219D8302727570041BCF1 /* water_kettle_with_fill_level.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = water_kettle_with_fill_level.usdz; sourceTree = "<group>"; };
+		48A219D9302727570041BCF1 /* water_kettle_with_fill_level_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = water_kettle_with_fill_level_physics.usdz; sourceTree = "<group>"; };
+		48A219DA302727570041BCF1 /* water_kettle_with_fill_level_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = water_kettle_with_fill_level_physics.articulation.json; sourceTree = "<group>"; };
+		48A219F030285B980041BCF1 /* mahjong_case_with_hinged_lid.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_case_with_hinged_lid.usdz; sourceTree = "<group>"; };
+		48A219F130285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_case_with_hinged_lid_physics.usdz; sourceTree = "<group>"; };
+		48A219F230285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mahjong_case_with_hinged_lid_physics.articulation.json; sourceTree = "<group>"; };
+		48A219F330285B980041BCF1 /* mahjong_full_set_sg148.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_full_set_sg148.usdz; sourceTree = "<group>"; };
+		48A219F430285B980041BCF1 /* mahjong_full_set_sg148.tiles.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mahjong_full_set_sg148.tiles.json; sourceTree = "<group>"; };
+		48A219F530285B980041BCF1 /* mahjong_tile_rack.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_tile_rack.usdz; sourceTree = "<group>"; };
+		48A219F630285B980041BCF1 /* mahjong_tile_rack_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_tile_rack_physics.usdz; sourceTree = "<group>"; };
+		48A219F730285B980041BCF1 /* mahjong_tile_rack_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mahjong_tile_rack_physics.articulation.json; sourceTree = "<group>"; };
+		48A219F830285B980041BCF1 /* mahjong_tile_tray_with_free_tiles.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_tile_tray_with_free_tiles.usdz; sourceTree = "<group>"; };
+		48A219F930285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = mahjong_tile_tray_with_free_tiles_physics.usdz; sourceTree = "<group>"; };
+		48A219FA30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mahjong_tile_tray_with_free_tiles_physics.articulation.json; sourceTree = "<group>"; };
+		48A219FB30285B980041BCF1 /* animal_cat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animal_cat.png; sourceTree = "<group>"; };
+		48A219FC30285B980041BCF1 /* animal_centipede.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animal_centipede.png; sourceTree = "<group>"; };
+		48A219FD30285B980041BCF1 /* animal_rat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animal_rat.png; sourceTree = "<group>"; };
+		48A219FE30285B980041BCF1 /* animal_rooster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animal_rooster.png; sourceTree = "<group>"; };
+		48A219FF30285B980041BCF1 /* bamboo_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_1.png; sourceTree = "<group>"; };
+		48A21A0030285B980041BCF1 /* bamboo_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_2.png; sourceTree = "<group>"; };
+		48A21A0130285B980041BCF1 /* bamboo_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_3.png; sourceTree = "<group>"; };
+		48A21A0230285B980041BCF1 /* bamboo_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_4.png; sourceTree = "<group>"; };
+		48A21A0330285B980041BCF1 /* bamboo_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_5.png; sourceTree = "<group>"; };
+		48A21A0430285B980041BCF1 /* bamboo_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_6.png; sourceTree = "<group>"; };
+		48A21A0530285B980041BCF1 /* bamboo_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_7.png; sourceTree = "<group>"; };
+		48A21A0630285B980041BCF1 /* bamboo_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_8.png; sourceTree = "<group>"; };
+		48A21A0730285B980041BCF1 /* bamboo_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bamboo_9.png; sourceTree = "<group>"; };
+		48A21A0830285B980041BCF1 /* char_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_1.png; sourceTree = "<group>"; };
+		48A21A0930285B980041BCF1 /* char_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_2.png; sourceTree = "<group>"; };
+		48A21A0A30285B980041BCF1 /* char_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_3.png; sourceTree = "<group>"; };
+		48A21A0B30285B980041BCF1 /* char_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_4.png; sourceTree = "<group>"; };
+		48A21A0C30285B980041BCF1 /* char_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_5.png; sourceTree = "<group>"; };
+		48A21A0D30285B980041BCF1 /* char_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_6.png; sourceTree = "<group>"; };
+		48A21A0E30285B980041BCF1 /* char_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_7.png; sourceTree = "<group>"; };
+		48A21A0F30285B980041BCF1 /* char_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_8.png; sourceTree = "<group>"; };
+		48A21A1030285B980041BCF1 /* char_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_9.png; sourceTree = "<group>"; };
+		48A21A1130285B980041BCF1 /* dots_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_1.png; sourceTree = "<group>"; };
+		48A21A1230285B980041BCF1 /* dots_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_2.png; sourceTree = "<group>"; };
+		48A21A1330285B980041BCF1 /* dots_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_3.png; sourceTree = "<group>"; };
+		48A21A1430285B980041BCF1 /* dots_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_4.png; sourceTree = "<group>"; };
+		48A21A1530285B980041BCF1 /* dots_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_5.png; sourceTree = "<group>"; };
+		48A21A1630285B980041BCF1 /* dots_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_6.png; sourceTree = "<group>"; };
+		48A21A1730285B980041BCF1 /* dots_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_7.png; sourceTree = "<group>"; };
+		48A21A1830285B980041BCF1 /* dots_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_8.png; sourceTree = "<group>"; };
+		48A21A1930285B980041BCF1 /* dots_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_9.png; sourceTree = "<group>"; };
+		48A21A1A30285B980041BCF1 /* dragon_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dragon_green.png; sourceTree = "<group>"; };
+		48A21A1B30285B980041BCF1 /* dragon_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dragon_red.png; sourceTree = "<group>"; };
+		48A21A1C30285B980041BCF1 /* dragon_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dragon_white.png; sourceTree = "<group>"; };
+		48A21A1D30285B980041BCF1 /* flower_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_1.png; sourceTree = "<group>"; };
+		48A21A1E30285B980041BCF1 /* flower_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_2.png; sourceTree = "<group>"; };
+		48A21A1F30285B980041BCF1 /* flower_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_3.png; sourceTree = "<group>"; };
+		48A21A2030285B980041BCF1 /* flower_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_4.png; sourceTree = "<group>"; };
+		48A21A2130285B980041BCF1 /* season_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = season_1.png; sourceTree = "<group>"; };
+		48A21A2230285B980041BCF1 /* season_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = season_2.png; sourceTree = "<group>"; };
+		48A21A2330285B980041BCF1 /* season_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = season_3.png; sourceTree = "<group>"; };
+		48A21A2430285B980041BCF1 /* season_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = season_4.png; sourceTree = "<group>"; };
+		48A21A2530285B980041BCF1 /* wind_east.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wind_east.png; sourceTree = "<group>"; };
+		48A21A2630285B980041BCF1 /* wind_north.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wind_north.png; sourceTree = "<group>"; };
+		48A21A2730285B980041BCF1 /* wind_south.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wind_south.png; sourceTree = "<group>"; };
+		48A21A2830285B980041BCF1 /* wind_west.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wind_west.png; sourceTree = "<group>"; };
+		48A21A2A30285B980041BCF1 /* wallet_with_free_coins.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = wallet_with_free_coins.usdz; sourceTree = "<group>"; };
+		48A21A2B30285B980041BCF1 /* wallet_with_free_coins_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = wallet_with_free_coins_physics.usdz; sourceTree = "<group>"; };
+		48A21A2C30285B980041BCF1 /* wallet_with_free_coins_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = wallet_with_free_coins_physics.articulation.json; sourceTree = "<group>"; };
 		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialRehabApp.swift; sourceTree = "<group>"; };
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -816,9 +984,68 @@
 		FAB1E000000000000000A00C /* RouteMemoryExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMemoryExercise.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A00D /* RouteMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMemoryView.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A00E /* VoiceGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceGuide.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A00F /* CoffeeExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeExercise.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A010 /* CoffeeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeActivityView.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A011 /* MahjongExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongExercise.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A012 /* MahjongActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongActivityView.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A013 /* MahjongAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongAudio.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A014 /* HandWashTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandWashTracker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		48A21A2930285B980041BCF1 /* tile_faces */ = {
+			isa = PBXGroup;
+			children = (
+				48A219FB30285B980041BCF1 /* animal_cat.png */,
+				48A219FC30285B980041BCF1 /* animal_centipede.png */,
+				48A219FD30285B980041BCF1 /* animal_rat.png */,
+				48A219FE30285B980041BCF1 /* animal_rooster.png */,
+				48A219FF30285B980041BCF1 /* bamboo_1.png */,
+				48A21A0030285B980041BCF1 /* bamboo_2.png */,
+				48A21A0130285B980041BCF1 /* bamboo_3.png */,
+				48A21A0230285B980041BCF1 /* bamboo_4.png */,
+				48A21A0330285B980041BCF1 /* bamboo_5.png */,
+				48A21A0430285B980041BCF1 /* bamboo_6.png */,
+				48A21A0530285B980041BCF1 /* bamboo_7.png */,
+				48A21A0630285B980041BCF1 /* bamboo_8.png */,
+				48A21A0730285B980041BCF1 /* bamboo_9.png */,
+				48A21A0830285B980041BCF1 /* char_1.png */,
+				48A21A0930285B980041BCF1 /* char_2.png */,
+				48A21A0A30285B980041BCF1 /* char_3.png */,
+				48A21A0B30285B980041BCF1 /* char_4.png */,
+				48A21A0C30285B980041BCF1 /* char_5.png */,
+				48A21A0D30285B980041BCF1 /* char_6.png */,
+				48A21A0E30285B980041BCF1 /* char_7.png */,
+				48A21A0F30285B980041BCF1 /* char_8.png */,
+				48A21A1030285B980041BCF1 /* char_9.png */,
+				48A21A1130285B980041BCF1 /* dots_1.png */,
+				48A21A1230285B980041BCF1 /* dots_2.png */,
+				48A21A1330285B980041BCF1 /* dots_3.png */,
+				48A21A1430285B980041BCF1 /* dots_4.png */,
+				48A21A1530285B980041BCF1 /* dots_5.png */,
+				48A21A1630285B980041BCF1 /* dots_6.png */,
+				48A21A1730285B980041BCF1 /* dots_7.png */,
+				48A21A1830285B980041BCF1 /* dots_8.png */,
+				48A21A1930285B980041BCF1 /* dots_9.png */,
+				48A21A1A30285B980041BCF1 /* dragon_green.png */,
+				48A21A1B30285B980041BCF1 /* dragon_red.png */,
+				48A21A1C30285B980041BCF1 /* dragon_white.png */,
+				48A21A1D30285B980041BCF1 /* flower_1.png */,
+				48A21A1E30285B980041BCF1 /* flower_2.png */,
+				48A21A1F30285B980041BCF1 /* flower_3.png */,
+				48A21A2030285B980041BCF1 /* flower_4.png */,
+				48A21A2130285B980041BCF1 /* season_1.png */,
+				48A21A2230285B980041BCF1 /* season_2.png */,
+				48A21A2330285B980041BCF1 /* season_3.png */,
+				48A21A2430285B980041BCF1 /* season_4.png */,
+				48A21A2530285B980041BCF1 /* wind_east.png */,
+				48A21A2630285B980041BCF1 /* wind_north.png */,
+				48A21A2730285B980041BCF1 /* wind_south.png */,
+				48A21A2830285B980041BCF1 /* wind_west.png */,
+			);
+			path = tile_faces;
+			sourceTree = "<group>";
+		};
 		73FDC45FD292CED0C925D7FD = {
 			isa = PBXGroup;
 			children = (
@@ -838,6 +1065,12 @@
 				FAB1E000000000000000A00C /* RouteMemoryExercise.swift */,
 				FAB1E000000000000000A00D /* RouteMemoryView.swift */,
 				FAB1E000000000000000A00E /* VoiceGuide.swift */,
+				FAB1E000000000000000A00F /* CoffeeExercise.swift */,
+				FAB1E000000000000000A010 /* CoffeeActivityView.swift */,
+				FAB1E000000000000000A011 /* MahjongExercise.swift */,
+				FAB1E000000000000000A012 /* MahjongActivityView.swift */,
+				FAB1E000000000000000A013 /* MahjongAudio.swift */,
+				FAB1E000000000000000A014 /* HandWashTracker.swift */,
 				2CA909666A1E57D05F864904 /* Info.plist */,
 				C9AE989B0C480CCD0B1584CD /* SpatialRehabApp.swift */,
 				48A216B430262DFD0041BCF1 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_06ff8882ac1f45f6b590d64ec0ab0d85.usdz */,
@@ -845,6 +1078,42 @@
 				48A216B630262DFD0041BCF1 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_06ff8882ac1f45f6b590d64ec0ab0d85_physics.articulation.json */,
 				48A216B730262DFD0041BCF1 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_14ac4c8c9e35416b864382571fa27e62.usdz */,
 				48A216B830262DFD0041BCF1 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_14ac4c8c9e35416b864382571fa27e62_physics.usdz */,
+				48A219C6302727570041BCF1 /* coffee_carafe_with_fill_level.usdz */,
+				48A219C7302727570041BCF1 /* coffee_carafe_with_fill_level_physics.usdz */,
+				48A219F030285B980041BCF1 /* mahjong_case_with_hinged_lid.usdz */,
+				48A219F130285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.usdz */,
+				48A219F230285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.articulation.json */,
+				48A219F330285B980041BCF1 /* mahjong_full_set_sg148.usdz */,
+				48A219F430285B980041BCF1 /* mahjong_full_set_sg148.tiles.json */,
+				48A219F530285B980041BCF1 /* mahjong_tile_rack.usdz */,
+				48A219F630285B980041BCF1 /* mahjong_tile_rack_physics.usdz */,
+				48A219F730285B980041BCF1 /* mahjong_tile_rack_physics.articulation.json */,
+				48A219F830285B980041BCF1 /* mahjong_tile_tray_with_free_tiles.usdz */,
+				48A219F930285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.usdz */,
+				48A219FA30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.articulation.json */,
+				48A21A2930285B980041BCF1 /* tile_faces */,
+				48A21A2A30285B980041BCF1 /* wallet_with_free_coins.usdz */,
+				48A21A2B30285B980041BCF1 /* wallet_with_free_coins_physics.usdz */,
+				48A21A2C30285B980041BCF1 /* wallet_with_free_coins_physics.articulation.json */,
+				48A219C8302727570041BCF1 /* coffee_carafe_with_fill_level_physics.articulation.json */,
+				48A219C9302727570041BCF1 /* coffee_mug_with_fill_level.usdz */,
+				48A219CA302727570041BCF1 /* coffee_mug_with_fill_level_physics.usdz */,
+				48A219CB302727570041BCF1 /* coffee_mug_with_fill_level_physics.articulation.json */,
+				48A219CC302727570041BCF1 /* coffee_tin_with_scoop.usdz */,
+				48A219CD302727570041BCF1 /* coffee_tin_with_scoop_physics.usdz */,
+				48A219CE302727570041BCF1 /* coffee_tin_with_scoop_physics.articulation.json */,
+				48A219CF302727570041BCF1 /* milk_jug_with_fill_level.usdz */,
+				48A219D0302727570041BCF1 /* milk_jug_with_fill_level_physics.usdz */,
+				48A219D1302727570041BCF1 /* milk_jug_with_fill_level_physics.articulation.json */,
+				48A219D2302727570041BCF1 /* sugar_bowl_with_free_cubes.usdz */,
+				48A219D3302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.usdz */,
+				48A219D4302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.articulation.json */,
+				48A219D5302727570041BCF1 /* teaspoon_on_rest.usdz */,
+				48A219D6302727570041BCF1 /* teaspoon_on_rest_physics.usdz */,
+				48A219D7302727570041BCF1 /* teaspoon_on_rest_physics.articulation.json */,
+				48A219D8302727570041BCF1 /* water_kettle_with_fill_level.usdz */,
+				48A219D9302727570041BCF1 /* water_kettle_with_fill_level_physics.usdz */,
+				48A219DA302727570041BCF1 /* water_kettle_with_fill_level_physics.articulation.json */,
 				48A216B930262DFD0041BCF1 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_14ac4c8c9e35416b864382571fa27e62_physics.articulation.json */,
 				48A216BA30262DFD0041BCF1 /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c.usdz */,
 				48A217DA30262FB00041BCF1 /* adjustable_hospital_bed__rec_adjustable_hospital_bed_df2ce79cf58f47c5b87db13ce6bc54c6.usdz */,
@@ -1308,6 +1577,66 @@
 				FAB1E000000000000000B00B /* TiongBahruMap.json in Resources */,
 				48A2174730262DFE0041BCF1 /* bread_maker_with_hinged_lid__rec_bread_maker_with_hinged_lid_0040cadef29b4bba95f01db8a2373a5e.usdz in Resources */,
 				48A2174830262DFE0041BCF1 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862_physics.usdz in Resources */,
+				48A21A2D30285B980041BCF1 /* mahjong_tile_rack.usdz in Resources */,
+				48A21A2E30285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.usdz in Resources */,
+				48A21A2F30285B980041BCF1 /* wind_north.png in Resources */,
+				48A21A3030285B980041BCF1 /* mahjong_full_set_sg148.tiles.json in Resources */,
+				48A21A3130285B980041BCF1 /* bamboo_8.png in Resources */,
+				48A21A3230285B980041BCF1 /* mahjong_case_with_hinged_lid_physics.articulation.json in Resources */,
+				48A21A3330285B980041BCF1 /* season_2.png in Resources */,
+				48A21A3430285B980041BCF1 /* wallet_with_free_coins_physics.articulation.json in Resources */,
+				48A21A3530285B980041BCF1 /* bamboo_5.png in Resources */,
+				48A21A3630285B980041BCF1 /* bamboo_2.png in Resources */,
+				48A21A3730285B980041BCF1 /* mahjong_tile_rack_physics.usdz in Resources */,
+				48A21A3830285B980041BCF1 /* animal_cat.png in Resources */,
+				48A21A3930285B980041BCF1 /* dots_7.png in Resources */,
+				48A21A3A30285B980041BCF1 /* char_8.png in Resources */,
+				48A21A3B30285B980041BCF1 /* char_9.png in Resources */,
+				48A21A3C30285B980041BCF1 /* animal_rooster.png in Resources */,
+				48A21A3D30285B980041BCF1 /* bamboo_4.png in Resources */,
+				48A21A3E30285B980041BCF1 /* flower_1.png in Resources */,
+				48A21A3F30285B980041BCF1 /* char_1.png in Resources */,
+				48A21A4030285B980041BCF1 /* season_1.png in Resources */,
+				48A21A4130285B980041BCF1 /* animal_centipede.png in Resources */,
+				48A21A4230285B980041BCF1 /* char_2.png in Resources */,
+				48A21A4330285B980041BCF1 /* char_5.png in Resources */,
+				48A21A4430285B980041BCF1 /* char_7.png in Resources */,
+				48A21A4530285B980041BCF1 /* dots_3.png in Resources */,
+				48A21A4630285B980041BCF1 /* bamboo_9.png in Resources */,
+				48A21A4730285B980041BCF1 /* dots_8.png in Resources */,
+				48A21A4830285B980041BCF1 /* season_3.png in Resources */,
+				48A21A4930285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.articulation.json in Resources */,
+				48A21A4A30285B980041BCF1 /* animal_rat.png in Resources */,
+				48A21A4B30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles.usdz in Resources */,
+				48A21A4C30285B980041BCF1 /* bamboo_7.png in Resources */,
+				48A21A4D30285B980041BCF1 /* mahjong_full_set_sg148.usdz in Resources */,
+				48A21A4E30285B980041BCF1 /* mahjong_tile_tray_with_free_tiles_physics.usdz in Resources */,
+				48A21A4F30285B980041BCF1 /* dots_4.png in Resources */,
+				48A21A5030285B980041BCF1 /* mahjong_case_with_hinged_lid.usdz in Resources */,
+				48A21A5130285B980041BCF1 /* char_6.png in Resources */,
+				48A21A5230285B980041BCF1 /* wind_west.png in Resources */,
+				48A21A5330285B980041BCF1 /* wind_south.png in Resources */,
+				48A21A5430285B980041BCF1 /* char_4.png in Resources */,
+				48A21A5530285B980041BCF1 /* wallet_with_free_coins.usdz in Resources */,
+				48A21A5630285B980041BCF1 /* bamboo_3.png in Resources */,
+				48A21A5730285B980041BCF1 /* season_4.png in Resources */,
+				48A21A5830285B980041BCF1 /* flower_4.png in Resources */,
+				48A21A5930285B980041BCF1 /* bamboo_6.png in Resources */,
+				48A21A5A30285B980041BCF1 /* bamboo_1.png in Resources */,
+				48A21A5B30285B980041BCF1 /* wind_east.png in Resources */,
+				48A21A5C30285B980041BCF1 /* mahjong_tile_rack_physics.articulation.json in Resources */,
+				48A21A5D30285B980041BCF1 /* dragon_white.png in Resources */,
+				48A21A5E30285B980041BCF1 /* flower_2.png in Resources */,
+				48A21A5F30285B980041BCF1 /* wallet_with_free_coins_physics.usdz in Resources */,
+				48A21A6030285B980041BCF1 /* dots_5.png in Resources */,
+				48A21A6130285B980041BCF1 /* dots_9.png in Resources */,
+				48A21A6230285B980041BCF1 /* dragon_green.png in Resources */,
+				48A21A6330285B980041BCF1 /* dragon_red.png in Resources */,
+				48A21A6430285B980041BCF1 /* dots_2.png in Resources */,
+				48A21A6530285B980041BCF1 /* dots_6.png in Resources */,
+				48A21A6630285B980041BCF1 /* char_3.png in Resources */,
+				48A21A6730285B980041BCF1 /* flower_3.png in Resources */,
+				48A21A6830285B980041BCF1 /* dots_1.png in Resources */,
 				48A2174930262DFE0041BCF1 /* toaster_oven__rec_toaster_oven_b7924b610ed54f96ba47823b4f872969_physics.articulation.json in Resources */,
 				48A2174A30262DFE0041BCF1 /* refrigerator_with_hinged_doors__rec_refrigerator_with_hinged_doors_3a99fa41d0324636a05d95598e4cb978.usdz in Resources */,
 				48A2174B30262DFE0041BCF1 /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701_physics.usdz in Resources */,
@@ -1315,6 +1644,27 @@
 				48A2174D30262DFE0041BCF1 /* chest_freezer_with_hinged_lid__rec_chest_freezer_with_hinged_lid_ec4aed12d01b41ac9f2c529af58fd94b_physics.usdz in Resources */,
 				48A2174E30262DFE0041BCF1 /* sewing_box_with_simple_hinged_lid__rec_sewing_box_with_simple_hinged_lid_8560e3b865944fa48df65ad03429727f.usdz in Resources */,
 				48A2174F30262DFE0041BCF1 /* electric_kettle_with_hinged_lid__rec_electric_kettle_with_hinged_lid_645d8d7f49bc40ff899c98369703b961.usdz in Resources */,
+				48A219DB302727570041BCF1 /* milk_jug_with_fill_level_physics.usdz in Resources */,
+				48A219DC302727570041BCF1 /* coffee_tin_with_scoop.usdz in Resources */,
+				48A219DD302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.usdz in Resources */,
+				48A219DE302727570041BCF1 /* sugar_bowl_with_free_cubes_physics.articulation.json in Resources */,
+				48A219DF302727570041BCF1 /* coffee_carafe_with_fill_level_physics.articulation.json in Resources */,
+				48A219E0302727570041BCF1 /* coffee_tin_with_scoop_physics.usdz in Resources */,
+				48A219E1302727570041BCF1 /* teaspoon_on_rest_physics.articulation.json in Resources */,
+				48A219E2302727570041BCF1 /* water_kettle_with_fill_level_physics.usdz in Resources */,
+				48A219E3302727570041BCF1 /* teaspoon_on_rest.usdz in Resources */,
+				48A219E4302727570041BCF1 /* coffee_carafe_with_fill_level_physics.usdz in Resources */,
+				48A219E5302727570041BCF1 /* coffee_mug_with_fill_level_physics.usdz in Resources */,
+				48A219E6302727570041BCF1 /* water_kettle_with_fill_level.usdz in Resources */,
+				48A219E7302727570041BCF1 /* water_kettle_with_fill_level_physics.articulation.json in Resources */,
+				48A219E8302727570041BCF1 /* coffee_tin_with_scoop_physics.articulation.json in Resources */,
+				48A219E9302727570041BCF1 /* milk_jug_with_fill_level.usdz in Resources */,
+				48A219EA302727570041BCF1 /* coffee_mug_with_fill_level_physics.articulation.json in Resources */,
+				48A219EB302727570041BCF1 /* sugar_bowl_with_free_cubes.usdz in Resources */,
+				48A219EC302727570041BCF1 /* milk_jug_with_fill_level_physics.articulation.json in Resources */,
+				48A219ED302727570041BCF1 /* coffee_carafe_with_fill_level.usdz in Resources */,
+				48A219EE302727570041BCF1 /* teaspoon_on_rest_physics.usdz in Resources */,
+				48A219EF302727570041BCF1 /* coffee_mug_with_fill_level.usdz in Resources */,
 				48A2175030262DFE0041BCF1 /* toaster_oven__rec_toaster_oven_b7924b610ed54f96ba47823b4f872969.usdz in Resources */,
 				48A2175130262DFE0041BCF1 /* wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b.usdz in Resources */,
 				48A2175230262DFE0041BCF1 /* chest_freezer_with_hinged_lid__rec_chest_freezer_with_hinged_lid_ec4aed12d01b41ac9f2c529af58fd94b_physics.articulation.json in Resources */,
@@ -1716,6 +2066,12 @@
 				FAB1E000000000000000B00C /* RouteMemoryExercise.swift in Sources */,
 				FAB1E000000000000000B00D /* RouteMemoryView.swift in Sources */,
 				FAB1E000000000000000B00E /* VoiceGuide.swift in Sources */,
+				FAB1E000000000000000B00F /* CoffeeExercise.swift in Sources */,
+				FAB1E000000000000000B010 /* CoffeeActivityView.swift in Sources */,
+				FAB1E000000000000000B011 /* MahjongExercise.swift in Sources */,
+				FAB1E000000000000000B012 /* MahjongActivityView.swift in Sources */,
+				FAB1E000000000000000B013 /* MahjongAudio.swift in Sources */,
+				FAB1E000000000000000B014 /* HandWashTracker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1786,7 +2142,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -1813,7 +2169,7 @@
 				SDKROOT = xros;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -1840,7 +2196,7 @@
 				SDKROOT = xros;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -1901,7 +2257,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};

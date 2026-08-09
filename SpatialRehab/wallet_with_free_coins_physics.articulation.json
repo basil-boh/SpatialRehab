@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "object": "bifold_leather_wallet",
+  "root_prim": "/bifold_leather_wallet",
+  "links": [
+    {
+      "name": "wallet_body",
+      "usd_path": "/bifold_leather_wallet/wallet_body",
+      "mass": null
+    },
+    {
+      "name": "front_flap",
+      "usd_path": "/bifold_leather_wallet/wallet_body/front_flap",
+      "mass": null
+    },
+    {
+      "name": "large_coin_0",
+      "usd_path": "/bifold_leather_wallet/wallet_body/large_coin_0",
+      "mass": null
+    },
+    {
+      "name": "large_coin_1",
+      "usd_path": "/bifold_leather_wallet/wallet_body/large_coin_1",
+      "mass": null
+    },
+    {
+      "name": "small_coin_0",
+      "usd_path": "/bifold_leather_wallet/wallet_body/small_coin_0",
+      "mass": null
+    },
+    {
+      "name": "small_coin_1",
+      "usd_path": "/bifold_leather_wallet/wallet_body/small_coin_1",
+      "mass": null
+    },
+    {
+      "name": "small_coin_2",
+      "usd_path": "/bifold_leather_wallet/wallet_body/small_coin_2",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "spine_fold",
+      "usd_path": "/bifold_leather_wallet/Joints/spine_fold",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/bifold_leather_wallet/wallet_body",
+      "child_path": "/bifold_leather_wallet/wallet_body/front_flap",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.002
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 2.65,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "coin_float_0",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/bifold_leather_wallet/wallet_body",
+      "child_path": "/bifold_leather_wallet/wallet_body/large_coin_0",
+      "origin_xyz": [
+        0.041,
+        0.013,
+        0.0066
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "coin_float_1",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/bifold_leather_wallet/wallet_body",
+      "child_path": "/bifold_leather_wallet/wallet_body/large_coin_1",
+      "origin_xyz": [
+        0.085,
+        -0.018,
+        0.0066
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "coin_float_2",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/bifold_leather_wallet/wallet_body",
+      "child_path": "/bifold_leather_wallet/wallet_body/small_coin_0",
+      "origin_xyz": [
+        0.084,
+        0.018,
+        0.0066
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "coin_float_3",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/bifold_leather_wallet/wallet_body",
+      "child_path": "/bifold_leather_wallet/wallet_body/small_coin_1",
+      "origin_xyz": [
+        0.043,
+        -0.022,
+        0.0066
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "coin_float_4",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/bifold_leather_wallet/wallet_body",
+      "child_path": "/bifold_leather_wallet/wallet_body/small_coin_2",
+      "origin_xyz": [
+        0.062,
+        -0.002,
+        0.0066
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}
