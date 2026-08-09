@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <g transform="translate(64 64)">
+    <!-- base hexagon -->
+    <polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"/>
+
+    <!-- facets, brightest at the upper-left -->
+    <polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"/>
+    <polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"/>
+    <polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"/>
+    <polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"/>
+    <polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"/>
+    <polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"/>
+
+    <!-- seams -->
+    <g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5">
+      <line x1="0" y1="0" x2="0" y2="-56"/>
+      <line x1="0" y1="0" x2="48.5" y2="-28"/>
+      <line x1="0" y1="0" x2="48.5" y2="28"/>
+      <line x1="0" y1="0" x2="0" y2="56"/>
+      <line x1="0" y1="0" x2="-48.5" y2="28"/>
+      <line x1="0" y1="0" x2="-48.5" y2="-28"/>
+    </g>
+
+    <polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"/>
+  </g>
+</svg>

@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "object": "detailed_manual_wheelchair",
+  "root_prim": "/detailed_manual_wheelchair",
+  "links": [
+    {
+      "name": "frame",
+      "usd_path": "/detailed_manual_wheelchair/frame",
+      "mass": null
+    },
+    {
+      "name": "right_rear_wheel",
+      "usd_path": "/detailed_manual_wheelchair/frame/right_rear_wheel",
+      "mass": null
+    },
+    {
+      "name": "left_rear_wheel",
+      "usd_path": "/detailed_manual_wheelchair/frame/left_rear_wheel",
+      "mass": null
+    },
+    {
+      "name": "right_caster",
+      "usd_path": "/detailed_manual_wheelchair/frame/right_caster",
+      "mass": null
+    },
+    {
+      "name": "left_caster",
+      "usd_path": "/detailed_manual_wheelchair/frame/left_caster",
+      "mass": null
+    },
+    {
+      "name": "right_caster_wheel",
+      "usd_path": "/detailed_manual_wheelchair/frame/right_caster/right_caster_wheel",
+      "mass": null
+    },
+    {
+      "name": "left_caster_wheel",
+      "usd_path": "/detailed_manual_wheelchair/frame/left_caster/left_caster_wheel",
+      "mass": null
+    },
+    {
+      "name": "right_footplate",
+      "usd_path": "/detailed_manual_wheelchair/frame/right_footplate",
+      "mass": null
+    },
+    {
+      "name": "left_footplate",
+      "usd_path": "/detailed_manual_wheelchair/frame/left_footplate",
+      "mass": null
+    },
+    {
+      "name": "right_brake_lever",
+      "usd_path": "/detailed_manual_wheelchair/frame/right_brake_lever",
+      "mass": null
+    },
+    {
+      "name": "left_brake_lever",
+      "usd_path": "/detailed_manual_wheelchair/frame/left_brake_lever",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "right_rear_axle",
+      "usd_path": "/detailed_manual_wheelchair/Joints/right_rear_axle",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/right_rear_wheel",
+      "origin_xyz": [
+        0.365,
+        -0.065,
+        0.315
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_rear_axle",
+      "usd_path": "/detailed_manual_wheelchair/Joints/left_rear_axle",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/left_rear_wheel",
+      "origin_xyz": [
+        -0.365,
+        -0.065,
+        0.315
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_caster_swivel",
+      "usd_path": "/detailed_manual_wheelchair/Joints/right_caster_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/right_caster",
+      "origin_xyz": [
+        0.255,
+        0.345,
+        0.205
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_caster_axle",
+      "usd_path": "/detailed_manual_wheelchair/Joints/right_caster_axle",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame/right_caster",
+      "child_path": "/detailed_manual_wheelchair/frame/right_caster/right_caster_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.17
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_caster_swivel",
+      "usd_path": "/detailed_manual_wheelchair/Joints/left_caster_swivel",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/left_caster",
+      "origin_xyz": [
+        -0.255,
+        0.345,
+        0.205
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_caster_axle",
+      "usd_path": "/detailed_manual_wheelchair/Joints/left_caster_axle",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame/left_caster",
+      "child_path": "/detailed_manual_wheelchair/frame/left_caster/left_caster_wheel",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        -0.17
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_footplate_hinge",
+      "usd_path": "/detailed_manual_wheelchair/Joints/right_footplate_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/right_footplate",
+      "origin_xyz": [
+        0.1581,
+        0.376,
+        0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.45,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_footplate_hinge",
+      "usd_path": "/detailed_manual_wheelchair/Joints/left_footplate_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/left_footplate",
+      "origin_xyz": [
+        -0.1581,
+        0.376,
+        0.12
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.45,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "right_brake_pivot",
+      "usd_path": "/detailed_manual_wheelchair/Joints/right_brake_pivot",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/right_brake_lever",
+      "origin_xyz": [
+        0.27,
+        0.0,
+        0.455
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -0.35,
+      "upper": 0.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "left_brake_pivot",
+      "usd_path": "/detailed_manual_wheelchair/Joints/left_brake_pivot",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/detailed_manual_wheelchair/frame",
+      "child_path": "/detailed_manual_wheelchair/frame/left_brake_lever",
+      "origin_xyz": [
+        -0.27,
+        0.0,
+        0.455
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -0.35,
+      "upper": 0.75,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

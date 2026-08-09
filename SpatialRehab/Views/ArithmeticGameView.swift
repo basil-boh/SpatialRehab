@@ -10,19 +10,25 @@ import SwiftUI
 struct ArithmeticGameView: View {
     let onComplete: (ArithmeticResult) -> Void
 
+    /// Default reproduces the fixed baseline-battery problem list exactly, so the existing
+    /// call site (`ArithmeticGameView(onComplete:)`) is unchanged. `DailyPracticeHubView`
+    /// passes tier-scaled, freshly generated problems instead — see `PracticeDifficulty`.
+    var problems: [BaselineAssessmentContent.Arithmetic.Problem] = BaselineAssessmentContent.Arithmetic.problems
+
     @State private var currentIndex = 0
     @State private var answers: [ArithmeticAnswer] = []
     @State private var shuffledChoices: [Int] = []
 
-    private var problems: [BaselineAssessmentContent.Arithmetic.Problem] {
-        BaselineAssessmentContent.Arithmetic.problems
-    }
-
     var body: some View {
         VStack(spacing: 32) {
-            Text("Problem \(currentIndex + 1) of \(problems.count)")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+            VStack(spacing: 8) {
+                Text("Problem \(currentIndex + 1) of \(problems.count)")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+
+                ProgressView(value: Double(currentIndex), total: Double(problems.count))
+                    .frame(maxWidth: 200)
+            }
 
             Text(problems[currentIndex].promptText)
                 .font(.system(size: 40, weight: .semibold, design: .rounded))

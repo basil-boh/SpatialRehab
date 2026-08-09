@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "object": "cordless_electric_kettle",
+  "root_prim": "/cordless_electric_kettle",
+  "links": [
+    {
+      "name": "heating_base",
+      "usd_path": "/cordless_electric_kettle/heating_base",
+      "mass": null
+    },
+    {
+      "name": "body",
+      "usd_path": "/cordless_electric_kettle/heating_base/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/cordless_electric_kettle/heating_base/body/lid",
+      "mass": null
+    },
+    {
+      "name": "temperature_dial",
+      "usd_path": "/cordless_electric_kettle/heating_base/temperature_dial",
+      "mass": null
+    },
+    {
+      "name": "release_button",
+      "usd_path": "/cordless_electric_kettle/heating_base/body/release_button",
+      "mass": null
+    },
+    {
+      "name": "power_switch",
+      "usd_path": "/cordless_electric_kettle/heating_base/body/power_switch",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "base_to_body",
+      "usd_path": "/cordless_electric_kettle/Joints/base_to_body",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/cordless_electric_kettle/heating_base",
+      "child_path": "/cordless_electric_kettle/heating_base/body",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.026
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.18,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_lid",
+      "usd_path": "/cordless_electric_kettle/Joints/body_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cordless_electric_kettle/heating_base/body",
+      "child_path": "/cordless_electric_kettle/heating_base/body/lid",
+      "origin_xyz": [
+        -0.064,
+        0.0,
+        0.227
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "base_to_temperature_dial",
+      "usd_path": "/cordless_electric_kettle/Joints/base_to_temperature_dial",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/cordless_electric_kettle/heating_base",
+      "child_path": "/cordless_electric_kettle/heating_base/temperature_dial",
+      "origin_xyz": [
+        0.09,
+        0.0,
+        0.024
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_release_button",
+      "usd_path": "/cordless_electric_kettle/Joints/body_to_release_button",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/cordless_electric_kettle/heating_base/body",
+      "child_path": "/cordless_electric_kettle/heating_base/body/release_button",
+      "origin_xyz": [
+        -0.098,
+        0.0,
+        0.221
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.004,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_power_switch",
+      "usd_path": "/cordless_electric_kettle/Joints/body_to_power_switch",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/cordless_electric_kettle/heating_base/body",
+      "child_path": "/cordless_electric_kettle/heating_base/body/power_switch",
+      "origin_xyz": [
+        -0.102,
+        0.016,
+        0.048
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -0.35,
+      "upper": 0.35,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

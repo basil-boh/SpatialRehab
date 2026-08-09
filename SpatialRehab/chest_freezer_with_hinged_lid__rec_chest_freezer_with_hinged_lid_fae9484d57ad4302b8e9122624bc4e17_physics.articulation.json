@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "object": "commercial_ice_cream_display_freezer",
+  "root_prim": "/commercial_ice_cream_display_freezer",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/commercial_ice_cream_display_freezer/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/commercial_ice_cream_display_freezer/body/lid",
+      "mass": null
+    },
+    {
+      "name": "rear_panel",
+      "usd_path": "/commercial_ice_cream_display_freezer/body/rear_panel",
+      "mass": null
+    },
+    {
+      "name": "front_caster_0",
+      "usd_path": "/commercial_ice_cream_display_freezer/body/front_caster_0",
+      "mass": null
+    },
+    {
+      "name": "front_caster_1",
+      "usd_path": "/commercial_ice_cream_display_freezer/body/front_caster_1",
+      "mass": null
+    },
+    {
+      "name": "rear_caster_0",
+      "usd_path": "/commercial_ice_cream_display_freezer/body/rear_caster_0",
+      "mass": null
+    },
+    {
+      "name": "rear_caster_1",
+      "usd_path": "/commercial_ice_cream_display_freezer/body/rear_caster_1",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_lid",
+      "usd_path": "/commercial_ice_cream_display_freezer/Joints/body_to_lid",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/commercial_ice_cream_display_freezer/body",
+      "child_path": "/commercial_ice_cream_display_freezer/body/lid",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.971
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.55,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_rear_panel",
+      "usd_path": "/commercial_ice_cream_display_freezer/Joints/body_to_rear_panel",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/commercial_ice_cream_display_freezer/body",
+      "child_path": "/commercial_ice_cream_display_freezer/body/rear_panel",
+      "origin_xyz": [
+        0.79,
+        0.43,
+        0.29
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.45,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_front_caster_0",
+      "usd_path": "/commercial_ice_cream_display_freezer/Joints/body_to_front_caster_0",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/commercial_ice_cream_display_freezer/body",
+      "child_path": "/commercial_ice_cream_display_freezer/body/front_caster_0",
+      "origin_xyz": [
+        -0.745,
+        -0.25,
+        0.134
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_front_caster_1",
+      "usd_path": "/commercial_ice_cream_display_freezer/Joints/body_to_front_caster_1",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/commercial_ice_cream_display_freezer/body",
+      "child_path": "/commercial_ice_cream_display_freezer/body/front_caster_1",
+      "origin_xyz": [
+        0.745,
+        -0.25,
+        0.134
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_rear_caster_0",
+      "usd_path": "/commercial_ice_cream_display_freezer/Joints/body_to_rear_caster_0",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/commercial_ice_cream_display_freezer/body",
+      "child_path": "/commercial_ice_cream_display_freezer/body/rear_caster_0",
+      "origin_xyz": [
+        -0.745,
+        0.25,
+        0.134
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_rear_caster_1",
+      "usd_path": "/commercial_ice_cream_display_freezer/Joints/body_to_rear_caster_1",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/commercial_ice_cream_display_freezer/body",
+      "child_path": "/commercial_ice_cream_display_freezer/body/rear_caster_1",
+      "origin_xyz": [
+        0.745,
+        0.25,
+        0.134
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -14,6 +14,11 @@ struct ClockDrawingResult: Codable, Hashable {
 
     let capturedAt: Date
 
+    /// Which `DrawingSubject.id` was drawn — `"clock"` for every baseline-battery run
+    /// (default preserves that), or whatever Daily Practice's level cycled to. Recorded so a
+    /// later caregiver review knows what they're looking at, not just a bare sketch.
+    var subjectID: String = "clock"
+
     /// `nil` until a caregiver reviews the sketch. `Int?` is a placeholder for a clinical
     /// clock-scoring scale (e.g. Shulman 0–10); the exact scale is a clinical-content
     /// decision, not made here.

@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "teak_bedroom_wardrobe",
+  "root_prim": "/teak_bedroom_wardrobe",
+  "links": [
+    {
+      "name": "carcass",
+      "usd_path": "/teak_bedroom_wardrobe/carcass",
+      "mass": null
+    },
+    {
+      "name": "door_0",
+      "usd_path": "/teak_bedroom_wardrobe/carcass/door_0",
+      "mass": null
+    },
+    {
+      "name": "door_1",
+      "usd_path": "/teak_bedroom_wardrobe/carcass/door_1",
+      "mass": null
+    },
+    {
+      "name": "drawer",
+      "usd_path": "/teak_bedroom_wardrobe/carcass/drawer",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "carcass_to_door_0",
+      "usd_path": "/teak_bedroom_wardrobe/Joints/carcass_to_door_0",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/teak_bedroom_wardrobe/carcass",
+      "child_path": "/teak_bedroom_wardrobe/carcass/door_0",
+      "origin_xyz": [
+        -0.585,
+        -0.275,
+        0.51
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.65,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "carcass_to_door_1",
+      "usd_path": "/teak_bedroom_wardrobe/Joints/carcass_to_door_1",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/teak_bedroom_wardrobe/carcass",
+      "child_path": "/teak_bedroom_wardrobe/carcass/door_1",
+      "origin_xyz": [
+        0.585,
+        -0.275,
+        0.51
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.65,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "carcass_to_drawer",
+      "usd_path": "/teak_bedroom_wardrobe/Joints/carcass_to_drawer",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/teak_bedroom_wardrobe/carcass",
+      "child_path": "/teak_bedroom_wardrobe/carcass/drawer",
+      "origin_xyz": [
+        0.0,
+        -0.2925,
+        0.3
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.32,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

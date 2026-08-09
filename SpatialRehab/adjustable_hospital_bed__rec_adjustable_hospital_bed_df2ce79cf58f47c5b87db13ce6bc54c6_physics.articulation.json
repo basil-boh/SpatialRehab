@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "vintage_hospital_bed",
+  "root_prim": "/vintage_hospital_bed",
+  "links": [
+    {
+      "name": "frame",
+      "usd_path": "/vintage_hospital_bed/frame",
+      "mass": null
+    },
+    {
+      "name": "backrest",
+      "usd_path": "/vintage_hospital_bed/frame/backrest",
+      "mass": null
+    },
+    {
+      "name": "hand_crank",
+      "usd_path": "/vintage_hospital_bed/frame/hand_crank",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "backrest_hinge",
+      "usd_path": "/vintage_hospital_bed/Joints/backrest_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/vintage_hospital_bed/frame",
+      "child_path": "/vintage_hospital_bed/frame/backrest",
+      "origin_xyz": [
+        -0.25,
+        0.0,
+        0.56
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.15,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "crank_rotation",
+      "usd_path": "/vintage_hospital_bed/Joints/crank_rotation",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/vintage_hospital_bed/frame",
+      "child_path": "/vintage_hospital_bed/frame/hand_crank",
+      "origin_xyz": [
+        1.075,
+        -0.545,
+        0.74
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

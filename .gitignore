@@ -29,6 +29,10 @@ Carthage/Build/
 .AppleDouble
 .LSOverride
 Icon?
+# `Icon?` above (the standard macOS-template pattern for the custom-folder-icon resource
+# file, literally "Icon" + carriage return) collides with any real directory named "icons"
+# under core.ignorecase — `?` matches the 's', so it silently swallowed assets/icons/.
+!assets/icons/
 ._*
 
 # IDE

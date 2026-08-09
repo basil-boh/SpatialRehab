@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "small_ceramic_milk_jug",
+  "root_prim": "/small_ceramic_milk_jug",
+  "links": [
+    {
+      "name": "jug",
+      "usd_path": "/small_ceramic_milk_jug/jug",
+      "mass": null
+    },
+    {
+      "name": "milk",
+      "usd_path": "/small_ceramic_milk_jug/jug/milk",
+      "mass": null
+    },
+    {
+      "name": "pour_spout",
+      "usd_path": "/small_ceramic_milk_jug/jug/pour_spout",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "jug_to_milk",
+      "usd_path": "/small_ceramic_milk_jug/Joints/jug_to_milk",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/small_ceramic_milk_jug/jug",
+      "child_path": "/small_ceramic_milk_jug/jug/milk",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.012
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.024,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "jug_to_pour_spout",
+      "usd_path": "/small_ceramic_milk_jug/Joints/jug_to_pour_spout",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/small_ceramic_milk_jug/jug",
+      "child_path": "/small_ceramic_milk_jug/jug/pour_spout",
+      "origin_xyz": [
+        0.0,
+        0.072,
+        0.119
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

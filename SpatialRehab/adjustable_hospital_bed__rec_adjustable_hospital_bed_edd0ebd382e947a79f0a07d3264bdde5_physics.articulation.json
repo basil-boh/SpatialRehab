@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "home_care_adjustable_bed",
+  "root_prim": "/home_care_adjustable_bed",
+  "links": [
+    {
+      "name": "frame",
+      "usd_path": "/home_care_adjustable_bed/frame",
+      "mass": null
+    },
+    {
+      "name": "head_section",
+      "usd_path": "/home_care_adjustable_bed/frame/head_section",
+      "mass": null
+    },
+    {
+      "name": "leg_section",
+      "usd_path": "/home_care_adjustable_bed/frame/leg_section",
+      "mass": null
+    },
+    {
+      "name": "side_rail",
+      "usd_path": "/home_care_adjustable_bed/frame/side_rail",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "frame_to_head",
+      "usd_path": "/home_care_adjustable_bed/Joints/frame_to_head",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/home_care_adjustable_bed/frame",
+      "child_path": "/home_care_adjustable_bed/frame/head_section",
+      "origin_xyz": [
+        -0.34,
+        0.0,
+        0.64
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.05,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_leg",
+      "usd_path": "/home_care_adjustable_bed/Joints/frame_to_leg",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/home_care_adjustable_bed/frame",
+      "child_path": "/home_care_adjustable_bed/frame/leg_section",
+      "origin_xyz": [
+        0.34,
+        0.0,
+        0.64
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.75,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_side_rail",
+      "usd_path": "/home_care_adjustable_bed/Joints/frame_to_side_rail",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/home_care_adjustable_bed/frame",
+      "child_path": "/home_care_adjustable_bed/frame/side_rail",
+      "origin_xyz": [
+        0.0,
+        -0.59,
+        0.68
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.57,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

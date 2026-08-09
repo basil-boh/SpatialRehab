@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "lotion_pump_bottle",
+  "root_prim": "/lotion_pump_bottle",
+  "links": [
+    {
+      "name": "bottle_body",
+      "usd_path": "/lotion_pump_bottle/bottle_body",
+      "mass": 0.32
+    },
+    {
+      "name": "plunger",
+      "usd_path": "/lotion_pump_bottle/bottle_body/plunger",
+      "mass": 0.035
+    },
+    {
+      "name": "nozzle_head",
+      "usd_path": "/lotion_pump_bottle/bottle_body/plunger/nozzle_head",
+      "mass": 0.055
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_plunger",
+      "usd_path": "/lotion_pump_bottle/Joints/body_to_plunger",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/lotion_pump_bottle/bottle_body",
+      "child_path": "/lotion_pump_bottle/bottle_body/plunger",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.182
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": -0.012,
+      "upper": 0.0,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "plunger_to_nozzle",
+      "usd_path": "/lotion_pump_bottle/Joints/plunger_to_nozzle",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/lotion_pump_bottle/bottle_body/plunger",
+      "child_path": "/lotion_pump_bottle/bottle_body/plunger/nozzle_head",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.044
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.5708,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

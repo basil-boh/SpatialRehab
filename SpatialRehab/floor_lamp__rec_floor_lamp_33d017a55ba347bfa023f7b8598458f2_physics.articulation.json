@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "tripod_floor_lamp",
+  "root_prim": "/tripod_floor_lamp",
+  "links": [
+    {
+      "name": "hub",
+      "usd_path": "/tripod_floor_lamp/hub",
+      "mass": null
+    },
+    {
+      "name": "leg_0",
+      "usd_path": "/tripod_floor_lamp/hub/leg_0",
+      "mass": null
+    },
+    {
+      "name": "leg_1",
+      "usd_path": "/tripod_floor_lamp/hub/leg_1",
+      "mass": null
+    },
+    {
+      "name": "leg_2",
+      "usd_path": "/tripod_floor_lamp/hub/leg_2",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "hub_to_leg_0",
+      "usd_path": "/tripod_floor_lamp/Joints/hub_to_leg_0",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/tripod_floor_lamp/hub",
+      "child_path": "/tripod_floor_lamp/hub/leg_0",
+      "origin_xyz": [
+        6.4294e-18,
+        0.105,
+        0.18
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        1.5708
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": -0.35,
+      "upper": 0.25,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "hub_to_leg_1",
+      "usd_path": "/tripod_floor_lamp/Joints/hub_to_leg_1",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/tripod_floor_lamp/hub",
+      "child_path": "/tripod_floor_lamp/hub/leg_1",
+      "origin_xyz": [
+        -0.0909327,
+        -0.0525,
+        0.18
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        3.66519
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": -0.35,
+      "upper": 0.25,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "hub_to_leg_2",
+      "usd_path": "/tripod_floor_lamp/Joints/hub_to_leg_2",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/tripod_floor_lamp/hub",
+      "child_path": "/tripod_floor_lamp/hub/leg_2",
+      "origin_xyz": [
+        0.0909327,
+        -0.0525,
+        0.18
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        5.75959
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": -0.35,
+      "upper": 0.25,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

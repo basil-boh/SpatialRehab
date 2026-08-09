@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "object": "retrofit_toaster_oven",
+  "root_prim": "/retrofit_toaster_oven",
+  "links": [
+    {
+      "name": "oven_body",
+      "usd_path": "/retrofit_toaster_oven/oven_body",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/retrofit_toaster_oven/oven_body/door",
+      "mass": null
+    },
+    {
+      "name": "timer_knob",
+      "usd_path": "/retrofit_toaster_oven/oven_body/timer_knob",
+      "mass": null
+    },
+    {
+      "name": "temperature_knob",
+      "usd_path": "/retrofit_toaster_oven/oven_body/temperature_knob",
+      "mass": null
+    },
+    {
+      "name": "mode_knob",
+      "usd_path": "/retrofit_toaster_oven/oven_body/mode_knob",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "door_hinge",
+      "usd_path": "/retrofit_toaster_oven/Joints/door_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/retrofit_toaster_oven/oven_body",
+      "child_path": "/retrofit_toaster_oven/oven_body/door",
+      "origin_xyz": [
+        -0.075,
+        -0.253,
+        0.135
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.42,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "timer_shaft",
+      "usd_path": "/retrofit_toaster_oven/Joints/timer_shaft",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/retrofit_toaster_oven/oven_body",
+      "child_path": "/retrofit_toaster_oven/oven_body/timer_knob",
+      "origin_xyz": [
+        0.215,
+        -0.253,
+        0.335
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 5.15,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "temperature_shaft",
+      "usd_path": "/retrofit_toaster_oven/Joints/temperature_shaft",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/retrofit_toaster_oven/oven_body",
+      "child_path": "/retrofit_toaster_oven/oven_body/temperature_knob",
+      "origin_xyz": [
+        0.215,
+        -0.253,
+        0.25
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -2.35,
+      "upper": 2.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "mode_shaft",
+      "usd_path": "/retrofit_toaster_oven/Joints/mode_shaft",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/retrofit_toaster_oven/oven_body",
+      "child_path": "/retrofit_toaster_oven/oven_body/mode_knob",
+      "origin_xyz": [
+        0.215,
+        -0.253,
+        0.165
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": -1.05,
+      "upper": 1.05,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

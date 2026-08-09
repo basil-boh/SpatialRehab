@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "object": "glass_coffee_carafe",
+  "root_prim": "/glass_coffee_carafe",
+  "links": [
+    {
+      "name": "carafe_body",
+      "usd_path": "/glass_coffee_carafe/carafe_body",
+      "mass": null
+    },
+    {
+      "name": "handle",
+      "usd_path": "/glass_coffee_carafe/carafe_body/handle",
+      "mass": null
+    },
+    {
+      "name": "coffee_volume",
+      "usd_path": "/glass_coffee_carafe/carafe_body/coffee_volume",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/glass_coffee_carafe/carafe_body/lid",
+      "mass": null
+    },
+    {
+      "name": "pour_spout",
+      "usd_path": "/glass_coffee_carafe/carafe_body/pour_spout",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_handle",
+      "usd_path": "/glass_coffee_carafe/Joints/body_to_handle",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/glass_coffee_carafe/carafe_body",
+      "child_path": "/glass_coffee_carafe/carafe_body/handle",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "fill_level",
+      "usd_path": "/glass_coffee_carafe/Joints/fill_level",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/glass_coffee_carafe/carafe_body",
+      "child_path": "/glass_coffee_carafe/carafe_body/coffee_volume",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.02
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.166,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_hinge",
+      "usd_path": "/glass_coffee_carafe/Joints/lid_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/glass_coffee_carafe/carafe_body",
+      "child_path": "/glass_coffee_carafe/carafe_body/lid",
+      "origin_xyz": [
+        -0.047,
+        0.0,
+        0.242
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "spout_anchor",
+      "usd_path": "/glass_coffee_carafe/Joints/spout_anchor",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/glass_coffee_carafe/carafe_body",
+      "child_path": "/glass_coffee_carafe/carafe_body/pour_spout",
+      "origin_xyz": [
+        0.072,
+        0.0,
+        0.235
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

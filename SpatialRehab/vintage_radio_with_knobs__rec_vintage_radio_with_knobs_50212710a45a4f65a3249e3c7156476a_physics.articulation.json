@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "object": "sixties_portable_transistor_radio",
+  "root_prim": "/sixties_portable_transistor_radio",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/sixties_portable_transistor_radio/body",
+      "mass": null
+    },
+    {
+      "name": "tuning_dial",
+      "usd_path": "/sixties_portable_transistor_radio/body/tuning_dial",
+      "mass": null
+    },
+    {
+      "name": "volume_knob",
+      "usd_path": "/sixties_portable_transistor_radio/body/volume_knob",
+      "mass": null
+    },
+    {
+      "name": "carry_handle",
+      "usd_path": "/sixties_portable_transistor_radio/body/carry_handle",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "body_to_tuning_dial",
+      "usd_path": "/sixties_portable_transistor_radio/Joints/body_to_tuning_dial",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/sixties_portable_transistor_radio/body",
+      "child_path": "/sixties_portable_transistor_radio/body/tuning_dial",
+      "origin_xyz": [
+        0.06,
+        0.048,
+        0.094
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": -2.45,
+      "upper": 2.45,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_volume_knob",
+      "usd_path": "/sixties_portable_transistor_radio/Joints/body_to_volume_knob",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/sixties_portable_transistor_radio/body",
+      "child_path": "/sixties_portable_transistor_radio/body/volume_knob",
+      "origin_xyz": [
+        0.122,
+        0.048,
+        0.046
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 4.7,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_carry_handle",
+      "usd_path": "/sixties_portable_transistor_radio/Joints/body_to_carry_handle",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/sixties_portable_transistor_radio/body",
+      "child_path": "/sixties_portable_transistor_radio/body/carry_handle",
+      "origin_xyz": [
+        0.0,
+        -0.032,
+        0.1959
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

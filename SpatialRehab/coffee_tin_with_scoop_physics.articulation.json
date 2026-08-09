@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "red_coffee_tin",
+  "root_prim": "/red_coffee_tin",
+  "links": [
+    {
+      "name": "tin",
+      "usd_path": "/red_coffee_tin/tin",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/red_coffee_tin/tin/lid",
+      "mass": null
+    },
+    {
+      "name": "scoop",
+      "usd_path": "/red_coffee_tin/tin/scoop",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "tin_to_lid",
+      "usd_path": "/red_coffee_tin/Joints/tin_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/red_coffee_tin/tin",
+      "child_path": "/red_coffee_tin/tin/lid",
+      "origin_xyz": [
+        0.0,
+        0.085,
+        0.151
+      ],
+      "origin_rpy": [
+        -1.8326,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.8326,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tin_to_scoop",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/red_coffee_tin/tin",
+      "child_path": "/red_coffee_tin/tin/scoop",
+      "origin_xyz": [
+        0.008,
+        -0.004,
+        0.135
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.314159
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

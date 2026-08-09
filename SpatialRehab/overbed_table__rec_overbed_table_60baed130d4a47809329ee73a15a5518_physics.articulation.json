@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "object": "compact_overbed_table",
+  "root_prim": "/compact_overbed_table",
+  "links": [
+    {
+      "name": "base_frame",
+      "usd_path": "/compact_overbed_table/base_frame",
+      "mass": null
+    },
+    {
+      "name": "column",
+      "usd_path": "/compact_overbed_table/base_frame/column",
+      "mass": null
+    },
+    {
+      "name": "top",
+      "usd_path": "/compact_overbed_table/base_frame/column/top",
+      "mass": null
+    },
+    {
+      "name": "brake_bar",
+      "usd_path": "/compact_overbed_table/base_frame/brake_bar",
+      "mass": null
+    },
+    {
+      "name": "caster_0",
+      "usd_path": "/compact_overbed_table/base_frame/caster_0",
+      "mass": null
+    },
+    {
+      "name": "caster_1",
+      "usd_path": "/compact_overbed_table/base_frame/caster_1",
+      "mass": null
+    },
+    {
+      "name": "caster_2",
+      "usd_path": "/compact_overbed_table/base_frame/caster_2",
+      "mass": null
+    },
+    {
+      "name": "caster_3",
+      "usd_path": "/compact_overbed_table/base_frame/caster_3",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "frame_to_caster_0",
+      "usd_path": "/compact_overbed_table/Joints/frame_to_caster_0",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame",
+      "child_path": "/compact_overbed_table/base_frame/caster_0",
+      "origin_xyz": [
+        -0.18,
+        -0.25,
+        0.035
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_caster_1",
+      "usd_path": "/compact_overbed_table/Joints/frame_to_caster_1",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame",
+      "child_path": "/compact_overbed_table/base_frame/caster_1",
+      "origin_xyz": [
+        0.18,
+        -0.25,
+        0.035
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_caster_2",
+      "usd_path": "/compact_overbed_table/Joints/frame_to_caster_2",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame",
+      "child_path": "/compact_overbed_table/base_frame/caster_2",
+      "origin_xyz": [
+        -0.18,
+        0.25,
+        0.035
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_caster_3",
+      "usd_path": "/compact_overbed_table/Joints/frame_to_caster_3",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame",
+      "child_path": "/compact_overbed_table/base_frame/caster_3",
+      "origin_xyz": [
+        0.18,
+        0.25,
+        0.035
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_column",
+      "usd_path": "/compact_overbed_table/Joints/frame_to_column",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame",
+      "child_path": "/compact_overbed_table/base_frame/column",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.481
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.16,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "column_to_top",
+      "usd_path": "/compact_overbed_table/Joints/column_to_top",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame/column",
+      "child_path": "/compact_overbed_table/base_frame/column/top",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.365
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -0.3,
+      "upper": 0.3,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "frame_to_brake_bar",
+      "usd_path": "/compact_overbed_table/Joints/frame_to_brake_bar",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/compact_overbed_table/base_frame",
+      "child_path": "/compact_overbed_table/base_frame/brake_bar",
+      "origin_xyz": [
+        0.0,
+        -0.17,
+        0.118
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": -0.45,
+      "upper": 0.35,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

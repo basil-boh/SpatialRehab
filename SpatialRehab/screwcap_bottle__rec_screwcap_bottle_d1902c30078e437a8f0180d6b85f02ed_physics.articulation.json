@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "screw_cap_bottle",
+  "root_prim": "/screw_cap_bottle",
+  "links": [
+    {
+      "name": "bottle",
+      "usd_path": "/screw_cap_bottle/bottle",
+      "mass": null
+    },
+    {
+      "name": "cap",
+      "usd_path": "/screw_cap_bottle/bottle/cap",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "neck_to_cap",
+      "usd_path": "/screw_cap_bottle/Joints/neck_to_cap",
+      "type": "continuous",
+      "free": false,
+      "parent_path": "/screw_cap_bottle/bottle",
+      "child_path": "/screw_cap_bottle/bottle/cap",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.205
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

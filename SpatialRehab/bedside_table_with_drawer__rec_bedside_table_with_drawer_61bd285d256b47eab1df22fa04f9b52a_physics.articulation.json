@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "birch_bedside_table",
+  "root_prim": "/birch_bedside_table",
+  "links": [
+    {
+      "name": "frame",
+      "usd_path": "/birch_bedside_table/frame",
+      "mass": null
+    },
+    {
+      "name": "drawer",
+      "usd_path": "/birch_bedside_table/frame/drawer",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "frame_to_drawer",
+      "usd_path": "/birch_bedside_table/Joints/frame_to_drawer",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/birch_bedside_table/frame",
+      "child_path": "/birch_bedside_table/frame/drawer",
+      "origin_xyz": [
+        0.205,
+        0.0,
+        0.483
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.22,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

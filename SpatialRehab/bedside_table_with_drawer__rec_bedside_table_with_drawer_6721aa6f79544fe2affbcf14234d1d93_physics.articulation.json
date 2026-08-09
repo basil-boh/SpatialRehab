@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "sage_bedside_cabinet",
+  "root_prim": "/sage_bedside_cabinet",
+  "links": [
+    {
+      "name": "cabinet",
+      "usd_path": "/sage_bedside_cabinet/cabinet",
+      "mass": null
+    },
+    {
+      "name": "drawer",
+      "usd_path": "/sage_bedside_cabinet/cabinet/drawer",
+      "mass": null
+    },
+    {
+      "name": "door",
+      "usd_path": "/sage_bedside_cabinet/cabinet/door",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "drawer_slide",
+      "usd_path": "/sage_bedside_cabinet/Joints/drawer_slide",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/sage_bedside_cabinet/cabinet",
+      "child_path": "/sage_bedside_cabinet/cabinet/drawer",
+      "origin_xyz": [
+        0.0,
+        -0.241,
+        0.508
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.22,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "door_hinge",
+      "usd_path": "/sage_bedside_cabinet/Joints/door_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/sage_bedside_cabinet/cabinet",
+      "child_path": "/sage_bedside_cabinet/cabinet/door",
+      "origin_xyz": [
+        -0.209,
+        -0.247,
+        0.265
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "lower": 0.0,
+      "upper": 1.65,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "round_rotary_pill_organizer",
+  "root_prim": "/round_rotary_pill_organizer",
+  "links": [
+    {
+      "name": "base",
+      "usd_path": "/round_rotary_pill_organizer/base",
+      "mass": null
+    },
+    {
+      "name": "cover",
+      "usd_path": "/round_rotary_pill_organizer/base/cover",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "base_to_cover",
+      "usd_path": "/round_rotary_pill_organizer/Joints/base_to_cover",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/round_rotary_pill_organizer/base",
+      "child_path": "/round_rotary_pill_organizer/base/cover",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.0195
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 6.28319,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

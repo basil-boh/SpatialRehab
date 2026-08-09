@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "classic_occ_bottle_with_articulated_cap",
+  "root_prim": "/classic_occ_bottle_with_articulated_cap",
+  "links": [
+    {
+      "name": "bottle",
+      "usd_path": "/classic_occ_bottle_with_articulated_cap/bottle",
+      "mass": 0.32
+    },
+    {
+      "name": "cap",
+      "usd_path": "/classic_occ_bottle_with_articulated_cap/bottle/cap",
+      "mass": 0.05
+    }
+  ],
+  "joints": [
+    {
+      "name": "cap_hinge",
+      "usd_path": "/classic_occ_bottle_with_articulated_cap/Joints/cap_hinge",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/classic_occ_bottle_with_articulated_cap/bottle",
+      "child_path": "/classic_occ_bottle_with_articulated_cap/bottle/cap",
+      "origin_xyz": [
+        0.0,
+        -0.018,
+        0.1368
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 2.1,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

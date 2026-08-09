@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "object": "round_rotary_pill_organizer",
+  "root_prim": "/round_rotary_pill_organizer",
+  "links": [
+    {
+      "name": "base_tray",
+      "usd_path": "/round_rotary_pill_organizer/base_tray",
+      "mass": null
+    },
+    {
+      "name": "cover",
+      "usd_path": "/round_rotary_pill_organizer/base_tray/cover",
+      "mass": null
+    },
+    {
+      "name": "pill_0",
+      "usd_path": "/round_rotary_pill_organizer/base_tray/pill_0",
+      "mass": null
+    },
+    {
+      "name": "pill_1",
+      "usd_path": "/round_rotary_pill_organizer/base_tray/pill_1",
+      "mass": null
+    },
+    {
+      "name": "pill_2",
+      "usd_path": "/round_rotary_pill_organizer/base_tray/pill_2",
+      "mass": null
+    },
+    {
+      "name": "pill_3",
+      "usd_path": "/round_rotary_pill_organizer/base_tray/pill_3",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "base_to_cover",
+      "usd_path": "/round_rotary_pill_organizer/Joints/base_to_cover",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/round_rotary_pill_organizer/base_tray",
+      "child_path": "/round_rotary_pill_organizer/base_tray/cover",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.014
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 6.28319,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "base_to_pill_0",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/round_rotary_pill_organizer/base_tray",
+      "child_path": "/round_rotary_pill_organizer/base_tray/pill_0",
+      "origin_xyz": [
+        0.018,
+        -0.0042,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.314159
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "base_to_pill_1",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/round_rotary_pill_organizer/base_tray",
+      "child_path": "/round_rotary_pill_organizer/base_tray/pill_1",
+      "origin_xyz": [
+        0.032,
+        0.0055,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "base_to_pill_2",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/round_rotary_pill_organizer/base_tray",
+      "child_path": "/round_rotary_pill_organizer/base_tray/pill_2",
+      "origin_xyz": [
+        0.02,
+        0.0058,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "base_to_pill_3",
+      "usd_path": null,
+      "type": "fixed",
+      "free": true,
+      "parent_path": "/round_rotary_pill_organizer/base_tray",
+      "child_path": "/round_rotary_pill_organizer/base_tray/pill_3",
+      "origin_xyz": [
+        0.031,
+        -0.0063,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.418879
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

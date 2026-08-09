@@ -13,6 +13,13 @@ import SwiftUI
 struct WordMemoryGameView: View {
     let onComplete: (WordMemoryTrial) -> Void
 
+    /// Defaults reproduce the fixed baseline-battery content exactly, so every existing call
+    /// site (`WordMemoryGameView(onComplete:)`) behaves byte-for-byte the same as before.
+    /// `DailyPracticeHubView` passes tier-scaled content instead — see `PracticeDifficulty`.
+    var targetWords: [String] = BaselineAssessmentContent.WordMemory.targetWords
+    var distractorWords: [String] = BaselineAssessmentContent.WordMemory.distractorWords
+    var studyDurationSeconds: TimeInterval = BaselineAssessmentContent.WordMemory.studyDurationSeconds
+
     private enum SubPhase {
         case study
         case recall
@@ -21,7 +28,7 @@ struct WordMemoryGameView: View {
     @State private var subPhase: SubPhase = .study
     @State private var tappedWords: Set<String> = []
     @State private var gridWords: [String] = []
-    @State private var remainingSeconds = Int(BaselineAssessmentContent.WordMemory.studyDurationSeconds)
+    @State private var remainingSeconds = 0
 
     private let columns = [GridItem(.adaptive(minimum: 160), spacing: 16)]
 
@@ -37,9 +44,8 @@ struct WordMemoryGameView: View {
         .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
-            gridWords = (BaselineAssessmentContent.WordMemory.targetWords
-                + BaselineAssessmentContent.WordMemory.distractorWords).shuffled()
-            remainingSeconds = Int(BaselineAssessmentContent.WordMemory.studyDurationSeconds)
+            gridWords = (targetWords + distractorWords).shuffled()
+            remainingSeconds = Int(studyDurationSeconds)
             while remainingSeconds > 0 {
                 try? await Task.sleep(for: .seconds(1))
                 remainingSeconds -= 1
@@ -54,7 +60,7 @@ struct WordMemoryGameView: View {
                 .font(.system(size: 32, weight: .semibold, design: .rounded))
 
             VStack(spacing: 16) {
-                ForEach(BaselineAssessmentContent.WordMemory.targetWords, id: \.self) { word in
+                ForEach(targetWords, id: \.self) { word in
                     Text(word)
                         .font(.system(size: 28, weight: .medium))
                 }
@@ -67,11 +73,8 @@ struct WordMemoryGameView: View {
                     .contentTransition(.numericText(countsDown: true))
                     .animation(.default, value: remainingSeconds)
 
-                ProgressView(
-                    value: Double(remainingSeconds),
-                    total: Double(BaselineAssessmentContent.WordMemory.studyDurationSeconds)
-                )
-                .frame(maxWidth: 240)
+                ProgressView(value: Double(remainingSeconds), total: Double(studyDurationSeconds))
+                    .frame(maxWidth: 240)
             }
         }
     }
@@ -91,8 +94,8 @@ struct WordMemoryGameView: View {
             Button("Done") {
                 onComplete(
                     WordMemoryTrial(
-                        targetWords: BaselineAssessmentContent.WordMemory.targetWords,
-                        distractorWords: BaselineAssessmentContent.WordMemory.distractorWords,
+                        targetWords: targetWords,
+                        distractorWords: distractorWords,
                         tappedWords: tappedWords,
                         completedAt: .now
                     )

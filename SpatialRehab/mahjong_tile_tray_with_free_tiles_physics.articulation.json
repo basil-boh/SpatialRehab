@@ -1,0 +1,526 @@
+{
+  "schema_version": 1,
+  "object": "wooden_mahjong_tray",
+  "root_prim": "/wooden_mahjong_tray",
+  "links": [
+    {
+      "name": "tray",
+      "usd_path": "/wooden_mahjong_tray/tray",
+      "mass": 0.32
+    },
+    {
+      "name": "tile_0",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_0",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_1",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_1",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_2",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_2",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_3",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_3",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_4",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_4",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_5",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_5",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_6",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_6",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_7",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_7",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_8",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_8",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_9",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_9",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_10",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_10",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_11",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_11",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_12",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_12",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_13",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_13",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_14",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_14",
+      "mass": 0.014
+    },
+    {
+      "name": "tile_15",
+      "usd_path": "/wooden_mahjong_tray/tray/tile_15",
+      "mass": 0.014
+    }
+  ],
+  "joints": [
+    {
+      "name": "tile_float_0",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_0",
+      "origin_xyz": [
+        -0.045,
+        0.0375,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_1",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_1",
+      "origin_xyz": [
+        -0.0145,
+        0.0372,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.035
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_2",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_2",
+      "origin_xyz": [
+        0.0146,
+        0.0377,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.025
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_3",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_3",
+      "origin_xyz": [
+        0.0452,
+        0.0379,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.02
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_4",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_4",
+      "origin_xyz": [
+        -0.0453,
+        0.0121,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.03
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_5",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_5",
+      "origin_xyz": [
+        -0.0146,
+        0.0128,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.018
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_6",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_6",
+      "origin_xyz": [
+        0.0152,
+        0.0123,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.02
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_7",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_7",
+      "origin_xyz": [
+        0.0445,
+        0.0126,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.03
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_8",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_8",
+      "origin_xyz": [
+        -0.0447,
+        -0.012,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.025
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_9",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_9",
+      "origin_xyz": [
+        -0.0152,
+        -0.0127,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.022
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_10",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_10",
+      "origin_xyz": [
+        0.0156,
+        -0.0125,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.016
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_11",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_11",
+      "origin_xyz": [
+        0.0447,
+        -0.0121,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.034
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_12",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_12",
+      "origin_xyz": [
+        -0.0449,
+        -0.038,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.03
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_13",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_13",
+      "origin_xyz": [
+        -0.0145,
+        -0.0372,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.015
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_14",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_14",
+      "origin_xyz": [
+        0.0146,
+        -0.0376,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        -0.022
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tile_float_15",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/wooden_mahjong_tray/tray",
+      "child_path": "/wooden_mahjong_tray/tray/tile_15",
+      "origin_xyz": [
+        0.0452,
+        -0.0373,
+        0.004
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.028
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

@@ -2,7 +2,7 @@ name: SpatialRehab
 options:
   bundleIdPrefix: com.spatialrehab
   deploymentTarget:
-    visionOS: "2.0"
+    visionOS: "26.2"
   xcodeVersion: "16.0"
   createIntermediateGroups: true
   groupSortPosition: top
@@ -29,7 +29,7 @@ targets:
   SpatialRehab:
     type: application
     platform: visionOS
-    deploymentTarget: "2.0"
+    deploymentTarget: "26.2"
     sources:
       - path: SpatialRehab
         excludes:
@@ -61,4 +61,4 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: true
         NSWorldSensingUsageDescription: "SpatialRehab detects your tabletop to anchor guidance markers for each step of the task."
-        NSHandsTrackingUsageDescription: "SpatialRehab watches for your hand reaching the highlighted object so it can confirm each step for you."
+        NSHandsTrackingUsageDescription: "SpatialRehab watches your hands so you can reach for highlighted objects, wash and move mahjong tiles, and pour your kopi naturally."
