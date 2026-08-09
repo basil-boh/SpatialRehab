@@ -1,36 +1,48 @@
 import SwiftUI
 
 /// Home screen: the "Remember the Way" exercise from `feature/wayfinding-activities`,
-/// reached once `SpatialRehabApp.hasCompletedBaseline` flips to true. A small secondary
-/// button opens `CaregiverDashboardView` (from the baseline-metrics branch) without
-/// competing with the primary "Start" action.
+/// reached once `SpatialRehabApp.hasCompletedBaseline` flips to true. Secondary buttons
+/// below the primary "Start" action open `DailyPracticeHubView` (the repeatable, leveled
+/// version of the baseline mini-games — from the baseline-metrics branch, see
+/// `Docs/DailyPractice_Design.md`) and `CaregiverDashboardView` (trend charts across
+/// sessions, also from baseline-metrics), without competing with "Start" for attention.
 ///
-/// Reconciled 2026-08-08, twice: first when both branches had independently rewritten
+/// Reconciled 2026-08-08, three times: first when both branches had independently rewritten
 /// `ContentView` as the app's home screen (this branch's activity picker vs.
 /// baseline-metrics' caregiver check-in card — Basil chose the activity picker), then again
 /// after a teammate's follow-up commit simplified the picker down to a single activity
-/// (Touch the Dots / Walk to the Bakery / Find Your Way Home were removed). The caregiver
-/// dashboard button carries forward unchanged across both reconciliations.
+/// (Touch the Dots / Walk to the Bakery / Find Your Way Home were removed), then again after
+/// baseline-metrics grew a Daily Practice hub and replaced its own home screen with a
+/// greeting card — folded in here as a secondary "Daily Practice" entry point rather than
+/// adopting the greeting-card layout, so the single-activity focus from the second
+/// reconciliation still stands.
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @State private var showingDashboard = false
+    @State private var showingDailyPractice = false
 
     var body: some View {
-        VStack(spacing: 40) {
-            switch appModel.phase {
-            case .welcome, .openingActivity:
-                welcome
-            case .inActivity:
-                inActivity
-            case .finished:
-                finished
+        Group {
+            if showingDailyPractice {
+                DailyPracticeHubView(onExit: { showingDailyPractice = false })
+            } else {
+                VStack(spacing: 40) {
+                    switch appModel.phase {
+                    case .welcome, .openingActivity:
+                        welcome
+                    case .inActivity:
+                        inActivity
+                    case .finished:
+                        finished
+                    }
+                }
+                .padding(60)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .sheet(isPresented: $showingDashboard) {
+                    CaregiverDashboardView()
+                }
             }
-        }
-        .padding(60)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sheet(isPresented: $showingDashboard) {
-            CaregiverDashboardView()
         }
     }
 
@@ -60,6 +72,13 @@ struct ContentView: View {
             .buttonBorderShape(.capsule)
             .controlSize(.extraLarge)
             .disabled(appModel.phase == .openingActivity)
+
+            Button {
+                showingDailyPractice = true
+            } label: {
+                Label("Daily Practice", systemImage: "checklist")
+            }
+            .buttonStyle(.bordered)
 
             Button {
                 showingDashboard = true
@@ -106,6 +125,29 @@ struct ContentView: View {
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
             .controlSize(.extraLarge)
+
+            HStack(spacing: 16) {
+                Button {
+                    showingDailyPractice = true
+                } label: {
+                    Label("Daily Practice", systemImage: "checklist")
+                }
+                .buttonStyle(.bordered)
+
+                Button {
+                    showingDashboard = true
+                } label: {
+                    Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
+                }
+                .buttonStyle(.bordered)
+            }
+
+            Label(
+                "\(BaselineResultsStore.completedGameCount()) of \(BaselineAssessmentSession.Phase.gameCount) activities completed",
+                systemImage: "leaf.fill"
+            )
+            .font(.footnote)
+            .foregroundStyle(.secondary)
         }
     }
 

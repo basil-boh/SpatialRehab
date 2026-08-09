@@ -9,6 +9,11 @@ import SwiftUI
 struct PatternMatchingGameView: View {
     let onComplete: (PatternMatchingResult) -> Void
 
+    /// Default reproduces the fixed baseline-battery symbol set exactly, so the existing
+    /// call site (`PatternMatchingGameView(onComplete:)`) is unchanged. `DailyPracticeHubView`
+    /// passes a tier-scaled symbol subset instead — see `PracticeDifficulty`.
+    var symbols: [String] = BaselineAssessmentContent.PatternMatching.symbols
+
     private struct Card: Identifiable {
         let id = UUID()
         let symbolName: String
@@ -23,11 +28,21 @@ struct PatternMatchingGameView: View {
 
     private let columns = [GridItem(.adaptive(minimum: 140), spacing: 16)]
 
+    private var matchedPairCount: Int { cards.filter(\.isMatched).count / 2 }
+    private var totalPairCount: Int { cards.count / 2 }
+
     var body: some View {
         VStack(spacing: 24) {
-            Text("Find the matching pairs")
-                .font(.system(size: 30, weight: .semibold, design: .rounded))
-                .multilineTextAlignment(.center)
+            VStack(spacing: 8) {
+                Text("Find the matching pairs")
+                    .font(.system(size: 30, weight: .semibold, design: .rounded))
+                    .multilineTextAlignment(.center)
+
+                if totalPairCount > 0 {
+                    ProgressView(value: Double(matchedPairCount), total: Double(totalPairCount))
+                        .frame(maxWidth: 200)
+                }
+            }
 
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(Array(cards.enumerated()), id: \.element.id) { index, card in
@@ -66,7 +81,6 @@ struct PatternMatchingGameView: View {
 
     private func setUpCards() {
         guard cards.isEmpty else { return }
-        let symbols = BaselineAssessmentContent.PatternMatching.symbols
         cards = (symbols + symbols).shuffled().map { Card(symbolName: $0) }
     }
 
