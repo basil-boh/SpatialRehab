@@ -5,6 +5,31 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-10
+
+### Fixed
+
+- **Deck backgrounds looked soft; the pipeline was the main culprit, not the photographs.**
+  Backgrounds were being baked to 1500x940 at JPEG quality 60, which discards most of a
+  3000-8000px source and then gets stretched past 1:1 on any retina display. Now baked at
+  **2400x1504, quality 80** (`deck/bake.py`). Blur radii are unchanged at 2, but because the
+  canvas is 1.6x larger the apparent blur is proportionally softer, so the photographs read
+  more clearly as well as more sharply.
+- **Two backgrounds genuinely were low quality** and were being upscaled: `agewell2` (1314px
+  wide) and `ivhand` (1024px). Both dropped. Five higher-resolution first-party photographs
+  were sourced from Age Well SG's sub-pages to replace them and to give every slide its own
+  image again: seniors cooking (6000px), two seniors at a table game (5141px), neighbours
+  talking in an HDB corridor (6000px), a care worker taking a blood-pressure reading at home
+  (8121px), and an elderly couple at home (6000px).
+  - Every one of the 13 sources is now at least 3195px wide, so nothing is upscaled.
+  - Remapped so the subject matches the slide more closely than before: cooking backs
+    functional independence, the table game backs the eight baseline games, and the home
+    blood-pressure reading backs the caregiver dashboard.
+  - AIC's resistance-band photo was dropped (2048px, the weakest remaining source); the Age
+    Well SG exercise-class photo backs the physical-activity panel instead. Closing-slide
+    credit narrowed to the Ministry of Health and Age Well SG accordingly.
+  - Page weight rises from 1.3 MB to 4.4 MB, still well inside the 16 MB artifact limit.
+
 ## 2026-08-09
 
 ### Changed

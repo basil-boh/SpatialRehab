@@ -1,10 +1,9 @@
 {
   "agewell1": {
     "slides": [
-      1,
-      13
+      1
     ],
-    "where": "Title and close",
+    "where": "Title",
     "credit": "Age Well SG, Ministry of Health",
     "source": "https://www.agewellsg.gov.sg/images/what%20is%20age%20well.jpg",
     "blur": 2,
@@ -12,36 +11,35 @@
     "saturation": 0.98,
     "warmth": 1.0
   },
-  "agewell2": {
+  "sandbox": {
     "slides": [
       2
     ],
     "where": "The problem",
     "credit": "Age Well SG, Ministry of Health",
-    "source": "https://www.agewellsg.gov.sg/images/key%20feature%20(2).jpg",
+    "source": "https://www.agewellsg.gov.sg/images/photo%20for%20sandbox%20(2).jpg",
     "blur": 2,
     "brightness": 1.02,
-    "saturation": 0.98,
-    "warmth": 1.02
+    "saturation": 0.94,
+    "warmth": 1.01
   },
-  "pottery": {
+  "cooking": {
     "slides": [
       3
     ],
     "where": "Functional independence",
-    "credit": "Ministry of Health",
-    "source": "https://isomer-user-content.by.gov.sg/3/ad8ca127-da32-4719-af6d-b27dedabe3f5/pottery-workshop-asian-retired-couple-is-engaged-pottery-making-clay-painting-transformed (1).jpeg",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/seniors%20cooking%20(2).jpg",
     "blur": 2,
-    "brightness": 1.02,
-    "saturation": 0.93,
+    "brightness": 1.0,
+    "saturation": 0.9,
     "warmth": 1.0
   },
   "nurse": {
     "slides": [
-      4,
-      10
+      4
     ],
-    "where": "Errorless learning; personalisation",
+    "where": "Errorless learning",
     "credit": "Ministry of Health",
     "source": "https://isomer-user-content.by.gov.sg/3/a1544caf-1263-482c-b6bb-a6ec943fd591/young-nurse-take-care-senior-patient-hospital-room-transformed.jpeg",
     "blur": 2,
@@ -61,16 +59,16 @@
     "saturation": 0.94,
     "warmth": 1.0
   },
-  "agewell5": {
+  "encourage": {
     "slides": [
       6
     ],
-    "where": "Baseline battery",
-    "credit": "Ministry of Health",
-    "source": "https://www.agewellsg.gov.sg/images/MOH_20_Oct_2022___1475.jpg",
+    "where": "Baseline games",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/encourage%20active%20ageing%20(2).jpg",
     "blur": 2,
     "brightness": 1.0,
-    "saturation": 0.9,
+    "saturation": 0.92,
     "warmth": 1.0
   },
   "walkpark": {
@@ -97,25 +95,37 @@
     "saturation": 0.94,
     "warmth": 1.0
   },
-  "ivhand": {
+  "moh1791": {
     "slides": [
       9
     ],
     "where": "Caregiver dashboard",
-    "credit": "Ministry of Health",
-    "source": "https://isomer-user-content.by.gov.sg/3/a23f3b99-23ac-47e2-b3f1-899c31fb4ec8/iv therapy support.png",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/MOH_20_Oct_2022___1791.jpg",
     "blur": 2,
-    "brightness": 1.03,
-    "saturation": 0.94,
-    "warmth": 1.02
+    "brightness": 1.01,
+    "saturation": 0.92,
+    "warmth": 1.0
   },
-  "aicday": {
+  "caresupport": {
+    "slides": [
+      10
+    ],
+    "where": "Personalisation",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/photo%20for%20strengthen%20care%20support%20(2).jpg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.9,
+    "warmth": 1.0
+  },
+  "agewell5": {
     "slides": [
       11
     ],
     "where": "Evidence base",
-    "credit": "Agency for Integrated Care",
-    "source": "https://isomer-user-content.by.gov.sg/3/f89076a7-38e3-4f54-93f8-6cd7570c31fb/AIC-Day1-2019-PhotoLibrary-WebRes-831.jpg",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/MOH_20_Oct_2022___1475.jpg",
     "blur": 2,
     "brightness": 1.0,
     "saturation": 0.9,
@@ -131,6 +141,18 @@
     "blur": 2,
     "brightness": 1.02,
     "saturation": 0.94,
+    "warmth": 1.0
+  },
+  "pottery": {
+    "slides": [
+      13
+    ],
+    "where": "Close",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/ad8ca127-da32-4719-af6d-b27dedabe3f5/pottery-workshop-asian-retired-couple-is-engaged-pottery-making-clay-painting-transformed (1).jpeg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.92,
     "warmth": 1.0
   }
 }

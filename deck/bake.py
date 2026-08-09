@@ -24,7 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SOURCES = os.path.join(HERE, ".sources")
 BACKGROUNDS = os.path.join(HERE, "backgrounds")
 UA = {"User-Agent": "Mozilla/5.0"}
-WIDTH, HEIGHT = 1500, 940
+WIDTH, HEIGHT = 2400, 1504   # roughly 2x, so photographs stay crisp on retina displays
 
 os.makedirs(SOURCES, exist_ok=True)
 os.makedirs(BACKGROUNDS, exist_ok=True)
@@ -62,7 +62,7 @@ for tag, spec in photos.items():
         im = Image.merge("RGB", (r, g, b))
 
     dest = os.path.join(BACKGROUNDS, tag + ".jpg")
-    im.save(dest, quality=60, optimize=True, progressive=True)
+    im.save(dest, quality=80, optimize=True, progressive=True)
     size = os.path.getsize(dest)
     total += size
     slides = ", ".join(str(n) for n in spec["slides"])

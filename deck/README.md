@@ -70,9 +70,13 @@ along with your edit.
 ### Where the photographs come from
 
 All thirteen backdrops are Singapore government healthcare photography, from the Ministry of
-Health, Age Well SG and the Agency for Integrated Care, used under a partnership arrangement
-Basil has with those bodies. The closing slide credits them; **keep that credit accurate** if
-you swap an image.
+Health and Age Well SG, used under a partnership arrangement Basil has with those bodies. The
+closing slide credits them; **keep that credit accurate** if you swap an image.
+
+Backgrounds are baked at **2400x1504, quality 80**. Only use a source at least 2400px wide:
+anything smaller gets upscaled and looks obviously soft on a retina display, which is exactly
+what went wrong the first time round. `bake.py` prints each source as it goes, so check before
+committing.
 
 Two cautions if you add more from the same sites:
 
