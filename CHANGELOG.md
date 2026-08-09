@@ -7,6 +7,17 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-10
 
+### Changed
+
+- **Route on the Remember the Way map is now green** (`#30D158`, Apple's dark-appearance system
+  green) instead of blue, along with the start dot, its pulse ring, the route glow and the
+  walker's halo. About 9:1 against the map panel, so it still leads the eye. It fails the
+  dataviz validator's dark-mode lightness band (0.48-0.67), but that check exists to keep
+  multiple categorical series mutually distinguishable and does not apply to a single accent
+  line; chroma and contrast both pass. All colours live in `deck/template.html`, so `map.svg`
+  did not need regenerating.
+
+
 ### Added
 
 - **The Remember the Way slide now shows a real 3D map of Tiong Bahru** instead of the abstract
