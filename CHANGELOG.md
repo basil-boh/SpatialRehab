@@ -80,10 +80,42 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   - The still photo/emoji stays layered beneath every moving portrait, so a tile is never blank
     while the first frame decodes. Members without a clip keep their still face, so the tree can
     mix moving and still portraits while footage is still being gathered.
-- **Placeholder portrait clip for Ah Pek** — `WhoAmI/ahpek_portrait.mov` (544×544, H.264, 6.0s,
-  audio stripped, 1.6 MB), remuxed losslessly from a generated square clip. Stand-in only; swap
-  for real footage. Bundled via the `SpatialRehab` folder source rule, landing in the Resources
-  build phase.
+- **Five placeholder portrait clips** in `WhoAmI/` — `ahpek` (544², remuxed losslessly),
+  `weiming` (544²), `meiling` (544², from 560×544), `junhao` (512², from 576×512) and `szehao`
+  (464², from 656×464). All H.264, 6.0s, audio stripped, 0.4–1.5 MB each; the non-square sources
+  were centre-cropped to the largest centred square rather than left to `resizeAspectFill`, so the
+  crop is controlled and verified rather than incidental. Stand-ins only — swap for real footage.
+  Bundled via the `SpatialRehab` folder source rule, landing in the Resources build phase.
+  `chiobu_portrait.mov` is wired but not yet supplied, so the owner keeps her still photo.
+- **All six members pre-wired with `portraitVideoName`** (`chiobu_`, `ahpek_`, `weiming_`,
+  `meiling_`, `junhao_`, `szehao_` + `_portrait.mov`). `portraitVideoURL` resolves to nil for a
+  clip that is not bundled, so a member without footage simply keeps their still face. Adding a
+  portrait is therefore drop the file into `SpatialRehab/WhoAmI/` and run `xcodegen generate` —
+  no Swift edit, so the rest of the team can add footage without touching code.
+- **Bilingual `videoLine` for the four portrait-only relatives** — Ah Pek, Wei Ming, Mei Ling and
+  Jun Hao now each have a line, written against the owner's own profile so the card reads personal
+  rather than generic (Jun Hao echoes her `aboutMe` laksa, Mei Ling echoes being her
+  `emergencyContact`). Placeholder content for the mock: these are invented words, not anything a
+  relative recorded, so they need replacing before the card is shown to a clinician or a patient.
+
+### Fixed
+
+- **Pinching a relative who has no spoken greeting showed a giant emoji** (teammate feedback):
+  Ah Pek has a looping portrait but `hasGreetingVideo: false`, and the greeting slab dropped
+  straight to an 80pt emoji — which reads as a missing asset, the worst thing to show someone who
+  opened the card specifically to remember who a relative is. The slab now falls back in order of
+  how much it looks like a person: looping portrait (large, circular) → still photo → emoji.
+- **A pinched relative with no spoken greeting closed after 1.6s with a frozen progress bar** —
+  the old `playGreeting` guard branch cleared `playingMemberID` on a fixed 1.6s timer and never
+  advanced `videoProgress`, so a portrait clip would vanish in a quarter of one loop while the bar
+  sat empty. The dwell is now chosen by what there is to look at: 6s (a full loop) when a portrait
+  clip exists, 4s when a greeting is declared but its file is missing from the bundle, 1.6s when
+  there is nothing but the relation line — and the progress bar animates across all three.
+- **A relative's `videoLine` never rendered unless they also had a greeting video** — the caption
+  was gated on `videoLine != nil && hasGreetingVideo`, so a line added to a portrait-only relative
+  would have been silently dropped, and they fell through to "A short greeting will play here
+  soon." while their face was visibly looping on screen. The caption now renders whenever a line
+  exists; the "soon" copy is reserved for relatives who genuinely have nothing yet.
 
 ### Changed
 
