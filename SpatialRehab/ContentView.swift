@@ -19,6 +19,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.openWindow) private var openWindow
     @State private var showingDashboard = false
     @State private var showingDailyPractice = false
 
@@ -86,6 +87,21 @@ struct ContentView: View {
                 Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
             }
             .buttonStyle(.bordered)
+
+            Button {
+                openWindow(id: "who-am-i")
+            } label: {
+                Label("Who am I?", systemImage: "person.crop.circle")
+            }
+            .buttonStyle(.bordered)
+            .tint(.orange)
+
+            Button {
+                openWindow(id: "hummingbird")
+            } label: {
+                Label("Hummingbird", systemImage: "bird.fill")
+            }
+            .buttonStyle(.bordered)
         }
     }
 
@@ -138,6 +154,21 @@ struct ContentView: View {
                     showingDashboard = true
                 } label: {
                     Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
+                }
+                .buttonStyle(.bordered)
+
+                Button {
+                    openWindow(id: "who-am-i")
+                } label: {
+                    Label("Who am I?", systemImage: "person.crop.circle")
+                }
+                .buttonStyle(.bordered)
+                .tint(.orange)
+
+                Button {
+                    openWindow(id: "hummingbird")
+                } label: {
+                    Label("Hummingbird", systemImage: "bird.fill")
                 }
                 .buttonStyle(.bordered)
             }

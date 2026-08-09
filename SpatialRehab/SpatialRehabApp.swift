@@ -29,6 +29,10 @@ struct SpatialRehabApp: App {
     /// share a space.
     @State private var immersionStyle: any ImmersionStyle = .mixed
 
+    /// Session for the "Who am I?" name-card / family-tree flow from the szehao-id-card
+    /// branch — its own top-level windows, unrelated to `appModel`'s activity system.
+    @State private var whoAmISession = WhoAmISessionModel()
+
     var body: some Scene {
         WindowGroup {
             if hasCompletedBaseline {
@@ -61,6 +65,24 @@ struct SpatialRehabApp: App {
             ImmersiveTaskView(session: teaSession)
         }
         .immersionStyle(selection: $immersionStyle, in: .mixed)
+
+        WindowGroup(id: "hummingbird") {
+            HummingbirdVolumeView()
+        }
+        .windowStyle(.volumetric)
+        .defaultSize(width: 0.6, height: 0.6, depth: 0.6, in: .meters)
+
+        // “Who am I?” — nest + circle summon (name card opens as a second window).
+        WindowGroup(id: "who-am-i") {
+            WhoAmIView()
+                .environment(whoAmISession)
+        }
+        .defaultSize(width: 1100, height: 720)
+
+        WindowGroup(id: "name-card") {
+            NameCardView(session: whoAmISession)
+        }
+        .defaultSize(width: 660, height: 760)
     }
 }
 
