@@ -95,6 +95,14 @@ struct MahjongActivityView: View {
     @State private var claimAction: ClaimAction?
     @State private var audio = MahjongAudio()
     @State private var handTracker = HandWashTracker()
+    /// False once the immersive space is dismissed — gameplay tasks check it so
+    /// a dead session can't keep speaking or mutating the shared engine.
+    @State private var sessionActive = true
+    /// The in-flight draw/discard/AI-round task, cancelled on teardown.
+    @State private var turnTask: Task<Void, Never>?
+    /// Hand-row slot x-positions already promised to tiles still gliding in,
+    /// so two quick pad drops can't be assigned the same slot.
+    @State private var handRowTargets: [String: Float] = [:]
 
     private var exercise: MahjongExercise { appModel.mahjong }
 
@@ -136,6 +144,8 @@ struct MahjongActivityView: View {
             await openingCeremony()
         }
         .onDisappear {
+            sessionActive = false
+            turnTask?.cancel()
             audio.stopWash()
             audio.shutdown()
             handTracker.stop()
@@ -274,12 +284,17 @@ struct MahjongActivityView: View {
 
     /// Slot a tile into the first free position along the hand line.
     private func placeInHandRow(_ tile: Entity) {
+        let movingPrim = primByEntityID[tile.id]
         let lineZ = Self.center.z + 0.37
-        let occupied: [Float] = handPrims.compactMap { prim in
-            guard prim != primByEntityID[tile.id], let other = tilesByPrim[prim] else { return nil }
+        // Occupied = tiles already sitting in the row, plus slots promised to
+        // tiles still gliding toward it — a second quick pad drop must not be
+        // assigned the same slot as one still in flight.
+        var occupied: [Float] = handPrims.compactMap { prim in
+            guard prim != movingPrim, let other = tilesByPrim[prim] else { return nil }
             guard abs(other.position.z - lineZ) < 0.06 else { return nil }
             return other.position.x
         }
+        occupied += handRowTargets.compactMap { $0.key == movingPrim ? nil : $0.value }
         var slotIndex = 0
         while slotIndex < 16 {
             let x = Self.center.x + (Float(slotIndex) - 6.5) * Self.tileSpacing
@@ -288,7 +303,11 @@ struct MahjongActivityView: View {
             }
             slotIndex += 1
         }
-        settleStanding(tile, at: handSlot(.player, index: slotIndex), pitched: true)
+        let slot = handSlot(.player, index: slotIndex)
+        if let movingPrim {
+            handRowTargets[movingPrim] = slot.x
+        }
+        settleStanding(tile, at: slot, pitched: true)
     }
 
     private func buildDiscardZoneGlow() {
@@ -354,6 +373,12 @@ struct MahjongActivityView: View {
         for seat in [SeatID.right, .across, .left] {
             aiHands[seat] = Array(pool.prefix(13))
             pool.removeFirst(min(13, pool.count))
+            // Opponents' concealed tiles are never the patient's to grab —
+            // otherwise they could be picked up, read, and stranded in the
+            // patient's own row where no rule can ever discard them.
+            for prim in aiHands[seat] ?? [] {
+                lockTile(prim)
+            }
         }
         wallOrderList = pool
         wallResidents = Set(pool)
@@ -405,10 +430,13 @@ struct MahjongActivityView: View {
         handPrims = sortedHand
 
         func finishInstantly() {
+            // Cancellation from teardown must not speak or flip the shared
+            // engine for a session that no longer exists.
+            guard sessionActive else { return }
             for (prim, transform) in finals {
                 tilesByPrim[prim]?.transform = transform
             }
-            completeSetup(sortedHand: sortedHand)
+            completeSetup(sortedHand: sortedHand, finals: finals)
         }
 
         // Wash carpet.
@@ -515,12 +543,21 @@ struct MahjongActivityView: View {
 
         // Opponents expose any flowers/animals they were dealt, with
         // replacements from the far wall — proper Singapore procedure.
-        await exposeAIBonusTiles()
+        let bonusCorrections = await exposeAIBonusTiles()
+        finals.merge(bonusCorrections) { _, new in new }
 
-        completeSetup(sortedHand: sortedHand)
+        completeSetup(sortedHand: sortedHand, finals: finals)
     }
 
-    private func completeSetup(sortedHand: [String]) {
+    private func completeSetup(sortedHand: [String], finals: [String: Transform]) {
+        // Tidy pass: anything disturbed mid-ceremony (a grab during the wash
+        // or deal) glides back to its rightful spot before play begins.
+        for (prim, transform) in finals {
+            guard let tile = tilesByPrim[prim],
+                  simd_distance(tile.position, transform.translation) > 0.005
+            else { continue }
+            tile.move(to: transform, relativeTo: root, duration: 0.4, timingFunction: .easeInOut)
+        }
         ceremonyPrompt = nil
         exercise.dealt(sortedHand.map(faceOf))
         playReady = true
@@ -594,44 +631,44 @@ struct MahjongActivityView: View {
         return prims
     }
 
-    private func exposeAIBonusTiles() async {
+    /// Returns the corrected final transforms for every tile it moved, so the
+    /// ceremony's tidy pass doesn't drag exposed flowers back into hands.
+    private func exposeAIBonusTiles() async -> [String: Transform] {
+        var corrections: [String: Transform] = [:]
         for seat in [SeatID.right, .across, .left] {
             var hand = aiHands[seat] ?? []
             while let bonusIndex = hand.firstIndex(where: { MahjongRules.isBonus(faceOf($0)) }) {
                 let prim = hand.remove(at: bonusIndex)
                 if let tile = tilesByPrim[prim] {
                     lockTile(prim)
-                    tile.move(
-                        to: Transform(
-                            scale: tile.scale,
-                            rotation: flatRotation(seat, faceUp: true),
-                            translation: bonusSlot(seat)
-                        ),
-                        relativeTo: root, duration: 0.45, timingFunction: .easeInOut
+                    let transform = Transform(
+                        scale: tile.scale,
+                        rotation: flatRotation(seat, faceUp: true),
+                        translation: bonusSlot(seat)
                     )
+                    corrections[prim] = transform
+                    tile.move(to: transform, relativeTo: root, duration: 0.45, timingFunction: .easeInOut)
                     audio.click()
                 }
-                if let replacement = wallOrderList.last {
-                    wallOrderList.removeLast()
-                    wallResidents.remove(replacement)
-                    wallHome[replacement] = nil
+                if let replacement = replacementWallPrim() {
+                    consumeWallPrim(replacement)
                     hand.append(replacement)
                     if let tile = tilesByPrim[replacement] {
                         lockTile(replacement)
-                        tile.move(
-                            to: Transform(
-                                scale: tile.scale,
-                                rotation: standingRotation(seat),
-                                translation: handSlot(seat, index: hand.count - 1)
-                            ),
-                            relativeTo: root, duration: 0.4, timingFunction: .easeInOut
+                        let transform = Transform(
+                            scale: tile.scale,
+                            rotation: standingRotation(seat),
+                            translation: handSlot(seat, index: hand.count - 1)
                         )
+                        corrections[replacement] = transform
+                        tile.move(to: transform, relativeTo: root, duration: 0.4, timingFunction: .easeInOut)
                     }
                 }
                 _ = await pause(250)
             }
             aiHands[seat] = hand
         }
+        return corrections
     }
 
     // MARK: - Grab
@@ -653,6 +690,7 @@ struct MahjongActivityView: View {
 
     private func lockTile(_ prim: String) {
         lockedPrims.insert(prim)
+        handRowTargets[prim] = nil
         guard let tile = tilesByPrim[prim] else { return }
         tile.components.remove(ManipulationComponent.self)
         tile.components.remove(InputTargetComponent.self)
@@ -661,7 +699,7 @@ struct MahjongActivityView: View {
     // MARK: - Free-placement release logic
 
     private func tileReleased(_ entity: Entity) {
-        guard playReady, !isResolving, let prim = primByEntityID[entity.id],
+        guard let prim = primByEntityID[entity.id],
               !lockedPrims.contains(prim)
         else { return }
 
@@ -676,31 +714,56 @@ struct MahjongActivityView: View {
             position.z - handPadCenter.z
         )) < 0.1
 
-        if exercise.phase == .playerDraw, wallResidents.contains(prim), inHandZone || onHandPad {
-            if onHandPad {
-                placeInHandRow(entity)
+        // Mid-ceremony: nothing game-legal can happen yet, but a released
+        // tile must never hang in the air. The end-of-ceremony tidy pass
+        // re-seats anything this leaves imperfect.
+        guard playReady else {
+            if let home = wallHome[prim] {
+                entity.move(to: home, relativeTo: root, duration: 0.4, timingFunction: .easeOut)
             } else {
-                settleStanding(entity, at: position, pitched: true)
+                settleFaceDown(entity, at: position)
             }
-            resolveDraw(prim: prim)
-            return
-        }
-        if handPrims.contains(prim), onHandPad {
-            placeInHandRow(entity)
-            return
-        }
-        if exercise.phase == .playerDiscard, handPrims.contains(prim), inDiscardArea {
-            resolveDiscard(prim: prim, tile: entity)
-            return
-        }
-        if exercise.phase == .playerDraw, handPrims.contains(prim), inDiscardArea {
-            // Rules: draw first, then throw. Gentle correction, tile returns.
-            appModel.voice.speak("First take the shining tile from the wall — then you can throw one.")
-            exercise.recordWrongDrop()
-            placeInHandRow(entity)
             return
         }
 
+        // Game actions only while nothing is resolving; the settle fallbacks
+        // below always run, so a tile released mid-resolution still lands
+        // tidily on the felt instead of hanging where the pinch let go.
+        if !isResolving {
+            if exercise.phase == .playerDraw, wallResidents.contains(prim), inHandZone || onHandPad {
+                if onHandPad {
+                    placeInHandRow(entity)
+                } else {
+                    settleStanding(entity, at: position, pitched: true)
+                }
+                resolveDraw(prim: prim)
+                return
+            }
+            if exercise.phase == .playerDraw, wallResidents.contains(prim), inDiscardArea {
+                // Draw-and-throw in one motion — real mahjong's most natural
+                // move. The tile is drawn, and if ordinary, discarded at once.
+                settleStanding(entity, at: position, pitched: false)
+                resolveDraw(prim: prim, thrownToRiver: true)
+                return
+            }
+            if handPrims.contains(prim), onHandPad {
+                placeInHandRow(entity)
+                return
+            }
+            if exercise.phase == .playerDiscard, handPrims.contains(prim), inDiscardArea {
+                resolveDiscard(prim: prim, tile: entity)
+                return
+            }
+            if exercise.phase == .playerDraw, handPrims.contains(prim), inDiscardArea {
+                // Rules: draw first, then throw. Gentle correction, tile returns.
+                appModel.voice.speak("First take the shining tile from the wall — then you can throw one.")
+                exercise.recordWrongDrop()
+                placeInHandRow(entity)
+                return
+            }
+        }
+
+        handRowTargets[prim] = nil
         if wallResidents.contains(prim), !inHandZone {
             if let home = wallHome[prim] {
                 entity.move(to: home, relativeTo: root, duration: 0.4, timingFunction: .easeOut)
@@ -752,6 +815,39 @@ struct MahjongActivityView: View {
         wallOrderList.first { wallResidents.contains($0) }
     }
 
+    /// Removes a drawn tile from every wall structure. `wallOrderList` must
+    /// never keep prims that already left the wall — the flower-replacement
+    /// path pops from its far end and would otherwise re-draw a tile that is
+    /// sitting in someone's hand or river, double-counting its face.
+    private func consumeWallPrim(_ prim: String) {
+        wallResidents.remove(prim)
+        wallHome[prim] = nil
+        wallOrderList.removeAll { $0 == prim }
+    }
+
+    /// Flower/season/animal replacements come from the far end of the wall.
+    private func replacementWallPrim() -> String? {
+        while let last = wallOrderList.last {
+            if wallResidents.contains(last) { return last }
+            wallOrderList.removeLast()
+        }
+        return nil
+    }
+
+    /// The wall is empty: end warmly as a drawn game instead of leaving the
+    /// patient in a draw phase with nothing to draw and no working button.
+    private func endDrawnGame() {
+        clearGlow()
+        discardZoneGlow.isEnabled = false
+        ceremonyPrompt = nil
+        isResolving = false
+        exercise.wallExhausted()
+        appModel.voice.speak(
+            "And that's the whole wall — a full game of mahjong, wonderfully played. Press Done when you're ready.",
+            interrupting: true
+        )
+    }
+
     /// Kindness, hidden inside the real procedure: silently swap two
     /// face-down wall tiles so the next-in-order tile is a winning one.
     /// Both are face-down, so the swap is physically undetectable.
@@ -781,6 +877,10 @@ struct MahjongActivityView: View {
     private func beginPlayerDraw() {
         clearGlow()
         discardZoneGlow.isEnabled = false
+        guard nextWallPrim() != nil else {
+            endDrawnGame()
+            return
+        }
         riggedKindnessSwap()
         // The glow teaches the real order: the next tile in the wall
         // sequence. (Any wall tile is still accepted — house rule.)
@@ -790,21 +890,23 @@ struct MahjongActivityView: View {
         }
     }
 
-    private func resolveDraw(prim: String) {
+    private func resolveDraw(prim: String, thrownToRiver: Bool = false) {
         isResolving = true
         clearGlow()
-        wallResidents.remove(prim)
-        wallHome[prim] = nil
+        consumeWallPrim(prim)
 
-        Task {
-            await handleDrawnTile(prim: prim)
+        turnTask = Task {
+            await handleDrawnTile(prim: prim, thrownToRiver: thrownToRiver)
         }
     }
 
-    private func handleDrawnTile(prim: String) async {
+    /// `thrownToRiver` = the natural draw-and-throw motion: the wall tile was
+    /// released straight into the discard area, so if it's an ordinary tile it
+    /// is discarded in the same breath — exactly as real mahjong allows.
+    private func handleDrawnTile(prim: String, thrownToRiver: Bool = false) async {
         let face = faceOf(prim)
         let result = exercise.drew(face)
-        _ = await pause(400)
+        guard await pause(400), sessionActive else { return }
         audio.clack(volume: 0.6)
 
         switch result {
@@ -825,12 +927,10 @@ struct MahjongActivityView: View {
                     relativeTo: root, duration: 0.5, timingFunction: .easeInOut
                 )
             }
-            _ = await pause(600)
+            guard await pause(600), sessionActive else { return }
             // Replacement from the far end of the wall, flown in for them.
-            if let replacement = wallOrderList.last {
-                wallOrderList.removeLast()
-                wallResidents.remove(replacement)
-                wallHome[replacement] = nil
+            if let replacement = replacementWallPrim() {
+                consumeWallPrim(replacement)
                 if let tile = tilesByPrim[replacement] {
                     tile.move(
                         to: Transform(
@@ -841,15 +941,21 @@ struct MahjongActivityView: View {
                         relativeTo: root, duration: 0.55, timingFunction: .easeInOut
                     )
                 }
-                _ = await pause(600)
+                guard await pause(600), sessionActive else { return }
                 await handleDrawnTile(prim: replacement)
                 return
             }
-            isResolving = false
-            beginPlayerDiscardPhase()
+            // A flower off the very last wall tile with no replacement left —
+            // the game ends here as a draw.
+            endDrawnGame()
 
         case .normal:
             handPrims.append(prim)
+            if thrownToRiver, let tile = tilesByPrim[prim] {
+                appModel.voice.speak("Taken and thrown in one motion — just like a regular!")
+                resolveDiscard(prim: prim, tile: tile)
+                return
+            }
             if exercise.pairFaces.contains(face) {
                 appModel.voice.speak("Lovely — that matches tiles you already have. Now throw one you don't need into your glowing river.")
             } else {
@@ -876,12 +982,13 @@ struct MahjongActivityView: View {
         clearGlow()
         discardZoneGlow.isEnabled = false
         handPrims.removeAll { $0 == prim }
+        handRowTargets[prim] = nil
         lockTile(prim)
         exercise.discarded(faceOf(prim))
         placeInRiver(tile, seat: .player)
 
-        Task {
-            _ = await pause(600)
+        turnTask = Task {
+            guard await pause(600), sessionActive else { return }
             await aiRound()
         }
     }
@@ -902,15 +1009,38 @@ struct MahjongActivityView: View {
 
     private func aiRound() async {
         for seat in [SeatID.right, .across, .left] {
+            guard sessionActive else { return }
             ceremonyPrompt = "\(seat.name) is thinking…"
             var random = SystemRandomNumberGenerator()
 
             // Draw the next tile in the strict shared wall order — the
-            // opponents visibly model the real procedure.
-            if let prim = nextWallPrim(), let tile = tilesByPrim[prim] {
-                wallResidents.remove(prim)
-                wallHome[prim] = nil
+            // opponents visibly model the real procedure. Flowers expose to
+            // the side with far-wall replacements, same as the patient's.
+            var drewIntoHand = false
+            var fromFarEnd = false
+            while !drewIntoHand {
+                guard sessionActive else { return }
+                guard let prim = fromFarEnd ? replacementWallPrim() : nextWallPrim() else {
+                    endDrawnGame()
+                    return
+                }
+                consumeWallPrim(prim)
                 lockTile(prim)
+                guard let tile = tilesByPrim[prim] else { continue }
+                if MahjongRules.isBonus(faceOf(prim)) {
+                    tile.move(
+                        to: Transform(
+                            scale: tile.scale,
+                            rotation: flatRotation(seat, faceUp: true),
+                            translation: bonusSlot(seat)
+                        ),
+                        relativeTo: root, duration: 0.45, timingFunction: .easeInOut
+                    )
+                    audio.click()
+                    _ = await pause(400)
+                    fromFarEnd = true
+                    continue
+                }
                 aiHands[seat, default: []].append(prim)
                 tile.move(
                     to: Transform(
@@ -922,6 +1052,7 @@ struct MahjongActivityView: View {
                 )
                 _ = await pause(500)
                 audio.click()
+                drewIntoHand = true
             }
 
             _ = await pause(Int.random(in: 400...900, using: &random))
@@ -978,8 +1109,13 @@ struct MahjongActivityView: View {
             }
             _ = await pause(250)
         }
+        guard sessionActive else { return }
         ceremonyPrompt = nil
         exercise.computerFinished()
+        // The turn is the patient's again — unblock their tile releases.
+        // (Missing reset here left isResolving true after every AI round,
+        // which froze all draws and discards from turn two onward.)
+        isResolving = false
         appModel.voice.speak("Your turn. Take a tile from the wall — the shining one is lucky.")
         beginPlayerDraw()
     }
@@ -1004,6 +1140,9 @@ struct MahjongActivityView: View {
         }
         let action = claimAction ?? .pass
         claimAction = nil
+        // Teardown mid-window: don't pass/claim into an engine whose session
+        // is already gone.
+        guard sessionActive else { return false }
 
         switch action {
         case .win where claim.canWin:
@@ -1149,7 +1288,7 @@ struct MahjongActivityView: View {
             }
 
             HStack(spacing: 16) {
-                if exercise.phase == .won {
+                if exercise.phase == .won || exercise.phase == .drawn {
                     Button("Done") {
                         Task {
                             appModel.phase = .finished
@@ -1198,6 +1337,8 @@ struct MahjongActivityView: View {
             return "The table is playing…"
         case .won:
             return "Mahjong! You won. Fantastic!"
+        case .drawn:
+            return "The wall is finished — a good long game. Press Done."
         }
     }
 }

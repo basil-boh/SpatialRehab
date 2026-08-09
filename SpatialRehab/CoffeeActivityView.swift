@@ -28,7 +28,14 @@ final class PourSound {
         engine.attach(player)
         engine.connect(player, to: engine.mainMixerNode, format: format)
         player.volume = 0
-        try? engine.start()
+        do {
+            try engine.start()
+        } catch {
+            // Calling play() on a node whose engine isn't running raises an
+            // uncatchable NSException — stay silent instead of crashing
+            // (simulators without an output route hit this).
+            return
+        }
         player.scheduleBuffer(buffer, at: nil, options: .loops)
         player.play()
     }
@@ -40,6 +47,7 @@ final class PourSound {
     /// Proportional pour volume — flow ramps, so should the sound.
     func setLevel(_ level: Float) {
         prepare()
+        guard engine.isRunning else { return }
         let clamped = max(0, min(level, 1))
         isOn = clamped > 0.01
         player.volume = 0.35 * clamped

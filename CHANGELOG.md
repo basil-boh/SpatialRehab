@@ -7,6 +7,52 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Fixed
+
+- **Ultracode audit pass over mahjong + kopi (16 confirmed findings, 5-lens adversarially
+  verified workflow)**, all fixed:
+  - *Wall exhaustion soft-lock*: when the wall ran out the game looped back to a draw phase
+    with nothing to draw and no working button. New `MahjongExercise.wallExhausted()` /
+    `.drawn` phase ends the game warmly ("the wall is finished") with a Done button, from
+    the player draw, the AI draws, and the no-replacement flower path.
+  - *Flower replacement could re-draw a tile already in play*: draws removed prims from
+    `wallResidents` but never `wallOrderList`, so the replacement pop from the list's far
+    end could yank a tile out of a hand or river and double-count its face in the engine —
+    making Mahjong permanently impossible. New `consumeWallPrim`/`replacementWallPrim`
+    helpers keep every wall structure in lockstep on all draw paths.
+  - *Opponents' concealed tiles were grabbable*: all 148 tiles got a ManipulationComponent
+    at load; AI hands are now locked at the deal, so the patient can't pick up, read, or
+    strand opponents' tiles (their river discards inherit the lock).
+  - *AI turns outlived the session*: the aiRound/handleDrawnTile tasks were unstructured
+    and kept speaking + mutating the shared engine after the immersive space closed —
+    corrupting a relaunched game. Tasks are now stored and cancelled in `onDisappear`, with
+    `sessionActive` guards at every resume point (including the ceremony's cancellation
+    path, which used to speak the full rules over the home screen after quitting).
+  - *AI-drawn flowers stayed concealed* and could be discarded face-up into the river;
+    opponents now expose bonus tiles to the side with far-wall replacements mid-game,
+    same as the deal.
+  - *Ceremony-time releases hung mid-air*: a tile grabbed during the wash/deal froze where
+    released; it now settles to the felt (or back to its wall home), and a new tidy pass in
+    `completeSetup` glides every stray back to its rightful spot before play begins.
+  - *Draw-and-throw now works*: releasing the freshly drawn wall tile straight into the
+    discard area — real mahjong's most natural motion — used to silently snap it back to
+    the wall; it now draws and (if ordinary) discards in one breath.
+  - *Hand-row slot race*: two quick pad drops could be assigned the same slot while the
+    first tile was still gliding; slots are now reserved via `handRowTargets`.
+  - *Kopi pour-audio crash in the simulator*: `PourSound.prepare()` swallowed
+    `AVAudioEngine.start()` failure but still called `player.play()`, which raises an
+    uncatchable NSException when the engine isn't running. Start is now checked and the
+    sound stays silent instead of crashing; `MahjongAudio.shutdown()` is likewise terminal
+    per instance so a straggler clack can't resurrect the engine after the activity closes.
+- **Mahjong froze after the first discard** (team playtest report: "can't take/throw tiles",
+  "after taking the card it's not in our deck"). `resolveDiscard` set `isResolving = true`
+  before the AI round, but `aiRound`'s normal completion never reset it — so from turn two
+  onward every tile release was silently ignored: drops on the green pad did nothing and the
+  drawn tile never joined the hand. The AI round now resets the flag when play returns to the
+  patient. Also restructured `tileReleased` so the tidy-settle fallbacks always run even while
+  a turn is resolving — a tile released mid-AI-round now lands on the felt instead of hanging
+  in the air where the pinch let go (game actions stay gated until it's the patient's turn).
+
 ### Changed
 
 - **Merged `feature/wayfinding-activities` (kopi + mahjong) into `feature/whoami-card-redesign`**.

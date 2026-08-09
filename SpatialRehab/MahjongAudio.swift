@@ -69,9 +69,12 @@ final class MahjongAudio {
         }
     }
 
-    /// Stops everything and tears the engine down. The next sound call
-    /// rebuilds it, so this is safe to use when leaving the activity.
+    /// Stops everything and tears the engine down — permanently for this
+    /// instance. Straggler sound calls (a settle's delayed clack landing after
+    /// the activity closed) must not resurrect the engine; a fresh activity
+    /// gets a fresh `MahjongAudio` anyway.
     func shutdown() {
+        isShutdown = true
         washFadeTask?.cancel()
         washFadeTask = nil
         isWashing = false
@@ -114,11 +117,13 @@ final class MahjongAudio {
     private var washBuffer: AVAudioPCMBuffer?
     private var isWashing = false
     private var washFadeTask: Task<Void, Never>?
+    private var isShutdown = false
 
     /// Builds the engine, players, and all synthesized buffers on first use,
     /// mirroring how `VoiceGuide` defers its setup. Returns false (and stays
     /// silent) if audio cannot start.
     private func prepareIfNeeded() -> Bool {
+        guard !isShutdown else { return false }
         if engine != nil { return true }
         guard let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 1) else {
             return false

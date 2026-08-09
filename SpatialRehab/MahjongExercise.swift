@@ -16,6 +16,9 @@ final class MahjongExercise {
         case claimWindow
         case computerTurn
         case won
+        /// The wall ran out — a drawn game, ended warmly rather than stranding
+        /// the patient in a `playerDraw` with nothing left to draw.
+        case drawn
     }
 
     enum DrawResult: Equatable {
@@ -177,6 +180,13 @@ final class MahjongExercise {
 
     func recordWrongDrop() {
         wrongDrops += 1
+    }
+
+    /// The wall is empty: end as a drawn game (never from a won game).
+    func wallExhausted() {
+        guard phase != .won else { return }
+        phase = .drawn
+        completedAt = .now
     }
 
     private func win() {
