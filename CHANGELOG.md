@@ -9,6 +9,40 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- **Coffee rebuilt around the assets' real anatomy** (user: pour physics "not there", use the USDZ assets properly; anatomy discovered by inspecting the USDCs + `.articulation.json` manifests):
+  - Streams now emit from each vessel's **named spout entity** (`pour_spout` on the kettle and milk jug) instead of a bounds guess; pour threshold eased to ~54°.
+  - The mug's **own internal `coffee` liquid mesh** (prismatic fill joint in the asset) rises and tints through water → kopi-o → kopi-c — the fake overlay cylinder is gone; the kettle's `water_column` and the jug's `milk` mesh **visibly deplete** as they pour.
+  - The sugar bowl's **hinged lid swings open** when tilted and its **five real `sugar_cube` entities tumble out** with physics — cubes that land in the mug dissolve into the coffee (2 completes the step); misses stay scattered on the table. The coffee tin's lid opens for the grounds.
+  - **Steam wisps** curl off the mug once the hot water is in; lids close on settle; reset restores cubes, lids, and fill levels.
+- **Real Singapore Mahjong rules** (friend's review: game wasn't playing to the actual rules; full SG rules provided by user):
+  - `MahjongRules.swift` — pure rules engine over the SG148 taxonomy (bamboo/dots/char suits, dragons + winds as honors, flowers/seasons/animals as bonus): backtracking hand decomposition for the **real win condition — four sets (chows/pongs) plus one eye**, winning-tile search (tenpai detection), chow-option enumeration, and an isolation-based discard suggester.
+  - **Flowers/seasons/animals behave per the rules**: never held — they fly to the exposed area with a spoken explanation and a replacement is drawn from the far wall (patient's automatic; opponents expose theirs after the deal).
+  - **Claims**: after every opponent discard the engine checks the patient's hand — **Mahjong! / Pong! / Chow!** buttons appear (chow only from Mei Mei on the left, per the rules), 12 s window then auto-pass, claimed melds animate to the exposed area and count toward the four sets. Win-on-discard supported.
+  - **Kind but honest**: the deal is a verified genuine tenpai (three sets + eye + waiting pair), draw kindness ramps toward actual winning tiles, opponents preferentially feed pongable tiles, and Mei Mei may throw the winning tile after turn three. The final reveal lays the real 14-tile hand face-up: "Mahjong! Four sets and a pair."
+  - Consciously deferred: kongs, fan scoring, banker/prevailing-wind rotation, pay-all scenarios (documented for future work).
+- **Authentic wall procedure + no racks** (user's detailed corrections, Q&A confirmed pong+chow and accept-any-draw):
+  - **Strict shared draw order**: top tile then bottom tile of each stack, marching around the wall from the patient's right — the glow marks the true next-in-order tile and the three opponents visibly draw in exact sequence; the patient may take any wall tile (chosen house rule, zero friction).
+  - **Kindness went invisible**: instead of glowing arbitrary lucky tiles, the engine silently swaps two face-down wall tiles so the next-in-order tile is a winning one — physically undetectable, procedurally perfect.
+  - **Racks removed** (all four seats): tiles stand directly on the felt, as at a real home table; free self-arrangement of the hand unchanged.
+  - **Pong-assist**: the claimable discarded tile itself glows in the river while the Pong/Chow/Mahjong buttons and voice prompt run; claimed melds remain open at the side of the hand.
+  - **Hand drop pad**: a soft green pad ("Put tiles here") beside the hand row — a drawn wall tile dropped there becomes the draw AND auto-slots into the first free position in the row; the patient's own tiles dropped there re-join the neat line. Stray wall tiles now glide back to their wall slot instead of lying loose.
+
+### Fixed
+
+- **Discards not deducting** (user report): the discard target was a small invisible rectangle over the glow pad — tiles thrown anywhere else in the middle silently stayed in the hand. Now any central table area accepts the throw (like a real toss to the middle; the glowing pad remains just a suggestion), and throwing before drawing gets a spoken rules correction ("First take the shining tile from the wall") with the tile returning to the row.
+- **Smoothness pass** (user: "still feels a little jarring"):
+  - `VoiceGuide` now **queues** utterances instead of cutting the current sentence off mid-word (interrupt only on explicit `interrupting: true`); short pre-utterance breath added. Benefits every activity.
+  - **Pour flow ramps with tilt** (0…1 per vessel, eased both directions): the stream's width, arc speed, splash rate, grain count, and the pour-hiss volume all scale with how far the vessel is actually tipped — no more binary on/off at a threshold angle.
+  - Released items **settle with distance-scaled travel time** (0.3–0.85 s) instead of a fixed-speed glide, so nothing reads as teleporting.
+  - Ghost demos **fade in and out** (~0.25 s opacity ramps) instead of popping.
+- **Mahjong v5 — proper four-seat table** (per the newly installed `.claude/skills/mahjong-ui-components` skill; the user's download link 404'd so the skill was installed from their pasted content):
+  - Standard tile geometry (3.4 cm height normalization, 2.8 cm spacing), square table with per-side rims, **four racks and four seats** — the patient (East) plus three named opponents: **Ah Hua** (right), **Uncle Lim** (across), **Mei Mei** (left), each with 13 standing face-away tiles.
+  - **Hollow-square wall**: double-stacked columns on all four sides, sized to exactly the 96 tiles remaining after four deals — assembled from the wash in waves.
+  - **Per-seat 3×6 discard rivers** oriented to their owners; the patient discards into their own glowing river pad (replaces the shared center circle); melds sort to the patient's far right (skill convention).
+  - **Humanized AI turns** (skill: 0.6–1.5 s + 5 mm hover): each opponent visibly draws from their side of the wall, hesitates over a tile, and discards to their river with a clack; their hand closes the gap. AIs never win.
+  - **Rack placement fix** (user report): dropping a tile on the wooden rack strip now seats it into the hand line at that spot; patient hand tiles keep the skill's −15° ergonomic pitch.
+  - Consciously NOT adopted from the skill: Riichi scoring, steals (Pon/Chii/Kan), dead wall, anti-cheat culling — the SG148 set and the dementia audience keep rules at "two sets wins," errorless.
+
 - `NSHandsTrackingUsageDescription` in `Info.plist` — required privacy text for the new `HandWashTracker` (ARKit `HandTrackingProvider`) that feeds real palm positions to the mahjong wash phase.
 - **Mahjong "full RealityKit" naturalness pass** (built via parallel agent workflow + orchestrator integration):
   - `MahjongAudio.swift` — fully procedural table soundscape (44.1 kHz buffers synthesized at setup): tile **clack** (noise burst + 1.8–2.2 kHz ping, 5-buffer/5-node round-robin pool so rapid clacks overlap), softer pick-up **click**, two-note meld **chime** (E5→A5), and a seamless 2 s **wash rumble** loop (low-passed noise bed + 48 randomized micro-clacks, crossfaded seam).

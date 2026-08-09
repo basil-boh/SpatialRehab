@@ -2,12 +2,11 @@ import RealityKit
 import SwiftUI
 import UIKit
 
-/// A real mahjong table against the computer. Every tile is a free object:
-/// pick up anything, put it anywhere on the felt, and it stays — the game
-/// understands ZONES, not slots. Drop a wall tile near your rack and that's
-/// your draw; drop one of your tiles in the glowing circle and that's your
-/// discard; melds gather themselves. The opening wash responds to the
-/// patient's real hands, and the whole table sounds like mahjong.
+/// Singapore Mahjong on a proper four-seat table, played by the real rules:
+/// four sets plus an eye wins, flowers and animals expose with replacements,
+/// and Pong / Chow / Mahjong! claims appear when an opponent's discard fits
+/// the patient's hand. The deal is a genuine near-win and the wall and
+/// opponents are quietly kind — the patient always reaches a real Mahjong.
 struct MahjongActivityView: View {
     struct TileManifest: Decodable {
         struct Tile: Decodable {
@@ -17,14 +16,56 @@ struct MahjongActivityView: View {
         let tiles: [Tile]
     }
 
+    enum SeatID: Int, CaseIterable {
+        case player, right, across, left
+
+        var name: String {
+            switch self {
+            case .player: return "You"
+            case .right: return "Ah Hua"
+            case .across: return "Uncle Lim"
+            case .left: return "Mei Mei"
+            }
+        }
+
+        var out: SIMD3<Float> {
+            switch self {
+            case .player: return [0, 0, 1]
+            case .right: return [1, 0, 0]
+            case .across: return [0, 0, -1]
+            case .left: return [-1, 0, 0]
+            }
+        }
+
+        var side: SIMD3<Float> {
+            switch self {
+            case .player, .across: return [1, 0, 0]
+            case .right, .left: return [0, 0, 1]
+            }
+        }
+
+        var yaw: Float {
+            switch self {
+            case .player: return 0
+            case .right: return .pi / 2
+            case .across: return .pi
+            case .left: return -.pi / 2
+            }
+        }
+    }
+
+    enum ClaimAction {
+        case win, pong, chow, pass
+    }
+
     static let tableTop: Float = 0.85
-    static let tileSpacing: Float = 0.041
-    /// Lying flat, face against the felt. Flip the sign if faces show.
+    static let center = SIMD3<Float>(0, tableTop, -0.97)
+    static let tileHeight: Float = 0.034
+    static let tileSpacing: Float = 0.028
+    static let rowSpacing: Float = 0.037
     static let faceDown = simd_quatf(angle: .pi / 2, axis: [1, 0, 0])
-    /// Lying flat, face to the sky.
     static let faceUp = simd_quatf(angle: -.pi / 2, axis: [1, 0, 0])
-    /// The near strip in front of the patient's rack counts as "in hand".
-    static let handZoneMinZ: Float = -0.80
+    static let handPitch = simd_quatf(angle: -0.26, axis: [1, 0, 0])
 
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
@@ -33,38 +74,43 @@ struct MahjongActivityView: View {
     @State private var tilesByPrim: [String: Entity] = [:]
     @State private var faceByPrim: [String: String] = [:]
     @State private var primByEntityID: [Entity.ID: String] = [:]
-    @State private var tileThickness: Float = 0.014
+    @State private var tileThickness: Float = 0.02
     @State private var handPrims: [String] = []
+    @State private var aiHands: [SeatID: [String]] = [:]
     @State private var wallResidents: Set<String> = []
+    @State private var wallHome: [String: Transform] = [:]
+    @State private var wallOrderList: [String] = []
     @State private var lockedPrims: Set<String> = []
-    @State private var finalWallTransforms: [String: Transform] = [:]
+    @State private var riverCounts: [SeatID: Int] = [:]
+    @State private var bonusCounts: [SeatID: Int] = [:]
     @State private var drawGlowPrim: String?
-    @State private var discardCount = 0
     @State private var glowRings: [Entity] = []
-    @State private var discardZone = Entity()
+    @State private var discardZoneGlow = Entity()
+    @State private var handPad = Entity()
     @State private var subscriptions: [EventSubscription] = []
     @State private var isResolving = false
     @State private var ceremonyStarted = false
     @State private var playReady = false
     @State private var ceremonyPrompt: String?
+    @State private var claimAction: ClaimAction?
     @State private var audio = MahjongAudio()
     @State private var handTracker = HandWashTracker()
 
     private var exercise: MahjongExercise { appModel.mahjong }
 
-    private let handAnchor = SIMD3<Float>(-0.26, tableTop, -0.60)
-    private let discardCenter = SIMD3<Float>(0, tableTop, -0.98)
-    private let meldAnchor = SIMD3<Float>(-0.56, tableTop, -0.68)
-
     var body: some View {
         RealityView { content, attachments in
             content.add(root)
             buildTable()
-            buildDiscardZone()
-            await loadRacks()
+            buildDiscardZoneGlow()
+            buildHandPad()
             if let panel = attachments.entity(for: "mahjongPanel") {
                 panel.position = [0, 1.52, -1.75]
                 content.add(panel)
+            }
+            if let padTag = attachments.entity(for: "handPadTag") {
+                padTag.position = handPadCenter + [0, 0.07, 0]
+                content.add(padTag)
             }
             subscriptions.append(content.subscribe(to: ManipulationEvents.WillRelease.self) { event in
                 Task { @MainActor in
@@ -75,10 +121,16 @@ struct MahjongActivityView: View {
             Attachment(id: "mahjongPanel") {
                 controlPanel
             }
+            Attachment(id: "handPadTag") {
+                Text("Put tiles here")
+                    .font(.caption)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(Color.black.opacity(0.35)))
+                    .foregroundStyle(.white)
+            }
         }
         .task {
-            // Ceremony lives OUT of the make closure so a SwiftUI view
-            // update can never shred the choreography mid-flight.
             guard !ceremonyStarted else { return }
             ceremonyStarted = true
             await openingCeremony()
@@ -94,8 +146,6 @@ struct MahjongActivityView: View {
         }
     }
 
-    /// Cancellation-safe pause: returns false if the task died, so the
-    /// ceremony can finish deterministically instead of rushing into chaos.
     private func pause(_ milliseconds: Int) async -> Bool {
         do {
             try await Task.sleep(for: .milliseconds(milliseconds))
@@ -103,6 +153,61 @@ struct MahjongActivityView: View {
         } catch {
             return false
         }
+    }
+
+    // MARK: - Geometry
+
+    private func linePosition(_ seat: SeatID, radius: Float, offset: Float, y: Float = 0.001) -> SIMD3<Float> {
+        Self.center + seat.out * radius + seat.side * offset + [0, y, 0]
+    }
+
+    private func standingRotation(_ seat: SeatID) -> simd_quatf {
+        simd_quatf(angle: seat.yaw, axis: [0, 1, 0])
+    }
+
+    private func flatRotation(_ seat: SeatID, faceUp: Bool) -> simd_quatf {
+        simd_quatf(angle: seat.yaw, axis: [0, 1, 0]) * (faceUp ? Self.faceUp : Self.faceDown)
+    }
+
+    private func riverSlot(_ seat: SeatID) -> SIMD3<Float> {
+        let count = riverCounts[seat, default: 0]
+        riverCounts[seat] = count + 1
+        let column = count % 6
+        let row = min(count / 6, 2)
+        return linePosition(
+            seat,
+            radius: 0.17 - Float(row) * Self.rowSpacing,
+            offset: (Float(column) - 2.5) * Self.tileSpacing,
+            y: 0.002
+        )
+    }
+
+    private func bonusSlot(_ seat: SeatID) -> SIMD3<Float> {
+        let count = bonusCounts[seat, default: 0]
+        bonusCounts[seat] = count + 1
+        return linePosition(
+            seat,
+            radius: 0.30,
+            offset: -0.34 - Float(count) * (Self.tileSpacing + 0.002),
+            y: 0.002
+        )
+    }
+
+    private func meldSlot(index: Int, offsetInMeld: Int) -> SIMD3<Float> {
+        linePosition(
+            .player,
+            radius: 0.30,
+            offset: 0.30 + Float(index) * 0.1 + Float(offsetInMeld) * (Self.tileSpacing + 0.002),
+            y: 0.002
+        )
+    }
+
+    private func handSlot(_ seat: SeatID, index: Int) -> SIMD3<Float> {
+        linePosition(seat, radius: 0.37, offset: (Float(index) - 6.5) * Self.tileSpacing)
+    }
+
+    private func faceOf(_ prim: String) -> String {
+        faceByPrim[prim] ?? ""
     }
 
     // MARK: - Table dressing
@@ -114,10 +219,10 @@ struct MahjongActivityView: View {
             isMetallic: false
         )
         let top = ModelEntity(
-            mesh: .generateBox(size: [1.5, 0.05, 1.0], cornerRadius: 0.02),
+            mesh: .generateBox(size: [1.24, 0.05, 1.24], cornerRadius: 0.02),
             materials: [felt]
         )
-        top.position = [0, Self.tableTop - 0.028, -0.97]
+        top.position = Self.center + [0, -0.028, 0]
         root.addChild(top)
 
         let rim = SimpleMaterial(
@@ -125,15 +230,13 @@ struct MahjongActivityView: View {
             roughness: 0.6,
             isMetallic: false
         )
-        let rimSpecs: [(SIMD3<Float>, SIMD3<Float>)] = [
-            ([1.56, 0.06, 0.04], [0, Self.tableTop - 0.02, -0.46]),
-            ([1.56, 0.06, 0.04], [0, Self.tableTop - 0.02, -1.48]),
-            ([0.04, 0.06, 1.06], [-0.76, Self.tableTop - 0.02, -0.97]),
-            ([0.04, 0.06, 1.06], [0.76, Self.tableTop - 0.02, -0.97]),
-        ]
-        for (size, position) in rimSpecs {
-            let edge = ModelEntity(mesh: .generateBox(size: size, cornerRadius: 0.01), materials: [rim])
-            edge.position = position
+        for seat in SeatID.allCases {
+            let edge = ModelEntity(
+                mesh: .generateBox(size: [1.3, 0.06, 0.04], cornerRadius: 0.01),
+                materials: [rim]
+            )
+            edge.position = Self.center + seat.out * 0.63 + [0, 0.008, 0]
+            edge.orientation = simd_quatf(angle: seat.yaw, axis: [0, 1, 0])
             root.addChild(edge)
         }
 
@@ -142,47 +245,66 @@ struct MahjongActivityView: View {
             roughness: 0.7,
             isMetallic: false
         )
-        for x in [-0.68, 0.68] {
-            for z in [-1.42, -0.52] {
+        for x in [-0.55, 0.55] {
+            for dz in [-0.55, 0.55] {
                 let leg = ModelEntity(mesh: .generateBox(size: [0.06, 0.8, 0.06]), materials: [legMaterial])
-                leg.position = [Float(x), 0.4, Float(z)]
+                leg.position = [Self.center.x + Float(x), 0.4, Self.center.z + Float(dz)]
                 root.addChild(leg)
             }
         }
     }
 
-    private func buildDiscardZone() {
-        var material = UnlitMaterial(color: UIColor.cyan.withAlphaComponent(0.3))
-        material.blending = .transparent(opacity: 0.3)
-        let ring = ModelEntity(
-            mesh: .generateCylinder(height: 0.003, radius: 0.16),
+    private var handPadCenter: SIMD3<Float> {
+        linePosition(.player, radius: 0.37, offset: 0.42, y: 0.0015)
+    }
+
+    /// Soft pad beside the hand row: anything dropped here joins the
+    /// patient's tiles, neatly slotted into the line.
+    private func buildHandPad() {
+        var material = UnlitMaterial(color: UIColor(red: 0.4, green: 0.9, blue: 0.6, alpha: 1))
+        material.blending = .transparent(opacity: 0.22)
+        let pad = ModelEntity(
+            mesh: .generateBox(size: [0.15, 0.003, 0.11], cornerRadius: 0.02),
             materials: [material]
         )
-        discardZone.addChild(ring)
-        discardZone.position = discardCenter
-        discardZone.isEnabled = false
-        root.addChild(discardZone)
+        handPad.addChild(pad)
+        handPad.position = handPadCenter
+        root.addChild(handPad)
     }
 
-    private func loadRacks() async {
-        guard let rackSource = try? await Entity(named: "mahjong_tile_rack") else { return }
-        let bounds = rackSource.visualBounds(relativeTo: nil)
-        let scale = 0.58 / max(bounds.extents.x, 0.001)
-        rackSource.scale *= SIMD3(repeating: scale)
-        let scaled = rackSource.visualBounds(relativeTo: nil)
-
-        for (z, yaw) in [(Float(-0.54), Float(0)), (Float(-1.42), Float.pi)] {
-            let holder = Entity()
-            let rack = rackSource.clone(recursive: true)
-            rack.position = [-scaled.center.x, -scaled.min.y, -scaled.center.z]
-            holder.addChild(rack)
-            holder.position = [0, Self.tableTop, z]
-            holder.orientation = simd_quatf(angle: yaw, axis: [0, 1, 0])
-            root.addChild(holder)
+    /// Slot a tile into the first free position along the hand line.
+    private func placeInHandRow(_ tile: Entity) {
+        let lineZ = Self.center.z + 0.37
+        let occupied: [Float] = handPrims.compactMap { prim in
+            guard prim != primByEntityID[tile.id], let other = tilesByPrim[prim] else { return nil }
+            guard abs(other.position.z - lineZ) < 0.06 else { return nil }
+            return other.position.x
         }
+        var slotIndex = 0
+        while slotIndex < 16 {
+            let x = Self.center.x + (Float(slotIndex) - 6.5) * Self.tileSpacing
+            if !occupied.contains(where: { abs($0 - x) < Self.tileSpacing * 0.6 }) {
+                break
+            }
+            slotIndex += 1
+        }
+        settleStanding(tile, at: handSlot(.player, index: slotIndex), pitched: true)
     }
 
-    // MARK: - Opening ceremony: wash → walls → deal
+    private func buildDiscardZoneGlow() {
+        var material = UnlitMaterial(color: UIColor.cyan.withAlphaComponent(0.3))
+        material.blending = .transparent(opacity: 0.3)
+        let pad = ModelEntity(
+            mesh: .generateBox(size: [0.36, 0.003, 0.17], cornerRadius: 0.02),
+            materials: [material]
+        )
+        discardZoneGlow.addChild(pad)
+        discardZoneGlow.position = linePosition(.player, radius: 0.133, offset: 0, y: 0.0015)
+        discardZoneGlow.isEnabled = false
+        root.addChild(discardZoneGlow)
+    }
+
+    // MARK: - Opening ceremony
 
     private func openingCeremony() async {
         guard
@@ -194,8 +316,6 @@ struct MahjongActivityView: View {
 
         var random = NeighborhoodWorld.SeededRandom(state: UInt64(Date.now.timeIntervalSince1970))
 
-        // Extract by CLONING (the clone path is the one that provably keeps
-        // materials); the full set itself never enters the scene.
         var normalizeScale: Float?
         for tile in manifest.tiles {
             let name = String(tile.prim.split(separator: "/").last ?? "")
@@ -203,7 +323,7 @@ struct MahjongActivityView: View {
             let model = source.clone(recursive: true)
             if normalizeScale == nil {
                 let bounds = model.visualBounds(relativeTo: model)
-                normalizeScale = 0.05 / max(bounds.extents.x, bounds.extents.y, bounds.extents.z, 0.001)
+                normalizeScale = Self.tileHeight / max(bounds.extents.y, 0.001)
             }
             model.scale = SIMD3(repeating: normalizeScale ?? 1)
             model.orientation = .init()
@@ -221,69 +341,66 @@ struct MahjongActivityView: View {
             configureGrab(tile.prim)
         }
 
-        // Destinies first: 13 for the patient (4 pairs + singles), 13 for
-        // the computer, everything else to the walls. No orphans, ever.
+        // Destinies: a genuine near-win for the patient, thirteen each for
+        // the opponents, everything else to the wall.
         var byFace: [String: [String]] = [:]
         for prim in tilesByPrim.keys {
-            byFace[faceByPrim[prim] ?? "", default: []].append(prim)
+            byFace[faceOf(prim), default: []].append(prim)
         }
-        var hand: [String] = []
-        let pairCandidates = byFace.keys.filter { byFace[$0, default: []].count >= 3 }.shuffled(using: &random)
-        for face in pairCandidates.prefix(4) {
-            hand.append(byFace[face]!.removeFirst())
-            hand.append(byFace[face]!.removeFirst())
-        }
-        for face in byFace.keys.shuffled(using: &random) where hand.count < 13 {
-            if let prims = byFace[face], !prims.isEmpty {
-                hand.append(byFace[face]!.removeFirst())
-            }
-        }
-        var pool = byFace.values.flatMap { $0 }.shuffled(using: &random)
-        let opponentPrims = Array(pool.prefix(13))
-        pool.removeFirst(min(13, pool.count))
-        let wallOrder = pool
-        wallResidents = Set(wallOrder)
+        let hand = buildTenpaiHand(&byFace, random: &random)
 
-        // Precompute EVERY final transform so any interruption can finish
-        // the table instantly and correctly.
-        var wallSlots: [(SIMD3<Float>, Bool)] = []
-        func addStacks(_ base: [SIMD3<Float>]) {
-            for position in base {
-                wallSlots.append((position + [0, tileThickness, 0], true))
-                wallSlots.append((position, false))
+        var pool = byFace.values.flatMap { $0 }.shuffled(using: &random)
+        pool.removeAll { hand.contains($0) }
+        for seat in [SeatID.right, .across, .left] {
+            aiHands[seat] = Array(pool.prefix(13))
+            pool.removeFirst(min(13, pool.count))
+        }
+        wallOrderList = pool
+        wallResidents = Set(pool)
+
+        var finals: [String: Transform] = [:]
+        let perSide = (pool.count + 7) / 8
+        var wallIndex = 0
+        // Wall consumption order: top tile then bottom tile of each stack,
+        // starting from the patient's right and marching around — so
+        // wallOrderList doubles as the strict draw order.
+        for seat in [SeatID.right, .across, .left, .player] {
+            for column in 0..<perSide {
+                for tier in 0..<2 {
+                    guard wallIndex < pool.count else { break }
+                    let prim = pool[wallIndex]
+                    wallIndex += 1
+                    let transform = Transform(
+                        scale: tilesByPrim[prim]?.scale ?? .one,
+                        rotation: flatRotation(seat, faceUp: false),
+                        translation: linePosition(
+                            seat,
+                            radius: 0.24,
+                            offset: (Float(column) - Float(perSide - 1) / 2) * Self.tileSpacing,
+                            y: 0.001 + Float(1 - tier) * tileThickness
+                        )
+                    )
+                    finals[prim] = transform
+                    wallHome[prim] = transform
+                }
             }
         }
-        addStacks((0..<15).map { [0.56, Self.tableTop + 0.001, -0.74 - Float($0) * Self.tileSpacing] })
-        addStacks((0..<15).map { [-0.56, Self.tableTop + 0.001, -0.74 - Float($0) * Self.tileSpacing] })
-        addStacks((0..<16).map { [-0.31 + Float($0) * Self.tileSpacing, Self.tableTop + 0.001, -1.32] })
-        var frontStack = 0
-        while wallSlots.count < wallOrder.count {
-            addStacks([[-0.29 + Float(frontStack) * Self.tileSpacing, Self.tableTop + 0.001, -0.74]])
-            frontStack += 1
-        }
-        for (index, prim) in wallOrder.enumerated() {
-            let (position, _) = wallSlots[index]
-            finalWallTransforms[prim] = Transform(
-                scale: tilesByPrim[prim]?.scale ?? .one,
-                rotation: Self.faceDown,
-                translation: position
-            )
-        }
-        var finals: [String: Transform] = finalWallTransforms
-        let sortedHand = hand.sorted { (faceByPrim[$0] ?? "") < (faceByPrim[$1] ?? "") }
+        let sortedHand = hand.sorted { faceOf($0) < faceOf($1) }
         for (index, prim) in sortedHand.enumerated() {
             finals[prim] = Transform(
                 scale: tilesByPrim[prim]?.scale ?? .one,
-                rotation: .init(),
-                translation: handAnchor + [Float(index) * Self.tileSpacing, 0.001, 0]
+                rotation: Self.handPitch,
+                translation: handSlot(.player, index: index)
             )
         }
-        for (index, prim) in opponentPrims.enumerated() {
-            finals[prim] = Transform(
-                scale: tilesByPrim[prim]?.scale ?? .one,
-                rotation: simd_quatf(angle: .pi, axis: [0, 1, 0]),
-                translation: [-0.26 + Float(index) * Self.tileSpacing, Self.tableTop + 0.001, -1.38]
-            )
+        for seat in [SeatID.right, .across, .left] {
+            for (index, prim) in (aiHands[seat] ?? []).enumerated() {
+                finals[prim] = Transform(
+                    scale: tilesByPrim[prim]?.scale ?? .one,
+                    rotation: standingRotation(seat),
+                    translation: handSlot(seat, index: index)
+                )
+            }
         }
         handPrims = sortedHand
 
@@ -291,30 +408,24 @@ struct MahjongActivityView: View {
             for (prim, transform) in finals {
                 tilesByPrim[prim]?.transform = transform
             }
-            ceremonyPrompt = nil
-            exercise.dealt(sortedHand.compactMap { faceByPrim[$0] })
-            playReady = true
-            beginPlayerDraw()
+            completeSetup(sortedHand: sortedHand)
         }
 
-        // Face-down carpet for the wash — tidy grid, no overlaps.
+        // Wash carpet.
         let allPrims = Array(tilesByPrim.keys).shuffled(using: &random)
-        let center = SIMD2<Float>(0, -0.98)
+        let washCenter = SIMD2<Float>(Self.center.x, Self.center.z)
         var carpet: [String: SIMD2<Float>] = [:]
         for (index, prim) in allPrims.enumerated() {
-            let column = index % 13
-            let row = index / 13
-            let base = SIMD2(Float(column - 6) * 0.046, Float(row - 5) * 0.046 - 0.98)
+            let base = washCenter + SIMD2(Float(index % 13 - 6) * 0.04, Float(index / 13 - 5) * 0.04)
             carpet[prim] = base
             tilesByPrim[prim]?.position = [base.x, Self.tableTop + 0.001, base.y]
             tilesByPrim[prim]?.orientation = Self.faceDown
         }
 
-        // The wash: real palms push the tiles; ambient swirl underneath.
         ceremonyPrompt = "Wash the tiles with your hands…"
         appModel.voice.speak("First, we wash the tiles. Swish them around with your hands — just like at home.")
         audio.startWash()
-        Task { await handTracker.start() }   // never blocks the ceremony
+        Task { await handTracker.start() }
 
         var positions = carpet
         var lastPushClack = 0
@@ -331,10 +442,10 @@ struct MahjongActivityView: View {
             var pushed = false
             for (prim, base) in carpet {
                 guard let tile = tilesByPrim[prim], var position = positions[prim] else { continue }
-                let offset = base - center
+                let offset = base - washCenter
                 let home = SIMD2(
-                    center.x + offset.x * cosA - offset.y * sinA,
-                    center.y + offset.x * sinA + offset.y * cosA
+                    washCenter.x + offset.x * cosA - offset.y * sinA,
+                    washCenter.y + offset.x * sinA + offset.y * cosA
                 )
                 position += (home - position) * 0.08
                 for palm in handTracker.palms {
@@ -346,10 +457,10 @@ struct MahjongActivityView: View {
                         pushed = true
                     }
                 }
-                let fromCenter = position - center
+                let fromCenter = position - washCenter
                 let radius = simd_length(fromCenter)
-                if radius > 0.34 {
-                    position = center + fromCenter / radius * 0.34
+                if radius > 0.3 {
+                    position = washCenter + fromCenter / radius * 0.3
                 }
                 positions[prim] = position
                 tile.position = [position.x, Self.tableTop + 0.001, position.y]
@@ -361,11 +472,10 @@ struct MahjongActivityView: View {
         }
         audio.stopWash()
 
-        // Walls assemble in waves.
         ceremonyPrompt = "Building the walls…"
         appModel.voice.speak("Now we stack the walls.")
-        for (index, prim) in wallOrder.enumerated() {
-            guard let tile = tilesByPrim[prim], let transform = finalWallTransforms[prim] else { continue }
+        for (index, prim) in pool.enumerated() {
+            guard let tile = tilesByPrim[prim], let transform = wallHome[prim] else { continue }
             tile.move(to: transform, relativeTo: root, duration: 0.45, timingFunction: .easeInOut)
             if index % 10 == 9 {
                 audio.clack(volume: 0.4)
@@ -380,35 +490,148 @@ struct MahjongActivityView: View {
             return
         }
 
-        // The deal, tile by tile.
         ceremonyPrompt = "Dealing…"
-        appModel.voice.speak("And now we deal. Thirteen tiles for you, thirteen for me.")
-        for prim in opponentPrims {
-            guard let tile = tilesByPrim[prim], let transform = finals[prim] else { continue }
-            tile.move(to: transform, relativeTo: root, duration: 0.4, timingFunction: .easeInOut)
-            guard await pause(40) else {
-                finishInstantly()
-                return
+        appModel.voice.speak("And now we deal — thirteen tiles each.")
+        for seat in [SeatID.right, .across, .left] {
+            for prim in aiHands[seat] ?? [] {
+                guard let tile = tilesByPrim[prim], let transform = finals[prim] else { continue }
+                tile.move(to: transform, relativeTo: root, duration: 0.35, timingFunction: .easeInOut)
+                guard await pause(25) else {
+                    finishInstantly()
+                    return
+                }
             }
         }
         for prim in sortedHand {
             guard let tile = tilesByPrim[prim], let transform = finals[prim] else { continue }
             tile.move(to: transform, relativeTo: root, duration: 0.4, timingFunction: .easeInOut)
             audio.click()
-            guard await pause(60) else {
+            guard await pause(55) else {
                 finishInstantly()
                 return
             }
         }
         _ = await pause(500)
 
+        // Opponents expose any flowers/animals they were dealt, with
+        // replacements from the far wall — proper Singapore procedure.
+        await exposeAIBonusTiles()
+
+        completeSetup(sortedHand: sortedHand)
+    }
+
+    private func completeSetup(sortedHand: [String]) {
         ceremonyPrompt = nil
-        exercise.dealt(sortedHand.compactMap { faceByPrim[$0] })
+        exercise.dealt(sortedHand.map(faceOf))
         playReady = true
         appModel.voice.speak(
-            "Collect three of the same tile to make a set — two sets wins. Take any tile from the wall and bring it to your rack. The shining one is lucky."
+            "Four sets and a pair wins. A set is three of the same tile, or three numbers in a row of one suit. Take the shining tile from the wall and drop it on the little green pad beside your tiles."
         )
         beginPlayerDraw()
+    }
+
+    /// Three complete sets + eye + one waiting pair — a genuine tenpai deal.
+    private func buildTenpaiHand(
+        _ byFace: inout [String: [String]],
+        random: inout NeighborhoodWorld.SeededRandom
+    ) -> [String] {
+        for _ in 0..<8 {
+            var local = byFace
+            var prims: [String] = []
+            var faces: [String] = []
+            func take(_ face: String, _ count: Int) -> Bool {
+                guard (local[face]?.count ?? 0) >= count else { return false }
+                for _ in 0..<count {
+                    prims.append(local[face]!.removeFirst())
+                    faces.append(face)
+                }
+                return true
+            }
+            let suits = MahjongRules.Suit.allCases.shuffled(using: &random)
+            var ok = true
+            for chowIndex in 0..<2 {
+                let suit = suits[chowIndex % suits.count]
+                let start = Int.random(in: 1...7, using: &random)
+                if !(take(MahjongRules.faceName(suit, start), 1)
+                    && take(MahjongRules.faceName(suit, start + 1), 1)
+                    && take(MahjongRules.faceName(suit, start + 2), 1)) {
+                    ok = false
+                    break
+                }
+            }
+            guard ok else { continue }
+            guard let pongFace = local.keys
+                .filter({ !MahjongRules.isBonus($0) && local[$0]!.count >= 3 })
+                .shuffled(using: &random).first,
+                take(pongFace, 3)
+            else { continue }
+            guard let eyeFace = local.keys
+                .filter({ !MahjongRules.isBonus($0) && $0 != pongFace && local[$0]!.count >= 2 })
+                .shuffled(using: &random).first,
+                take(eyeFace, 2)
+            else { continue }
+            let suit = suits[2 % suits.count]
+            let start = Int.random(in: 2...7, using: &random)
+            guard take(MahjongRules.faceName(suit, start), 1),
+                  take(MahjongRules.faceName(suit, start + 1), 1)
+            else { continue }
+            guard prims.count == 13,
+                  !MahjongRules.winningFaces(concealed: faces, exposedSets: 0).isEmpty
+            else { continue }
+            byFace = local
+            return prims
+        }
+        // Fallback: any thirteen playable tiles.
+        var prims: [String] = []
+        for (face, facePrims) in byFace where !MahjongRules.isBonus(face) {
+            for prim in facePrims where prims.count < 13 {
+                prims.append(prim)
+            }
+        }
+        for prim in prims {
+            byFace[faceOf(prim)]?.removeAll { $0 == prim }
+        }
+        return prims
+    }
+
+    private func exposeAIBonusTiles() async {
+        for seat in [SeatID.right, .across, .left] {
+            var hand = aiHands[seat] ?? []
+            while let bonusIndex = hand.firstIndex(where: { MahjongRules.isBonus(faceOf($0)) }) {
+                let prim = hand.remove(at: bonusIndex)
+                if let tile = tilesByPrim[prim] {
+                    lockTile(prim)
+                    tile.move(
+                        to: Transform(
+                            scale: tile.scale,
+                            rotation: flatRotation(seat, faceUp: true),
+                            translation: bonusSlot(seat)
+                        ),
+                        relativeTo: root, duration: 0.45, timingFunction: .easeInOut
+                    )
+                    audio.click()
+                }
+                if let replacement = wallOrderList.last {
+                    wallOrderList.removeLast()
+                    wallResidents.remove(replacement)
+                    wallHome[replacement] = nil
+                    hand.append(replacement)
+                    if let tile = tilesByPrim[replacement] {
+                        lockTile(replacement)
+                        tile.move(
+                            to: Transform(
+                                scale: tile.scale,
+                                rotation: standingRotation(seat),
+                                translation: handSlot(seat, index: hand.count - 1)
+                            ),
+                            relativeTo: root, duration: 0.4, timingFunction: .easeInOut
+                        )
+                    }
+                }
+                _ = await pause(250)
+            }
+            aiHands[seat] = hand
+        }
     }
 
     // MARK: - Grab
@@ -417,9 +640,9 @@ struct MahjongActivityView: View {
         guard let tile = tilesByPrim[prim], !tile.components.has(ManipulationComponent.self) else { return }
         let bounds = tile.visualBounds(relativeTo: tile)
         let size = SIMD3(
-            max(bounds.extents.x + 0.02, 0.05),
-            max(bounds.extents.y + 0.02, 0.05),
-            max(bounds.extents.z + 0.02, 0.04)
+            max(bounds.extents.x + 0.018, 0.04),
+            max(bounds.extents.y + 0.018, 0.045),
+            max(bounds.extents.z + 0.018, 0.035)
         )
         ManipulationComponent.configureEntity(
             tile,
@@ -435,7 +658,7 @@ struct MahjongActivityView: View {
         tile.components.remove(InputTargetComponent.self)
     }
 
-    // MARK: - Free-placement release logic (zones, not slots)
+    // MARK: - Free-placement release logic
 
     private func tileReleased(_ entity: Entity) {
         guard playReady, !isResolving, let prim = primByEntityID[entity.id],
@@ -443,52 +666,73 @@ struct MahjongActivityView: View {
         else { return }
 
         let position = entity.position
-        let inDiscardCircle = simd_length(SIMD2(
-            position.x - discardCenter.x,
-            position.z - discardCenter.z
-        )) < 0.18
-        let inHandZone = position.z > Self.handZoneMinZ && abs(position.x) < 0.72
+        let local = position - Self.center
+        // Anywhere central counts as throwing to the table — like real
+        // mahjong, not a precision target. The glowing pad is a suggestion.
+        let inDiscardArea = local.z > -0.42 && local.z < 0.27 && abs(local.x) < 0.5
+        let inHandZone = local.z > 0.28 && abs(local.x) < 0.6
+        let onHandPad = simd_length(SIMD2(
+            position.x - handPadCenter.x,
+            position.z - handPadCenter.z
+        )) < 0.1
 
-        if exercise.phase == .playerDraw, wallResidents.contains(prim), inHandZone {
-            // They brought a wall tile to their side — that's the draw.
-            settleStanding(entity, at: position)
+        if exercise.phase == .playerDraw, wallResidents.contains(prim), inHandZone || onHandPad {
+            if onHandPad {
+                placeInHandRow(entity)
+            } else {
+                settleStanding(entity, at: position, pitched: true)
+            }
             resolveDraw(prim: prim)
             return
         }
-        if exercise.phase == .playerDiscard, handPrims.contains(prim), inDiscardCircle {
+        if handPrims.contains(prim), onHandPad {
+            placeInHandRow(entity)
+            return
+        }
+        if exercise.phase == .playerDiscard, handPrims.contains(prim), inDiscardArea {
             resolveDiscard(prim: prim, tile: entity)
             return
         }
-
-        // Anywhere else: the tile simply rests where they put it, upright,
-        // on the felt — like a real table. No snap-backs.
-        if wallResidents.contains(prim), !inHandZone {
-            // A wandering wall tile lies back face-down wherever it is.
-            settleFaceDown(entity, at: position)
-        } else {
-            settleStanding(entity, at: position)
-        }
-        if exercise.phase == .playerDiscard, handPrims.contains(prim), !inDiscardCircle {
+        if exercise.phase == .playerDraw, handPrims.contains(prim), inDiscardArea {
+            // Rules: draw first, then throw. Gentle correction, tile returns.
+            appModel.voice.speak("First take the shining tile from the wall — then you can throw one.")
             exercise.recordWrongDrop()
+            placeInHandRow(entity)
+            return
+        }
+
+        if wallResidents.contains(prim), !inHandZone {
+            if let home = wallHome[prim] {
+                entity.move(to: home, relativeTo: root, duration: 0.4, timingFunction: .easeOut)
+            } else {
+                settleFaceDown(entity, at: position)
+            }
+        } else {
+            settleStanding(entity, at: position, pitched: handPrims.contains(prim))
         }
     }
 
     private func clampedToFelt(_ position: SIMD3<Float>) -> SIMD3<Float> {
         [
-            min(max(position.x, -0.72), 0.72),
+            min(max(position.x, Self.center.x - 0.58), Self.center.x + 0.58),
             Self.tableTop + 0.001,
-            min(max(position.z, -1.44), -0.50),
+            min(max(position.z, Self.center.z - 0.58), Self.center.z + 0.58),
         ]
     }
 
-    private func settleStanding(_ tile: Entity, at position: SIMD3<Float>) {
-        let yaw = simd_quatf(angle: 0, axis: [0, 1, 0])
+    private func settleStanding(_ tile: Entity, at position: SIMD3<Float>, pitched: Bool) {
+        let target = clampedToFelt(position)
+        let duration = TimeInterval(min(0.3 + simd_length(tile.position - target) * 0.9, 0.85))
         tile.move(
-            to: Transform(scale: tile.scale, rotation: yaw, translation: clampedToFelt(position)),
-            relativeTo: root, duration: 0.3, timingFunction: .easeOut
+            to: Transform(
+                scale: tile.scale,
+                rotation: pitched ? Self.handPitch : .init(),
+                translation: target
+            ),
+            relativeTo: root, duration: duration, timingFunction: .easeOut
         )
         Task {
-            try? await Task.sleep(for: .milliseconds(320))
+            try? await Task.sleep(for: .milliseconds(Int(duration * 1000) + 20))
             audio.clack(volume: 0.4)
         }
     }
@@ -500,21 +744,49 @@ struct MahjongActivityView: View {
         )
     }
 
-    // MARK: - Turns
+    // MARK: - Player turn
+
+    /// The next tile in the strict wall order (top then bottom of each
+    /// stack, marching around from the patient's right).
+    private func nextWallPrim() -> String? {
+        wallOrderList.first { wallResidents.contains($0) }
+    }
+
+    /// Kindness, hidden inside the real procedure: silently swap two
+    /// face-down wall tiles so the next-in-order tile is a winning one.
+    /// Both are face-down, so the swap is physically undetectable.
+    private func riggedKindnessSwap() {
+        guard exercise.playerTurns >= 2 else { return }
+        let wins = exercise.winningFaces
+        guard let next = nextWallPrim(), !wins.contains(faceOf(next)),
+              let winner = wallOrderList.first(where: {
+                  wallResidents.contains($0) && wins.contains(faceOf($0))
+              }),
+              winner != next,
+              let a = tilesByPrim[next], let b = tilesByPrim[winner]
+        else { return }
+
+        let homeA = wallHome[next]
+        let homeB = wallHome[winner]
+        wallHome[next] = homeB
+        wallHome[winner] = homeA
+        if let homeB { a.transform = homeB }
+        if let homeA { b.transform = homeA }
+        if let indexA = wallOrderList.firstIndex(of: next),
+           let indexB = wallOrderList.firstIndex(of: winner) {
+            wallOrderList.swapAt(indexA, indexB)
+        }
+    }
 
     private func beginPlayerDraw() {
         clearGlow()
-        discardZone.isEnabled = false
-        // Suggest a lucky wall tile (rigged toward their pairs) — but ANY
-        // wall tile brought to their side counts.
-        let pairFaces = exercise.pairFaces
-        let tops = wallResidents.filter { prim in
-            guard let transform = finalWallTransforms[prim] else { return false }
-            return transform.translation.x > 0.4 || transform.translation.z > -0.9
-        }
-        drawGlowPrim = tops.first { pairFaces.contains(faceByPrim[$0] ?? "") } ?? tops.first
+        discardZoneGlow.isEnabled = false
+        riggedKindnessSwap()
+        // The glow teaches the real order: the next tile in the wall
+        // sequence. (Any wall tile is still accepted — house rule.)
+        drawGlowPrim = nextWallPrim()
         if let prim = drawGlowPrim, let tile = tilesByPrim[prim] {
-            glow(at: tile.position, radius: 0.05)
+            glow(at: tile.position, radius: 0.04)
         }
     }
 
@@ -522,124 +794,305 @@ struct MahjongActivityView: View {
         isResolving = true
         clearGlow()
         wallResidents.remove(prim)
-        handPrims.append(prim)
-
-        let face = faceByPrim[prim] ?? ""
-        let melded = exercise.drew(face)
+        wallHome[prim] = nil
 
         Task {
-            try? await Task.sleep(for: .milliseconds(400))
-            audio.clack(volume: 0.6)
+            await handleDrawnTile(prim: prim)
+        }
+    }
 
-            if let meldFace = melded {
-                await animateMeld(face: meldFace)
-                audio.chime()
-                if exercise.phase == .won {
-                    isResolving = false
-                    appModel.voice.speak("Mahjong! Two sets — you've won the game. Fantastic!")
-                    return
-                }
-                appModel.voice.speak("Three of a kind — a set! Now throw one of your tiles into the glowing circle.")
-            } else if exercise.pairFaces.contains(face) {
-                appModel.voice.speak("Lovely — that matches tiles you already have. Now throw one you don't need into the circle.")
-            } else {
-                appModel.voice.speak("That one's yours now. Throw a tile you don't need into the circle.")
+    private func handleDrawnTile(prim: String) async {
+        let face = faceOf(prim)
+        let result = exercise.drew(face)
+        _ = await pause(400)
+        audio.clack(volume: 0.6)
+
+        switch result {
+        case .win:
+            handPrims.append(prim)
+            await celebrateMahjong()
+
+        case .bonus:
+            appModel.voice.speak("A flower! It goes to the side, and you take another tile.")
+            if let tile = tilesByPrim[prim] {
+                lockTile(prim)
+                tile.move(
+                    to: Transform(
+                        scale: tile.scale,
+                        rotation: flatRotation(.player, faceUp: true),
+                        translation: bonusSlot(.player)
+                    ),
+                    relativeTo: root, duration: 0.5, timingFunction: .easeInOut
+                )
             }
-
+            _ = await pause(600)
+            // Replacement from the far end of the wall, flown in for them.
+            if let replacement = wallOrderList.last {
+                wallOrderList.removeLast()
+                wallResidents.remove(replacement)
+                wallHome[replacement] = nil
+                if let tile = tilesByPrim[replacement] {
+                    tile.move(
+                        to: Transform(
+                            scale: tile.scale,
+                            rotation: Self.handPitch,
+                            translation: linePosition(.player, radius: 0.37, offset: 0.2)
+                        ),
+                        relativeTo: root, duration: 0.55, timingFunction: .easeInOut
+                    )
+                }
+                _ = await pause(600)
+                await handleDrawnTile(prim: replacement)
+                return
+            }
             isResolving = false
-            beginPlayerDiscard()
+            beginPlayerDiscardPhase()
+
+        case .normal:
+            handPrims.append(prim)
+            if exercise.pairFaces.contains(face) {
+                appModel.voice.speak("Lovely — that matches tiles you already have. Now throw one you don't need into your glowing river.")
+            } else {
+                appModel.voice.speak("That one's yours now. Throw a tile you don't need into your glowing river.")
+            }
+            isResolving = false
+            beginPlayerDiscardPhase()
         }
     }
 
-    private func animateMeld(face: String) async {
-        let meldPrims = Array(handPrims.filter { faceByPrim[$0] == face }.prefix(3))
-        let meldIndex = max(exercise.meldsCompleted - 1, 0)
-        for (offset, prim) in meldPrims.enumerated() {
-            handPrims.removeAll { $0 == prim }
-            lockTile(prim)
-            guard let tile = tilesByPrim[prim] else { continue }
-            let slot = meldAnchor + SIMD3(Float(meldIndex) * 0.16 + Float(offset) * (Self.tileSpacing + 0.004), 0.001, 0)
-            tile.move(
-                to: Transform(scale: tile.scale, rotation: Self.faceUp, translation: slot),
-                relativeTo: root, duration: 0.55, timingFunction: .easeInOut
-            )
-        }
-        try? await Task.sleep(for: .milliseconds(650))
-    }
-
-    private func beginPlayerDiscard() {
+    private func beginPlayerDiscardPhase() {
         guard exercise.phase == .playerDiscard else { return }
-        discardZone.isEnabled = true
+        isResolving = false
+        discardZoneGlow.isEnabled = true
         if let suggestion = exercise.suggestedDiscard,
-           let prim = handPrims.first(where: { faceByPrim[$0] == suggestion }),
+           let prim = handPrims.first(where: { faceOf($0) == suggestion }),
            let tile = tilesByPrim[prim] {
-            glow(at: tile.position, radius: 0.032)
+            glow(at: tile.position, radius: 0.028)
         }
     }
 
     private func resolveDiscard(prim: String, tile: Entity) {
         isResolving = true
         clearGlow()
-        discardZone.isEnabled = false
+        discardZoneGlow.isEnabled = false
         handPrims.removeAll { $0 == prim }
         lockTile(prim)
-        exercise.discarded(faceByPrim[prim] ?? "")
-        placeInDiscardGrid(tile)
+        exercise.discarded(faceOf(prim))
+        placeInRiver(tile, seat: .player)
 
         Task {
-            try? await Task.sleep(for: .milliseconds(600))
-            await computerTurn()
-            isResolving = false
-            appModel.voice.speak("Your turn. Take any tile from the wall — the shining one is lucky.")
-            beginPlayerDraw()
+            _ = await pause(600)
+            await aiRound()
         }
     }
 
-    private func placeInDiscardGrid(_ tile: Entity) {
-        let column = discardCount % 6
-        let row = discardCount / 6
-        discardCount += 1
-        let slot = SIMD3(
-            discardCenter.x - 0.11 + Float(column) * 0.045,
-            Self.tableTop + 0.002,
-            discardCenter.z + 0.07 - Float(row) * 0.055
-        )
+    private func placeInRiver(_ tile: Entity, seat: SeatID) {
+        let slot = riverSlot(seat)
         tile.move(
-            to: Transform(scale: tile.scale, rotation: Self.faceUp, translation: slot),
+            to: Transform(scale: tile.scale, rotation: flatRotation(seat, faceUp: true), translation: slot),
             relativeTo: root, duration: 0.5, timingFunction: .easeInOut
         )
         Task {
-            try? await Task.sleep(for: .milliseconds(500))
+            _ = await pause(500)
             audio.clack(volume: 0.7)
         }
     }
 
-    private func computerTurn() async {
-        appModel.voice.speak("My turn.")
-        if let prim = wallResidents.first(where: { finalWallTransforms[$0]?.translation.x ?? 0 < -0.4 }) ?? wallResidents.first,
-           let tile = tilesByPrim[prim] {
-            wallResidents.remove(prim)
+    // MARK: - Opponents (with claim windows)
+
+    private func aiRound() async {
+        for seat in [SeatID.right, .across, .left] {
+            ceremonyPrompt = "\(seat.name) is thinking…"
+            var random = SystemRandomNumberGenerator()
+
+            // Draw the next tile in the strict shared wall order — the
+            // opponents visibly model the real procedure.
+            if let prim = nextWallPrim(), let tile = tilesByPrim[prim] {
+                wallResidents.remove(prim)
+                wallHome[prim] = nil
+                lockTile(prim)
+                aiHands[seat, default: []].append(prim)
+                tile.move(
+                    to: Transform(
+                        scale: tile.scale,
+                        rotation: standingRotation(seat),
+                        translation: handSlot(seat, index: 13)
+                    ),
+                    relativeTo: root, duration: 0.45, timingFunction: .easeInOut
+                )
+                _ = await pause(500)
+                audio.click()
+            }
+
+            _ = await pause(Int.random(in: 400...900, using: &random))
+
+            // Choose a discard — quietly kind to the patient.
+            guard var hand = aiHands[seat], !hand.isEmpty else { continue }
+            let wins = exercise.winningFaces
+            let pongable = exercise.pairFaces
+            var discardIndex = Int.random(in: 0..<hand.count, using: &random)
+            if exercise.playerTurns >= 3, seat == .left,
+               Float.random(in: 0...1, using: &random) < 0.35,
+               let winIndex = hand.firstIndex(where: { wins.contains(faceOf($0)) }) {
+                discardIndex = winIndex
+            } else if Float.random(in: 0...1, using: &random) < 0.4,
+                      let pongIndex = hand.firstIndex(where: { pongable.contains(faceOf($0)) }) {
+                discardIndex = pongIndex
+            }
+            let prim = hand.remove(at: discardIndex)
+            aiHands[seat] = hand
+
+            guard let tile = tilesByPrim[prim] else { continue }
+            let hover = tile.position + [0, 0.005, 0]
+            tile.move(
+                to: Transform(scale: tile.scale, rotation: tile.orientation, translation: hover),
+                relativeTo: root, duration: 0.2, timingFunction: .easeInOut
+            )
+            _ = await pause(Int.random(in: 300...600, using: &random))
+            placeInRiver(tile, seat: seat)
+            _ = await pause(550)
+
+            for (index, handPrim) in (aiHands[seat] ?? []).enumerated() {
+                tilesByPrim[handPrim]?.move(
+                    to: Transform(
+                        scale: tilesByPrim[handPrim]?.scale ?? .one,
+                        rotation: standingRotation(seat),
+                        translation: handSlot(seat, index: index)
+                    ),
+                    relativeTo: root, duration: 0.3, timingFunction: .easeInOut
+                )
+            }
+
+            // Claim window: Mahjong / Pong / Chow on this discard. The
+            // discarded tile itself glows so the patient's eye finds it.
+            if let claim = exercise.evaluateClaim(discard: faceOf(prim), fromLeftSeat: seat == .left) {
+                if let discarded = tilesByPrim[prim] {
+                    glow(at: discarded.position, radius: 0.035)
+                }
+                let outcome = await runClaimWindow(claim: claim, discardPrim: prim)
+                clearGlow()
+                if outcome {
+                    ceremonyPrompt = nil
+                    return
+                }
+            }
+            _ = await pause(250)
+        }
+        ceremonyPrompt = nil
+        exercise.computerFinished()
+        appModel.voice.speak("Your turn. Take a tile from the wall — the shining one is lucky.")
+        beginPlayerDraw()
+    }
+
+    /// Shows the claim buttons and resolves the choice; returns true when
+    /// the round should stop (claim taken or game won).
+    private func runClaimWindow(claim: MahjongExercise.Claim, discardPrim: String) async -> Bool {
+        claimAction = nil
+        ceremonyPrompt = nil
+        if claim.canWin {
+            appModel.voice.speak("Wait — that tile finishes your hand! Press Mahjong!", interrupting: true)
+        } else if claim.canPong {
+            appModel.voice.speak("You have two of those. You can say Pong to take it!")
+        } else {
+            appModel.voice.speak("That tile fits a run in your hand. You can say Chow to take it!")
+        }
+
+        var waited = 0
+        while claimAction == nil, waited < 120 {
+            _ = await pause(100)
+            waited += 1
+        }
+        let action = claimAction ?? .pass
+        claimAction = nil
+
+        switch action {
+        case .win where claim.canWin:
+            exercise.claimWin()
+            handPrims.append(discardPrim)
+            await celebrateMahjong()
+            return true
+
+        case .pong where claim.canPong:
+            if let used = exercise.claimPong() {
+                await animateClaimMeld(discardPrim: discardPrim, usedFaces: used)
+                appModel.voice.speak("Pong! Now throw a tile you don't need into your glowing river.")
+                beginPlayerDiscardPhase()
+                return true
+            }
+        case .chow where !claim.chowOptions.isEmpty:
+            if let used = exercise.claimChow(option: claim.chowOptions[0]) {
+                await animateClaimMeld(discardPrim: discardPrim, usedFaces: used)
+                appModel.voice.speak("Chow! Now throw a tile you don't need into your glowing river.")
+                beginPlayerDiscardPhase()
+                return true
+            }
+        default:
+            break
+        }
+        exercise.passClaim()
+        return false
+    }
+
+    private func animateClaimMeld(discardPrim: String, usedFaces: [String]) async {
+        audio.chime()
+        var meldPrims: [String] = [discardPrim]
+        for face in usedFaces {
+            if let prim = handPrims.first(where: { faceOf($0) == face }) {
+                handPrims.removeAll { $0 == prim }
+                meldPrims.append(prim)
+            }
+        }
+        let meldIndex = exercise.exposedSetCount - 1
+        for (offset, prim) in meldPrims.enumerated() {
+            lockTile(prim)
+            guard let tile = tilesByPrim[prim] else { continue }
+            tile.move(
+                to: Transform(
+                    scale: tile.scale,
+                    rotation: flatRotation(.player, faceUp: true),
+                    translation: meldSlot(index: meldIndex, offsetInMeld: offset)
+                ),
+                relativeTo: root, duration: 0.55, timingFunction: .easeInOut
+            )
+        }
+        _ = await pause(650)
+    }
+
+    /// The reveal: the whole hand flips face-up in a line, chimes, and the
+    /// voice announces a genuine Mahjong.
+    private func celebrateMahjong() async {
+        isResolving = true
+        clearGlow()
+        discardZoneGlow.isEnabled = false
+        appModel.voice.speak("Mahjong! Four sets and a pair — you've won!", interrupting: true)
+        for (index, prim) in handPrims.enumerated() {
+            guard let tile = tilesByPrim[prim] else { continue }
             lockTile(prim)
             tile.move(
                 to: Transform(
                     scale: tile.scale,
-                    rotation: simd_quatf(angle: .pi, axis: [0, 1, 0]),
-                    translation: [0.3, Self.tableTop + 0.001, -1.38]
+                    rotation: flatRotation(.player, faceUp: true),
+                    translation: linePosition(
+                        .player,
+                        radius: 0.26,
+                        offset: (Float(index) - Float(handPrims.count - 1) / 2) * (Self.tileSpacing + 0.002),
+                        y: 0.003
+                    )
                 ),
-                relativeTo: root, duration: 0.5, timingFunction: .easeInOut
+                relativeTo: root, duration: 0.6, timingFunction: .easeInOut
             )
-            try? await Task.sleep(for: .milliseconds(700))
-            placeInDiscardGrid(tile)
-            try? await Task.sleep(for: .milliseconds(600))
+            audio.clack(volume: 0.5)
+            _ = await pause(70)
         }
-        exercise.computerFinished()
+        audio.chime()
+        isResolving = false
     }
 
     // MARK: - Glow
 
     private func glow(at position: SIMD3<Float>, radius: Float) {
         let ring = ModelEntity(
-            mesh: .generateCylinder(height: 0.005, radius: radius + 0.02),
+            mesh: .generateCylinder(height: 0.005, radius: radius + 0.018),
             materials: [UnlitMaterial(color: UIColor.cyan.withAlphaComponent(0.8))]
         )
         ring.position = [position.x, Self.tableTop + 0.004, position.z]
@@ -661,7 +1114,39 @@ struct MahjongActivityView: View {
             Text(panelPrompt)
                 .font(.system(size: 32, weight: .semibold))
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 640)
+                .frame(maxWidth: 660)
+
+            if exercise.phase == .claimWindow, let claim = exercise.pendingClaim {
+                HStack(spacing: 16) {
+                    if claim.canWin {
+                        Button("Mahjong!") { claimAction = .win }
+                            .font(.title2.weight(.bold))
+                            .buttonStyle(.borderedProminent)
+                            .buttonBorderShape(.capsule)
+                            .tint(.orange)
+                            .controlSize(.extraLarge)
+                    }
+                    if claim.canPong {
+                        Button("Pong!") { claimAction = .pong }
+                            .font(.title3)
+                            .buttonStyle(.borderedProminent)
+                            .buttonBorderShape(.capsule)
+                            .controlSize(.large)
+                    }
+                    if !claim.chowOptions.isEmpty {
+                        Button("Chow!") { claimAction = .chow }
+                            .font(.title3)
+                            .buttonStyle(.borderedProminent)
+                            .buttonBorderShape(.capsule)
+                            .controlSize(.large)
+                    }
+                    Button("No, thanks") { claimAction = .pass }
+                        .font(.title3)
+                        .buttonStyle(.bordered)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+                }
+            }
 
             HStack(spacing: 16) {
                 if exercise.phase == .won {
@@ -704,11 +1189,13 @@ struct MahjongActivityView: View {
         case .loading:
             return "Setting up the table…"
         case .playerDraw:
-            return "Take any wall tile to your rack — \(exercise.meldsCompleted) of \(MahjongExercise.meldsToWin) sets."
+            return "Take a tile from the wall. Four sets and a pair wins."
         case .playerDiscard:
-            return "Throw one of your tiles into the glowing circle."
+            return "Throw one of your tiles into your glowing river."
+        case .claimWindow:
+            return "That tile could be yours…"
         case .computerTurn:
-            return "The computer is thinking…"
+            return "The table is playing…"
         case .won:
             return "Mahjong! You won. Fantastic!"
         }

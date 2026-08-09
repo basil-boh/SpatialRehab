@@ -494,6 +494,7 @@
 		FAB1E000000000000000B010 /* CoffeeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A010 /* CoffeeActivityView.swift */; };
 		FAB1E000000000000000B011 /* MahjongExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A011 /* MahjongExercise.swift */; };
 		FAB1E000000000000000B012 /* MahjongActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A012 /* MahjongActivityView.swift */; };
+		FAB1E000000000000000B015 /* MahjongRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A015 /* MahjongRules.swift */; };
 		FAB1E000000000000000B013 /* MahjongAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A013 /* MahjongAudio.swift */; };
 		FAB1E000000000000000B014 /* HandWashTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000A014 /* HandWashTracker.swift */; };
 /* End PBXBuildFile section */
@@ -988,6 +989,7 @@
 		FAB1E000000000000000A010 /* CoffeeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeActivityView.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A011 /* MahjongExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongExercise.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A012 /* MahjongActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongActivityView.swift; sourceTree = "<group>"; };
+		FAB1E000000000000000A015 /* MahjongRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongRules.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A013 /* MahjongAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongAudio.swift; sourceTree = "<group>"; };
 		FAB1E000000000000000A014 /* HandWashTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandWashTracker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1069,6 +1071,7 @@
 				FAB1E000000000000000A010 /* CoffeeActivityView.swift */,
 				FAB1E000000000000000A011 /* MahjongExercise.swift */,
 				FAB1E000000000000000A012 /* MahjongActivityView.swift */,
+				FAB1E000000000000000A015 /* MahjongRules.swift */,
 				FAB1E000000000000000A013 /* MahjongAudio.swift */,
 				FAB1E000000000000000A014 /* HandWashTracker.swift */,
 				2CA909666A1E57D05F864904 /* Info.plist */,
@@ -2070,6 +2073,7 @@
 				FAB1E000000000000000B010 /* CoffeeActivityView.swift in Sources */,
 				FAB1E000000000000000B011 /* MahjongExercise.swift in Sources */,
 				FAB1E000000000000000B012 /* MahjongActivityView.swift in Sources */,
+				FAB1E000000000000000B015 /* MahjongRules.swift in Sources */,
 				FAB1E000000000000000B013 /* MahjongAudio.swift in Sources */,
 				FAB1E000000000000000B014 /* HandWashTracker.swift in Sources */,
 			);

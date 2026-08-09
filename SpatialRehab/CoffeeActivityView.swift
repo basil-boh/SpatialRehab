@@ -34,10 +34,15 @@ final class PourSound {
     }
 
     func setPouring(_ pouring: Bool) {
+        setLevel(pouring ? 1 : 0)
+    }
+
+    /// Proportional pour volume — flow ramps, so should the sound.
+    func setLevel(_ level: Float) {
         prepare()
-        guard pouring != isOn else { return }
-        isOn = pouring
-        player.volume = pouring ? 0.35 : 0
+        let clamped = max(0, min(level, 1))
+        isOn = clamped > 0.01
+        player.volume = 0.35 * clamped
     }
 
     func shutdown() {
@@ -85,11 +90,13 @@ final class PourEffects {
     }
 
     /// Renders the arc from the spout and returns where it lands.
+    /// `width` scales the stream's thickness so flow can ramp in and out.
     func updateStream(
         from spout: SIMD3<Float>,
         velocity: SIMD3<Float>,
         floorY: Float,
-        milk: Bool
+        milk: Bool,
+        width: Float = 1
     ) -> SIMD3<Float> {
         let gravity: Float = -5.5
         var points: [SIMD3<Float>] = []
@@ -124,7 +131,7 @@ final class PourEffects {
             segment.isEnabled = true
             segment.model?.materials = [material]
             segment.position = mid
-            segment.scale = [1, length, 1]
+            segment.scale = [width, length, width]
             segment.orientation = simd_quatf(from: [0, 1, 0], to: direction / length)
         }
         return impact
@@ -171,12 +178,12 @@ final class PourEffects {
     }
 }
 
-/// Physical coffee-making: the patient really picks items up (system
-/// ManipulationComponent — pinch, hold, tilt with the wrist) and pours.
-/// Tilting a held vessel past pouring angle emits physics droplets/grains
-/// from its lip; whatever lands in the mug fills it. Released items settle
-/// gently back onto the table. Steps complete when enough of the right
-/// ingredient is actually poured in; a ghost demo and voice guide each step.
+/// Physical coffee-making driven by the assets' real anatomy: streams pour
+/// from each vessel's named spout, the mug's own internal liquid mesh rises
+/// and tints, the kettle and jug visibly empty, the sugar bowl's hinged lid
+/// opens and its five real cubes tumble out (landing in the mug dissolves
+/// them; misses stay on the table), the tin's lid opens for the grounds,
+/// and steam curls off the hot water. Ghost demos and voice guide each step.
 struct CoffeeActivityView: View {
     struct ItemSpec {
         let step: CoffeeExercise.Step?
@@ -188,10 +195,25 @@ struct CoffeeActivityView: View {
         let position: SIMD3<Float>
     }
 
-    struct Droplet {
+    struct FlyingBit {
         let entity: ModelEntity
         let step: CoffeeExercise.Step
+        let isCube: Bool
         var age: Int
+    }
+
+    /// A liquid mesh whose base stays put while it fills or drains.
+    struct FillMesh {
+        let entity: Entity
+        let basePositionY: Float
+        let pivotToMinY: Float
+        let fullScaleY: Float
+
+        func setFraction(_ fraction: Float) {
+            let f = max(fraction, 0.015)
+            entity.scale.y = fullScaleY * f
+            entity.position.y = basePositionY - pivotToMinY * (f - 1)
+        }
     }
 
     static let tableTop: Float = 0.85
@@ -217,11 +239,6 @@ struct CoffeeActivityView: View {
                  targetHeight: 0.035, position: [0.27, tableTop, -0.72]),
     ]
 
-    /// Grain-count thresholds (water/milk use continuous stream ticks).
-    static let pourThresholds: [CoffeeExercise.Step: Int] = [
-        .coffee: 22, .sugar: 16,
-    ]
-
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
@@ -230,20 +247,32 @@ struct CoffeeActivityView: View {
     @State private var itemHeights: [String: Float] = [:]
     @State private var heldIDs: Set<Entity.ID> = []
     @State private var subscriptions: [EventSubscription] = []
-    @State private var droplets: [Droplet] = []
-    @State private var caught: [CoffeeExercise.Step: Int] = [:]
+    @State private var flyingBits: [FlyingBit] = []
+    @State private var caughtGrains = 0
+    @State private var caughtCubes = 0
     @State private var fillTicks: [CoffeeExercise.Step: Int] = [:]
-    @State private var effects = PourEffects()
-    @State private var pourSound = PourSound()
     @State private var wrongPourNoted: Set<CoffeeExercise.Step> = []
     @State private var stirAccumulated: Float = 0
     @State private var lastStirAngle: Float?
-    @State private var liquid: ModelEntity?
     @State private var glowRing = Entity()
     @State private var ghost: Entity?
     @State private var ghostTask: Task<Void, Never>?
     @State private var simulationTask: Task<Void, Never>?
+    @State private var steamTask: Task<Void, Never>?
     @State private var sceneReady = false
+    @State private var effects = PourEffects()
+    @State private var pourSound = PourSound()
+
+    // Real anatomy resolved from the assets.
+    @State private var spouts: [CoffeeExercise.Step: Entity] = [:]
+    @State private var sourceFills: [CoffeeExercise.Step: FillMesh] = [:]
+    @State private var mugFill: FillMesh?
+    @State private var lids: [CoffeeExercise.Step: (entity: Entity, closed: simd_quatf)] = [:]
+    @State private var sugarCubes: [Entity] = []
+    @State private var cubeHomes: [(Entity, Transform, Entity)] = []
+    @State private var lastCubeTumble = Date.distantPast
+    /// Per-vessel pour flow 0…1 — ramps with tilt so nothing snaps on/off.
+    @State private var flows: [CoffeeExercise.Step: Float] = [:]
 
     private var exercise: CoffeeExercise { appModel.coffee }
     private var mugPosition: SIMD3<Float> { Self.specs[0].position }
@@ -259,7 +288,6 @@ struct CoffeeActivityView: View {
                 panel.position = [0, 1.5, -1.62]
                 content.add(panel)
             }
-
             subscriptions.append(content.subscribe(to: ManipulationEvents.WillBegin.self) { event in
                 Task { @MainActor in
                     heldIDs.insert(event.entity.id)
@@ -272,7 +300,6 @@ struct CoffeeActivityView: View {
                     settle(event.entity)
                 }
             })
-
             startSimulation()
             sceneReady = true
         } attachments: {
@@ -292,6 +319,7 @@ struct CoffeeActivityView: View {
         .onDisappear {
             ghostTask?.cancel()
             simulationTask?.cancel()
+            steamTask?.cancel()
             pourSound.shutdown()
             appModel.voice.stop()
             if appModel.phase == .inActivity {
@@ -369,7 +397,6 @@ struct CoffeeActivityView: View {
                 .offsetBy(translation: [0, hitSize.y / 2, 0])
 
             if spec.step != nil {
-                // Real pick-up: system manipulation with natural wrist tilt.
                 ManipulationComponent.configureEntity(
                     wrapper,
                     allowedInputTypes: .all,
@@ -387,25 +414,73 @@ struct CoffeeActivityView: View {
                 root.addChild(tag)
             }
 
-            if spec.tagID == "tag-mug" {
-                buildLiquid(mugBounds: scaled)
+            resolveAnatomy(spec: spec, wrapper: wrapper)
+        }
+    }
+
+    /// Wire up the named parts the asset generator provided.
+    private func resolveAnatomy(spec: ItemSpec, wrapper: Entity) {
+        switch spec.step {
+        case .water:
+            if let spout = wrapper.findEntity(named: "pour_spout") {
+                spouts[.water] = spout
+            }
+            if let column = wrapper.findEntity(named: "water_column") {
+                sourceFills[.water] = makeFillMesh(column)
+            }
+        case .milk:
+            if let spout = wrapper.findEntity(named: "pour_spout") {
+                spouts[.milk] = spout
+            }
+            if let milk = wrapper.findEntity(named: "milk") {
+                sourceFills[.milk] = makeFillMesh(milk)
+            }
+        case .coffee:
+            if let lid = wrapper.findEntity(named: "lid") {
+                lids[.coffee] = (lid, lid.orientation)
+            }
+        case .sugar:
+            if let lid = wrapper.findEntity(named: "lid") {
+                lids[.sugar] = (lid, lid.orientation)
+            }
+            for index in 0..<8 {
+                if let cube = wrapper.findEntity(named: "sugar_cube_\(index)") {
+                    sugarCubes.append(cube)
+                    cubeHomes.append((cube, cube.transform, cube.parent ?? wrapper))
+                }
+            }
+        case .stir, nil:
+            if spec.tagID == "tag-mug", let coffee = wrapper.findEntity(named: "coffee") {
+                let fill = makeFillMesh(coffee)
+                fill.setFraction(0)
+                mugFill = fill
             }
         }
     }
 
-    private func buildLiquid(mugBounds: BoundingBox) {
-        let radius = max(mugBounds.extents.x, mugBounds.extents.z) * 0.3
-        let liquidEntity = ModelEntity(
-            mesh: .generateCylinder(height: 1, radius: radius),
-            materials: [SimpleMaterial(color: UIColor(red: 0.78, green: 0.83, blue: 0.87, alpha: 1), roughness: 0.2, isMetallic: false)]
+    private func makeFillMesh(_ entity: Entity) -> FillMesh {
+        let bounds = entity.visualBounds(relativeTo: entity.parent)
+        return FillMesh(
+            entity: entity,
+            basePositionY: entity.position.y,
+            pivotToMinY: bounds.min.y - entity.position.y,
+            fullScaleY: entity.scale.y
         )
-        liquidEntity.scale = [1, 0.001, 1]
-        liquidEntity.position = mugPosition + [0, 0.012, 0]
-        root.addChild(liquidEntity)
-        liquid = liquidEntity
     }
 
-    // MARK: - Simulation: pouring, catching, stirring
+    private func firstModel(in entity: Entity) -> ModelEntity? {
+        if let model = entity as? ModelEntity, model.model != nil {
+            return model
+        }
+        for child in entity.children {
+            if let found = firstModel(in: child) {
+                return found
+            }
+        }
+        return nil
+    }
+
+    // MARK: - Simulation
 
     private func startSimulation() {
         simulationTask?.cancel()
@@ -419,7 +494,7 @@ struct CoffeeActivityView: View {
 
     private func tick() {
         emitFromHeldVessels()
-        updateDroplets()
+        updateFlyingBits()
         effects.tickSplashes()
         updateStir()
     }
@@ -427,163 +502,261 @@ struct CoffeeActivityView: View {
     private func emitFromHeldVessels() {
         guard exercise.phase == .brewing else {
             effects.hideStream()
-            pourSound.setPouring(false)
+            pourSound.setLevel(0)
             return
         }
-        var streaming = false
+        var loudestFlow: Float = 0
         for spec in Self.specs {
-            guard let step = spec.step, step != .stir,
-                  let wrapper = itemEntities[spec.tagID],
-                  heldIDs.contains(wrapper.id)
-            else { continue }
+            guard let step = spec.step, step != .stir else { continue }
+            guard let wrapper = itemEntities[spec.tagID] else { continue }
 
-            let up = wrapper.orientation.act(SIMD3<Float>(0, 1, 0))
-            let tilt = acos(max(-1, min(1, simd_dot(up, SIMD3<Float>(0, 1, 0)))))
-            guard tilt > 1.1 else { continue }
+            // Flow ramps toward the tilt-derived target instead of snapping.
+            var targetFlow: Float = 0
+            var up = SIMD3<Float>(0, 1, 0)
+            if heldIDs.contains(wrapper.id) {
+                up = wrapper.orientation.act(SIMD3<Float>(0, 1, 0))
+                let tilt = acos(max(-1, min(1, simd_dot(up, SIMD3<Float>(0, 1, 0)))))
+                targetFlow = min(max((tilt - 0.85) / 0.5, 0), 1)
+            }
+            var flow = flows[step, default: 0]
+            flow += (targetFlow - flow) * (targetFlow > flow ? 0.25 : 0.2)
+            flows[step] = flow
 
-            let lip = wrapper.position + up * (itemHeights[spec.tagID] ?? 0.15) * 0.6
+            if flow < 0.05 {
+                if lids[step] != nil { closeLid(step) }
+                continue
+            }
 
-            if step == .water || step == .milk {
-                // Continuous liquid: real ballistic stream from the lip.
-                streaming = true
+            switch step {
+            case .water, .milk:
+                loudestFlow = max(loudestFlow, flow)
+                let spoutPosition = spouts[step]?.position(relativeTo: root)
+                    ?? wrapper.position + up * (itemHeights[spec.tagID] ?? 0.15) * 0.6
                 let horizontal = SIMD3(up.x, 0, up.z)
-                let velocity = horizontal * (0.1 + 0.25 * (tilt - 1.1)) + SIMD3<Float>(0, -0.1, 0)
-                let mugCatchY = Self.tableTop + 0.02
-                let overMug = simd_length(SIMD2(lip.x - mugPosition.x, lip.z - mugPosition.z)) < 0.3
+                let velocity = horizontal * (0.08 + 0.3 * flow) + SIMD3<Float>(0, -0.1, 0)
+                let overMug = simd_length(SIMD2(spoutPosition.x - mugPosition.x, spoutPosition.z - mugPosition.z)) < 0.3
                 let impact = effects.updateStream(
-                    from: lip,
+                    from: spoutPosition,
                     velocity: velocity,
-                    floorY: overMug ? mugCatchY : Self.tableTop + 0.002,
-                    milk: step == .milk
+                    floorY: overMug ? Self.tableTop + 0.02 : Self.tableTop + 0.002,
+                    milk: step == .milk,
+                    width: 0.3 + 0.7 * flow
                 )
-                effects.spawnSplash(at: impact, milk: step == .milk)
-                let inMug = simd_length(SIMD2(impact.x - mugPosition.x, impact.z - mugPosition.z)) < 0.045
-                if inMug {
+                if flow > 0.3 {
+                    effects.spawnSplash(at: impact, milk: step == .milk)
+                }
+                if simd_length(SIMD2(impact.x - mugPosition.x, impact.z - mugPosition.z)) < 0.045 {
                     liquidReceived(step)
                 }
-            } else {
-                // Grains: dense fine particles, real physics.
-                for _ in 0..<4 {
-                    let jitter = SIMD3(
-                        Float.random(in: -0.008...0.008), 0,
-                        Float.random(in: -0.008...0.008)
-                    )
-                    spawnDroplet(for: step, at: lip + jitter, tipDirection: up)
+                let threshold: Float = step == .water ? 70 : 50
+                sourceFills[step]?.setFraction(max(1 - Float(fillTicks[step, default: 0]) / threshold, 0.1))
+
+            case .coffee:
+                openLid(.coffee)
+                let mouth = wrapper.position + up * (itemHeights[spec.tagID] ?? 0.15) * 0.62
+                let grains = Int((flow * 5).rounded())
+                for _ in 0..<grains {
+                    spawnGrain(at: mouth + [
+                        Float.random(in: -0.01...0.01), 0, Float.random(in: -0.01...0.01),
+                    ], tipDirection: up)
                 }
+
+            case .sugar:
+                openLid(.sugar)
+                if flow > 0.35 {
+                    tumbleNextCube(from: wrapper, up: up)
+                }
+
+            case .stir:
+                break
             }
         }
-        if !streaming {
+        if loudestFlow < 0.05 {
             effects.hideStream()
         }
-        pourSound.setPouring(streaming)
+        pourSound.setLevel(loudestFlow)
     }
 
-    /// Continuous-stream accounting: each tick landing in the mug adds fill.
-    private func liquidReceived(_ step: CoffeeExercise.Step) {
-        fillTicks[step, default: 0] += 1
-        updateLiquid()
-        let threshold = step == .water ? 70 : 50
-        if exercise.isCurrent(step) {
-            if fillTicks[step, default: 0] >= threshold {
-                appModel.voice.speak(step.praise)
-                exercise.completeCurrentStep()
-            }
-        } else if !wrongPourNoted.contains(step) {
-            wrongPourNoted.insert(step)
-            exercise.recordWrongPick()
-            if let current = exercise.currentStep {
-                appModel.voice.speak("Oh — a little \(label(for: step)) went in early. Let's do \(current.itemName) first.")
-            }
+    private func openLid(_ step: CoffeeExercise.Step) {
+        guard let lid = lids[step] else { return }
+        let open = lid.closed * simd_quatf(angle: -1.1, axis: [1, 0, 0])
+        if simd_dot(lid.entity.orientation.vector, open.vector) < 0.999 {
+            lid.entity.move(
+                to: Transform(scale: lid.entity.scale, rotation: open, translation: lid.entity.position),
+                relativeTo: lid.entity.parent, duration: 0.3, timingFunction: .easeOut
+            )
         }
     }
 
-    private func spawnDroplet(for step: CoffeeExercise.Step, at position: SIMD3<Float>, tipDirection: SIMD3<Float>) {
-        guard droplets.count < 70 else { return }
-        let (color, radius): (UIColor, Float)
-        switch step {
-        case .coffee: (color, radius) = (UIColor(red: 0.28, green: 0.18, blue: 0.1, alpha: 1), 0.003)
-        case .sugar: (color, radius) = (UIColor(white: 0.96, alpha: 1), 0.0028)
-        case .water, .milk, .stir: return
+    private func closeLid(_ step: CoffeeExercise.Step) {
+        guard let lid = lids[step] else { return }
+        if simd_dot(lid.entity.orientation.vector, lid.closed.vector) < 0.999 {
+            lid.entity.move(
+                to: Transform(scale: lid.entity.scale, rotation: lid.closed, translation: lid.entity.position),
+                relativeTo: lid.entity.parent, duration: 0.4, timingFunction: .easeInOut
+            )
         }
+    }
 
-        let droplet = ModelEntity(
-            mesh: .generateSphere(radius: radius),
-            materials: [UnlitMaterial(color: color)]
+    /// One real sugar cube at a time slides out of the tilted bowl.
+    private func tumbleNextCube(from wrapper: Entity, up: SIMD3<Float>) {
+        guard Date.now.timeIntervalSince(lastCubeTumble) > 0.55 else { return }
+        guard let cube = sugarCubes.first(where: { $0.parent !== root }) else { return }
+        lastCubeTumble = .now
+
+        cube.setParent(root, preservingWorldTransform: true)
+        let bounds = cube.visualBounds(relativeTo: cube)
+        cube.components.set(CollisionComponent(shapes: [
+            .generateBox(size: bounds.extents).offsetBy(translation: bounds.center)
+        ]))
+        cube.components.set(PhysicsBodyComponent(
+            massProperties: .init(mass: 0.004),
+            material: .generate(friction: 0.7, restitution: 0.1),
+            mode: .dynamic
+        ))
+        let horizontal = SIMD3(up.x, 0, up.z)
+        cube.components.set(PhysicsMotionComponent(
+            linearVelocity: horizontal * 0.22 + SIMD3<Float>(0, -0.05, 0),
+            angularVelocity: [Float.random(in: -3...3), Float.random(in: -3...3), 0]
+        ))
+        if let model = cube as? ModelEntity {
+            flyingBits.append(FlyingBit(entity: model, step: .sugar, isCube: true, age: 0))
+        } else if let model = firstModel(in: cube) {
+            flyingBits.append(FlyingBit(entity: model, step: .sugar, isCube: true, age: 0))
+        }
+    }
+
+    private func spawnGrain(at position: SIMD3<Float>, tipDirection: SIMD3<Float>) {
+        guard flyingBits.count < 70 else { return }
+        let grain = ModelEntity(
+            mesh: .generateSphere(radius: 0.003),
+            materials: [UnlitMaterial(color: UIColor(red: 0.28, green: 0.18, blue: 0.1, alpha: 1))]
         )
-        droplet.position = position
-        droplet.components.set(CollisionComponent(shapes: [.generateSphere(radius: radius)]))
-        droplet.components.set(PhysicsBodyComponent(
-            massProperties: .init(mass: 0.002),
+        grain.position = position
+        grain.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.003)]))
+        grain.components.set(PhysicsBodyComponent(
+            massProperties: .init(mass: 0.001),
             material: .generate(friction: 0.6, restitution: 0.05),
             mode: .dynamic
         ))
         let horizontal = SIMD3(tipDirection.x, 0, tipDirection.z)
-        droplet.components.set(PhysicsMotionComponent(
-            linearVelocity: horizontal * 0.18 + SIMD3<Float>(0, -0.15, 0)
-        ))
-        root.addChild(droplet)
-        droplets.append(Droplet(entity: droplet, step: step, age: 0))
+        grain.components.set(PhysicsMotionComponent(linearVelocity: horizontal * 0.18 + SIMD3<Float>(0, -0.15, 0)))
+        root.addChild(grain)
+        flyingBits.append(FlyingBit(entity: grain, step: .coffee, isCube: false, age: 0))
     }
 
-    private func updateDroplets() {
-        var kept: [Droplet] = []
-        for var droplet in droplets {
-            droplet.age += 1
-            let position = droplet.entity.position
+    private func updateFlyingBits() {
+        var kept: [FlyingBit] = []
+        for var bit in flyingBits {
+            bit.age += 1
+            let position = bit.isCube
+                ? bit.entity.position(relativeTo: root)
+                : bit.entity.position
             let horizontal = simd_length(SIMD2(position.x - mugPosition.x, position.z - mugPosition.z))
 
-            if horizontal < 0.04, position.y > Self.tableTop - 0.01, position.y < Self.tableTop + 0.13 {
-                droplet.entity.removeFromParent()
-                ingredientCaught(droplet.step)
+            if horizontal < 0.045, position.y > Self.tableTop - 0.01, position.y < Self.tableTop + 0.13 {
+                if bit.isCube {
+                    dissolveCube(bit.entity)
+                    caughtCubes += 1
+                    sugarReceived()
+                } else {
+                    bit.entity.removeFromParent()
+                    caughtGrains += 1
+                    grainReceived()
+                }
                 continue
             }
-            if droplet.age > 90 || position.y < 0.02 {
-                droplet.entity.removeFromParent()
+            if bit.isCube {
+                // Spilled cubes rest on the table — real, and charming.
+                if position.y < 0.02 {
+                    bit.entity.removeFromParent()
+                    continue
+                }
+                if bit.age < 900 {
+                    kept.append(bit)
+                }
                 continue
             }
-            kept.append(droplet)
+            if bit.age > 90 || position.y < 0.02 {
+                bit.entity.removeFromParent()
+                continue
+            }
+            kept.append(bit)
         }
-        droplets = kept
+        flyingBits = kept
     }
 
-    private func ingredientCaught(_ step: CoffeeExercise.Step) {
-        caught[step, default: 0] += 1
-        updateLiquid()
+    private func dissolveCube(_ cube: ModelEntity) {
+        cube.components.remove(PhysicsBodyComponent.self)
+        cube.components.remove(PhysicsMotionComponent.self)
+        cube.move(
+            to: Transform(scale: .init(repeating: 0.01), rotation: cube.orientation, translation: mugPosition + [0, 0.06, 0]),
+            relativeTo: root, duration: 0.4, timingFunction: .easeIn
+        )
+        Task {
+            try? await Task.sleep(for: .milliseconds(450))
+            cube.removeFromParent()
+        }
+    }
 
+    // MARK: - Ingredient accounting (real mug liquid)
+
+    private func liquidReceived(_ step: CoffeeExercise.Step) {
+        fillTicks[step, default: 0] += 1
+        applyMugFill()
+        let threshold = step == .water ? 70 : 50
         if exercise.isCurrent(step) {
-            if caught[step, default: 0] >= Self.pourThresholds[step, default: 15] {
+            if fillTicks[step, default: 0] >= threshold {
                 appModel.voice.speak(step.praise)
+                if step == .water { startSteam() }
                 exercise.completeCurrentStep()
             }
-        } else if !wrongPourNoted.contains(step) {
-            wrongPourNoted.insert(step)
-            exercise.recordWrongPick()
-            if let current = exercise.currentStep {
-                appModel.voice.speak("Oh — a little \(label(for: step)) went in early. Let's do \(current.itemName) first.")
+        } else {
+            noteWrongPour(step)
+        }
+    }
+
+    private func grainReceived() {
+        applyMugFill()
+        if exercise.isCurrent(.coffee) {
+            if caughtGrains >= 22 {
+                appModel.voice.speak(CoffeeExercise.Step.coffee.praise)
+                exercise.completeCurrentStep()
             }
+        } else {
+            noteWrongPour(.coffee)
         }
     }
 
-    private func label(for step: CoffeeExercise.Step) -> String {
-        switch step {
-        case .water: return "water"
-        case .coffee: return "coffee"
-        case .sugar: return "sugar"
-        case .milk: return "milk"
-        case .stir: return "stirring"
+    private func sugarReceived() {
+        if exercise.isCurrent(.sugar) {
+            if caughtCubes >= 2 {
+                appModel.voice.speak(CoffeeExercise.Step.sugar.praise)
+                exercise.completeCurrentStep()
+            }
+        } else {
+            noteWrongPour(.sugar)
         }
     }
 
-    private func updateLiquid() {
-        guard let liquid else { return }
+    private func noteWrongPour(_ step: CoffeeExercise.Step) {
+        guard !wrongPourNoted.contains(step) else { return }
+        wrongPourNoted.insert(step)
+        exercise.recordWrongPick()
+        if let current = exercise.currentStep {
+            appModel.voice.speak("Oh — a little went in early. Let's do \(current.itemName) first.")
+        }
+    }
+
+    /// Drives the mug's OWN internal liquid mesh: level and color.
+    private func applyMugFill() {
+        guard let mugFill else { return }
         let water = Float(min(fillTicks[.water, default: 0], 84)) / 70
         let milk = Float(min(fillTicks[.milk, default: 0], 60)) / 50
-        let coffee = Float(min(caught[.coffee, default: 0], 28)) / 22
-        let sugar = Float(min(caught[.sugar, default: 0], 20)) / 16
+        let coffee = Float(min(caughtGrains, 28)) / 22
 
-        let level = min(0.36 * water + 0.08 * coffee + 0.02 * sugar + 0.16 * milk, 0.68)
-        guard level > 0.01 else { return }
-        let height = 0.11 * 0.62 * level
+        let level = min(0.5 * water + 0.12 * coffee + 0.24 * milk, 0.95)
+        mugFill.setFraction(level)
 
         let coffeeMix = min(coffee, 1)
         let milkMix = min(milk, 1)
@@ -593,18 +766,49 @@ struct CoffeeActivityView: View {
         var tint = base + (dark - base) * coffeeMix
         tint += (creamy - tint) * (milkMix * coffeeMix)
 
-        // Plain water reads translucent; coffee and milk make it opaque.
-        var material = PhysicallyBasedMaterial()
-        material.baseColor = .init(tint: UIColor(
-            red: CGFloat(tint.x), green: CGFloat(tint.y), blue: CGFloat(tint.z), alpha: 1
-        ))
-        material.roughness = .init(floatLiteral: 0.15)
-        let opacity = 0.5 + 0.5 * max(coffeeMix, milkMix)
-        material.blending = .transparent(opacity: .init(floatLiteral: opacity))
+        if let model = firstModel(in: mugFill.entity) {
+            var material = PhysicallyBasedMaterial()
+            material.baseColor = .init(tint: UIColor(
+                red: CGFloat(tint.x), green: CGFloat(tint.y), blue: CGFloat(tint.z), alpha: 1
+            ))
+            material.roughness = .init(floatLiteral: 0.1)
+            material.blending = .transparent(opacity: .init(floatLiteral: Float(0.55) + 0.45 * max(coffeeMix, milkMix)))
+            model.model?.materials = [material]
+        }
+    }
 
-        liquid.model?.materials = [material]
-        liquid.scale = [1, max(height, 0.001), 1]
-        liquid.position = mugPosition + [0, 0.012 + height / 2, 0]
+    /// Gentle steam wisps over the hot mug.
+    private func startSteam() {
+        steamTask?.cancel()
+        steamTask = Task {
+            var wisps: [ModelEntity] = []
+            for _ in 0..<4 {
+                var material = UnlitMaterial(color: UIColor(white: 1, alpha: 1))
+                material.blending = .transparent(opacity: 0.25)
+                let wisp = ModelEntity(mesh: .generateSphere(radius: 0.008), materials: [material])
+                wisp.isEnabled = false
+                root.addChild(wisp)
+                wisps.append(wisp)
+            }
+            var tick = 0
+            while !Task.isCancelled, exercise.phase == .brewing || exercise.phase == .finished {
+                for (index, wisp) in wisps.enumerated() {
+                    let phase = (Float(tick) / 60 + Float(index) / 4).truncatingRemainder(dividingBy: 1)
+                    wisp.isEnabled = true
+                    wisp.position = mugPosition + [
+                        sin(phase * 6 + Float(index)) * 0.012,
+                        0.13 + phase * 0.09,
+                        cos(phase * 5) * 0.008,
+                    ]
+                    wisp.scale = SIMD3(repeating: 1 - phase * 0.7)
+                }
+                tick += 1
+                try? await Task.sleep(for: .milliseconds(50))
+            }
+            for wisp in wisps {
+                wisp.removeFromParent()
+            }
+        }
     }
 
     private func updateStir() {
@@ -616,8 +820,7 @@ struct CoffeeActivityView: View {
             return
         }
         let offset = SIMD2(spoon.position.x - mugPosition.x, spoon.position.z - mugPosition.z)
-        let distance = simd_length(offset)
-        guard distance < 0.09, spoon.position.y < Self.tableTop + 0.24 else {
+        guard simd_length(offset) < 0.09, spoon.position.y < Self.tableTop + 0.24 else {
             lastStirAngle = nil
             return
         }
@@ -646,20 +849,21 @@ struct CoffeeActivityView: View {
         }
     }
 
-    /// Released items float where dropped by default; instead, glide them
-    /// gently back onto the table, upright — nothing can tip or be lost.
     private func settle(_ entity: Entity) {
         guard itemEntities[entity.name] != nil else { return }
+        if let spec = Self.specs.first(where: { $0.tagID == entity.name }),
+           let step = spec.step, lids[step] != nil {
+            closeLid(step)
+        }
         let clampedX = min(max(entity.position.x, -0.65), 0.65)
         let clampedZ = min(max(entity.position.z, -1.25), -0.55)
+        let target = SIMD3<Float>(clampedX, Self.tableTop, clampedZ)
+        // Travel time scales with distance so nothing teleports.
+        let duration = TimeInterval(min(0.3 + simd_length(entity.position - target) * 0.9, 0.85))
         entity.move(
-            to: Transform(
-                scale: entity.scale,
-                rotation: .init(),
-                translation: [clampedX, Self.tableTop, clampedZ]
-            ),
+            to: Transform(scale: entity.scale, rotation: .init(), translation: target),
             relativeTo: root,
-            duration: 0.45,
+            duration: duration,
             timingFunction: .easeOut
         )
     }
@@ -689,24 +893,28 @@ struct CoffeeActivityView: View {
             ghostTask = Task {
                 try? await Task.sleep(for: .seconds(1.5))
                 while !Task.isCancelled, exercise.currentStep == step, !heldIDs.contains(item.id) {
-                    await runGhostDemo(spec: spec, item: item, step: step)
+                    await runGhostDemo(item: item, step: step)
                     try? await Task.sleep(for: .seconds(1.6))
                 }
             }
         }
     }
 
-    private func runGhostDemo(spec: ItemSpec, item: Entity, step: CoffeeExercise.Step) async {
+    private func runGhostDemo(item: Entity, step: CoffeeExercise.Step) async {
         guard ghost == nil else { return }
         let clone = item.clone(recursive: true)
         clone.components.remove(InputTargetComponent.self)
         clone.components.remove(CollisionComponent.self)
         clone.components.remove(HoverEffectComponent.self)
         clone.components.remove(ManipulationComponent.self)
-        clone.components.set(OpacityComponent(opacity: 0.35))
+        clone.components.set(OpacityComponent(opacity: 0))
         clone.position = item.position
         root.addChild(clone)
         ghost = clone
+        for step in 1...5 {
+            clone.components.set(OpacityComponent(opacity: 0.07 * Float(step)))
+            try? await Task.sleep(for: .milliseconds(45))
+        }
 
         let original = Transform(scale: clone.scale, rotation: clone.orientation, translation: clone.position)
         let hover = SIMD3(mugPosition.x, mugPosition.y + 0.26, mugPosition.z + 0.02)
@@ -722,7 +930,7 @@ struct CoffeeActivityView: View {
                 try? await Task.sleep(for: .milliseconds(40))
             }
         } else {
-            let tilt = original.rotation * simd_quatf(angle: -1.0, axis: [1, 0, 0])
+            let tilt = original.rotation * simd_quatf(angle: -1.1, axis: [1, 0, 0])
             clone.move(
                 to: Transform(scale: original.scale, rotation: tilt, translation: hover),
                 relativeTo: root, duration: 0.4, timingFunction: .easeInOut
@@ -731,6 +939,10 @@ struct CoffeeActivityView: View {
         }
         clone.move(to: original, relativeTo: root, duration: 0.55, timingFunction: .easeInOut)
         try? await Task.sleep(for: .milliseconds(600))
+        for step in (0...4).reversed() {
+            clone.components.set(OpacityComponent(opacity: 0.07 * Float(step)))
+            try? await Task.sleep(for: .milliseconds(45))
+        }
         removeGhost()
     }
 
@@ -817,20 +1029,30 @@ struct CoffeeActivityView: View {
     }
 
     private func resetScene() {
-        caught = [:]
+        caughtGrains = 0
+        caughtCubes = 0
         fillTicks = [:]
         wrongPourNoted = []
         stirAccumulated = 0
         lastStirAngle = nil
-        for droplet in droplets {
-            droplet.entity.removeFromParent()
+        steamTask?.cancel()
+        for bit in flyingBits {
+            bit.entity.removeFromParent()
         }
-        droplets = []
-        liquid?.scale = [1, 0.001, 1]
-        liquid?.position = mugPosition + [0, 0.012, 0]
-        liquid?.model?.materials = [
-            SimpleMaterial(color: UIColor(red: 0.78, green: 0.83, blue: 0.87, alpha: 1), roughness: 0.2, isMetallic: false)
-        ]
+        flyingBits = []
+        mugFill?.setFraction(0)
+        sourceFills[.water]?.setFraction(1)
+        sourceFills[.milk]?.setFraction(1)
+        for (cube, home, parent) in cubeHomes {
+            cube.components.remove(PhysicsBodyComponent.self)
+            cube.components.remove(PhysicsMotionComponent.self)
+            cube.components.remove(CollisionComponent.self)
+            cube.setParent(parent)
+            cube.transform = home
+        }
+        for step in [CoffeeExercise.Step.coffee, .sugar] {
+            closeLid(step)
+        }
         for spec in Self.specs {
             if let item = itemEntities[spec.tagID] {
                 item.move(

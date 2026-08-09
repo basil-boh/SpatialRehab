@@ -10,14 +10,19 @@ final class VoiceGuide {
 
     private let synthesizer = AVSpeechSynthesizer()
 
-    func speak(_ text: String) {
+    /// Queues by default so sentences finish naturally; pass
+    /// `interrupting: true` only when the new line must land immediately.
+    func speak(_ text: String, interrupting: Bool = false) {
         guard isEnabled else { return }
-        synthesizer.stopSpeaking(at: .immediate)
+        if interrupting {
+            synthesizer.stopSpeaking(at: .word)
+        }
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-SG")
             ?? AVSpeechSynthesisVoice(language: "en-GB")
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.88
         utterance.pitchMultiplier = 1.02
+        utterance.preUtteranceDelay = 0.15
         synthesizer.speak(utterance)
     }
 
