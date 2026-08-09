@@ -117,6 +117,14 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Fixed
 
+- **"Who am I?" no longer spawns duplicate card windows** (user report: "it shouldnt be
+  able to create multiple windows of the same thing"). The name-card scene changed from
+  `WindowGroup(id:)` to `Window("Who am I?", id:)` — on visionOS every `openWindow` on a
+  window *group* creates another instance, while a `Window` is single-instance and the
+  same call just brings the existing card forward. Pressing the button while the card is
+  already up now refocuses it (and re-presents the face side for reorientation) instead
+  of stacking copies.
+
 - **Family tree connector lines never rendered** (user report with screenshot: "there is no
   lines connecting the family tree"). The tile-level `anchorPreference` was *replacing* the
   avatar anchors registered inside the same subtree — `anchorPreference` overwrites

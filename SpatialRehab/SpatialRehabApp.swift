@@ -92,7 +92,11 @@ struct SpatialRehabApp: App {
         // “Who am I?” name card — opened directly from the persistent `WhoAmIButton`, no
         // separate summon screen; `whoAmISession` is shared into both of that button's
         // hosts above so it can call `present()` before opening this.
-        WindowGroup(id: SceneID.nameCard) {
+        // A `Window`, not a `WindowGroup`: there is exactly one identity, so there must
+        // be exactly one card — with a group, every button press spawned another copy
+        // (user report, 2026-08-09); openWindow on a Window brings the existing one
+        // forward instead.
+        Window("Who am I?", id: SceneID.nameCard) {
             NameCardView(session: whoAmISession)
                 // For the card's "Show me the way home" button, which starts the
                 // Remember the Way activity via `AppModel.startWayHome`.
