@@ -7,6 +7,36 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Added
+
+- **Presentation deck checked into the repo** at `deck/`, so the whole team can edit it rather
+  than only the person who generated it. 12 slides: the problem, errorless learning, the
+  product, the 8-game baseline battery, Remember the Way, the name card, the caregiver
+  dashboard, the recommendation engine, the evidence base, the team, and open/close slides.
+  - `deck/template.html` is the source. `deck/build.py` (standard library only) inlines the
+    backgrounds as base64 data URIs and writes `deck/spatialrehab-deck.html`. The built page is
+    committed too, so anyone can open it without running anything. **Edit the template, not the
+    built file** — the latter is regenerated and overwritten.
+  - Backgrounds have to be embedded rather than linked: the deck is published as a Claude
+    Artifact, which runs under a policy blocking every external host, so a
+    `url(backgrounds/x.jpg)` reference silently fails to load there.
+  - `deck/bake.py` (needs Pillow) crops, blurs, and grades the source photographs per
+    `deck/photos.json`. The baked results in `deck/backgrounds/` are committed, so building the
+    deck does not require this step. Blur is baked in rather than applied via CSS so that a
+    screenshot matches the live page exactly. Originals download into untracked `deck/.sources/`.
+  - Slide 6 (Remember the Way) animates on entry: blocks fade in, the route draws itself from
+    Start to Home via an SVG mask wipe, the home pin lands, then a marker walks the route on a
+    loop. Disabled under `prefers-reduced-motion`.
+  - Photographs are from Unsplash under its free licence, each photographer credited on the
+    closing slide. Content deliberately mirrors the root `README.md`: logo from
+    `assets/logo.svg`, `#007AFF` accent, the README's own tagline and closing line, and its
+    "hackathon prototype, not a medical device" disclaimer on the evidence slide.
+  - One deliberate divergence from `README.md`: the team slide lists Nicole as "Clinical
+    Research & Product Management" per a direct request, where `README.md` and `AGENTS.md`
+    still say "Clinical Research & Content".
+  - Editing workflow and slide anatomy are documented in `deck/README.md`.
+
+
 ### Changed
 
 - **Deployment target locked to visionOS 26.2**: `project.yml` (`options.deploymentTarget.visionOS`

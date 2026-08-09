@@ -1,0 +1,82 @@
+# Presentation deck
+
+The SpatialRehab design/pitch deck: 12 slides, built as a single self-contained HTML page.
+
+**Published (private) copy:** https://claude.ai/code/artifact/d68cc6a0-2654-4964-a946-559e020171a4
+
+## Just want to look at it?
+
+Open `spatialrehab-deck.html` in any browser. It is fully self-contained — every photograph is
+embedded in the file — so it works offline, with no server and no build step.
+
+Navigate with the arrow keys or spacebar, the chevrons at the edges, or the dots along the
+bottom. `#6` on the end of the URL opens slide 6 directly, which is handy mid-presentation.
+
+## Editing
+
+Edit **`template.html`**, never `spatialrehab-deck.html` — the latter is generated and your
+changes to it will be overwritten. Then:
+
+```bash
+python3 deck/build.py      # standard library only, no install needed
+```
+
+and reopen `spatialrehab-deck.html`.
+
+All twelve slides live at the bottom of `template.html` as plain `<section class="slide">`
+blocks in presentation order, so changing wording needs no CSS knowledge. The styling sits in
+one `<style>` block at the top.
+
+## How a slide is put together
+
+Each slide stacks three layers:
+
+```html
+<section data-scrim="strong" class="slide">
+  <div class="photo ph-wood3"></div>   <!-- blurred background photograph -->
+  <div class="scrim"></div>            <!-- white wash that keeps text readable -->
+  <div class="wrap"> ... </div>        <!-- the actual content -->
+</section>
+```
+
+`data-scrim` picks how heavy the wash is. Omit it for the default (a left-weighted wash, for
+slides with copy on the left), or use `strong` for a darker or busier photograph, `centre` for
+centred slides, `dark` for the one dark slide. If text ever looks washed out or hard to read,
+that attribute is the dial to turn.
+
+Slide 6 ("Remember the Way") animates: the blocks fade in, the route draws itself from Start to
+Home, the home pin lands, then a dot walks the route on a loop. It replays whenever you return
+to the slide, and is disabled automatically for anyone using reduced-motion.
+
+## Changing a photograph
+
+Backgrounds are already baked into `backgrounds/` and committed, so the step below is only
+needed if you want a *different* photo or a different look for one.
+
+1. Edit the entry in `photos.json` — `source` is the image URL, and `blur` / `brightness` /
+   `saturation` / `warmth` control the grading. Lower `blur` for a sharper photo.
+2. Run the bake, then rebuild:
+
+```bash
+python3 -m pip install Pillow   # once
+python3 deck/bake.py
+python3 deck/build.py
+```
+
+`bake.py` downloads each original into `deck/.sources/` (untracked, re-downloadable) and writes
+the cropped, blurred, graded result into `backgrounds/`. Commit the changed `backgrounds/*.jpg`
+along with your edit.
+
+Photographs are from Unsplash under its free licence. Every photographer is credited by name on
+the closing slide — **keep that list in sync** if you swap a photo.
+
+## House style
+
+Two conventions the deck currently follows, worth preserving:
+
+- **Content matches the root `README.md`.** The logo is `assets/logo.svg`, the accent is
+  `#007AFF`, the title and closing lines are the README's own, and the "hackathon prototype, not
+  a medical device" disclaimer appears on the evidence slide. Re-read the root README before
+  rewriting slide copy.
+- **No em dashes**, and no copy that implies functionality the app does not have yet. Sample
+  figures in the charts are labelled as illustrative.

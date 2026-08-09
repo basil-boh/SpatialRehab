@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Re-bake the slide backgrounds from their original photographs.
+
+Only needed when changing a photo or its grading — the baked results in
+backgrounds/ are committed, so building the deck does not require this script.
+
+For each entry in photos.json: download the original if it is not already in
+.sources/ (untracked), crop it to the slide aspect, blur it, and grade it.
+Blurring here rather than in CSS keeps the published page cheap to render and
+makes a screenshot look exactly like the live deck.
+
+Requires Pillow:  python3 -m pip install Pillow
+Then:             python3 deck/bake.py && python3 deck/build.py
+"""
+import json
+import os
+import urllib.request
+
+from PIL import Image, ImageEnhance, ImageFilter
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SOURCES = os.path.join(HERE, ".sources")
+BACKGROUNDS = os.path.join(HERE, "backgrounds")
+UA = {"User-Agent": "Mozilla/5.0"}
+WIDTH, HEIGHT = 1500, 940
+
+os.makedirs(SOURCES, exist_ok=True)
+os.makedirs(BACKGROUNDS, exist_ok=True)
+
+photos = json.load(open(os.path.join(HERE, "photos.json")))
+total = 0
+
+for tag, spec in photos.items():
+    original = os.path.join(SOURCES, tag + ".jpg")
+    if not os.path.exists(original):
+        url = spec["source"] + "?w=1900&q=80&fm=jpg"
+        urllib.request.urlretrieve(urllib.request.Request(url, headers=UA).full_url, original)
+
+    im = Image.open(original).convert("RGB")
+
+    # cover-crop to the slide aspect, centred
+    scale = max(WIDTH / im.width, HEIGHT / im.height)
+    im = im.resize((round(im.width * scale), round(im.height * scale)), Image.LANCZOS)
+    left, top = (im.width - WIDTH) // 2, (im.height - HEIGHT) // 2
+    im = im.crop((left, top, left + WIDTH, top + HEIGHT))
+
+    im = im.filter(ImageFilter.GaussianBlur(spec["blur"]))
+    im = ImageEnhance.Brightness(im).enhance(spec["brightness"])
+    im = ImageEnhance.Color(im).enhance(spec["saturation"])
+
+    # warmth: lift red, drop blue, so the whole deck sits in one register
+    warmth = spec["warmth"]
+    if warmth != 1.0:
+        r, g, b = im.split()
+        r = r.point(lambda v: min(255, int(v * warmth)))
+        b = b.point(lambda v: int(v / warmth))
+        im = Image.merge("RGB", (r, g, b))
+
+    dest = os.path.join(BACKGROUNDS, tag + ".jpg")
+    im.save(dest, quality=60, optimize=True, progressive=True)
+    size = os.path.getsize(dest)
+    total += size
+    print("%-9s slide %-2d %6.1f KB   %s" % (tag, spec["slide"], size / 1024, spec["credit"]))
+
+print("total              %6.1f KB across %d frames" % (total / 1024, len(photos)))

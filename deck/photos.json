@@ -1,0 +1,122 @@
+{
+  "wood3": {
+    "slide": 1,
+    "where": "Title",
+    "credit": "Suhyeon Choi",
+    "source": "https://images.unsplash.com/photo-1583329550487-0fa300a4cd1a",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 1.18,
+    "warmth": 1.085
+  },
+  "senior1": {
+    "slide": 2,
+    "where": "The problem",
+    "credit": "Henry Fraczek",
+    "source": "https://images.unsplash.com/photo-1762126242240-cafa01fb1351",
+    "blur": 2,
+    "brightness": 1.03,
+    "saturation": 1.14,
+    "warmth": 1.06
+  },
+  "care2": {
+    "slide": 3,
+    "where": "Errorless learning",
+    "credit": "Alexas_Fotos",
+    "source": "https://images.unsplash.com/photo-1627752885954-e6956866dcbf",
+    "blur": 2,
+    "brightness": 1.22,
+    "saturation": 1.06,
+    "warmth": 1.03
+  },
+  "wood1": {
+    "slide": 4,
+    "where": "The product",
+    "credit": "bady abbas",
+    "source": "https://images.unsplash.com/photo-1600623050499-84929aad17c9",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 1.02,
+    "warmth": 1.0
+  },
+  "wood2": {
+    "slide": 5,
+    "where": "Baseline battery",
+    "credit": "Mathilde Langevin",
+    "source": "https://images.unsplash.com/photo-1612196808827-9ff25cb6137a",
+    "blur": 2,
+    "brightness": 1.01,
+    "saturation": 1.16,
+    "warmth": 1.075
+  },
+  "night1": {
+    "slide": 6,
+    "where": "Remember the Way",
+    "credit": "Israel Sundseth",
+    "source": "https://images.unsplash.com/uploads/1413259835094dcdeb9d3/6e609595",
+    "blur": 3,
+    "brightness": 0.94,
+    "saturation": 1.05,
+    "warmth": 1.0
+  },
+  "album0": {
+    "slide": 7,
+    "where": "Who am I?",
+    "credit": "Laura Fuhrman",
+    "source": "https://images.unsplash.com/photo-1528569937393-ee892b976859",
+    "blur": 2,
+    "brightness": 1.16,
+    "saturation": 1.05,
+    "warmth": 1.03
+  },
+  "desk3": {
+    "slide": 8,
+    "where": "Caregiver dashboard",
+    "credit": "Micha\u0142 Parzuchowski",
+    "source": "https://images.unsplash.com/photo-1558174685-430919a96c8d",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 1.02,
+    "warmth": 1.0
+  },
+  "park3": {
+    "slide": 9,
+    "where": "Personalisation",
+    "credit": "Alexandr K",
+    "source": "https://images.unsplash.com/photo-1690065587467-d0e0f6d778de",
+    "blur": 2,
+    "brightness": 1.1,
+    "saturation": 1.02,
+    "warmth": 1.03
+  },
+  "desk2": {
+    "slide": 10,
+    "where": "Evidence",
+    "credit": "Mikey Harris",
+    "source": "https://images.unsplash.com/photo-1591382696684-38c427c7547a",
+    "blur": 2,
+    "brightness": 1.04,
+    "saturation": 1.04,
+    "warmth": 1.02
+  },
+  "clinic3": {
+    "slide": 11,
+    "where": "Team",
+    "credit": "Amy Vosters",
+    "source": "https://images.unsplash.com/photo-1762625570087-6d98fca29531",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 1.08,
+    "warmth": 1.05
+  },
+  "street0": {
+    "slide": 12,
+    "where": "Close",
+    "credit": "Nikola Knezevic",
+    "source": "https://images.unsplash.com/photo-1616113364365-b6013f3dad25",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 1.02,
+    "warmth": 1.0
+  }
+}
