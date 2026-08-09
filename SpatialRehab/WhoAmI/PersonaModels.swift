@@ -39,6 +39,8 @@ enum DemoPersona {
             birthday: calendarDate(year: 1945, month: 8, day: 3),
             hasGreetingVideo: false,
             videoLine: nil,
+            // Placeholder clip — swap for real footage of Ah Pek when it exists.
+            portraitVideoName: "ahpek_portrait",
             childrenIDs: []
         ),
         FamilyMember(
@@ -132,6 +134,10 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     let hasGreetingVideo: Bool
     let videoLine: String?
     var videoFileName: String? = nil
+    /// Short silent clip that loops forever in the family tree so the portrait is alive.
+    /// Kept separate from `videoFileName` (the spoken greeting played on pinch) because
+    /// the two have opposite requirements: this one is muted, seamless, and neutral.
+    var portraitVideoName: String? = nil
     /// Asset-catalog portrait; falls back to `emoji` wherever no photo exists yet.
     var photoName: String? = nil
     /// Shown on the card face so a disoriented person can read where home is.
@@ -156,6 +162,12 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     var videoURL: URL? {
         guard let videoFileName else { return nil }
         return Bundle.main.url(forResource: videoFileName, withExtension: "mov")
+    }
+
+    /// Bundled looping portrait clip, when one exists for this member.
+    var portraitVideoURL: URL? {
+        guard let portraitVideoName else { return nil }
+        return Bundle.main.url(forResource: portraitVideoName, withExtension: "mov")
     }
 
     /// Whole years since `birthday`, for the "78 years young" chip on the card face.

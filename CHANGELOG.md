@@ -52,6 +52,38 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   patient. Also restructured `tileReleased` so the tidy-settle fallbacks always run even while
   a turn is resolving — a tile released mid-AI-round now lands on the felt instead of hanging
   in the air where the pinch let go (game actions stay gated until it's the patient's turn).
+- **`feature/moving-portraits` build failure**: the committed `SpatialRehab.xcodeproj` referenced
+  `SpatialRehab/hand gestures.md`, a local notes file that was never committed — xcodegen globs
+  everything under `SpatialRehab/`, so whoever regenerated the project had it in their tree, and
+  every other machine died at the copy-resources step (`lstat … No such file or directory`).
+  Regenerated the project from the actual tree. Also removed **147 Finder-duplicate assets**
+  (`* 2.usdz` / `* 2.json`, ~12 MB) that came in with the same commit — every one verified
+  byte-identical to its base file and referenced from no code before deletion.
+
+### Added
+
+- **Moving portraits in the family tree ("Harry Potter" effect)** — a relative's avatar can now
+  be a short clip that loops silently and endlessly inside the circular tile, instead of a still
+  photo. New `WhoAmI/MovingPortraitView.swift`: `AVQueuePlayer` + `AVPlayerLooper` for a seamless
+  gapless loop, drawn through a bare `AVPlayerLayer` (not `VideoPlayer`, which drags in playback
+  controls and its own tap handling on top of the tile's Button). The circle is cut by the layer's
+  own `cornerRadius` rather than a SwiftUI `clipShape`, which does not reliably mask hosted layers.
+  New `FamilyMember.portraitVideoName` / `.portraitVideoURL`, kept separate from `videoFileName`
+  because the two clips have opposite requirements: the portrait loop is muted, seamless, and
+  neutral, while the greeting is spoken and plays once on pinch.
+  - Deliberately silent and neutral: six faces mouthing words at once would unsettle someone with
+    dementia rather than comfort them. Motion is decorative; the greeting stays behind the pinch.
+  - Cheap by construction: loops are muted, pause on `onDisappear`
+    (the tree is conditionally constructed in `NameCardView`, so a flip genuinely tears it down)
+    and pause when `scenePhase` leaves `.active`. Under Reduce Motion no player is created at all
+    and the still face shows instead.
+  - The still photo/emoji stays layered beneath every moving portrait, so a tile is never blank
+    while the first frame decodes. Members without a clip keep their still face, so the tree can
+    mix moving and still portraits while footage is still being gathered.
+- **Placeholder portrait clip for Ah Pek** — `WhoAmI/ahpek_portrait.mov` (544×544, H.264, 6.0s,
+  audio stripped, 1.6 MB), remuxed losslessly from a generated square clip. Stand-in only; swap
+  for real footage. Bundled via the `SpatialRehab` folder source rule, landing in the Resources
+  build phase.
 
 ### Changed
 

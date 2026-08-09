@@ -374,23 +374,14 @@ struct FamilyTreeView: View {
     private func avatar(for member: FamilyMember, generation: Generation, isSelf: Bool) -> some View {
         let size = generation.avatarSize
         Group {
-            if let photoName = member.photoName {
-                Image(photoName)
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                ZStack {
-                    LinearGradient(
-                        colors: [
-                            Color.orange.opacity(isSelf ? 0.35 : 0.18),
-                            Color.yellow.opacity(0.25),
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    Text(member.emoji)
-                        .font(.system(size: size * 0.46))
+            // A relative with a portrait clip breathes; everyone else stays a still face,
+            // so the tree can mix the two while footage is still being gathered.
+            if let portraitURL = member.portraitVideoURL {
+                MovingPortraitView(url: portraitURL) {
+                    avatarStill(for: member, size: size, isSelf: isSelf)
                 }
+            } else {
+                avatarStill(for: member, size: size, isSelf: isSelf)
             }
         }
         .frame(width: size, height: size)
@@ -422,6 +413,31 @@ struct FamilyTreeView: View {
         .shadow(color: isSelf ? .green.opacity(0.3) : .orange.opacity(0.12), radius: isSelf ? 10 : 5, y: 2)
         .transformAnchorPreference(key: TileAnchorKey.self, value: .bounds) { dict, anchor in
             dict[avatarKey(member.id)] = anchor
+        }
+    }
+
+    /// The unmoving face: asset-catalog photo when one exists, otherwise the emoji on a
+    /// warm gradient. Also serves as the layer beneath a moving portrait, so a tile is
+    /// never blank while the clip's first frame decodes.
+    @ViewBuilder
+    private func avatarStill(for member: FamilyMember, size: CGFloat, isSelf: Bool) -> some View {
+        if let photoName = member.photoName {
+            Image(photoName)
+                .resizable()
+                .scaledToFill()
+        } else {
+            ZStack {
+                LinearGradient(
+                    colors: [
+                        Color.orange.opacity(isSelf ? 0.35 : 0.18),
+                        Color.yellow.opacity(0.25),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                Text(member.emoji)
+                    .font(.system(size: size * 0.46))
+            }
         }
     }
 }
