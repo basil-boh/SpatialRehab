@@ -19,6 +19,9 @@ enum DemoPersona {
         birthday: calendarDate(year: 1948, month: 3, day: 12),
         hasGreetingVideo: false,
         videoLine: nil,
+        photoName: "whoami-owner",
+        homeAddress: "Blk 5 Banda Street #08-42, Singapore 050005",
+        occupation: "Retired schoolteacher · 退休教师",
         childrenIDs: []
     )
 
@@ -126,6 +129,12 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     let hasGreetingVideo: Bool
     let videoLine: String?
     var videoFileName: String? = nil
+    /// Asset-catalog portrait; falls back to `emoji` wherever no photo exists yet.
+    var photoName: String? = nil
+    /// Shown on the card face so a disoriented person can read where home is.
+    var homeAddress: String? = nil
+    /// Life's work, for reminiscence — shown on the card face when known.
+    var occupation: String? = nil
     let childrenIDs: [ID]
 
     var bilingualRelation: String {
@@ -136,6 +145,12 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     var videoURL: URL? {
         guard let videoFileName else { return nil }
         return Bundle.main.url(forResource: videoFileName, withExtension: "mov")
+    }
+
+    /// Whole years since `birthday`, for the "78 years young" chip on the card face.
+    var age: Int? {
+        guard let birthday else { return nil }
+        return Calendar.current.dateComponents([.year], from: birthday, to: .now).year
     }
 
     var formattedBirthday: String? {

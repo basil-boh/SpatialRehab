@@ -14,7 +14,7 @@ struct GreetingVideoView: View {
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .strokeBorder(.orange.opacity(0.4), lineWidth: 2)
+                    .strokeBorder(.orange.opacity(0.4), lineWidth: 1)
             }
             .onAppear {
                 player.replaceCurrentItem(with: AVPlayerItem(url: url))
@@ -33,19 +33,38 @@ struct GreetingVideoView: View {
     }
 }
 
-/// Floating NRIC-style card: face side, family flip side, and greeting video turn.
+/// Floating identity card: portrait face side, family flip side, and greeting video turn.
+///
+/// Design notes: the card chrome is layered glass — system material, then a warm amber
+/// wash, then a hairline gradient border — so it reads as a physical keepsake rather than
+/// a flat panel. Entrances are choreographed (portrait first, then text rows, then
+/// actions, ~60 ms apart) and a one-shot light sheen sweeps the card when it presents;
+/// both are skipped under Reduce Motion. All timings stay slow and springy on purpose:
+/// this card is for a person with dementia, so nothing on it should ever startle.
 struct NameCardView: View {
     @Bindable var session: WhoAmISessionModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// Drives the staggered content reveal on the face side.
+    @State private var revealed = false
+    /// One-shot sheen position: -1 parked off the leading edge, 1 off the trailing edge.
+    @State private var sheenPhase: CGFloat = -1
+    /// Gentle breathing glow behind the portrait.
+    @State private var portraitGlow = false
 
     private var owner: FamilyMember { session.owner }
+
+    private static let cardShape = RoundedRectangle(cornerRadius: 32, style: .continuous)
 
     var body: some View {
         ZStack {
             if session.playingMemberID != nil {
                 greetingTurn
                     .transition(.asymmetric(
-                        insertion: .scale(scale: 0.92).combined(with: .opacity),
+                        insertion: .scale(scale: 0.94).combined(with: .opacity),
                         removal: .opacity
                     ))
             } else if session.cardSide == .face {
@@ -61,109 +80,353 @@ struct NameCardView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(24)
         .background {
-            RoundedRectangle(cornerRadius: 32, style: .continuous)
-                .fill(.ultraThinMaterial)
+            cardChrome
         }
+        .overlay { sheen }
+        .clipShape(Self.cardShape)
         .overlay {
-            RoundedRectangle(cornerRadius: 32, style: .continuous)
+            Self.cardShape
                 .strokeBorder(
                     LinearGradient(
-                        colors: [.orange.opacity(0.5), .yellow.opacity(0.35), .orange.opacity(0.5)],
+                        colors: [
+                            .white.opacity(0.55),
+                            .orange.opacity(0.35),
+                            .white.opacity(0.12),
+                            .orange.opacity(0.45),
+                        ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ),
-                    lineWidth: 2
+                    lineWidth: 1
                 )
         }
-        .shadow(color: .orange.opacity(session.phase == .presenting ? 0.55 : 0.22), radius: session.phase == .presenting ? 36 : 18)
+        .shadow(
+            color: .orange.opacity(session.phase == .presenting ? 0.45 : 0.18),
+            radius: session.phase == .presenting ? 40 : 22,
+            y: 8
+        )
         .scaleEffect(session.phase == .presenting ? 1.04 : (session.phase == .puttingAway ? 0.55 : 1.0))
         .opacity(session.phase == .puttingAway ? 0.15 : 1.0)
         .offset(y: session.phase == .puttingAway ? 80 : 0)
         .animation(.spring(response: 0.55, dampingFraction: 0.82), value: session.phase)
         .animation(.easeInOut(duration: 0.45), value: session.playingMemberID)
         .animation(.easeInOut(duration: 0.45), value: session.cardSide)
+        .onAppear(perform: beginPresentation)
         .onChange(of: session.isCardWindowOpen) { _, open in
             if !open {
-                dismissWindow(id: "name-card")
+                dismissWindow(id: SceneID.nameCard)
             }
         }
         .onDisappear {
             // User may close the window with the system control; keep session in sync.
             if session.isCardWindowOpen, session.phase != .puttingAway {
                 session.isCardWindowOpen = false
-                session.phase = .nest
-                session.glowProgress = 0
+                session.phase = .closed
                 session.playingMemberID = nil
             }
         }
     }
 
-    private var faceSide: some View {
-        VStack(spacing: 22) {
-            HStack {
-                Text("NAME CARD")
-                    .font(.caption.weight(.semibold))
-                    .tracking(1.5)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text("身份证式")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+    // MARK: - Card chrome
+
+    /// Glass, then a warm dawn wash rising from the bottom-leading corner, then a huge
+    /// faint watermark of the app's map motif — three quiet layers that read as depth.
+    private var cardChrome: some View {
+        ZStack {
+            Self.cardShape.fill(.ultraThinMaterial)
+
+            RadialGradient(
+                colors: [.orange.opacity(0.16), .clear],
+                center: .bottomLeading,
+                startRadius: 40,
+                endRadius: 520
+            )
+
+            RadialGradient(
+                colors: [.yellow.opacity(0.10), .clear],
+                center: .topTrailing,
+                startRadius: 20,
+                endRadius: 420
+            )
+
+            Image(systemName: "person.text.rectangle")
+                .font(.system(size: 340, weight: .ultraLight))
+                .foregroundStyle(.black.opacity(0.12))
+                .rotationEffect(.degrees(-8))
+                .offset(x: 130, y: 120)
+                .accessibilityHidden(true)
+        }
+    }
+
+    /// One-shot diagonal light sweep when the card presents. Purely decorative,
+    /// so it is skipped entirely under Reduce Motion.
+    @ViewBuilder
+    private var sheen: some View {
+        if !reduceMotion {
+            GeometryReader { geo in
+                LinearGradient(
+                    colors: [.clear, .white.opacity(0.28), .clear],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(width: geo.size.width * 0.45)
+                .rotationEffect(.degrees(18))
+                .offset(x: sheenPhase * geo.size.width * 1.4)
+                .blendMode(.plusLighter)
             }
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
 
-            HStack(alignment: .center, spacing: 28) {
-                ZStack {
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                colors: [.orange.opacity(0.35), .yellow.opacity(0.12)],
-                                center: .center,
-                                startRadius: 10,
-                                endRadius: 90
-                            )
-                        )
-                        .frame(width: 150, height: 150)
-                        .overlay {
-                            Circle()
-                                .strokeBorder(.orange.opacity(0.5), lineWidth: 3)
-                        }
-                        .shadow(color: .orange.opacity(0.35), radius: 16)
-                    Text(owner.emoji)
-                        .font(.system(size: 72))
-                }
+    private func beginPresentation() {
+        guard !revealed else { return }
+        if reduceMotion {
+            revealed = true
+            return
+        }
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.85).delay(0.15)) {
+            revealed = true
+        }
+        withAnimation(.easeInOut(duration: 1.1).delay(0.45)) {
+            sheenPhase = 1.6
+        }
+        withAnimation(.easeInOut(duration: 3.2).repeatForever(autoreverses: true).delay(0.8)) {
+            portraitGlow = true
+        }
+    }
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(owner.englishName)
-                        .font(.system(size: 34, weight: .semibold))
-                    Text(owner.chineseName)
-                        .font(.system(size: 28, weight: .medium))
-                        .foregroundStyle(.secondary)
-                    if let birthday = owner.formattedBirthday {
-                        Label(birthday, systemImage: "gift.fill")
-                            .font(.title3)
-                            .foregroundStyle(.orange)
-                            .padding(.top, 4)
-                    }
-                    Text("This is you")
-                        .font(.callout)
-                        .foregroundStyle(.tertiary)
+    /// Shared stagger for the face-side reveal: each row fades up a beat after the last.
+    private func revealStyle<Content: View>(_ content: Content, step: Int) -> some View {
+        content
+            .opacity(revealed ? 1 : 0)
+            .offset(y: revealed ? 0 : 14)
+            .animation(
+                reduceMotion
+                    ? nil
+                    : .spring(response: 0.55, dampingFraction: 0.85).delay(0.12 + Double(step) * 0.06),
+                value: revealed
+            )
+    }
+
+    // MARK: - Face side
+
+    private var faceSide: some View {
+        VStack(spacing: 20) {
+            revealStyle(header, step: 0)
+            revealStyle(hairline, step: 0)
+
+            HStack(alignment: .center, spacing: 30) {
+                revealStyle(portrait, step: 1)
+
+                VStack(alignment: .leading, spacing: 12) {
+                    revealStyle(
+                        Text("THIS IS YOU · 这是您")
+                            .font(.footnote.weight(.semibold))
+                            .tracking(2)
+                            .foregroundStyle(.orange),
+                        step: 2
+                    )
+
+                    revealStyle(
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(owner.englishName)
+                                .font(.system(size: 38, weight: .bold, design: .rounded))
+                            Text(owner.chineseName)
+                                .font(.system(size: 28, weight: .medium))
+                                .foregroundStyle(.secondary)
+                        },
+                        step: 3
+                    )
+
+                    revealStyle(detailChips, step: 4)
                 }
                 Spacer(minLength: 0)
             }
 
-            Spacer(minLength: 8)
+            revealStyle(homeAndWork, step: 5)
+
+            Spacer(minLength: 4)
+
+            revealStyle(hairline, step: 6)
+            revealStyle(actions, step: 6)
+        }
+        .padding(28)
+        // The window is sized for the family tree; cap the face so its content stays
+        // a composed card rather than stretching edge to edge.
+        .frame(maxWidth: 700)
+    }
+
+    /// ID-card style data zone: where home is, and what their life's work was.
+    @ViewBuilder
+    private var homeAndWork: some View {
+        if owner.homeAddress != nil || owner.occupation != nil {
+            VStack(spacing: 0) {
+                if let address = owner.homeAddress {
+                    detailRow(icon: "house.fill", label: "HOME · 住址", value: address)
+                }
+                if owner.homeAddress != nil, owner.occupation != nil {
+                    Divider()
+                        .overlay(.orange.opacity(0.15))
+                        .padding(.leading, 64)
+                }
+                if let occupation = owner.occupation {
+                    detailRow(icon: "briefcase.fill", label: "LIFE'S WORK · 职业", value: occupation)
+                }
+            }
+            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .strokeBorder(.orange.opacity(0.2), lineWidth: 1)
+            }
+        }
+    }
+
+    private func detailRow(icon: String, label: String, value: String) -> some View {
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .font(.body)
+                .foregroundStyle(.orange)
+                .frame(width: 36, height: 36)
+                .background(.orange.opacity(0.12), in: .circle)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.caption2.weight(.semibold))
+                    .tracking(1.5)
+                    .foregroundStyle(.secondary)
+                Text(value)
+                    .font(.callout.weight(.medium))
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+    }
+
+    private var header: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Label {
+                Text("MEMORY CARD")
+                    .font(.footnote.weight(.semibold))
+                    .tracking(2.5)
+            } icon: {
+                Image(systemName: "sparkles")
+                    .font(.footnote)
+            }
+            .foregroundStyle(.secondary)
+
+            Spacer()
+
+            Text("记忆卡")
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(.orange.opacity(0.85))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 5)
+                .background(.orange.opacity(0.1), in: .capsule)
+        }
+    }
+
+    private var hairline: some View {
+        LinearGradient(
+            colors: [.orange.opacity(0.4), .orange.opacity(0.08), .clear],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: 1)
+    }
+
+    private var portrait: some View {
+        Group {
+            if let photoName = owner.photoName {
+                Image(photoName)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                ZStack {
+                    RadialGradient(
+                        colors: [.orange.opacity(0.35), .yellow.opacity(0.12)],
+                        center: .center,
+                        startRadius: 10,
+                        endRadius: 110
+                    )
+                    Text(owner.emoji)
+                        .font(.system(size: 80))
+                }
+            }
+        }
+        .frame(width: 220, height: 264)
+        .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 26, style: .continuous)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [.white.opacity(0.7), .orange.opacity(0.5)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1.5
+                )
+        }
+        .shadow(color: .orange.opacity(portraitGlow ? 0.38 : 0.2), radius: portraitGlow ? 26 : 16, y: 6)
+        .accessibilityLabel("Your photo")
+    }
+
+    private var detailChips: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let birthday = owner.formattedBirthday {
+                chip(icon: "gift.fill", text: birthday)
+            }
+            if let age = owner.age {
+                chip(icon: "heart.fill", text: "\(age) years young · \(age)岁")
+            }
+        }
+    }
+
+    private func chip(icon: String, text: String) -> some View {
+        Label {
+            Text(text)
+                .font(.callout.weight(.medium))
+        } icon: {
+            Image(systemName: icon)
+                .font(.footnote)
+                .foregroundStyle(.orange)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(.thinMaterial, in: .capsule)
+        .overlay {
+            Capsule().strokeBorder(.orange.opacity(0.25), lineWidth: 1)
+        }
+    }
+
+    /// "Show me the way home" is the one prominent action on the card — for a person
+    /// who opened this because they feel lost, that is the button that matters most.
+    private var actions: some View {
+        VStack(spacing: 12) {
+            Button {
+                Task { await showWayHome() }
+            } label: {
+                Label("Show me the way home · 带我回家", systemImage: "house.fill")
+                    .font(.title3.weight(.semibold))
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+            .tint(.orange)
+            .controlSize(.large)
+            .disabled(appModel.phase == .openingActivity)
 
             HStack(spacing: 16) {
                 Button {
                     session.flipToFamily()
                 } label: {
-                    Label("Family", systemImage: "person.3.fill")
+                    Label("My Family · 家人", systemImage: "person.3.fill")
                         .font(.title3.weight(.medium))
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
-                .tint(.orange)
                 .controlSize(.large)
 
                 Button {
@@ -178,30 +441,49 @@ struct NameCardView: View {
                 .controlSize(.large)
             }
         }
-        .padding(28)
     }
+
+    /// Starts the Remember the Way activity and retracts the card. If the person is
+    /// already in (or entering) the activity — the card can be summoned from its control
+    /// panel — just put the card away rather than restarting their route.
+    private func showWayHome() async {
+        if appModel.phase == .inActivity || appModel.phase == .openingActivity {
+            session.putAway()
+            return
+        }
+        session.putAway()
+        await appModel.startWayHome(openImmersiveSpace: openImmersiveSpace, dismissWindow: dismissWindow)
+    }
+
+    // MARK: - Greeting turn
 
     private var greetingTurn: some View {
         let member = session.playingMember
-        return VStack(spacing: 20) {
-            Text(member?.hasGreetingVideo == true ? "Greeting" : "Family")
-                .font(.caption.weight(.semibold))
-                .tracking(1.2)
-                .foregroundStyle(.secondary)
+        return VStack(spacing: 18) {
+            Label {
+                Text(member?.hasGreetingVideo == true ? "A GREETING FOR YOU" : "YOUR FAMILY")
+                    .font(.footnote.weight(.semibold))
+                    .tracking(2.5)
+            } icon: {
+                Image(systemName: member?.hasGreetingVideo == true ? "video.fill" : "person.2.fill")
+                    .font(.footnote)
+            }
+            .foregroundStyle(.secondary)
 
             if let member, let url = member.videoURL {
                 GreetingVideoView(url: url) {
                     session.finishGreeting(for: member.id)
                 }
+                .shadow(color: .orange.opacity(0.2), radius: 18, y: 6)
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color.orange.opacity(0.25),
-                                    Color.yellow.opacity(0.15),
-                                    Color.orange.opacity(0.2),
+                                    Color.orange.opacity(0.22),
+                                    Color.yellow.opacity(0.12),
+                                    Color.orange.opacity(0.18),
                                 ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
@@ -210,7 +492,7 @@ struct NameCardView: View {
                         .frame(height: 220)
                         .overlay {
                             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                .strokeBorder(.orange.opacity(0.4), lineWidth: 2)
+                                .strokeBorder(.orange.opacity(0.3), lineWidth: 1)
                         }
 
                     VStack(spacing: 12) {
@@ -224,27 +506,35 @@ struct NameCardView: View {
                         }
                     }
                 }
+                .shadow(color: .orange.opacity(0.15), radius: 14, y: 5)
             }
 
             if let member {
-                Text(member.englishName)
-                    .font(.title.weight(.semibold))
-                Text(member.chineseName)
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
+                VStack(spacing: 4) {
+                    Text(member.englishName)
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                    Text(member.chineseName)
+                        .font(.title2.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
+
                 Text(member.bilingualRelation)
                     .font(.title3.weight(.medium))
                     .foregroundStyle(.orange)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 18)
                     .padding(.vertical, 8)
-                    .background(Capsule().fill(.orange.opacity(0.12)))
+                    .background(.orange.opacity(0.1), in: .capsule)
+                    .overlay {
+                        Capsule().strokeBorder(.orange.opacity(0.3), lineWidth: 1)
+                    }
 
                 if let line = member.videoLine, member.hasGreetingVideo {
                     Text("“\(line)”")
-                        .font(.title3)
+                        .font(.system(.title3, design: .serif))
+                        .italic()
                         .multilineTextAlignment(.center)
-                        .foregroundStyle(.primary)
-                        .padding(.top, 4)
+                        .foregroundStyle(.primary.opacity(0.9))
+                        .padding(.top, 2)
                 } else {
                     Text("A short greeting will play here soon.")
                         .font(.callout)
@@ -255,15 +545,16 @@ struct NameCardView: View {
             if member?.videoURL == nil {
                 ProgressView(value: session.videoProgress)
                     .tint(.orange)
-                    .padding(.horizontal, 40)
-                    .padding(.top, 8)
+                    .padding(.horizontal, 48)
+                    .padding(.top, 6)
             }
 
-            Text("Closes automatically")
+            Label("Closes on its own", systemImage: "clock")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
         }
         .padding(28)
+        .frame(maxWidth: 700)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

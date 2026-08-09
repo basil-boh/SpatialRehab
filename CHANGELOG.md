@@ -7,8 +7,95 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Added
+
+- **Persistent "Who am I?" button everywhere except the baseline assessment** (user request:
+  a guide for dementia patients to remember who they are, reachable no matter where they are
+  in the app). New `WhoAmI/WhoAmIButton.swift` — one reusable orange capsule button that
+  presents the name card and opens the `name-card` window — hosted in two places so it is
+  always on screen: a bottom **ornament** on the main window (rides the window itself, so it
+  keeps the same spot across the home screen, Daily Practice, and the caregiver-dashboard
+  sheet), and a fixed bottom row in `RouteMemoryTableView`'s control panel (the main window
+  is dismissed while Remember the Way runs, so the panel is the only surface left). The
+  ornament is attached only to the post-baseline branch in `SpatialRehabApp`, so the baseline
+  battery never shows a mid-test escape. The inline "Who am I?" buttons on `ContentView`'s
+  welcome/finished screens are removed in favor of the single consistent ornament; the
+  `"name-card"` window id is centralized as `SceneID.nameCard`; `whoAmISession` is now also
+  injected into the activity `ImmersiveSpace`'s environment. `RouteMemoryView`'s table-adjust
+  controls moved unchanged into a private `adjustRow` helper during the panel edit.
+  `SpatialRehab.xcodeproj` regenerated via `xcodegen` to pick up the new file.
+
+- **"Who am I?" card visual redesign** (user report: "it looks very plain… I want the UI/UX
+  to look great and professional"). Face side is now a proper identity-card layout: real
+  portrait photo (new `whoami-owner` imageset, downscaled from a provided photo) in a
+  rounded-rect frame with gradient ring and breathing glow, "MEMORY CARD · 记忆卡" header,
+  bilingual "THIS IS YOU" eyebrow, rounded-display name typography, birthday + age chips,
+  hairline gradient rules, and layered card chrome (glass → warm radial washes → faint
+  watermark → hairline gradient border). Choreographed entrances: staggered fade-up rows
+  (~60 ms apart), one-shot light sheen sweep on present, all gated behind Reduce Motion.
+  Family tree side (`FamilyTreeView`) moved from the flat cream slab to warm glass, tiles
+  are now material cards with correct hover shapes (`.borderless` + matching
+  `buttonBorderShape`, per the buttons skill), and avatars support photos
+  (`FamilyMember.photoName`). Greeting turn refreshed to match (serif quote line, relation
+  capsule, softer frames). `FamilyMember` gained `photoName` and an `age` helper.
+
+- **Family tree rebuilt in real genealogy layout** (user report: "i dont like how the family
+  tree looks"). Connector lines are no longer eyeballed with width fractions — every tile
+  registers its bounds via `anchorPreference` and a `ConnectorsShape` draws stem → rail →
+  per-child drops from the resolved rects, so the lines stay glued to the layout at any
+  size. A glass heart node sits between the spouses (classic marriage-node genealogy
+  notation) and the stem grows out of it; the whole path draws itself in sequence with one
+  `.trim`, after the couple tiles have landed and before the children rise in. Tiles are
+  generation-sized (couple 92pt avatars > children 78 > grandchild 62), the self tile gets
+  a warm tint + photo, Sze Hao's avatar carries a small play badge since he has a greeting
+  video, the "Pinch for grandchild" hint became a proper `Grandchild · 孙子` capsule, and a
+  faint tree watermark sits in the panel corner. All entrances stagger generation by
+  generation and skip under Reduce Motion.
+
+- **Every family member now has a connector line touching them, and the card watermark is
+  black** (user request). `ConnectorsShape` gained marriage stubs — husband tile → heart →
+  self tile — so the couple is wired in, not just the children; the Mei Ling → Sze Hao link
+  moved out of the slot's loose 16 pt rectangle into the same anchored overlay as an
+  anchored `GrandchildLineShape` that trims in over 0.4 s when the grandchild expands (and
+  resets instantly on collapse). The face side's `person.text.rectangle` watermark switched
+  from orange 4.5 % to black 12 % so the motif is actually visible.
+
+- **Name card: home address, occupation, and a "Show me the way home" button** (user
+  request). `FamilyMember` gained optional `homeAddress` and `occupation`; the demo owner
+  lives at Blk 5 Banda Street (deliberately at the route-memory map's Chinatown
+  coordinates, so the demo stays coherent) and is a retired schoolteacher. The card face
+  shows both in an ID-style data zone (icon circle + small-caps bilingual label + value,
+  hairline divider between rows). "Show me the way home · 带我回家" is now the card's single
+  prominent action — it retracts the card and launches the Remember the Way activity;
+  My Family and Put away demoted to a secondary bordered row. The launch logic moved from
+  `ContentView.startActivity` to a shared `AppModel.startWayHome(openImmersiveSpace:dismissWindow:)`
+  coordinator (guards against double-launch while the space is opening/open; the card
+  just retracts if the person is already mid-activity), and the name-card window now
+  receives `appModel` in its environment.
+
 ### Changed
 
+- **Merged `origin/main` (580de07) into the local "Who am I?" work.** `CHANGELOG.md` conflicted
+  because both sides opened a `## 2026-08-09` section — resolved by keeping both, ordered
+  Added / Changed / Fixed / Removed. `Xcode_README.md` conflicted because upstream rewrote the
+  run-instructions section the local branch had patched one line of; resolved toward upstream,
+  whose rewrite already drops the stale "draw a circle / Summon / nest" description the local
+  patch existed to fix. `SpatialRehab.xcodeproj/project.pbxproj` auto-merged (local file-ref
+  changes vs upstream build-setting changes touched different regions). Also corrected
+  upstream's "What you should see after launch" list, which still described **Who am I?** as an
+  inline home-screen button — it is a window ornament as of the change logged under Added above.
+
+### Fixed
+
+- **`main` did not build after 580de07**: that commit's regenerated `SpatialRehab.xcodeproj`
+  references `SpatialRehab/hand gestures.md`, a file that was never committed — `xcodegen`
+  globs the source directory, so an untracked scratch file on one machine became a hard
+  resource reference for everyone else (`CpResource … hand gestures.md` → **BUILD FAILED**).
+  Fixed by re-running `xcodegen generate` against the actual tracked tree, which drops the
+  dangling reference and picks up `WhoAmI/WhoAmIButton.swift` plus the `whoami-owner` imageset.
+  Verified: `xcodebuild -scheme SpatialRehab -destination 'generic/platform=visionOS Simulator'`
+  → **BUILD SUCCEEDED**. Worth knowing generally — never run `xcodegen generate` with untracked
+  files sitting in `SpatialRehab/`, or commit the pbxproj without checking `git status` first.
 - **Deployment target locked to visionOS 26.2**: `project.yml` (`options.deploymentTarget.visionOS`
   and the `SpatialRehab` target's own `deploymentTarget`) raised from `2.0` to `26.2` and
   `SpatialRehab.xcodeproj` regenerated via `xcodegen generate` (`XROS_DEPLOYMENT_TARGET = 26.2`,
@@ -27,6 +114,46 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   source layout (`Models/`, `Views/`, `WhoAmI/`, wayfinding files), Info.plist AR keys, XcodeGen
   workflow, device vs Simulator guidance. Setup target kept as visionOS **26.2** (SDK + minimum
   deployment) as the team run target.
+
+### Fixed
+
+- **Family tree connector lines never rendered** (user report with screenshot: "there is no
+  lines connecting the family tree"). The tile-level `anchorPreference` was *replacing* the
+  avatar anchors registered inside the same subtree — `anchorPreference` overwrites
+  descendants' values where `transformAnchorPreference` merges — and since the connector
+  overlay needs the husband's avatar anchor to place the heart, its guard failed and the
+  entire overlay (heart + every line) silently drew nothing. Both registrations now use
+  `transformAnchorPreference`. Same screenshot also showed the tile backgrounds not hugging
+  the avatars (circles poking out the top) — the tile surface moved inside the button label
+  so background and content can never disagree — and Mei Ling's relation text truncating,
+  fixed by widening the child/grandchild text columns (130→138 / 110→118) plus
+  `fixedSize(vertical:)` so bilingual relations wrap instead of clipping.
+
+- **Family tree was cramped and clipping at the window edges; grandson now always visible**
+  (user report with screenshot: "show the full family tree and space out the people a bit").
+  The name-card window grew 660×760 → 900×960 (sized for three generations at readable
+  tile sizes), spacing opened up (couple gap 40→56, children gap 20→32, generation gap
+  40→56), and tiles scaled up (avatars 92/78/62 → 100/84/68). Sze Hao is now a permanent
+  part of the tree under Mei Ling — the pinch-to-expand ritual, its `Grandchild · 孙子`
+  placeholder capsule, the fixed-height slot, and `WhoAmISessionModel.showExpandedGrandchild`
+  are all gone (tapping Mei Ling now plays her greeting beat like everyone else), and his
+  connector line joined the main `ConnectorsShape` so the single trim reaches him last,
+  after his mother. Face and greeting sides cap their content at 700 pt so they stay
+  composed cards inside the tree-sized window; the face portrait scaled up to 220×264 to
+  match.
+
+- **"Who am I?" no longer requires drawing a circle** — that gesture-summon ritual (draw a
+  circle over a glowing nest to open the name card) wasn't the intended interaction and was
+  removed: `WhoAmIView.swift`, `NestView.swift`, and `CircleDrawCanvas.swift` are deleted,
+  along with `WhoAmISessionModel`'s circle-quality math (`beginStroke`/`continueStroke`/
+  `endStroke`/`evaluateCircle`/`circleClosureHint`/`pathLength`) and the `drawPoints`/
+  `glowProgress`/`.drawing`/`.nest` state that only existed to support it. `ContentView`'s
+  "Who am I?" button now calls the session directly (`whoAmISession.present()`) and opens
+  the `name-card` window straight away — tappable at any point, no separate summon screen.
+  The `"who-am-i"` `WindowGroup` is gone from `SpatialRehabApp.swift`; `whoAmISession` is now
+  shared into `ContentView`'s environment instead. `Phase` simplified to
+  `closed`/`presenting`/`open`/`puttingAway`. The actual name card, family-tree flip, and
+  greeting-video flow (`NameCardView.swift`, `FamilyTreeView.swift`) are unchanged.
 
 ### Removed
 

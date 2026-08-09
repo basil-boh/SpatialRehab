@@ -19,7 +19,6 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
-    @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var showingDashboard = false
     @State private var showingDailyPractice = false
@@ -88,14 +87,9 @@ struct ContentView: View {
                 Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
             }
             .buttonStyle(.bordered)
-
-            Button {
-                openWindow(id: "who-am-i")
-            } label: {
-                Label("Who am I?", systemImage: "person.crop.circle")
-            }
-            .buttonStyle(.bordered)
-            .tint(.orange)
+            // "Who am I?" is deliberately not in this stack — it lives in the main
+            // window's bottom ornament (see `SpatialRehabApp`), so it sits in the same
+            // spot on every screen instead of moving with each screen's layout.
         }
     }
 
@@ -152,14 +146,8 @@ struct ContentView: View {
                     Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .buttonStyle(.bordered)
-
-                Button {
-                    openWindow(id: "who-am-i")
-                } label: {
-                    Label("Who am I?", systemImage: "person.crop.circle")
-                }
-                .buttonStyle(.bordered)
-                .tint(.orange)
+                // "Who am I?" lives in the window's bottom ornament, not here — see
+                // the note on the welcome screen's button stack.
             }
 
             Label(
@@ -172,22 +160,9 @@ struct ContentView: View {
     }
 
     private func startActivity() async {
-        appModel.phase = .openingActivity
-        appModel.routeMemory.begin()
-        switch await openImmersiveSpace(id: AppModel.activitySpaceID) {
-        case .opened:
-            appModel.phase = .inActivity
-            // The immersive space's own control panel (`RouteMemoryTableView.controlPanel`)
-            // is the only guidance surface during the activity — this flat window has
-            // nothing to show while `.inActivity` (see `inActivity` below), so rather than
-            // float an empty glass pane behind the table, dismiss it entirely.
-            // `RouteMemoryTableView.onDisappear` reopens it once the activity ends.
-            dismissWindow(id: SceneID.main)
-        case .userCancelled, .error:
-            appModel.phase = .welcome
-        @unknown default:
-            appModel.phase = .welcome
-        }
+        // Shared with the name card's "Show me the way home" — see AppModel.startWayHome
+        // for why the main window is dismissed on success.
+        await appModel.startWayHome(openImmersiveSpace: openImmersiveSpace, dismissWindow: dismissWindow)
     }
 }
 
