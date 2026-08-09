@@ -560,16 +560,7 @@ struct NameCardView: View {
                                 .strokeBorder(.orange.opacity(0.3), lineWidth: 1)
                         }
 
-                    VStack(spacing: 12) {
-                        Text(member?.emoji ?? "👤")
-                            .font(.system(size: 80))
-                        if member?.hasGreetingVideo == true {
-                            Image(systemName: "play.circle.fill")
-                                .font(.title)
-                                .foregroundStyle(.orange)
-                                .symbolEffect(.pulse, options: .repeating)
-                        }
-                    }
+                    greetingFace(for: member)
                 }
                 .shadow(color: .orange.opacity(0.15), radius: 14, y: 5)
             }
@@ -593,7 +584,10 @@ struct NameCardView: View {
                         Capsule().strokeBorder(.orange.opacity(0.3), lineWidth: 1)
                     }
 
-                if let line = member.videoLine, member.hasGreetingVideo {
+                // Not gated on `hasGreetingVideo`: a relative with only a looping
+                // portrait still has something to say, and the old gate meant their
+                // line would silently never render.
+                if let line = member.videoLine {
                     Text("“\(line)”")
                         .font(.system(.title3, design: .serif))
                         .italic()
@@ -621,5 +615,62 @@ struct NameCardView: View {
         .padding(28)
         .frame(maxWidth: 700)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    /// What fills the slab when a relative has no spoken greeting recorded yet.
+    ///
+    /// Falls back in order of how much it looks like a person: the looping portrait
+    /// first, then the still photo, and only then the emoji. A cartoon emoji where a
+    /// face should be reads as a missing asset — the worst thing to show someone who
+    /// opened this card to remember who a relative is.
+    @ViewBuilder
+    private func greetingFace(for member: FamilyMember?) -> some View {
+        if let member, let portraitURL = member.portraitVideoURL {
+            MovingPortraitView(url: portraitURL) {
+                greetingStillFace(for: member)
+            }
+            .frame(width: 176, height: 176)
+            .overlay {
+                Circle().strokeBorder(.orange.opacity(0.35), lineWidth: 2)
+            }
+        } else if let member, member.photoName != nil {
+            greetingStillFace(for: member)
+                .frame(width: 176, height: 176)
+                .clipShape(Circle())
+                .overlay {
+                    Circle().strokeBorder(.orange.opacity(0.35), lineWidth: 2)
+                }
+        } else {
+            VStack(spacing: 12) {
+                Text(member?.emoji ?? "👤")
+                    .font(.system(size: 80))
+                if member?.hasGreetingVideo == true {
+                    Image(systemName: "play.circle.fill")
+                        .font(.title)
+                        .foregroundStyle(.orange)
+                        .symbolEffect(.pulse, options: .repeating)
+                }
+            }
+        }
+    }
+
+    /// Still face used both on its own and as the layer beneath a moving portrait.
+    @ViewBuilder
+    private func greetingStillFace(for member: FamilyMember) -> some View {
+        if let photoName = member.photoName {
+            Image(photoName)
+                .resizable()
+                .scaledToFill()
+        } else {
+            ZStack {
+                LinearGradient(
+                    colors: [.orange.opacity(0.25), .yellow.opacity(0.2)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                Text(member.emoji)
+                    .font(.system(size: 84))
+            }
+        }
     }
 }
