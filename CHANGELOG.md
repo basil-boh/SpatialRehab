@@ -7,6 +7,16 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Fixed
+
+- **`feature/moving-portraits` build failure**: the committed `SpatialRehab.xcodeproj` referenced
+  `SpatialRehab/hand gestures.md`, a local notes file that was never committed — xcodegen globs
+  everything under `SpatialRehab/`, so whoever regenerated the project had it in their tree, and
+  every other machine died at the copy-resources step (`lstat … No such file or directory`).
+  Regenerated the project from the actual tree. Also removed **147 Finder-duplicate assets**
+  (`* 2.usdz` / `* 2.json`, ~12 MB) that came in with the same commit — every one verified
+  byte-identical to its base file and referenced from no code before deletion.
+
 ### Added
 
 - **Moving portraits in the family tree ("Harry Potter" effect)** — a relative's avatar can now
