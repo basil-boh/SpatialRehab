@@ -7,6 +7,25 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Added
+
+- **New deck slide 3, "Why it matters"**, on functional independence, inserted between the
+  problem and the errorless-learning principle so the deck argues problem, then goal, then
+  method. Headline: the goal is not a cure, it is keeping the everyday doable. Three cards
+  cover low risk (a route can be mis-walked from a chair, with no traffic and no fall), low
+  worry (nothing to fail, no score reaches the patient), and transfer (cues fade so the skill
+  ends up with the person, not the headset). A closing panel carries the ageing-society case:
+  Singapore is projected to become a super-aged society in 2026 and by 2030 one in four
+  citizens will be 65 or above, cited to the Ministry of Health
+  (https://www.moh.gov.sg/ageing-well/ageing-in-the-community/) since slide 11 promises every
+  number has a source.
+  - New background photograph (`indep1`, an older woman cooking in her own kitchen) baked into
+    `deck/backgrounds/`; `deck/photos.json` slide numbers renumbered and the closing-slide
+    photography credits extended.
+  - Slide comments in `deck/template.html` renumbered 1 to 13; deck count updated in
+    `deck/README.md`. Deep links shift by one from slide 3 onward (the old `#3` is now `#4`).
+
+
 ### Changed
 
 - **Deck copy revised after a review pass** (`deck/template.html`):

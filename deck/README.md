@@ -1,6 +1,6 @@
 # Presentation deck
 
-The SpatialRehab design/pitch deck: 12 slides, built as a single self-contained HTML page.
+The SpatialRehab design/pitch deck: 13 slides, built as a single self-contained HTML page.
 
 **Published (private) copy:** https://claude.ai/code/artifact/d68cc6a0-2654-4964-a946-559e020171a4
 
@@ -23,7 +23,7 @@ python3 deck/build.py      # standard library only, no install needed
 
 and reopen `spatialrehab-deck.html`.
 
-All twelve slides live at the bottom of `template.html` as plain `<section class="slide">`
+All thirteen slides live at the bottom of `template.html` as plain `<section class="slide">`
 blocks in presentation order, so changing wording needs no CSS knowledge. The styling sits in
 one `<style>` block at the top.
 
