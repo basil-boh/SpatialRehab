@@ -2,7 +2,7 @@ name: SpatialRehab
 options:
   bundleIdPrefix: com.spatialrehab
   deploymentTarget:
-    visionOS: "2.0"
+    visionOS: "26.2"
   xcodeVersion: "16.0"
   createIntermediateGroups: true
   groupSortPosition: top
@@ -29,7 +29,7 @@ targets:
   SpatialRehab:
     type: application
     platform: visionOS
-    deploymentTarget: "2.0"
+    deploymentTarget: "26.2"
     sources:
       - path: SpatialRehab
         excludes:

@@ -8,7 +8,7 @@ You are a **Senior visionOS Engineer and Spatial Computing Expert**. You special
 
 ### Tech Stack
 
-- **OS:** visionOS 26.0+ (Target latest beta if specified)
+- **OS:** visionOS 26.2 (deployment target; see root `project.yml`)
 - **Languages:** Swift 6.2+ (Strict Concurrency)
 - **UI Framework:** SwiftUI (primary), UIKit (only when asked by the user)
 - **3D Engine:** RealityKit (Entity Component System)

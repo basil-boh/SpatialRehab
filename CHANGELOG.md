@@ -7,6 +7,27 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Changed
+
+- **Deployment target locked to visionOS 26.2**: `project.yml` (`options.deploymentTarget.visionOS`
+  and the `SpatialRehab` target's own `deploymentTarget`) raised from `2.0` to `26.2` and
+  `SpatialRehab.xcodeproj` regenerated via `xcodegen generate` (`XROS_DEPLOYMENT_TARGET = 26.2`,
+  `SDKROOT = xros` in all 4 build configs). Matches the run target already documented in the
+  `Xcode_README.md` rewrite below. `.skills/VISIONOS_AGENTS.md` Tech Stack OS line updated from
+  `visionOS 26.0+` to `visionOS 26.2` to match.
+- **`Xcode_README.md` draft reconciled**: resolved its two open TODOs — "Components" is the correct
+  Xcode 16+ name (parenthetical notes it was "Platforms" in Xcode 15 and earlier); confirmed
+  `project.yml`'s `sources:` entry is a directory reference (auto-discovery / globs, not an
+  explicit file list), so the existing "drop file in `SpatialRehab/`, run `xcodegen generate`"
+  guidance in "Adding new source files" was already correct — no hand-edit-`project.yml` warning
+  needed.
+- **`Xcode_README.md` rewritten for current `main`**: dropped the outdated “minimal scaffold /
+  almost no product code” framing; documents the real app (baseline battery, Remember the Way,
+  Daily Practice, caregiver dashboard, Who am I?, Making Tea scene kept but unwired), accurate
+  source layout (`Models/`, `Views/`, `WhoAmI/`, wayfinding files), Info.plist AR keys, XcodeGen
+  workflow, device vs Simulator guidance. Setup target kept as visionOS **26.2** (SDK + minimum
+  deployment) as the team run target.
+
 ### Removed
 
 - **Hummingbird volumetric demo** (merged in from `szehao-id-card`): `HummingbirdVolumeView.swift`,

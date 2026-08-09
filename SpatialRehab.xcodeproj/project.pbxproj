@@ -315,6 +315,7 @@
 		AC95345E97A98D92D54A6795 /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = D274C23E7B105453603CC954 /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c_physics.articulation.json */; };
 		ACB6FDA4CB59C744640D30CF /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701 2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3DED9628EE079A225016F985 /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701 2.usdz */; };
 		AD6DB1FAA0B2753F7B3ADBFB /* ReactionTimeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A955CA2A474712F5A740AE30 /* ReactionTimeResult.swift */; };
+		ADF60CF97DA66C803846F5D9 /* hand gestures.md in Resources */ = {isa = PBXBuildFile; fileRef = F093924B171D445964232104 /* hand gestures.md */; };
 		ADF7DFD19892EA261F084C37 /* childproof_medicine_bottle__rec_childproof_medicine_bottle_a5879cc2c98c4239a51055827f2867de_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F118531B7CE3A146845C276 /* childproof_medicine_bottle__rec_childproof_medicine_bottle_a5879cc2c98c4239a51055827f2867de_physics.articulation.json */; };
 		AFA1070FC2F88EF361AE9C3E /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1D4A6995E58CED2D0EDA9ABC /* desk_with_drawer__rec_desk_with_drawer_51a4af96dd2444508aa1ca28c1aab701.usdz */; };
 		B004E7F067E915667DCBEFF8 /* desk_with_drawer__rec_desk_with_drawer_f4edf601404a42509df03fbe06ea84e3.usdz in Resources */ = {isa = PBXBuildFile; fileRef = AC9ECBD59E5555783479DA9D /* desk_with_drawer__rec_desk_with_drawer_f4edf601404a42509df03fbe06ea84e3.usdz */; };
@@ -894,6 +895,7 @@
 		EFC41DA04D547831D02F6D4F /* drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = "drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc 2.usdz"; sourceTree = "<group>"; };
 		F04F9388015BC5ECE4793BE4 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_f3c7ad3114cb4d3c9a2de478641c85ba_physics 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = "conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_f3c7ad3114cb4d3c9a2de478641c85ba_physics 2.usdz"; sourceTree = "<group>"; };
 		F09364DCF4DAA6BCD3477EAB /* lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_4a5044ddaf334abdbd860ae92320b7e9_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_4a5044ddaf334abdbd860ae92320b7e9_physics.usdz; sourceTree = "<group>"; };
+		F093924B171D445964232104 /* hand gestures.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "hand gestures.md"; sourceTree = "<group>"; };
 		F2A5621ED610E21D5F52FA82 /* BaselineResultsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineResultsStore.swift; sourceTree = "<group>"; };
 		F2C7D60B0031977F1092E429 /* blender__rec_blender_505cbaf0d2fe46acb5569c11e86ab410_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = blender__rec_blender_505cbaf0d2fe46acb5569c11e86ab410_physics.usdz; sourceTree = "<group>"; };
 		F2EA13F92A7E82F4DF264DDD /* lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_415793483ae540319d0cf39f68455281_physics 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = "lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_415793483ae540319d0cf39f68455281_physics 2.usdz"; sourceTree = "<group>"; };
@@ -1157,6 +1159,7 @@
 				B6CC5E0C4531E6DB92572002 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.articulation.json */,
 				11ABABB758F1912E3779DAD7 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.usdz */,
 				3FDA9786721E2113516A87BF /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2.usdz */,
+				F093924B171D445964232104 /* hand gestures.md */,
 				B3634921A8E5ECAE79A9C718 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_8c54713a63174926b9050d6f56067432 2.usdz */,
 				E772425C4C1C0ECD5DA664A2 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_8c54713a63174926b9050d6f56067432_physics 2.usdz */,
 				ABE27A700F45B9E7D0B206B6 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_8c54713a63174926b9050d6f56067432_physics.articulation 2.json */,
@@ -1661,6 +1664,7 @@
 				9082FC823C30587406940D31 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.articulation 2.json in Resources */,
 				5D351459280E984B78E6B702 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.articulation.json in Resources */,
 				3FA9DCCC81F4DC75E53955CA /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2_physics.usdz in Resources */,
+				ADF60CF97DA66C803846F5D9 /* hand gestures.md in Resources */,
 				2EB3C5F3E0AE0174E3056C26 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_8c54713a63174926b9050d6f56067432 2.usdz in Resources */,
 				822B77FB279AB34A345EBFA4 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_8c54713a63174926b9050d6f56067432.usdz in Resources */,
 				5829AC2FFE72F215B610DD30 /* hingeddoor_cabinet__rec_hingeddoor_cabinet_8c54713a63174926b9050d6f56067432_physics 2.usdz in Resources */,
@@ -2012,7 +2016,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Debug;
 		};
@@ -2040,7 +2044,7 @@
 				SDKROOT = xros;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Debug;
 		};
@@ -2068,7 +2072,7 @@
 				SDKROOT = xros;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Release;
 		};
@@ -2126,7 +2130,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Release;
 		};
