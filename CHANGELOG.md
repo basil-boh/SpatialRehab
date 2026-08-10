@@ -5,6 +5,50 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-10
+
+### Added
+
+- **A guidance chooser before the kopi activity starts.** `CoffeeExercise` gains a
+  `.choosingGuidance` phase ahead of `.brewing`, and the immersive control panel opens on
+  three options: **Show me how**, **A little hint**, and **Let me try myself**. Nothing is
+  poured, highlighted or demonstrated until one is picked, and "Make another" asks again, so
+  the level can come down as she gets more confident. Copy describes what the app will do
+  rather than how well she is expected to cope, and the panel says outright that nothing is
+  timed or scored.
+  - The levels fade the *cues*, never the task. Errorless learning means support has to
+    arrive before a mistake can happen, so every level still ends up offering the full
+    demonstration: the lighter ones simply wait longer. `GuidanceLevel.cueSchedule` holds the
+    ladder, in seconds from the start of a step — halo, arrow, path, then the ghost demo. Show
+    me how runs 0/0.3/0.9/1.6; a little hint 0/5/11/20; let me try myself 12/20/28/36.
+  - The cue clock restarts when she puts the right item back down, so it measures how long
+    she has been stuck rather than how long the step has been open. Someone who reaches,
+    hesitates and re-grips gets the whole ladder again instead of dropping straight into a
+    demonstration.
+  - Only the fullest level speaks the recipe up front; the others would be giving away the
+    sequence she came to practise. The lightest level speaks a short `shortInstruction`
+    ("Now the coffee.") in place of the full sentence.
+- **Floating 3D guidance indicators** on the kopi table, in a new
+  `CoffeeGuidanceIndicators`: a breathing ring of dots on the table under the item to pick
+  up, a bobbing arrow hanging over it, an arc of dots from the item to the mug with a pulse
+  travelling along it, and a ring hovering over the mug rim. Two colours carry two meanings
+  and nothing else — amber is the thing to pick up, cyan is where it goes.
+  - The cues answer one question at a time. While she is holding the right item the pick-up
+    cues stand down and the mug ring takes over, so the guidance moves from *what* to *where*
+    rather than showing both at once.
+  - Everything is built once and then only moved, scaled and faded; no meshes or materials
+    are allocated per frame. The animation clock lives inside the class rather than in the
+    view's `@State`, because anything in `@State` would invalidate the SwiftUI body 30 times
+    a second alongside the existing pour simulation.
+
+### Changed
+
+- The old single cyan `glowRing` under the current kopi item is replaced by the indicator
+  halo, which carries the same meaning with a fade and a pulse instead of a hard on/off.
+- Kopi item tags no longer highlight the current step while the guidance chooser is up:
+  highlighting the kettle would answer the first step before she has said she wants it
+  answered.
+
 ## 2026-08-09
 
 ### Fixed

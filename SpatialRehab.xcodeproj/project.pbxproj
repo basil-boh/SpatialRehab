@@ -352,6 +352,7 @@
 		D6932541A60C73558A26A5E5 /* vintage_radio_with_knobs__rec_vintage_radio_with_knobs_50212710a45a4f65a3249e3c7156476a_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = DA1726A3FE5DBF5206F582EF /* vintage_radio_with_knobs__rec_vintage_radio_with_knobs_50212710a45a4f65a3249e3c7156476a_physics.articulation.json */; };
 		D6A17161F669AE0C2ED0DEFB /* weekly_pill_organizer__rec_weekly_pill_organizer_cdc1b88c02ac472fa4c461ead2f265e5_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = B103348C594314F9A20521E2 /* weekly_pill_organizer__rec_weekly_pill_organizer_cdc1b88c02ac472fa4c461ead2f265e5_physics.articulation.json */; };
 		D6A78A58AF1399CAA2C9C855 /* bamboo_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1783155BF10543F768EC8669 /* bamboo_5.png */; };
+		D9535460E5F0B549C5B45ABF /* CoffeeGuidanceIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCC28A11B894FB057F60E53 /* CoffeeGuidanceIndicators.swift */; };
 		D9AADEEBD636AB9849D51086 /* overbed_table__rec_overbed_table_9fed447735de49a7bef507a48629e224_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2005966CBEAAD927F3F020ED /* overbed_table__rec_overbed_table_9fed447735de49a7bef507a48629e224_physics.usdz */; };
 		DAC64D6DF6DDAFCFACAA921A /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_e5dc3c29d5f94a81ac9f3250e93b33b3.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2DCE8CCA4B0CD5BC9C18DF25 /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_e5dc3c29d5f94a81ac9f3250e93b33b3.usdz */; };
 		DCA634B2198B2A2FED6AAAF0 /* animal_rooster.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EEAD7FBC6431AF158DBCD05 /* animal_rooster.png */; };
@@ -786,6 +787,7 @@
 		ECE442A15C5746CC76BFFEFF /* childproof_medicine_bottle__rec_childproof_medicine_bottle_6387c557f45c4387ad1c62724b6aa557_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = childproof_medicine_bottle__rec_childproof_medicine_bottle_6387c557f45c4387ad1c62724b6aa557_physics.articulation.json; sourceTree = "<group>"; };
 		ED371C2BCCAAE3D463F4CF5E /* animal_rat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animal_rat.png; sourceTree = "<group>"; };
 		EDB0B5E1CAE36F0BD22EF5BA /* DigitSpanGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitSpanGameView.swift; sourceTree = "<group>"; };
+		EDCC28A11B894FB057F60E53 /* CoffeeGuidanceIndicators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeGuidanceIndicators.swift; sourceTree = "<group>"; };
 		EE6A3872C68C9E294F91A3A6 /* dots_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots_4.png; sourceTree = "<group>"; };
 		EF2D66EE6E113226F4D37BEE /* chest_freezer_with_hinged_lid__rec_chest_freezer_with_hinged_lid_fae9484d57ad4302b8e9122624bc4e17_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = chest_freezer_with_hinged_lid__rec_chest_freezer_with_hinged_lid_fae9484d57ad4302b8e9122624bc4e17_physics.usdz; sourceTree = "<group>"; };
 		F09364DCF4DAA6BCD3477EAB /* lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_4a5044ddaf334abdbd860ae92320b7e9_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_4a5044ddaf334abdbd860ae92320b7e9_physics.usdz; sourceTree = "<group>"; };
@@ -1007,6 +1009,7 @@
 				2517E59340BF841C51959C41 /* coffee_tin_with_scoop.usdz */,
 				EA3550EF8578F7BB26922A12 /* CoffeeActivityView.swift */,
 				916D1120009D504476AC074D /* CoffeeExercise.swift */,
+				EDCC28A11B894FB057F60E53 /* CoffeeGuidanceIndicators.swift */,
 				DC95DF015FBB8EFEE7176499 /* ContentView.swift */,
 				E85B8244AB091DDD41CF446A /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862_physics.articulation.json */,
 				43CB3472C37C6100CEFF40F6 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862_physics.usdz */,
@@ -1683,6 +1686,7 @@
 				79ADAF69E520B7E52F2E32DA /* ClockDrawingView.swift in Sources */,
 				087F96527C6CA7CA02AE4F0E /* CoffeeActivityView.swift in Sources */,
 				37A2F09BE5F8BA6BC7CDBE33 /* CoffeeExercise.swift in Sources */,
+				D9535460E5F0B549C5B45ABF /* CoffeeGuidanceIndicators.swift in Sources */,
 				C405F87D5A4F4E211D37C2FE /* CognitiveDomain.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
 				4A60C65887D952F50942CE7D /* DailyPracticeHubView.swift in Sources */,

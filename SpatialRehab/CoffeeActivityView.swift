@@ -262,7 +262,11 @@ struct CoffeeActivityView: View {
     @State private var wrongPourNoted: Set<CoffeeExercise.Step> = []
     @State private var stirAccumulated: Float = 0
     @State private var lastStirAngle: Float?
-    @State private var glowRing = Entity()
+    @State private var indicators = CoffeeGuidanceIndicators()
+    /// When the cue clock for the current step started. Reset on each new step and
+    /// again whenever she puts the item back down, so the escalating cues measure
+    /// "how long has she been stuck" rather than "how long has this step been open".
+    @State private var cueClockStartedAt = Date.now
     @State private var ghost: Entity?
     @State private var ghostTask: Task<Void, Never>?
     @State private var simulationTask: Task<Void, Never>?
@@ -285,11 +289,30 @@ struct CoffeeActivityView: View {
     private var exercise: CoffeeExercise { appModel.coffee }
     private var mugPosition: SIMD3<Float> { Self.specs[0].position }
 
+    /// Identity for the guidance task. The step alone isn't enough: leaving the
+    /// chooser doesn't change the step (it stays at `.water` throughout so the home
+    /// window can show step 1 of 5), and changing the guidance level has to restart
+    /// the cues on a different schedule.
+    private var cueKey: String {
+        guard sceneReady else { return "idle" }
+        switch exercise.phase {
+        case .choosingGuidance: return "choosing"
+        case .brewing: return "brew-\(exercise.currentStep?.rawValue ?? -1)-\(exercise.guidance.rawValue)"
+        case .finished: return "finished"
+        }
+    }
+
+    /// The item this step is about, if there is one.
+    private var currentSpec: ItemSpec? {
+        guard exercise.phase == .brewing, let step = exercise.currentStep else { return nil }
+        return Self.specs.first { $0.step == step }
+    }
+
     var body: some View {
         RealityView { content, attachments in
             content.add(root)
             buildTable()
-            buildGlowRing()
+            indicators.attach(to: root)
             effects.attach(to: root)
             await loadItems(attachments: attachments)
             if let panel = attachments.entity(for: "coffeePanel") {
@@ -320,9 +343,9 @@ struct CoffeeActivityView: View {
                 controlPanel
             }
         }
-        .task(id: sceneReady ? exercise.currentStep : nil) {
+        .task(id: cueKey) {
             guard sceneReady else { return }
-            await stepBecameActive()
+            await cueChanged()
         }
         .onDisappear {
             ghostTask?.cancel()
@@ -371,16 +394,6 @@ struct CoffeeActivityView: View {
         floor.components.set(PhysicsBodyComponent(mode: .static))
         floor.position = [0, -0.01, -1]
         root.addChild(floor)
-    }
-
-    private func buildGlowRing() {
-        let ring = ModelEntity(
-            mesh: .generateCylinder(height: 0.006, radius: 0.13),
-            materials: [UnlitMaterial(color: UIColor.cyan.withAlphaComponent(0.7))]
-        )
-        glowRing.addChild(ring)
-        glowRing.isEnabled = false
-        root.addChild(glowRing)
     }
 
     private func loadItems(attachments: RealityViewAttachments) async {
@@ -505,6 +518,40 @@ struct CoffeeActivityView: View {
         updateFlyingBits()
         effects.tickSplashes()
         updateStir()
+        updateIndicators()
+    }
+
+    /// Decides, every frame, which floating cues should be on.
+    ///
+    /// While she is holding the right item the "pick this up" cues stand down and
+    /// the mug ring takes over, so the guidance always answers the question she is
+    /// actually facing: first *what*, then *where*.
+    private func updateIndicators() {
+        guard let spec = currentSpec, let item = itemEntities[spec.tagID] else {
+            indicators.hideAll()
+            return
+        }
+        let holding = heldIDs.contains(item.id)
+        let elapsed = Date.now.timeIntervalSince(cueClockStartedAt)
+        let schedule = exercise.guidance.cueSchedule
+
+        var cues = CoffeeGuidanceIndicators.Cues()
+        if holding {
+            // Stirring happens in the mug too, so the ring is right for every step.
+            cues.mugTarget = true
+        } else {
+            cues.halo = elapsed >= schedule.halo
+            cues.arrow = elapsed >= schedule.arrow
+            cues.path = elapsed >= schedule.path
+        }
+
+        indicators.update(
+            target: item.position(relativeTo: root),
+            targetHeight: itemHeights[spec.tagID] ?? 0.12,
+            mug: mugPosition,
+            tableY: Self.tableTop,
+            cues: cues
+        )
     }
 
     private func emitFromHeldVessels() {
@@ -851,14 +898,22 @@ struct CoffeeActivityView: View {
     private func itemPickedUp(_ entity: Entity) {
         guard let spec = Self.specs.first(where: { $0.tagID == entity.name }) else { return }
         if let step = spec.step, exercise.isCurrent(step) {
-            ghostTask?.cancel()
+            // Clear the demonstration but leave its task running: if she sets the
+            // item straight back down, the cues should pick up where they left off
+            // rather than never coming back.
             removeGhost()
-            glowRing.isEnabled = false
         }
     }
 
     private func settle(_ entity: Entity) {
         guard itemEntities[entity.name] != nil else { return }
+        if let spec = Self.specs.first(where: { $0.tagID == entity.name }),
+           let step = spec.step, exercise.isCurrent(step) {
+            // Putting the right item down restarts the cue clock, so someone who
+            // reaches for it and hesitates gets the full ladder again instead of
+            // being dropped straight into a demonstration.
+            cueClockStartedAt = .now
+        }
         if let spec = Self.specs.first(where: { $0.tagID == entity.name }),
            let step = spec.step, lids[step] != nil {
             closeLid(step)
@@ -878,29 +933,47 @@ struct CoffeeActivityView: View {
 
     // MARK: - Guidance
 
-    private func stepBecameActive() async {
+    private func cueChanged() async {
         ghostTask?.cancel()
         removeGhost()
         wrongPourNoted = []
         stirAccumulated = 0
         lastStirAngle = nil
+        cueClockStartedAt = .now
 
-        guard let step = exercise.currentStep else {
-            glowRing.isEnabled = false
+        switch exercise.phase {
+        case .choosingGuidance:
+            // Nothing is demonstrated until she has said how much help she wants.
+            indicators.hideAll()
+
+        case .finished:
+            indicators.hideAll()
             appModel.voice.speak("Wonderful. You've made a lovely cup of kopi. Enjoy it while it's warm.")
-            return
-        }
 
-        appModel.voice.speak(step.instruction)
+        case .brewing:
+            guard let step = exercise.currentStep else { return }
+            let level = exercise.guidance
+            appModel.voice.speak(level.spokenInstruction(for: step))
 
-        if let spec = Self.specs.first(where: { $0.step == step }),
-           let item = itemEntities[spec.tagID] {
-            glowRing.isEnabled = true
-            glowRing.position = [item.position.x, Self.tableTop + 0.004, item.position.z]
+            guard let spec = Self.specs.first(where: { $0.step == step }),
+                  let item = itemEntities[spec.tagID]
+            else { return }
 
+            // The demo waits out the level's delay, then repeats until she picks the
+            // item up. `cueClockStartedAt` moves when she puts something down, so a
+            // false start pushes the demo back out rather than firing mid-reach.
             ghostTask = Task {
-                try? await Task.sleep(for: .seconds(1.5))
-                while !Task.isCancelled, exercise.currentStep == step, !heldIDs.contains(item.id) {
+                while !Task.isCancelled, exercise.currentStep == step, exercise.phase == .brewing {
+                    let waited = Date.now.timeIntervalSince(cueClockStartedAt)
+                    let remaining = level.cueSchedule.demo - waited
+                    if remaining > 0 {
+                        try? await Task.sleep(for: .seconds(remaining))
+                        continue
+                    }
+                    if heldIDs.contains(item.id) {
+                        try? await Task.sleep(for: .seconds(1))
+                        continue
+                    }
                     await runGhostDemo(item: item, step: step)
                     try? await Task.sleep(for: .seconds(1.6))
                 }
@@ -962,7 +1035,11 @@ struct CoffeeActivityView: View {
     // MARK: - UI
 
     private func tagView(for spec: ItemSpec) -> some View {
-        let isCurrent = spec.step != nil && exercise.isCurrent(spec.step!)
+        // Nothing is singled out while she is still choosing how much help she
+        // wants: highlighting the kettle would answer the first step for her
+        // before she has said she wants it answered.
+        let isCurrent = exercise.phase == .brewing
+            && spec.step.map(exercise.isCurrent) == true
         return VStack(spacing: 2) {
             Text(spec.title)
                 .font(.headline)
@@ -981,6 +1058,69 @@ struct CoffeeActivityView: View {
     }
 
     private var controlPanel: some View {
+        VStack(spacing: 20) {
+            if exercise.phase == .choosingGuidance {
+                guidanceChooser
+            } else {
+                brewingPanel
+            }
+        }
+        .padding(32)
+        .glassBackgroundEffect()
+    }
+
+    /// Shown once, before anything is poured. Three ways to be helped, described
+    /// by what the app will do rather than by how well she is expected to cope —
+    /// "let me try myself" has to read as a preference, never as the hard mode.
+    private var guidanceChooser: some View {
+        VStack(spacing: 22) {
+            VStack(spacing: 8) {
+                Text("Before we start")
+                    .font(.system(size: 19, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Text("How much help would you like?")
+                    .font(.system(size: 34, weight: .semibold))
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: 640)
+
+            HStack(alignment: .top, spacing: 14) {
+                ForEach(CoffeeExercise.GuidanceLevel.allCases) { level in
+                    Button {
+                        chooseGuidance(level)
+                    } label: {
+                        VStack(spacing: 10) {
+                            Image(systemName: level.symbolName)
+                                .font(.system(size: 30))
+                                .frame(height: 38)
+                            Text(level.title)
+                                .font(.system(size: 21, weight: .semibold))
+                                .multilineTextAlignment(.center)
+                            Text(level.detail)
+                                .font(.system(size: 15))
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .frame(width: 214)
+                        .padding(.vertical, 22)
+                        .padding(.horizontal, 12)
+                    }
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.roundedRectangle(radius: 26))
+                    .accessibilityLabel("\(level.title). \(level.detail)")
+                }
+            }
+
+            Text("You can change your mind next time. Nothing here is timed or scored.")
+                .font(.system(size: 15))
+                .foregroundStyle(.tertiary)
+
+            voiceToggle
+        }
+    }
+
+    private var brewingPanel: some View {
         VStack(spacing: 20) {
             Text(panelPrompt)
                 .font(.system(size: 32, weight: .semibold))
@@ -1010,30 +1150,42 @@ struct CoffeeActivityView: View {
                     .controlSize(.large)
                 }
 
-                Button {
-                    appModel.voice.toggle()
-                } label: {
-                    Label(
-                        appModel.voice.isEnabled ? "Voice on" : "Voice off",
-                        systemImage: appModel.voice.isEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill"
-                    )
-                    .labelStyle(.iconOnly)
-                    .font(.title3)
-                    .frame(width: 54, height: 54)
-                }
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.circle)
+                voiceToggle
             }
         }
-        .padding(32)
-        .glassBackgroundEffect()
+    }
+
+    private var voiceToggle: some View {
+        Button {
+            appModel.voice.toggle()
+        } label: {
+            Label(
+                appModel.voice.isEnabled ? "Voice on" : "Voice off",
+                systemImage: appModel.voice.isEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill"
+            )
+            .labelStyle(.iconOnly)
+            .font(.title3)
+            .frame(width: 54, height: 54)
+        }
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.circle)
     }
 
     private var panelPrompt: String {
-        if let step = exercise.currentStep {
-            return step.instruction
+        if exercise.phase == .finished {
+            return "Your kopi is ready. Wonderful work!"
         }
-        return "Your kopi is ready. Wonderful work!"
+        return exercise.currentStep?.instruction ?? "Your kopi is ready. Wonderful work!"
+    }
+
+    private func chooseGuidance(_ level: CoffeeExercise.GuidanceLevel) {
+        if let opening = level.openingLine {
+            // VoiceGuide queues, so this lands before the first step's instruction
+            // that `cueChanged` speaks a moment later.
+            appModel.voice.speak(opening)
+        }
+        cueClockStartedAt = .now
+        exercise.startBrewing(with: level)
     }
 
     private func resetScene() {
