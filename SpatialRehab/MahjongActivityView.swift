@@ -160,11 +160,9 @@ struct MahjongActivityView: View {
             })
             subscriptions.append(content.subscribe(to: ManipulationEvents.WillRelease.self) { event in
                 Task { @MainActor in
-                    print("[MJDBG] WillRelease entity=\(event.entity.name.isEmpty ? "unnamed" : event.entity.name) id=\(event.entity.id) prim=\(primOf(event.entity) ?? "UNRESOLVED")")
                     tileReleased(event.entity)
                 }
             })
-            print("[MJDBG] subscriptions installed")
         } attachments: {
             Attachment(id: "mahjongPanel") {
                 controlPanel
@@ -184,7 +182,6 @@ struct MahjongActivityView: View {
             await openingCeremony()
         }
         .onDisappear {
-            print("[MJDBG] onDisappear (phase=\(appModel.phase))")
             sessionActive = false
             turnTask?.cancel()
             audio.stopWash()
@@ -549,7 +546,6 @@ struct MahjongActivityView: View {
             tilesByPrim[prim]?.orientation = Self.faceDown
         }
 
-        print("[MJDBG] ceremony: wash begins, tiles=\(tilesByPrim.count) wall=\(wallOrderList.count) tileWidth=\(tileWidth) thickness=\(tileThickness)")
         ceremonyPrompt = "Wash the tiles with your hands…"
         appModel.voice.speak("First, we wash the tiles. Swish them around with your hands — just like at home.")
         audio.startWash()
@@ -600,7 +596,6 @@ struct MahjongActivityView: View {
         }
         audio.stopWash()
 
-        print("[MJDBG] ceremony: walls")
         ceremonyPrompt = "Building the walls…"
         appModel.voice.speak("Now we stack the walls.")
         for (index, prim) in pool.enumerated() {
@@ -619,7 +614,6 @@ struct MahjongActivityView: View {
             return
         }
 
-        print("[MJDBG] ceremony: dealing")
         ceremonyPrompt = "Dealing…"
         appModel.voice.speak("And now we deal — thirteen tiles each.")
         for seat in [SeatID.right, .across, .left] {
@@ -652,7 +646,6 @@ struct MahjongActivityView: View {
     }
 
     private func completeSetup(sortedHand: [String], finals: [String: Transform]) {
-        print("[MJDBG] completeSetup: hand=\(sortedHand.count) playReady->true")
         // Tidy pass: anything disturbed mid-ceremony (a grab during the wash
         // or deal) glides back to its rightful spot before play begins.
         for (prim, transform) in finals {
@@ -824,7 +817,6 @@ struct MahjongActivityView: View {
         guard let prim = primOf(entity),
               !lockedPrims.contains(prim)
         else {
-            print("[MJDBG] release DROPPED: prim=\(primOf(entity) ?? "nil") locked=\(primOf(entity).map { lockedPrims.contains($0) } ?? false)")
             return
         }
 
@@ -844,7 +836,6 @@ struct MahjongActivityView: View {
             position.z - handPadCenter.z
         )) < 0.1
 
-        print("[MJDBG] release prim=\(prim) ready=\(playReady) resolving=\(isResolving) phase=\(exercise.phase) local=\(local) D=\(inDiscardArea) H=\(inHandZone) P=\(onHandPad) inWall=\(wallResidents.contains(prim)) inHand=\(handPrims.contains(prim)) next=\(nextWallPrim() ?? "nil")")
 
         // Mid-ceremony: nothing game-legal can happen yet, but a released
         // tile must never hang in the air. The end-of-ceremony tidy pass
@@ -1064,7 +1055,6 @@ struct MahjongActivityView: View {
         // sequence. Only this tile draws — others return with a gentle
         // reminder (also what keeps the pacing rig airtight).
         drawGlowPrim = nextWallPrim()
-        print("[MJDBG] beginPlayerDraw offer=\(drawGlowPrim ?? "nil") turns=\(exercise.playerTurns)")
         // Real-life draw: the next-in-order tile pops up out of the wall,
         // sticking out with a glow beneath it — the patient reaches over and
         // takes it themselves, like at a real table. (A tile sliding across
