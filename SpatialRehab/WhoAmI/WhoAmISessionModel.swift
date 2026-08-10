@@ -79,28 +79,12 @@ final class WhoAmISessionModel {
     }
 
     func playGreeting(for member: FamilyMember) {
-        guard member.hasGreetingVideo else {
-            // Soft flash: no video yet — still show relation beat then clear.
-            playingMemberID = member.id
-            videoProgress = 0
-            Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(1600))
-                if playingMemberID == member.id {
-                    withAnimation(.easeOut(duration: 0.35)) {
-                        playingMemberID = nil
-                        videoProgress = 0
-                    }
-                }
-            }
-            return
-        }
-
         playingMemberID = member.id
         videoProgress = 0
 
         if member.videoURL != nil {
-            // Real video: the player calls finishGreeting when playback ends;
-            // this is only a safety net if loading stalls.
+            // Real spoken greeting: the player calls finishGreeting when playback
+            // ends; this is only a safety net if loading stalls.
             let id = member.id
             Task { @MainActor in
                 try? await Task.sleep(for: .seconds(30))
@@ -109,11 +93,23 @@ final class WhoAmISessionModel {
             return
         }
 
-        let duration: Duration = .seconds(4)
+        // No spoken greeting recorded yet, so the card closes itself on a timer.
+        // How long it lingers depends on what there is to look at: a relative with
+        // a looping portrait is worth a full loop of their face, while someone with
+        // no footage at all only needs long enough to read the relation line.
+        let dwell: Duration
+        if member.portraitVideoURL != nil {
+            dwell = .seconds(6)
+        } else if member.hasGreetingVideo {
+            dwell = .seconds(4)
+        } else {
+            dwell = .milliseconds(1600)
+        }
+
         let steps = 40
         Task { @MainActor in
             for step in 1...steps {
-                try? await Task.sleep(for: duration / steps)
+                try? await Task.sleep(for: dwell / steps)
                 guard playingMemberID == member.id else { return }
                 videoProgress = Double(step) / Double(steps)
             }

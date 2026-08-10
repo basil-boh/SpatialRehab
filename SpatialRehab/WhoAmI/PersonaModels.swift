@@ -19,6 +19,7 @@ enum DemoPersona {
         birthday: calendarDate(year: 1948, month: 3, day: 12),
         hasGreetingVideo: false,
         videoLine: nil,
+        portraitVideoName: "chiobu_portrait",
         photoName: "whoami-owner",
         homeAddress: "Blk 5 Banda Street #08-42, Singapore 050005",
         occupation: "Retired schoolteacher · 退休教师",
@@ -38,7 +39,9 @@ enum DemoPersona {
             relationChinese: "您的丈夫",
             birthday: calendarDate(year: 1945, month: 8, day: 3),
             hasGreetingVideo: false,
-            videoLine: nil,
+            videoLine: "Ah Bu, come drink kopi with me. · 招母，来喝杯咖啡。",
+            // Placeholder clip — swap for real footage of Ah Pek when it exists.
+            portraitVideoName: "ahpek_portrait",
             childrenIDs: []
         ),
         FamilyMember(
@@ -50,7 +53,8 @@ enum DemoPersona {
             relationChinese: "您的儿子",
             birthday: calendarDate(year: 1972, month: 5, day: 20),
             hasGreetingVideo: false,
-            videoLine: nil,
+            videoLine: "Ma, I'll bring the grandchildren over this Sunday. · 妈，这个星期天我带孙子回来看您。",
+            portraitVideoName: "weiming_portrait",
             childrenIDs: []
         ),
         FamilyMember(
@@ -62,7 +66,8 @@ enum DemoPersona {
             relationChinese: "您的女儿",
             birthday: calendarDate(year: 1975, month: 11, day: 8),
             hasGreetingVideo: false,
-            videoLine: nil,
+            videoLine: "Ma, remember to take your medicine. I'll call you tonight. · 妈，记得吃药，晚上我打电话给您。",
+            portraitVideoName: "meiling_portrait",
             childrenIDs: [szeHaoID]
         ),
         FamilyMember(
@@ -74,7 +79,8 @@ enum DemoPersona {
             relationChinese: "您的儿子",
             birthday: calendarDate(year: 1978, month: 2, day: 14),
             hasGreetingVideo: false,
-            videoLine: nil,
+            videoLine: "Ma, nobody cooks laksa like you. · 妈，没人煮的叻沙比您的好吃。",
+            portraitVideoName: "junhao_portrait",
             childrenIDs: []
         ),
         FamilyMember(
@@ -88,6 +94,7 @@ enum DemoPersona {
             hasGreetingVideo: true,
             videoLine: "Hi, I'm Sze Hao. Love u Grandma.",
             videoFileName: "szehao_greeting",
+            portraitVideoName: "szehao_portrait",
             childrenIDs: []
         ),
     ]
@@ -132,6 +139,10 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     let hasGreetingVideo: Bool
     let videoLine: String?
     var videoFileName: String? = nil
+    /// Short silent clip that loops forever in the family tree so the portrait is alive.
+    /// Kept separate from `videoFileName` (the spoken greeting played on pinch) because
+    /// the two have opposite requirements: this one is muted, seamless, and neutral.
+    var portraitVideoName: String? = nil
     /// Asset-catalog portrait; falls back to `emoji` wherever no photo exists yet.
     var photoName: String? = nil
     /// Shown on the card face so a disoriented person can read where home is.
@@ -156,6 +167,12 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     var videoURL: URL? {
         guard let videoFileName else { return nil }
         return Bundle.main.url(forResource: videoFileName, withExtension: "mov")
+    }
+
+    /// Bundled looping portrait clip, when one exists for this member.
+    var portraitVideoURL: URL? {
+        guard let portraitVideoName else { return nil }
+        return Bundle.main.url(forResource: portraitVideoName, withExtension: "mov")
     }
 
     /// Whole years since `birthday`, for the "78 years young" chip on the card face.
