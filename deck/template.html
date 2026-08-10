@@ -119,31 +119,137 @@
     font-size: 13px; font-weight: 500; color: var(--ink-3);
     font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
   }
+  .counter #cur { display: inline-block; }
+  .counter.tick #cur { animation: numRoll 0.45s var(--ease); }
+  @keyframes numRoll { from { opacity: 0; transform: translateY(-9px); } }
   body.on-dark .wordmark { color: var(--dark-ink); }
   body.on-dark .counter { color: var(--dark-ink-2); }
+
+  /* Progress hairline across the top edge. */
+  .progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 40;
+    background: rgba(29, 29, 31, 0.07);
+    pointer-events: none;
+    transition: background 0.5s var(--ease);
+  }
+  .progress i {
+    display: block; height: 100%; width: 0;
+    background: var(--grad);
+    box-shadow: 0 0 12px rgba(0, 122, 255, 0.45);
+    transition: width 0.6s var(--ease);
+  }
+  body.on-dark .progress { background: rgba(245, 245, 247, 0.13); }
 
   /* ============ Slides ============ */
   .slide {
     position: absolute; inset: 0;
     display: flex;
     padding: 92px 56px 96px;
-    overflow-y: auto;
+    overflow-y: auto; overflow-x: hidden;
     background: transparent;
     opacity: 0; visibility: hidden;
-    transform: translateY(18px);
-    transition: opacity 0.55s var(--ease), transform 0.55s var(--ease),
-                visibility 0s linear 0.55s;
+    transform: translateY(26px) scale(0.985);
+    transition: opacity 0.55s var(--ease), transform 0.6s var(--ease),
+                visibility 0s linear 0.6s;
+  }
+  /* The deck has a sense of direction: an incoming slide rises when you move
+     forward and sinks when you move back. The outgoing one recedes instead of
+     travelling alongside it, so a change reads as a push, not a crossfade. */
+  .deck[data-dir="back"] .slide:not(.active):not(.leaving) {
+    transform: translateY(-26px) scale(0.985);
   }
   .slide.active {
-    opacity: 1; visibility: visible; transform: translateY(0);
-    transition: opacity 0.55s var(--ease), transform 0.55s var(--ease),
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity 0.55s var(--ease), transform 0.6s var(--ease),
                 visibility 0s;
     z-index: 10;
   }
+  .slide.leaving { opacity: 0; transform: scale(1.022); z-index: 9; }
   .slide[data-bg="dark"] { color: var(--dark-ink); }
 
   .wrap { width: 100%; max-width: 1060px; margin: auto; position: relative; z-index: 2; }
   .wrap.narrow { max-width: 880px; }
+
+  /* ============ Motion system ============ */
+  /* Entrance choreography is data-driven: the script walks each slide once and
+     stamps a --d delay on every animated element in reading order, so the
+     sequence survives copy edits and never needs hand-tuned :nth-child rules.
+     Fill mode is `backwards`, not `forwards`: an element holds its start pose
+     until its turn, then falls back to its own resting CSS once the animation
+     ends. That is what keeps hover states and later transitions working. */
+  .slide.active .anim {
+    animation: riseIn 0.72s var(--ease) var(--d, 0ms) backwards;
+  }
+  .slide.active h1.anim,
+  .slide.active h2.anim {
+    animation: headIn 0.9s var(--ease) var(--d, 0ms) backwards;
+  }
+  .slide.active .card.anim,
+  .slide.active .stat.anim,
+  .slide.active .member.anim,
+  .slide.active .step.anim,
+  .slide.active .row.anim,
+  .slide.active .stack li.anim,
+  .slide.active .points li.anim {
+    animation: popIn 0.66s var(--ease) var(--d, 0ms) backwards;
+  }
+  .slide.active .chart-card.anim {
+    animation: glassIn 0.95s var(--ease) var(--d, 0ms) backwards;
+  }
+  /* The two device mocks keep breathing after they land, the way a visionOS
+     window sits in space rather than being pinned to a page. */
+  .slide.active .vp-window.anim,
+  .slide.active .namecard.anim {
+    animation: glassIn 0.95s var(--ease) var(--d, 0ms) backwards,
+               mockFloat 8s ease-in-out 1.8s infinite;
+  }
+  @keyframes mockFloat { 0%, 100% { transform: translateY(0); }
+                         50%      { transform: translateY(-9px); } }
+  /* The map runs its own long choreography, so its frame lands early and fast. */
+  .slide.active .rw-visual.anim {
+    animation: glassIn 0.7s var(--ease) 0.12s backwards;
+  }
+
+  @keyframes riseIn  { from { opacity: 0; transform: translateY(16px); } }
+  @keyframes popIn   { from { opacity: 0; transform: translateY(18px) scale(0.975); } }
+  @keyframes headIn  { from { opacity: 0; transform: translateY(22px); filter: blur(8px); } }
+  @keyframes glassIn { from { opacity: 0; transform: translateY(28px) scale(0.955); } }
+  @keyframes fadeIn  { from { opacity: 0; } }
+  @keyframes iconPop { from { opacity: 0; transform: scale(0.45) rotate(-14deg); } }
+
+  /* Small marks land just behind the card that carries them. */
+  .slide.active .card.anim .icon,
+  .slide.active .member.anim .av {
+    animation: iconPop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) calc(var(--d, 0ms) + 130ms) backwards;
+  }
+  .slide.active .points li.anim .tick {
+    animation: iconPop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) calc(var(--d, 0ms) + 120ms) backwards;
+  }
+
+  /* Backdrops drift slowly while a slide is on screen. Four directions, cycled
+     down the deck, so consecutive slides never pan the same way. */
+  .slide.active .photo { animation: kb1 34s linear both; }
+  .slide:nth-child(4n+2).active .photo { animation-name: kb2; }
+  .slide:nth-child(4n+3).active .photo { animation-name: kb3; }
+  .slide:nth-child(4n+4).active .photo { animation-name: kb4; }
+  @keyframes kb1 { from { transform: scale(1.02) translate3d(0, 0, 0); }
+                   to   { transform: scale(1.11) translate3d(-1.6%, -1%, 0); } }
+  @keyframes kb2 { from { transform: scale(1.11) translate3d(1.4%, -0.8%, 0); }
+                   to   { transform: scale(1.02) translate3d(0, 0, 0); } }
+  @keyframes kb3 { from { transform: scale(1.02) translate3d(0.9%, 0.7%, 0); }
+                   to   { transform: scale(1.10) translate3d(-1%, -1.2%, 0); } }
+  @keyframes kb4 { from { transform: scale(1.08) translate3d(-1.3%, 0.9%, 0); }
+                   to   { transform: scale(1.02) translate3d(0.6%, -0.4%, 0); } }
+
+  /* Glass panels lift under the pointer. Only possible because the entrance
+     animation leaves no forwards fill on transform. */
+  .card, .stat, .member {
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .card:hover, .stat:hover, .member:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 2px 4px rgba(74, 56, 30, 0.06), 0 18px 44px rgba(74, 56, 30, 0.14);
+  }
 
   /* ============ Type ============ */
   .eyebrow {
@@ -218,13 +324,30 @@
     font-size: 15px; font-weight: 600; color: var(--ink-2);
     margin-bottom: 18px; letter-spacing: 0.005em;
   }
-  .reveal { opacity: 0; transform: translateY(14px); }
-  .slide.active .reveal { animation: rise 0.8s var(--ease) forwards; }
-  .slide.active .reveal:nth-child(2) { animation-delay: 0.08s; }
-  .slide.active .reveal:nth-child(3) { animation-delay: 0.16s; }
-  .slide.active .reveal:nth-child(4) { animation-delay: 0.24s; }
-  .slide.active .reveal:nth-child(5) { animation-delay: 0.32s; }
-  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  /* The mark assembles: the outline draws itself, then the six facets drop into
+     place one at a time, and the finished hexagon breathes. Inside the <g> the
+     polygons run base, six facets, then the outline, hence nth-of-type 2..8. */
+  .slide.active .mark polygon { transform-box: fill-box; transform-origin: center; }
+  .slide.active .mark polygon:nth-of-type(8) {
+    stroke-dasharray: 340;
+    animation: markDraw 1.1s var(--ease) 0.1s backwards;
+  }
+  .slide.active .mark polygon:nth-of-type(2) { animation: facetIn 0.5s var(--ease) 0.34s backwards; }
+  .slide.active .mark polygon:nth-of-type(3) { animation: facetIn 0.5s var(--ease) 0.41s backwards; }
+  .slide.active .mark polygon:nth-of-type(4) { animation: facetIn 0.5s var(--ease) 0.48s backwards; }
+  .slide.active .mark polygon:nth-of-type(5) { animation: facetIn 0.5s var(--ease) 0.55s backwards; }
+  .slide.active .mark polygon:nth-of-type(6) { animation: facetIn 0.5s var(--ease) 0.62s backwards; }
+  .slide.active .mark polygon:nth-of-type(7) { animation: facetIn 0.5s var(--ease) 0.69s backwards; }
+  .slide.active .mark svg { animation: markFloat 7s ease-in-out 1.3s infinite; }
+  @keyframes markDraw  { from { stroke-dashoffset: 340; } }
+  @keyframes facetIn   { from { opacity: 0; transform: scale(0.25); } }
+  @keyframes markFloat { 0%, 100% { transform: translateY(0); }
+                         50%      { transform: translateY(-7px); } }
+
+  /* A slow highlight travels across the gradient in the wordmark. */
+  .grad-text { background-size: 240% 100%; }
+  .slide.active .shine { animation: shimmer 5.5s ease-in-out 1.2s infinite alternate; }
+  @keyframes shimmer { from { background-position: 0% 0; } to { background-position: 100% 0; } }
 
   /* ============ Slide 4 — Product mock ============ */
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 8px; }
@@ -269,6 +392,17 @@
     border: 1px solid var(--line); background: #fff;
   }
   .vp-bar { width: 110px; height: 5px; border-radius: 100px; background: #D6D6DB; }
+
+  /* A gaze-highlight breath on the primary button, the way visionOS lights a
+     control the moment you look at it. */
+  .slide.active .vp-window .cta {
+    animation: ctaPulse 3.6s var(--ease) 2.1s infinite;
+  }
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.00); }
+    38%      { box-shadow: 0 0 0 9px rgba(0, 122, 255, 0.15); }
+    72%      { box-shadow: 0 0 0 20px rgba(0, 122, 255, 0.00); }
+  }
 
   /* ============ Slide 5 — Battery grid ============ */
   .battery { grid-template-columns: repeat(4, 1fr); }
@@ -392,6 +526,16 @@
     background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(255, 255, 255, 0.95);
     padding: 7px 14px; border-radius: 100px;
   }
+  /* --d is inherited from the card, so the chips trail whatever delay the
+     choreography walker gave their parent. */
+  .slide.active .namecard .avatar {
+    animation: iconPop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) calc(var(--d, 0ms) + 0.28s) backwards;
+  }
+  .slide.active .namecard .chip {
+    animation: popIn 0.5s var(--ease) calc(var(--d, 0ms) + 0.52s) backwards;
+  }
+  .slide.active .namecard .chip:nth-child(2) { animation-delay: calc(var(--d, 0ms) + 0.62s); }
+  .slide.active .namecard .chip:nth-child(3) { animation-delay: calc(var(--d, 0ms) + 0.72s); }
 
   .quote {
     margin-top: 18px; padding-left: 16px;
@@ -416,9 +560,30 @@
     font-size: 44px; font-weight: 700; letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums; line-height: 1;
   }
-  .chart-card .delta { font-size: 14px; font-weight: 600; color: var(--good); }
+  .chart-card .delta {
+    font-size: 14px; font-weight: 600; color: var(--good);
+    font-variant-numeric: tabular-nums;
+  }
   .chart-card svg { width: 100%; height: auto; display: block; margin-top: 10px; }
   .chart-card .src { font-size: 11.5px; color: var(--ink-3); margin-top: 10px; }
+
+  /* The chart builds itself: grid, then axes, then the trend line draws left to
+     right, the area washes in under it, and each reading pops as the line
+     reaches it. The line carries pathLength="1", so the dash maths is unitless
+     and stays correct if the data ever changes shape. */
+  .chart-card .ck-line { stroke-dasharray: 1; }
+  .chart-card .ck-dot  { transform-box: fill-box; transform-origin: center; }
+  .slide.active .chart-card .ck-grid { animation: fadeIn 0.6s var(--ease) calc(var(--d, 0ms) + 0.22s) backwards; }
+  .slide.active .chart-card .ck-axis { animation: fadeIn 0.6s var(--ease) calc(var(--d, 0ms) + 0.32s) backwards; }
+  .slide.active .chart-card .ck-line { animation: draw   1.5s var(--ease) calc(var(--d, 0ms) + 0.42s) backwards; }
+  .slide.active .chart-card .ck-area { animation: fadeIn 1.1s var(--ease) calc(var(--d, 0ms) + 0.9s)  backwards; }
+  .slide.active .chart-card .ck-cap  { animation: fadeIn 0.6s var(--ease) calc(var(--d, 0ms) + 1.85s) backwards; }
+  .slide.active .chart-card .ck-dot {
+    animation: dotPop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1)
+               calc(var(--d, 0ms) + 0.42s + var(--dd, 0s)) backwards;
+  }
+  @keyframes draw   { from { stroke-dashoffset: 1; } }
+  @keyframes dotPop { from { opacity: 0; transform: scale(0); } }
 
   /* ============ Slide 9 — Priority bars ============ */
   .prio { margin-top: 40px; display: grid; gap: 22px; max-width: 620px; }
@@ -428,7 +593,16 @@
     height: 8px; border-radius: 4px; overflow: hidden;
     background: rgba(29, 29, 31, 0.13);
   }
-  .prio .fill { height: 100%; border-radius: 4px; background: var(--accent); }
+  .prio .fill {
+    height: 100%; border-radius: 4px; background: var(--accent);
+    transform-origin: left center;
+  }
+  /* Width stays in the markup and the growth rides on scaleX, so the bars are
+     composited rather than relaid out on every frame. */
+  .slide.active .prio .row.anim .fill {
+    animation: barGrow 1.05s cubic-bezier(0.22, 0.85, 0.2, 1) calc(var(--d, 0ms) + 0.2s) backwards;
+  }
+  @keyframes barGrow { from { transform: scaleX(0); } }
   .prio .val { font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
   .formula {
     display: inline-block; margin-top: 30px;
@@ -529,10 +703,12 @@
     background: rgba(29, 29, 31, 0.05);
     color: var(--ink-2);
     display: grid; place-items: center;
-    transition: background 0.25s var(--ease), color 0.25s var(--ease), opacity 0.25s;
+    transition: background 0.25s var(--ease), color 0.25s var(--ease),
+                transform 0.3s var(--ease), opacity 0.25s;
     backdrop-filter: blur(8px);
   }
-  .navbtn:hover { background: rgba(29, 29, 31, 0.1); color: var(--ink); }
+  .navbtn:hover { background: rgba(29, 29, 31, 0.1); color: var(--ink); transform: translateY(-50%) scale(1.1); }
+  .navbtn:active { transform: translateY(-50%) scale(0.94); }
   .navbtn.prev { left: 20px; }
   .navbtn.next { right: 20px; }
   .navbtn svg { width: 16px; height: 16px; }
@@ -593,13 +769,41 @@
     .rw-map .rw-wipe { stroke-dashoffset: 0; }
     .rw-map .rw-walker, .rw-map .rw-pulse { display: none; }
     .slide.active .rw-map * { animation: none !important; }
-    .slide, .slide.active { transition: opacity 0.2s linear, visibility 0s; transform: none; }
-    .reveal, .slide.active .reveal { animation: none; opacity: 1; transform: none; }
-    .dots button { transition: none; }
+    .slide, .slide.active, .slide.leaving,
+    .deck[data-dir="back"] .slide:not(.active):not(.leaving) {
+      transition: opacity 0.2s linear, visibility 0s; transform: none;
+    }
+    /* Everything the motion system drives collapses to its resting state. The
+       script also skips the count-ups and writes the final figures straight in. */
+    .slide.active .anim,
+    .slide.active .photo,
+    .slide.active .mark svg,
+    .slide.active .mark polygon,
+    .slide.active .shine,
+    .slide.active .card.anim .icon,
+    .slide.active .member.anim .av,
+    .slide.active .points li.anim .tick,
+    .slide.active .namecard .avatar,
+    .slide.active .namecard .chip,
+    .slide.active .vp-window .cta,
+    .slide.active .prio .row.anim .fill,
+    .slide.active .chart-card .ck-grid,
+    .slide.active .chart-card .ck-axis,
+    .slide.active .chart-card .ck-line,
+    .slide.active .chart-card .ck-area,
+    .slide.active .chart-card .ck-cap,
+    .slide.active .chart-card .ck-dot {
+      animation: none !important;
+    }
+    .dots button, .navbtn, .card, .stat, .member, .progress i { transition: none; }
+    .navbtn:hover, .navbtn:active { transform: translateY(-50%); }
+    .card:hover, .stat:hover, .member:hover { transform: none; }
   }
 </style>
 
 <div class="deck">
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+
   <header class="chrome" aria-hidden="true">
     <div class="wordmark">
       <span class="dot"><svg viewBox="0 0 128 128" fill="none" aria-hidden="true"><g transform="translate(64 64)"><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"></polygon><polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"></polygon><polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"></polygon><polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"></polygon><polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"></polygon><polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"></polygon><polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"></polygon><g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"><line x1="0" y1="0" x2="0" y2="-56"></line><line x1="0" y1="0" x2="48.5" y2="-28"></line><line x1="0" y1="0" x2="48.5" y2="28"></line><line x1="0" y1="0" x2="0" y2="56"></line><line x1="0" y1="0" x2="-48.5" y2="28"></line><line x1="0" y1="0" x2="-48.5" y2="-28"></line></g><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"></polygon></g></svg></span>
@@ -615,15 +819,15 @@
       <div class="photo ph-agewell1" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
       <div class="wrap s-title">
-        <div class="mark reveal"><svg viewBox="0 0 128 128" fill="none" aria-hidden="true"><g transform="translate(64 64)"><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"></polygon><polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"></polygon><polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"></polygon><polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"></polygon><polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"></polygon><polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"></polygon><polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"></polygon><g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"><line x1="0" y1="0" x2="0" y2="-56"></line><line x1="0" y1="0" x2="48.5" y2="-28"></line><line x1="0" y1="0" x2="48.5" y2="28"></line><line x1="0" y1="0" x2="0" y2="56"></line><line x1="0" y1="0" x2="-48.5" y2="28"></line><line x1="0" y1="0" x2="-48.5" y2="-28"></line></g><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"></polygon></g></svg></div>
-        <p class="platform reveal">Built for Apple Vision Pro</p>
-        <h1 class="reveal">Spatial<span class="grad-text">Rehab</span></h1>
-        <p class="lede reveal">Errorless-learning cognitive rehab for early-stage dementia,
+        <div class="mark"><svg viewBox="0 0 128 128" fill="none" aria-hidden="true"><g transform="translate(64 64)"><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"></polygon><polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"></polygon><polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"></polygon><polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"></polygon><polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"></polygon><polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"></polygon><polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"></polygon><g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"><line x1="0" y1="0" x2="0" y2="-56"></line><line x1="0" y1="0" x2="48.5" y2="-28"></line><line x1="0" y1="0" x2="48.5" y2="28"></line><line x1="0" y1="0" x2="0" y2="56"></line><line x1="0" y1="0" x2="-48.5" y2="28"></line><line x1="0" y1="0" x2="-48.5" y2="-28"></line></g><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"></polygon></g></svg></div>
+        <p class="platform">Built for Apple Vision Pro</p>
+        <h1>Spatial<span class="grad-text shine">Rehab</span></h1>
+        <p class="lede">Errorless-learning cognitive rehab for early-stage dementia,
         built for Apple Vision Pro.</p>
-        <ul class="stack reveal">
+        <ul class="stack">
           <li>visionOS 2.0+</li><li>SwiftUI</li><li>RealityKit</li><li>Swift Charts</li>
         </ul>
-        <p class="meta reveal">Design overview · August 2026</p>
+        <p class="meta">Design overview · August 2026</p>
       </div>
     </section>
 
@@ -820,9 +1024,6 @@
             writing those notes themselves is the next step: their context, their
             reminders, whatever helps this face feel familiar again.</p>
             <p class="quote">&ldquo;Brian usually buys me Min Jiang Kueh on Saturdays.&rdquo;</p>
-            <p class="footnote">The wider &ldquo;My People&rdquo; module already exists in the
-            codebase with a note on each card, authored in code for now. Letting the
-            patient add and edit their own is what turns it into a notebook.</p>
           </div>
           <div style="display: flex; justify-content: center;">
             <div class="namecard" aria-label="Mockup of the personal name card">
@@ -861,8 +1062,9 @@
           <div class="chart-card">
             <p class="chart-label">Word memory · weekly score</p>
             <div class="hero-row">
-              <span class="hero-num">74</span>
-              <span class="delta">&#8593; 29 since intake</span>
+              <span class="hero-num" data-count-to="74">74</span>
+              <span class="delta" data-count-to="29"
+                    data-count-pre="&#8593; " data-count-post=" since intake">&#8593; 29 since intake</span>
             </div>
             <svg viewBox="0 0 560 300" role="img" aria-label="Line chart: word memory score rising from 45 at intake to 74 in week six">
               <defs>
@@ -871,21 +1073,21 @@
                   <stop offset="1" stop-color="#007AFF" stop-opacity="0"></stop>
                 </linearGradient>
               </defs>
-              <g stroke="#E8E8ED" stroke-width="1">
+              <g class="ck-grid" stroke="#E8E8ED" stroke-width="1">
                 <line x1="46" y1="264" x2="522" y2="264"></line>
                 <line x1="46" y1="204" x2="522" y2="204"></line>
                 <line x1="46" y1="144" x2="522" y2="144"></line>
                 <line x1="46" y1="84"  x2="522" y2="84"></line>
                 <line x1="46" y1="24"  x2="522" y2="24"></line>
               </g>
-              <g font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#86868B" text-anchor="end">
+              <g class="ck-axis" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#86868B" text-anchor="end">
                 <text x="38" y="268">0</text>
                 <text x="38" y="208">25</text>
                 <text x="38" y="148">50</text>
                 <text x="38" y="88">75</text>
                 <text x="38" y="28">100</text>
               </g>
-              <g font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#86868B" text-anchor="middle">
+              <g class="ck-axis" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#86868B" text-anchor="middle">
                 <text x="46" y="286">Intake</text>
                 <text x="138.8" y="286">Wk 2</text>
                 <text x="231.6" y="286">Wk 3</text>
@@ -893,16 +1095,17 @@
                 <text x="417.2" y="286">Wk 5</text>
                 <text x="510" y="286">Wk 6</text>
               </g>
-              <path d="M46 264 L46 156 L138.8 139.2 L231.6 124.8 L324.4 112.8 L417.2 96 L510 86.4 L510 264 Z" fill="url(#areaFill)"></path>
-              <path d="M46 156 L138.8 139.2 L231.6 124.8 L324.4 112.8 L417.2 96 L510 86.4"
+              <path class="ck-area" d="M46 264 L46 156 L138.8 139.2 L231.6 124.8 L324.4 112.8 L417.2 96 L510 86.4 L510 264 Z" fill="url(#areaFill)"></path>
+              <path class="ck-line" pathLength="1"
+                    d="M46 156 L138.8 139.2 L231.6 124.8 L324.4 112.8 L417.2 96 L510 86.4"
                     fill="none" stroke="#007AFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-              <circle cx="46" cy="156" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Intake · 45</title></circle>
-              <circle cx="138.8" cy="139.2" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 2 · 52</title></circle>
-              <circle cx="231.6" cy="124.8" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 3 · 58</title></circle>
-              <circle cx="324.4" cy="112.8" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 4 · 63</title></circle>
-              <circle cx="417.2" cy="96" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 5 · 70</title></circle>
-              <circle cx="510" cy="86.4" r="6" fill="#007AFF" stroke="#FFFFFF" stroke-width="2"><title>Week 6 · 74</title></circle>
-              <text x="510" y="68" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1D1D1F" text-anchor="middle">74</text>
+              <circle class="ck-dot" style="--dd: 0.10s" cx="46" cy="156" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Intake · 45</title></circle>
+              <circle class="ck-dot" style="--dd: 0.38s" cx="138.8" cy="139.2" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 2 · 52</title></circle>
+              <circle class="ck-dot" style="--dd: 0.66s" cx="231.6" cy="124.8" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 3 · 58</title></circle>
+              <circle class="ck-dot" style="--dd: 0.94s" cx="324.4" cy="112.8" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 4 · 63</title></circle>
+              <circle class="ck-dot" style="--dd: 1.22s" cx="417.2" cy="96" r="4" fill="#007AFF" stroke="#FFFFFF" stroke-width="1.5"><title>Week 5 · 70</title></circle>
+              <circle class="ck-dot" style="--dd: 1.50s" cx="510" cy="86.4" r="6" fill="#007AFF" stroke="#FFFFFF" stroke-width="2"><title>Week 6 · 74</title></circle>
+              <text class="ck-cap" x="510" y="68" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1D1D1F" text-anchor="middle">74</text>
             </svg>
             <p class="src">Sample data, for illustration.</p>
           </div>
@@ -925,17 +1128,17 @@
           <div class="row">
             <span class="name">Memory</span>
             <div class="track"><div class="fill" style="width: 61%;"></div></div>
-            <span class="val">0.61</span>
+            <span class="val" data-count-to="0.61" data-count-dp="2">0.61</span>
           </div>
           <div class="row">
             <span class="name">Executive function</span>
             <div class="track"><div class="fill" style="width: 38%;"></div></div>
-            <span class="val">0.38</span>
+            <span class="val" data-count-to="0.38" data-count-dp="2">0.38</span>
           </div>
           <div class="row">
             <span class="name">Numeracy</span>
             <div class="track"><div class="fill" style="width: 22%;"></div></div>
-            <span class="val">0.22</span>
+            <span class="val" data-count-to="0.22" data-count-dp="2">0.22</span>
           </div>
         </div>
         <span class="formula">priority&nbsp;=&nbsp;1&nbsp;&minus;&nbsp;score</span>
@@ -975,8 +1178,7 @@
           <p class="strip-body">Chair-based movement, marching and arm raises, is a safe way to
           raise activity for someone at risk of falls, and physical activity carries some of the
           strongest evidence for slowing decline. The literature points to 3 to 4 times a week,
-          30 to 45 minutes, sustained past 12 weeks. It sits alongside the cognitive work rather
-          than replacing it.</p>
+          30 to 45 minutes. It sits alongside the cognitive work rather than replacing it.</p>
         </div>
         <p class="footnote">A hackathon prototype, not a medical device. Not clinically
         validated, and making no diagnostic claims. Those eight games borrow structure
@@ -1009,7 +1211,7 @@
             <div class="av" aria-hidden="true">J</div>
             <p class="nm">JingTong</p>
             <p class="role">Apple&nbsp;Vision&nbsp;Pro Development</p>
-            <p class="del">RealityKit scene setup, hand and gaze input.</p>
+            <p class="del">RealityKit scene setup and hand tracking.</p>
           </div>
           <div class="member">
             <div class="av" aria-hidden="true">N</div>
@@ -1032,12 +1234,12 @@
       <div class="photo ph-pottery" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
       <div class="wrap s-close">
-        <div class="mark reveal"><svg viewBox="0 0 128 128" fill="none" aria-hidden="true"><g transform="translate(64 64)"><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"></polygon><polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"></polygon><polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"></polygon><polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"></polygon><polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"></polygon><polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"></polygon><polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"></polygon><g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"><line x1="0" y1="0" x2="0" y2="-56"></line><line x1="0" y1="0" x2="48.5" y2="-28"></line><line x1="0" y1="0" x2="48.5" y2="28"></line><line x1="0" y1="0" x2="0" y2="56"></line><line x1="0" y1="0" x2="-48.5" y2="28"></line><line x1="0" y1="0" x2="-48.5" y2="-28"></line></g><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"></polygon></g></svg></div>
-        <h2 class="reveal">A rehearsal space for a mind, and for the route home.</h2>
-        <p class="lede reveal" style="margin-left: auto; margin-right: auto;">Practice makes the route
+        <div class="mark"><svg viewBox="0 0 128 128" fill="none" aria-hidden="true"><g transform="translate(64 64)"><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"></polygon><polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"></polygon><polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"></polygon><polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"></polygon><polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"></polygon><polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"></polygon><polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"></polygon><g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"><line x1="0" y1="0" x2="0" y2="-56"></line><line x1="0" y1="0" x2="48.5" y2="-28"></line><line x1="0" y1="0" x2="48.5" y2="28"></line><line x1="0" y1="0" x2="0" y2="56"></line><line x1="0" y1="0" x2="-48.5" y2="28"></line><line x1="0" y1="0" x2="-48.5" y2="-28"></line></g><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"></polygon></g></svg></div>
+        <h2>A rehearsal space for a mind, and for the route home.</h2>
+        <p class="lede" style="margin-left: auto; margin-right: auto;">Practice makes the route
         feel like home again.</p>
-        <p class="thanks reveal">Thank you.</p>
-        <p class="credits reveal">Photography courtesy of the Ministry of Health and
+        <p class="thanks">Thank you.</p>
+        <p class="credits">Photography courtesy of the Ministry of Health and
         Age Well SG, Singapore. Used with permission.</p>
       </div>
     </section>
@@ -1059,14 +1261,77 @@
 <script>
   (function () {
     var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+    var deck = document.querySelector(".deck");
     var dotsBox = document.getElementById("dots");
     var prevBtn = document.getElementById("prev");
     var nextBtn = document.getElementById("next");
     var curEl = document.getElementById("cur");
     var totalEl = document.getElementById("total");
+    var counter = document.querySelector(".counter");
+    var bar = document.getElementById("bar");
     var idx = 0;
 
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     totalEl.textContent = String(slides.length).padStart(2, "0");
+
+    /* ---------------------------------------------------------------
+       Entrance choreography.
+
+       Walk every slide once and stamp a --d delay on each animated
+       element in reading order. Layout containers are stepped into so
+       their children carry the sequence forward on a tighter beat; the
+       mocks are leaves, because a chart or a name card should arrive as
+       one object rather than piece by piece. Doing this in script means
+       the timing follows the DOM, so re-ordering or adding a card needs
+       no CSS change at all.
+       --------------------------------------------------------------- */
+    var CONTAINERS = ".split, .split > div, .cards, .stats, .team, .prio, " +
+                     ".rw-steps, .points, .vp-scene, .stack";
+    var LEAVES = ".card, .stat, .member, .vp-window, .namecard, .chart-card, .rw-visual";
+    var STEP_TOP = 80, STEP_IN = 52, CAP = 900;
+
+    slides.forEach(function (slide) {
+      var wrap = slide.querySelector(".wrap");
+      if (!wrap) { return; }
+      var t = 0;
+      (function walk(node, step) {
+        Array.prototype.forEach.call(node.children, function (el) {
+          if (!el.matches(LEAVES) && el.matches(CONTAINERS)) { walk(el, STEP_IN); return; }
+          el.classList.add("anim");
+          el.style.setProperty("--d", Math.min(t, CAP) + "ms");
+          t += step;
+        });
+      })(wrap, STEP_TOP);
+    });
+
+    /* ---- Figures count up once their card has landed ---- */
+    var countToken = 0;
+    function runCounts(slide) {
+      var token = ++countToken;
+      Array.prototype.forEach.call(slide.querySelectorAll("[data-count-to]"), function (el) {
+        var to = parseFloat(el.getAttribute("data-count-to"));
+        var dp = parseInt(el.getAttribute("data-count-dp") || "0", 10);
+        var pre = el.getAttribute("data-count-pre") || "";
+        var post = el.getAttribute("data-count-post") || "";
+        var done = function () { el.textContent = pre + to.toFixed(dp) + post; };
+        if (calm) { done(); return; }
+
+        var delay = (parseFloat(getComputedStyle(el).getPropertyValue("--d")) || 0) + 300;
+        el.textContent = pre + (0).toFixed(dp) + post;
+        var start = null;
+        function frame(ts) {
+          if (token !== countToken) { return; }
+          if (start === null) { start = ts; }
+          var p = Math.min((ts - start) / 1000, 1);
+          el.textContent = pre + (to * (1 - Math.pow(1 - p, 3))).toFixed(dp) + post;
+          if (p < 1) { requestAnimationFrame(frame); } else { done(); }
+        }
+        setTimeout(function () {
+          if (token === countToken) { requestAnimationFrame(frame); }
+        }, delay);
+      });
+    }
 
     slides.forEach(function (_, i) {
       var d = document.createElement("button");
@@ -1081,17 +1346,43 @@
         if (n === idx) { render(); return; }
         return;
       }
+      var dir = n > idx ? "fwd" : "back";
       idx = n;
-      render();
+      render(dir);
     }
 
-    function render() {
+    var leaveTimer = null;
+
+    function render(dir) {
+      var prev = document.querySelector(".slide.active");
+      if (prev === slides[idx]) { prev = null; }
+      slides.forEach(function (s) { s.classList.remove("leaving"); });
+
+      if (prev) {
+        // The outgoing slide dissolves backwards under the incoming one.
+        prev.classList.remove("active");
+        prev.classList.add("leaving");
+        clearTimeout(leaveTimer);
+        leaveTimer = setTimeout(function () { prev.classList.remove("leaving"); }, 640);
+      }
+
+      // Set the travel direction and flush layout before the slide goes
+      // active, so the entering slide starts from the correct off-screen
+      // pose rather than transitioning from the previous direction's.
+      deck.setAttribute("data-dir", dir || "fwd");
+      void slides[idx].offsetWidth;
+
       slides.forEach(function (s, i) { s.classList.toggle("active", i === idx); });
       dots.forEach(function (d, i) { d.classList.toggle("on", i === idx); });
       curEl.textContent = String(idx + 1).padStart(2, "0");
+      counter.classList.remove("tick");
+      void counter.offsetWidth;
+      counter.classList.add("tick");
+      bar.style.width = ((idx + 1) / slides.length * 100).toFixed(2) + "%";
       prevBtn.disabled = idx === 0;
       nextBtn.disabled = idx === slides.length - 1;
       document.body.classList.toggle("on-dark", slides[idx].dataset.tone === "dark");
+      runCounts(slides[idx]);
       if (history.replaceState) { history.replaceState(null, "", "#" + (idx + 1)); }
     }
 

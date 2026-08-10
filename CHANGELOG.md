@@ -7,8 +7,52 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-10
 
+### Added
+
+- **A motion system across the whole deck**, replacing the four hand-written `:nth-child`
+  reveal rules that only ever animated the title and closing slides. Every slide now has an
+  entrance choreography: the script walks each slide once at load and stamps a `--d` delay on
+  each animated element in reading order, stepping into layout containers (`.cards`, `.stats`,
+  `.team`, `.prio`, `.split`, `.points`) on a tighter beat so their children carry the sequence
+  forward. The mocks are treated as leaves, because a chart or a name card should arrive as one
+  object rather than piece by piece. Because the delays come from the DOM, adding or reordering
+  a card needs no CSS change.
+  - Fill mode is `backwards`, not `forwards`. An element holds its start pose until its turn
+    and then falls back to its own resting CSS, which is what lets the new hover states and the
+    bar/counter resting values work at all. A `forwards` fill would have pinned every element's
+    transform for the life of the slide.
+- **Per-element motion, tuned to what the element is:** headings blur-rise, cards and stats pop
+  with a slight scale, glass mocks arrive with depth, card icons and team avatars spring in just
+  behind their card.
+- **Slow drift on the photographic backdrops.** Four pan directions cycled down the deck so
+  consecutive slides never move the same way.
+- **Directional slide transitions.** Incoming slides rise when moving forward and sink when
+  moving back; the outgoing slide recedes under them rather than travelling alongside, so a
+  change reads as a push instead of a crossfade. The script flushes layout between setting the
+  direction and activating the slide, otherwise the first back-navigation animates from the
+  forward pose.
+- **The caregiver chart builds itself:** grid, then axes, then the trend line draws left to
+  right, the area washes in under it, and each weekly reading pops as the line reaches it. The
+  line carries `pathLength="1"` so the dash maths is unitless and survives a change of data.
+- **Figures count up** on the chart hero number, its delta, and the three domain priority
+  values, starting once their card has landed. The priority bars grow on `scaleX` rather than
+  `width`, so they composite instead of relaying out every frame.
+- **The logo assembles:** the hexagon outline draws itself, the six facets drop in one at a
+  time, and the finished mark breathes. A slow highlight travels across the gradient in the
+  wordmark.
+- **Deck chrome:** a progress hairline across the top edge, a roll on the slide counter, scale
+  feedback on the nav chevrons, and a lift on cards under the pointer.
+- Every one of the above is disabled under `prefers-reduced-motion`, including the count-ups,
+  which write their final figures straight in.
+
 ### Changed
 
+- **Deck copy, at Basil's request:** dropped the "My People module already exists in the
+  codebase" footnote from the Who am I? slide; removed "sustained past 12 weeks" from the
+  seated-physical-activity strip, which read as contradicting the 5-8 week programme length two
+  paragraphs above (the frequency and session length stay, only the conflicting duration is
+  gone); and JingTong's team card now reads "RealityKit scene setup and hand tracking" with
+  gaze input removed.
 - **Route on the Remember the Way map is now green** (`#30D158`, Apple's dark-appearance system
   green) instead of blue, along with the start dot, its pulse ring, the route glow and the
   walker's halo. About 9:1 against the map panel, so it still leads the eye. It fails the
