@@ -1,101 +1,111 @@
 import SwiftUI
 
-/// Home screen: the "Remember the Way" exercise from `feature/wayfinding-activities`,
-/// reached once `SpatialRehabApp.hasCompletedBaseline` flips to true. Secondary buttons
-/// below the primary "Start" action open `DailyPracticeHubView` (the repeatable, leveled
-/// version of the baseline mini-games — from the baseline-metrics branch, see
-/// `Docs/DailyPractice_Design.md`) and `CaregiverDashboardView` (trend charts across
-/// sessions, also from baseline-metrics), without competing with "Start" for attention.
-///
-/// Reconciled 2026-08-08, three times: first when both branches had independently rewritten
-/// `ContentView` as the app's home screen (this branch's activity picker vs.
-/// baseline-metrics' caregiver check-in card — Basil chose the activity picker), then again
-/// after a teammate's follow-up commit simplified the picker down to a single activity
-/// (Touch the Dots / Walk to the Bakery / Find Your Way Home were removed), then again after
-/// baseline-metrics grew a Daily Practice hub and replaced its own home screen with a
-/// greeting card — folded in here as a secondary "Daily Practice" entry point rather than
-/// adopting the greeting-card layout, so the single-activity focus from the second
-/// reconciliation still stands.
+/// The home window, kept deliberately plain: native glass, a greeting, and
+/// exactly one activity card ("Something else" swaps what the card offers —
+/// never a menu). Phases cross-fade in place: welcome → a calm waiting view
+/// while an activity runs → the postcard mint when it ends. Clinical tools
+/// hide behind a quiet caregiver reveal; "Who am I?" rides the window's
+/// bottom ornament (see `SpatialRehabApp`).
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var showingDashboard = false
     @State private var showingDailyPractice = false
+    /// The keepsake minted for the activity just finished; nil until the
+    /// finished overlay appears, reset when a new activity starts.
+    @State private var minted: Postcard?
+    /// "Something else" advances this — the single card swaps its offer.
+    @State private var suggestionOffset = 0
+    /// Clinical tools stay collapsed until a caregiver reveals them.
+    @State private var showCaregiverTools = false
+    /// Fades the welcome content out while the immersive space opens.
+    @State private var launching = false
 
     var body: some View {
         Group {
             if showingDailyPractice {
                 DailyPracticeHubView(onExit: { showingDailyPractice = false })
             } else {
-                VStack(spacing: 40) {
+                Group {
                     switch appModel.phase {
                     case .welcome, .openingActivity:
-                        welcome
+                        welcome.transition(.opacity)
                     case .inActivity:
-                        inActivity
+                        inActivity.transition(.opacity)
                     case .finished:
-                        finished
+                        finished.transition(.opacity)
                     }
                 }
-                .padding(60)
+                .padding(40)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .sheet(isPresented: $showingDashboard) {
                     CaregiverDashboardView()
                 }
             }
         }
+        .fontDesign(.rounded)
+        .onChange(of: appModel.phase) { _, newPhase in
+            if newPhase == .welcome || newPhase == .finished {
+                launching = false
+            }
+        }
     }
 
+    // MARK: - Welcome: one card, nothing else
+
     private var welcome: some View {
-        VStack(spacing: 40) {
-            Image(systemName: "sparkles")
-                .font(.system(size: 80))
-                .foregroundStyle(.tint)
-                .symbolRenderingMode(.hierarchical)
+        VStack(spacing: 30) {
+            Spacer()
 
-            Text("What shall we do today?")
-                .font(.system(size: 44, weight: .semibold))
-
-            VStack(spacing: 20) {
-                Button {
-                    Task { await startActivity(.routeMemory) }
-                } label: {
-                    Label("Remember the Way", systemImage: "map.fill")
-                        .font(.title2)
-                        .frame(maxWidth: 400)
+            VStack(spacing: 8) {
+                Text(greeting)
+                    .font(.system(size: 38, weight: .bold, design: .rounded))
+                Text("What would you like to do today?")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                if appModel.garden.coins > 0 {
+                    Label("\(appModel.garden.coins)", systemImage: "star.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(GardenAccent.amber)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(.ultraThinMaterial, in: Capsule())
+                        .padding(.top, 4)
                 }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.extraLarge)
-                .disabled(appModel.phase == .openingActivity)
-
-                Button {
-                    Task { await startActivity(.coffee) }
-                } label: {
-                    Label("Make a Cup of Kopi", systemImage: "cup.and.saucer.fill")
-                        .font(.title2)
-                        .frame(maxWidth: 400)
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.extraLarge)
-                .disabled(appModel.phase == .openingActivity)
-
-                Button {
-                    Task { await startActivity(.mahjong) }
-                } label: {
-                    Label("Play Mahjong", systemImage: "square.grid.3x3.fill")
-                        .font(.title2)
-                        .frame(maxWidth: 400)
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.extraLarge)
-                .disabled(appModel.phase == .openingActivity)
             }
 
-            HStack(spacing: 16) {
+            activityCard(displayedActivity)
+                .id(displayedActivity)
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .move(edge: .leading).combined(with: .opacity)
+                ))
+
+            Button {
+                withAnimation(.spring(duration: 0.55)) {
+                    suggestionOffset += 1
+                }
+            } label: {
+                Label("Something else", systemImage: "arrow.trianglehead.2.clockwise")
+                    .font(.callout)
+            }
+            .buttonStyle(.borderless)
+
+            Spacer()
+
+            caregiverCorner
+        }
+        .opacity(launching ? 0 : 1)
+        .scaleEffect(launching ? 0.96 : 1)
+    }
+
+    /// Clinical tools are the caregiver's, not the patient's — one quiet
+    /// line keeps them out of her decision space entirely.
+    @ViewBuilder
+    private var caregiverCorner: some View {
+        if showCaregiverTools {
+            HStack(spacing: 14) {
                 Button {
                     showingDailyPractice = true
                 } label: {
@@ -109,80 +119,172 @@ struct ContentView: View {
                     Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .buttonStyle(.bordered)
+
+                Button {
+                    withAnimation(.spring(duration: 0.4)) {
+                        showCaregiverTools = false
+                    }
+                } label: {
+                    Image(systemName: "chevron.down")
+                }
+                .buttonStyle(.borderless)
             }
-            // "Who am I?" is deliberately not in this stack — it lives in the main
-            // window's bottom ornament (see `SpatialRehabApp`), so it sits in the same
-            // spot on every screen instead of moving with each screen's layout.
+            .transition(.opacity)
+        } else {
+            Button {
+                withAnimation(.spring(duration: 0.4)) {
+                    showCaregiverTools = true
+                }
+            } label: {
+                Label("For caregivers", systemImage: "stethoscope")
+                    .font(.footnote)
+                    .foregroundStyle(.tertiary)
+            }
+            .buttonStyle(.borderless)
         }
     }
 
-    /// Guidance while the kopi or mahjong activity runs — those spaces keep this window
-    /// open as their instruction surface. Unreachable for Remember the Way: that activity
-    /// dismisses this whole window (`AppModel.startWayHome`) because
-    /// `RouteMemoryTableView.controlPanel` already carries the real, phase-accurate
-    /// instructions and a second surface just competed for attention.
+    // MARK: - In activity: calm waiting
+
     private var inActivity: some View {
-        VStack(spacing: 16) {
-            Text("Look at the table")
-                .font(.system(size: 44, weight: .semibold))
+        VStack(spacing: 20) {
+            Image(systemName: activitySymbol(appModel.currentActivity))
+                .font(.system(size: 30, weight: .semibold))
+                .foregroundStyle(GardenAccent.jade)
+                .frame(width: 72, height: 72)
+                .background(GardenAccent.jade.opacity(0.14), in: RoundedRectangle(cornerRadius: 18))
+                .symbolEffect(.breathe, options: .repeating.speed(0.4))
 
-            Text(inActivityGuidance)
-                .font(.title2)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-        }
-    }
-
-    private var finished: some View {
-        VStack(spacing: 40) {
-            Image(systemName: "sun.max.fill")
-                .font(.system(size: 80))
-                .foregroundStyle(.yellow)
-                .symbolRenderingMode(.hierarchical)
-
-            VStack(spacing: 16) {
-                Text("Well done!")
-                    .font(.system(size: 44, weight: .semibold))
-
-                Text("You did wonderfully. See you again soon.")
-                    .font(.title2)
+            VStack(spacing: 8) {
+                Text("Look at the table")
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                Text(inActivityGuidance)
+                    .font(.title3)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                    .frame(maxWidth: 480)
+            }
+        }
+    }
+
+    // MARK: - Finished: the postcard mint
+
+    private var finished: some View {
+        VStack(spacing: 24) {
+            Text(greeting)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+
+            if let minted {
+                PostcardMintView(postcard: minted)
+                    .frame(height: 230)
             }
 
-            Button("Play again") {
-                Task { await startActivity(appModel.currentActivity) }
+            Button {
+                withAnimation(.spring(duration: 0.6)) {
+                    appModel.phase = .welcome
+                }
+            } label: {
+                Label("Back home", systemImage: "house.fill")
+                    .font(.title3.weight(.semibold))
             }
-            .font(.title2)
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
             .controlSize(.extraLarge)
-
-            HStack(spacing: 16) {
-                Button {
-                    showingDailyPractice = true
-                } label: {
-                    Label("Daily Practice", systemImage: "checklist")
-                }
-                .buttonStyle(.bordered)
-
-                Button {
-                    showingDashboard = true
-                } label: {
-                    Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
-                }
-                .buttonStyle(.bordered)
-                // "Who am I?" lives in the window's bottom ornament, not here — see
-                // the note on the welcome screen's button stack.
-            }
-
-            Label(
-                "\(BaselineResultsStore.completedGameCount()) of \(BaselineAssessmentSession.Phase.gameCount) activities completed",
-                systemImage: "leaf.fill"
-            )
-            .font(.footnote)
-            .foregroundStyle(.secondary)
+            .tint(GardenAccent.jade)
         }
+        .onAppear {
+            // Mint exactly one keepsake per completion; `minted` resets when
+            // the next activity starts.
+            guard minted == nil else { return }
+            let points: Int
+            switch appModel.currentActivity {
+            case .mahjong: points = max(appModel.mahjong.points, 1)
+            case .coffee: points = 12
+            case .routeMemory: points = 15
+            }
+            minted = appModel.garden.record(activity: appModel.currentActivity, points: points)
+        }
+    }
+
+    // MARK: - Pieces
+
+    /// "Good morning, Chio Bu" — her name from the Who-am-I persona.
+    private var greeting: String {
+        let hour = Calendar.current.component(.hour, from: .now)
+        let daypart = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"
+        let givenName = DemoPersona.owner.englishName
+            .split(separator: " ").dropFirst().joined(separator: " ")
+        switch appModel.phase {
+        case .finished: return "Well done, \(givenName.isEmpty ? "friend" : String(givenName))!"
+        default: return givenName.isEmpty ? "\(daypart)!" : "\(daypart), \(givenName)"
+        }
+    }
+
+    /// The single offered activity: least-played first, and "Something else"
+    /// walks forward through the rest — one card on screen, always.
+    private var displayedActivity: AppModel.ActivityKind {
+        let garden = appModel.garden
+        let ordered = ([
+            (AppModel.ActivityKind.coffee, garden.kopiCount),
+            (.mahjong, garden.mahjongCount),
+            (.routeMemory, garden.routeCount),
+        ] as [(AppModel.ActivityKind, Int)])
+            .sorted { $0.1 < $1.1 }
+            .map(\.0)
+        return ordered[suggestionOffset % ordered.count]
+    }
+
+    private func activitySymbol(_ activity: AppModel.ActivityKind) -> String {
+        switch activity {
+        case .coffee: return "cup.and.saucer.fill"
+        case .mahjong: return "square.grid.3x3.fill"
+        case .routeMemory: return "map.fill"
+        }
+    }
+
+    private func activityCard(_ activity: AppModel.ActivityKind) -> some View {
+        let (title, line): (String, String) = {
+            switch activity {
+            case .coffee: return ("Make a Cup of Kopi", "Pour, stir, and smell the morning")
+            case .mahjong: return ("Play Mahjong", "The table is set for four")
+            case .routeMemory: return ("Remember the Way", "A stroll home through Tiong Bahru")
+            }
+        }()
+        return Button {
+            Task {
+                withAnimation(.easeIn(duration: 0.35)) {
+                    launching = true
+                }
+                try? await Task.sleep(for: .milliseconds(380))
+                await startActivity(activity)
+            }
+        } label: {
+            HStack(spacing: 18) {
+                Image(systemName: activitySymbol(activity))
+                    .font(.system(size: 30, weight: .semibold))
+                    .foregroundStyle(GardenAccent.jade)
+                    .frame(width: 68, height: 68)
+                    .background(GardenAccent.jade.opacity(0.16), in: RoundedRectangle(cornerRadius: 18))
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(.title2.weight(.semibold))
+                        .foregroundStyle(.primary)
+                    Text(line)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "arrow.forward.circle.fill")
+                    .font(.system(size: 34))
+                    .foregroundStyle(GardenAccent.jade)
+            }
+            .padding(22)
+            .frame(maxWidth: 560)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 26))
+        }
+        .buttonStyle(.plain)
+        .hoverEffect(.lift)
+        .disabled(appModel.phase == .openingActivity)
     }
 
     private var inActivityGuidance: String {
@@ -199,10 +301,11 @@ struct ContentView: View {
     }
 
     private func startActivity(_ activity: AppModel.ActivityKind) async {
+        minted = nil
         // Remember the Way dismisses this window (its immersive control panel is the
         // only guidance surface) and is shared with the name card's "Show me the way
-        // home" — see AppModel.startWayHome. Kopi and mahjong keep the window open as
-        // their guidance surface (`inActivity` above).
+        // home" — see AppModel.startWayHome. Kopi keeps the window as its guidance
+        // surface; mahjong dismisses it (its floating panel is the only guide).
         if activity == .routeMemory {
             await appModel.startWayHome(openImmersiveSpace: openImmersiveSpace, dismissWindow: dismissWindow)
             return
@@ -220,10 +323,6 @@ struct ContentView: View {
         switch await openImmersiveSpace(id: AppModel.activitySpaceID) {
         case .opened:
             appModel.phase = .inActivity
-            // Mahjong's floating panel is its only guidance surface — this
-            // window just sat in front of it (team screenshot, 2026-08-10).
-            // `MahjongActivityView.onDisappear` reopens it. Kopi keeps the
-            // window: its guidance genuinely lives here.
             if activity == .mahjong {
                 dismissWindow(id: SceneID.main)
             }

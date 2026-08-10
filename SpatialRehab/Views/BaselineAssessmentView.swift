@@ -83,7 +83,9 @@ struct BaselineAssessmentView: View {
             }
             .font(.title2)
             .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
             .controlSize(.extraLarge)
+            .tint(GardenAccent.jade)
         }
     }
 
@@ -104,7 +106,9 @@ struct BaselineAssessmentView: View {
             Button("Begin", action: session.begin)
                 .font(.title2)
                 .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
+                .tint(GardenAccent.jade)
         }
     }
 
@@ -159,7 +163,7 @@ struct BaselineAssessmentView: View {
         VStack(spacing: 24) {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 56))
-                .foregroundStyle(.green)
+                .foregroundStyle(GardenAccent.jade)
 
             Text("Thank you — that's everything for now.")
                 .font(.system(size: 30, weight: .semibold, design: .rounded))
@@ -168,7 +172,9 @@ struct BaselineAssessmentView: View {
             Button("Continue", action: onFinished)
                 .font(.title2)
                 .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
+                .tint(GardenAccent.jade)
         }
     }
 }

@@ -131,6 +131,16 @@ struct MahjongActivityView: View {
             buildTable()
             buildDiscardZoneGlow()
             buildHandPad()
+            Task { @MainActor in
+                // The one ambience charm that stays: a red lantern over the
+                // table, tassel swaying on its own baked animation.
+                if let lantern = await Ambience.load(
+                    "chinese_lantern_with_swaying_tassel", height: 0.34
+                ) {
+                    lantern.position = Self.center + [0, 0.92, 0]
+                    root.addChild(lantern)
+                }
+            }
             if let panel = attachments.entity(for: "mahjongPanel") {
                 panel.position = [0, 1.52, -1.75]
                 content.add(panel)
@@ -150,11 +160,9 @@ struct MahjongActivityView: View {
             })
             subscriptions.append(content.subscribe(to: ManipulationEvents.WillRelease.self) { event in
                 Task { @MainActor in
-                    print("[MJDBG] WillRelease entity=\(event.entity.name.isEmpty ? "unnamed" : event.entity.name) id=\(event.entity.id) prim=\(primOf(event.entity) ?? "UNRESOLVED")")
                     tileReleased(event.entity)
                 }
             })
-            print("[MJDBG] subscriptions installed")
         } attachments: {
             Attachment(id: "mahjongPanel") {
                 controlPanel
@@ -162,10 +170,10 @@ struct MahjongActivityView: View {
             Attachment(id: "handPadTag") {
                 Text("Your new tile can rest here")
                     .font(.caption)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Capsule().fill(Color.black.opacity(0.35)))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .glassBackgroundEffect(in: .capsule)
             }
         }
         .task {
@@ -174,7 +182,6 @@ struct MahjongActivityView: View {
             await openingCeremony()
         }
         .onDisappear {
-            print("[MJDBG] onDisappear (phase=\(appModel.phase))")
             sessionActive = false
             turnTask?.cancel()
             audio.stopWash()
@@ -539,7 +546,6 @@ struct MahjongActivityView: View {
             tilesByPrim[prim]?.orientation = Self.faceDown
         }
 
-        print("[MJDBG] ceremony: wash begins, tiles=\(tilesByPrim.count) wall=\(wallOrderList.count) tileWidth=\(tileWidth) thickness=\(tileThickness)")
         ceremonyPrompt = "Wash the tiles with your hands…"
         appModel.voice.speak("First, we wash the tiles. Swish them around with your hands — just like at home.")
         audio.startWash()
@@ -590,7 +596,6 @@ struct MahjongActivityView: View {
         }
         audio.stopWash()
 
-        print("[MJDBG] ceremony: walls")
         ceremonyPrompt = "Building the walls…"
         appModel.voice.speak("Now we stack the walls.")
         for (index, prim) in pool.enumerated() {
@@ -609,7 +614,6 @@ struct MahjongActivityView: View {
             return
         }
 
-        print("[MJDBG] ceremony: dealing")
         ceremonyPrompt = "Dealing…"
         appModel.voice.speak("And now we deal — thirteen tiles each.")
         for seat in [SeatID.right, .across, .left] {
@@ -642,7 +646,6 @@ struct MahjongActivityView: View {
     }
 
     private func completeSetup(sortedHand: [String], finals: [String: Transform]) {
-        print("[MJDBG] completeSetup: hand=\(sortedHand.count) playReady->true")
         // Tidy pass: anything disturbed mid-ceremony (a grab during the wash
         // or deal) glides back to its rightful spot before play begins.
         for (prim, transform) in finals {
@@ -814,7 +817,6 @@ struct MahjongActivityView: View {
         guard let prim = primOf(entity),
               !lockedPrims.contains(prim)
         else {
-            print("[MJDBG] release DROPPED: prim=\(primOf(entity) ?? "nil") locked=\(primOf(entity).map { lockedPrims.contains($0) } ?? false)")
             return
         }
 
@@ -834,7 +836,6 @@ struct MahjongActivityView: View {
             position.z - handPadCenter.z
         )) < 0.1
 
-        print("[MJDBG] release prim=\(prim) ready=\(playReady) resolving=\(isResolving) phase=\(exercise.phase) local=\(local) D=\(inDiscardArea) H=\(inHandZone) P=\(onHandPad) inWall=\(wallResidents.contains(prim)) inHand=\(handPrims.contains(prim)) next=\(nextWallPrim() ?? "nil")")
 
         // Mid-ceremony: nothing game-legal can happen yet, but a released
         // tile must never hang in the air. The end-of-ceremony tidy pass
@@ -1054,7 +1055,6 @@ struct MahjongActivityView: View {
         // sequence. Only this tile draws — others return with a gentle
         // reminder (also what keeps the pacing rig airtight).
         drawGlowPrim = nextWallPrim()
-        print("[MJDBG] beginPlayerDraw offer=\(drawGlowPrim ?? "nil") turns=\(exercise.playerTurns)")
         // Real-life draw: the next-in-order tile pops up out of the wall,
         // sticking out with a glow beneath it — the patient reaches over and
         // takes it themselves, like at a real table. (A tile sliding across
@@ -1481,42 +1481,51 @@ struct MahjongActivityView: View {
     private var controlPanel: some View {
         VStack(spacing: 20) {
             Text(panelPrompt)
-                .font(.system(size: 32, weight: .semibold))
+                .font(.title.weight(.semibold))
+                .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 660)
 
             if exercise.points > 0 {
-                Label("\(exercise.points) points", systemImage: "star.fill")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.yellow)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 8)
-                    .background(Capsule().fill(Color.black.opacity(0.25)))
+                Label {
+                    Text("\(exercise.points) points")
+                        .foregroundStyle(.primary)
+                } icon: {
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(GardenAccent.amber)
+                }
+                .font(.title3.weight(.semibold))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial, in: Capsule())
             }
 
             if exercise.phase == .claimWindow, let claim = exercise.pendingClaim {
+                // Two choices, never four: the game already knows the best
+                // claim (win > pong > chow) — a dementia patient should
+                // decide yes or no, not weigh melds against each other.
                 HStack(spacing: 16) {
                     if claim.canWin {
                         Button("Mahjong!") { claimAction = .win }
                             .font(.title2.weight(.bold))
                             .buttonStyle(.borderedProminent)
                             .buttonBorderShape(.capsule)
-                            .tint(.orange)
+                            .tint(GardenAccent.amber)
                             .controlSize(.extraLarge)
-                    }
-                    if claim.canPong {
+                    } else if claim.canPong {
                         Button("Pong!") { claimAction = .pong }
-                            .font(.title3)
+                            .font(.title2.weight(.bold))
                             .buttonStyle(.borderedProminent)
                             .buttonBorderShape(.capsule)
-                            .controlSize(.large)
-                    }
-                    if !claim.chowOptions.isEmpty {
+                            .tint(GardenAccent.jade)
+                            .controlSize(.extraLarge)
+                    } else if !claim.chowOptions.isEmpty {
                         Button("Chow!") { claimAction = .chow }
-                            .font(.title3)
+                            .font(.title2.weight(.bold))
                             .buttonStyle(.borderedProminent)
                             .buttonBorderShape(.capsule)
-                            .controlSize(.large)
+                            .tint(GardenAccent.jade)
+                            .controlSize(.extraLarge)
                     }
                     Button("No, thanks") { claimAction = .pass }
                         .font(.title3)
@@ -1537,6 +1546,7 @@ struct MahjongActivityView: View {
                     .font(.title3)
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
+                    .tint(GardenAccent.jade)
                     .controlSize(.large)
                 }
 
@@ -1561,6 +1571,7 @@ struct MahjongActivityView: View {
             }
         }
         .padding(32)
+        .fontDesign(.rounded)
         .glassBackgroundEffect()
     }
 

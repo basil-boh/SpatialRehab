@@ -5,6 +5,98 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-11 (branch: feature/memory-garden-ui)
+
+### Changed
+
+- **Home settled on plain simplicity** (after three hero experiments — illustrated garden,
+  Canvas dusk scene, 3D skyline — each reverted on user verdict): native glass window with
+  the greeting, the amber star-coins chip, ONE activity card ("Something else" swaps its
+  offer — a card carousel, never a menu), and the "For caregivers" tuck. Phases cross-fade
+  in place; the finished phase keeps the postcard mint + sparkle and one "Back home" button.
+  `LightGardenView`/`GardenNight` and the skyline assets are removed; `GardenStore`
+  (coins/counts/postcards) stays as the data layer. The one surviving ambience charm: the
+  red Chinese lantern with swaying tassel over the mahjong table (`Ambience.load` helper).
+- **One-button dusk garden** (user round 2: "not intuitive… too many buttons", "the garden
+  is lowkey a poor show"): the home window is now one continuous place — a full-bleed dusk
+  scene over a Singapore bay (star-flecked gradient sky, waning moon with halo, silhouetted
+  shophouse row + tower cluster with twinkling windows, water with ripple shimmer and
+  lantern reflections, and a small always-lit house on the right bank — "home"). Alive at
+  zero progress via drifting fireflies; kopi grows glowing reeds on the bank, mahjong
+  releases floating paper lanterns with water trails, each remembered route lights one more
+  waypoint on the path toward the house, and the newest light blooms with expanding rings.
+  The patient sees exactly ONE button: a single activity card ("Something else" swaps what
+  the card offers — a gentle carousel, never a menu); phases cross-fade as overlays in the
+  same scene (welcome → dimmed waiting → postcard mint over the garden with "Back to my
+  garden"). Removed from the patient's view: activity grid, moments shelf, stat chips,
+  Daily Practice/Dashboard on finished, baseline count label. Card tap fades the overlay
+  out before the space opens.
+- **Intuitive-simplicity pass** (user: "too rigid, a lot of buttons all over the place"):
+  one visible decision per moment. Home screen tucks Daily Practice + Caregiver Dashboard
+  behind a quiet "For caregivers" footnote reveal (clinical tools leave the patient's
+  decision space); mahjong's claim window offers at most TWO buttons — the single best
+  claim (win > pong > chow, engine unchanged, display-level pick) plus "No, thanks" —
+  instead of up to four competing meld choices.
+- **Kopi panel restyle** (`CoffeeActivityView.swift`, visual layer only): the immersive
+  control panel now follows the Memory Garden design language — the guidance chooser's three
+  options (Show me how / A little hint / Let me try myself) become `.regularMaterial` option
+  cards with jade icon chips, `.largeTitle` system heading and `.headline` eyebrow (was
+  size-19/34 custom fonts); the brewing prompt drops size-32 for `.title` semibold and gains
+  a "Step N of 5" jade-pip chip in an `.ultraThinMaterial` capsule; the finished state heads
+  with a jade cup icon chip and the Done button tints jade; floating item tags swap their
+  orange/black capsules and hard-coded white text for glass capsules with `.primary`/
+  `.secondary` text and a jade ring + soft jade wash on the current item; rounded font design
+  on the panel. PourSound, PourEffects, entity anatomy, physics, cue scheduling, spoken
+  strings, and `CoffeeExercise` untouched; `CoffeeGuidanceIndicators.swift` is pure
+  RealityKit (no SwiftUI) and was left alone.
+- **Remember the Way panel restyle** (`RouteMemoryView.swift`, visual layer only): the
+  floating control panel now follows the Memory Garden design language — a jade icon chip
+  (map, or walking figure while inside) heads the panel, the prompt keeps its 34 pt weight
+  but gains rounded design, every phase's single primary action (I'm ready / I'm done /
+  Done / Try again / Back to table) is `.borderedProminent` jade while "Step inside" steps
+  down to a bordered Label with a walk glyph, the Adjust row reveals with a restrained
+  spring, and the tap-corner dots on the table map turn jade with a white checkmark when
+  done (pending/wrong states unchanged). Map registration, route colors, grab-bar logic,
+  walking loop, and spoken strings untouched.
+- **Mahjong panel restyle** (`MahjongActivityView.swift`, visual layer only): the immersive
+  control panel now follows the Memory Garden design language — prompt drops the size-32
+  custom font for `.title` semibold system type, the points chip becomes the exemplar amber
+  star Label in an `.ultraThinMaterial` capsule (was yellow-on-black), claim buttons keep
+  their hierarchy but move to accent tints (Mahjong! amber, Pong!/Chow!/Done jade), rounded
+  font design on the container; the floating "Your new tile can rest here" tag swaps its
+  hard-coded black capsule/white text for a glass capsule with `.secondary` text. No logic,
+  phases, actions, or entity code touched.
+- **In-activity wait screen restyled to the garden design language** (`ContentView.swift`,
+  `inActivity`): jade icon chip showing the running activity's glyph (same symbols as the
+  activity cards and garden stat chips), 34 pt rounded bold title replacing the 44 pt custom
+  size, `.title3` secondary guidance line capped at 520 pt, and a slow iterative-variable-color
+  ellipsis as a quiet "in progress" pulse (no spinner, no bounce). Visual only — phase logic,
+  guidance strings, and activity routing untouched.
+- **Baseline battery — lightest accent pass** (`Views/BaselineAssessmentView.swift`): the three
+  prominent buttons (Next / Begin / Continue) now tint `GardenAccent.jade` with capsule border
+  shape, and the summary checkmark uses jade instead of system green. No structural, copy, or
+  game-view changes; indigo logo mark deliberately left as-is.
+
+### Added
+
+- **Light Garden home screen** (`MemoryGarden.swift`, registered by hand in the pbxproj):
+  dementia-first gamification, product-grade — growth without loss, rendered as a calm
+  deep-jade panel (first iteration was illustrated orchids/lanterns/emoji; user verdict
+  "not clean and professional", so v2 is Canvas-drawn light: slender glowing stems per kopi,
+  drifting amber lantern-lights per mahjong afternoon, a faint dotted way-home path with
+  bright waypoints per route). Slow 30 fps motion, metric chips in system materials below,
+  positive-only star coins, all persisted in `GardenStore` (UserDefaults JSON).
+- **Moment cards**: every completed activity mints a keepsake card (SF Symbol chip, warm
+  line, date, stars) into a horizontally scrolling "Recent moments" shelf; the finished
+  screen's `PostcardMintView` springs the card in under a brief amber sparkle burst —
+  celebration with restraint, no confetti carnival.
+- **Home screen redesign**: time-of-day greeting by name from the Who-am-I persona ("Good
+  morning, Chio Bu"), ONE suggested activity card (least-played wins — choice paralysis is
+  real in dementia) as a glass-material card with jade symbol chip and hover lift, the other
+  two behind "More activities"; system typography (rounded), `.primary`/`.secondary` text on
+  native materials, single jade accent + amber reward colour; Daily Practice / Caregiver
+  Dashboard preserved as secondary actions.
+
 ## 2026-08-10
 
 ### Fixed
