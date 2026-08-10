@@ -79,10 +79,12 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Changed
 
-- `ContentView`'s "Daily Practice" button moved from the small secondary row (next to
-  "Caregiver Dashboard") up into the main activity stack, styled identically to Remember the
-  Way / Kopi / Mahjong — layout preference, no behavior change. "Caregiver Dashboard" stays
-  alone in the secondary row.
+- `ContentView`'s "Daily Practice" button was briefly promoted into the main activity row
+  (styled like Remember the Way / Kopi / Mahjong) earlier today, before the
+  `feature/memory-garden-ui` merge replaced the whole screen with a single rotating activity
+  card. Superseded rather than reconciled — adopted that redesign as-is (kept in this PR:
+  `git checkout --theirs`), including Daily Practice staying grouped with "Caregiver
+  Dashboard" behind the collapsed "For caregivers" reveal.
 - `DailyPracticeHubView` gained a top-left "Baseline Quiz" button (mirroring the existing
   top-right calendar button) opening `BaselineAssessmentView` in a sheet. Previously the
   baseline battery was reachable only as `SpatialRehabApp`'s mandatory first-launch gate —
