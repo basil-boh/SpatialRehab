@@ -197,7 +197,16 @@ struct NameCardView: View {
             try? await Task.sleep(for: .seconds(2))
             sheenActive = false
         }
-        withAnimation(.easeInOut(duration: 3.2).repeatForever(autoreverses: true).delay(0.8)) {
+        // Was `.repeatForever` — an unbounded animation forces this view's body to
+        // re-evaluate every frame for as long as the card window stays open, which is
+        // almost certainly what was behind "onChange(of: Bool) action tried to update
+        // multiple times per frame" on `session.isCardWindowOpen` below (continuous
+        // re-render of a view alongside `@Observable` change-tracking is a known
+        // trigger for spurious onChange re-firing) and the general slowness reported
+        // alongside it. A few gentle breaths read the same to the eye and then settle
+        // — perpetual motion isn't calm either, for an audience this app is careful
+        // not to startle.
+        withAnimation(.easeInOut(duration: 3.2).repeatCount(3, autoreverses: true).delay(0.8)) {
             portraitGlow = true
         }
     }
