@@ -7,6 +7,20 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-10
 
+### Changed
+
+- `ContentView`'s "Daily Practice" button moved from the small secondary row (next to
+  "Caregiver Dashboard") up into the main activity stack, styled identically to Remember the
+  Way / Kopi / Mahjong — layout preference, no behavior change. "Caregiver Dashboard" stays
+  alone in the secondary row.
+- `DailyPracticeHubView` gained a top-left "Baseline Quiz" button (mirroring the existing
+  top-right calendar button) opening `BaselineAssessmentView` in a sheet. Previously the
+  baseline battery was reachable only as `SpatialRehabApp`'s mandatory first-launch gate —
+  there was no way to intentionally revisit it as an optional "step 1" from inside Daily
+  Practice. Uses a fresh `BaselineAssessmentSession` per presentation (recreated on dismiss)
+  so it always restarts at `.intro` rather than resuming wherever a previous attempt left
+  off — the session type has no `reset()`/`goBack()` by design.
+
 ### Added
 
 - **A guidance chooser before the kopi activity starts.** `CoffeeExercise` gains a

@@ -12,6 +12,14 @@ struct DailyPracticeHubView: View {
     @State private var progressByKind: [PracticeGameKind: GameProgress] = [:]
     @State private var showingCalendar = false
 
+    /// Retaking the baseline quiz from here is optional and repeatable, unlike
+    /// `SpatialRehabApp`'s mandatory first-launch gate — a fresh `BaselineAssessmentSession`
+    /// per presentation so it always starts at `.intro`, never resuming a previous attempt
+    /// (the session type has no `reset()`/`goBack()` by design — see its doc comment — so a
+    /// new instance is the correct way to restart it).
+    @State private var showingBaselineQuiz = false
+    @State private var baselineQuizSession = BaselineAssessmentSession()
+
     var body: some View {
         Group {
             if let activeGame {
@@ -27,10 +35,15 @@ struct DailyPracticeHubView: View {
         .sheet(isPresented: $showingCalendar, onDismiss: refreshProgress) {
             PracticeCalendarView()
         }
+        .sheet(isPresented: $showingBaselineQuiz, onDismiss: { baselineQuizSession = BaselineAssessmentSession() }) {
+            BaselineAssessmentView(session: baselineQuizSession) {
+                showingBaselineQuiz = false
+            }
+        }
     }
 
     private var hubContent: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack {
             VStack(spacing: 32) {
                 Text("Daily Practice")
                     .font(.system(size: 40, weight: .semibold, design: .rounded))
@@ -50,6 +63,19 @@ struct DailyPracticeHubView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             Button {
+                showingBaselineQuiz = true
+            } label: {
+                Label("Baseline Quiz", systemImage: "checklist")
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(.regularMaterial, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+
+            Button {
                 showingCalendar = true
             } label: {
                 Image(systemName: "calendar")
@@ -59,6 +85,7 @@ struct DailyPracticeHubView: View {
             }
             .buttonStyle(.plain)
             .padding(24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
     }
 

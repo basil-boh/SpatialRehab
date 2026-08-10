@@ -19,6 +19,17 @@ is new, additive, and does not change baseline behavior — the four existing ga
 are reused via new **optional, default-valued** parameters, so every existing baseline call
 site behaves byte-for-byte the same as before.
 
+**Revisiting the baseline from the hub (2026-08-10):** the battery was previously reachable
+*only* as `SpatialRehabApp`'s mandatory first-launch gate, with no way to intentionally retake
+it later. `DailyPracticeHubView` now has a top-left "Baseline Quiz" button (mirroring the
+top-right calendar button) that presents `BaselineAssessmentView` in a sheet with a **fresh
+`BaselineAssessmentSession` per presentation** — recreated on dismiss, since the session type
+deliberately has no `reset()`/`goBack()` (see its own doc comment), so a new instance is the
+correct way to make it restart at `.intro` rather than resume wherever a previous attempt
+left off. This doesn't change the "one-time starting-point measurement" framing above — it's
+still the same fixed, comparable battery — it's just no longer gated to exactly once per app
+lifetime; a caregiver can walk through it again as a deliberate "step 1" whenever they want.
+
 ## The core design tension, and how it's resolved
 
 The baseline design doc's hardest rule — "never surface scores or right/wrong feedback to

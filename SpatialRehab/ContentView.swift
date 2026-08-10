@@ -93,23 +93,25 @@ struct ContentView: View {
                 .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
                 .disabled(appModel.phase == .openingActivity)
-            }
 
-            HStack(spacing: 16) {
                 Button {
                     showingDailyPractice = true
                 } label: {
                     Label("Daily Practice", systemImage: "checklist")
+                        .font(.title2)
+                        .frame(maxWidth: 400)
                 }
-                .buttonStyle(.bordered)
-
-                Button {
-                    showingDashboard = true
-                } label: {
-                    Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
-                }
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
             }
+
+            Button {
+                showingDashboard = true
+            } label: {
+                Label("Caregiver Dashboard", systemImage: "chart.line.uptrend.xyaxis")
+            }
+            .buttonStyle(.bordered)
             // "Who am I?" is deliberately not in this stack — it lives in the main
             // window's bottom ornament (see `SpatialRehabApp`), so it sits in the same
             // spot on every screen instead of moving with each screen's layout.
