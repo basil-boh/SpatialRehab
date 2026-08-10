@@ -1,0 +1,158 @@
+{
+  "agewell1": {
+    "slides": [
+      1
+    ],
+    "where": "Title",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/what%20is%20age%20well.jpg",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 0.98,
+    "warmth": 1.0
+  },
+  "sandbox": {
+    "slides": [
+      2
+    ],
+    "where": "The problem",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/photo%20for%20sandbox%20(2).jpg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.94,
+    "warmth": 1.01
+  },
+  "cooking": {
+    "slides": [
+      3
+    ],
+    "where": "Functional independence",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/seniors%20cooking%20(2).jpg",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 0.9,
+    "warmth": 1.0
+  },
+  "nurse": {
+    "slides": [
+      4
+    ],
+    "where": "Errorless learning",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/a1544caf-1263-482c-b6bb-a6ec943fd591/young-nurse-take-care-senior-patient-hospital-room-transformed.jpeg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.96,
+    "warmth": 1.03
+  },
+  "laptop": {
+    "slides": [
+      5
+    ],
+    "where": "The product",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/30a31da3-0947-455e-ab45-933951d960b1/smiling-couple-using-laptop-park-transformed (1).jpeg",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 0.94,
+    "warmth": 1.0
+  },
+  "encourage": {
+    "slides": [
+      6
+    ],
+    "where": "Baseline games",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/encourage%20active%20ageing%20(2).jpg",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 0.92,
+    "warmth": 1.0
+  },
+  "walkpark": {
+    "slides": [
+      7
+    ],
+    "where": "Remember the Way (dark)",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/7c6b0487-e5ca-42f0-bf8d-52edd78bb24a/three-men-are-walking-park-one-has-blue-shirt.jpg",
+    "blur": 3,
+    "brightness": 0.8,
+    "saturation": 0.95,
+    "warmth": 1.0
+  },
+  "grandkid": {
+    "slides": [
+      8
+    ],
+    "where": "Who am I?",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/c2e16f3d-82a7-4fb6-9f02-24eb651cd18c/grandparent-girl-smile-with-love-support-care-senior-man-child-home-living-room-retirement-elderly-grandfather-with-kid-happiness-together-house-feeling-relax.jpg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.94,
+    "warmth": 1.0
+  },
+  "moh1791": {
+    "slides": [
+      9
+    ],
+    "where": "Caregiver dashboard",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/MOH_20_Oct_2022___1791.jpg",
+    "blur": 2,
+    "brightness": 1.01,
+    "saturation": 0.92,
+    "warmth": 1.0
+  },
+  "caresupport": {
+    "slides": [
+      10
+    ],
+    "where": "Personalisation",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/photo%20for%20strengthen%20care%20support%20(2).jpg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.9,
+    "warmth": 1.0
+  },
+  "agewell5": {
+    "slides": [
+      11
+    ],
+    "where": "Evidence base",
+    "credit": "Age Well SG, Ministry of Health",
+    "source": "https://www.agewellsg.gov.sg/images/MOH_20_Oct_2022___1475.jpg",
+    "blur": 2,
+    "brightness": 1.0,
+    "saturation": 0.9,
+    "warmth": 1.0
+  },
+  "outreach": {
+    "slides": [
+      12
+    ],
+    "where": "Team",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/971c661c-e277-4aaf-b8f9-3263b656d1b4/SGO_senior-outreach2.jpg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.94,
+    "warmth": 1.0
+  },
+  "pottery": {
+    "slides": [
+      13
+    ],
+    "where": "Close",
+    "credit": "Ministry of Health",
+    "source": "https://isomer-user-content.by.gov.sg/3/ad8ca127-da32-4719-af6d-b27dedabe3f5/pottery-workshop-asian-retired-couple-is-engaged-pottery-making-clay-painting-transformed (1).jpeg",
+    "blur": 2,
+    "brightness": 1.02,
+    "saturation": 0.92,
+    "warmth": 1.0
+  }
+}

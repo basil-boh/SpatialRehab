@@ -5,6 +5,109 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-10
+
+### Added
+
+- **A motion system across the whole deck**, replacing the four hand-written `:nth-child`
+  reveal rules that only ever animated the title and closing slides. Every slide now has an
+  entrance choreography: the script walks each slide once at load and stamps a `--d` delay on
+  each animated element in reading order, stepping into layout containers (`.cards`, `.stats`,
+  `.team`, `.prio`, `.split`, `.points`) on a tighter beat so their children carry the sequence
+  forward. The mocks are treated as leaves, because a chart or a name card should arrive as one
+  object rather than piece by piece. Because the delays come from the DOM, adding or reordering
+  a card needs no CSS change.
+  - Fill mode is `backwards`, not `forwards`. An element holds its start pose until its turn
+    and then falls back to its own resting CSS, which is what lets the new hover states and the
+    bar/counter resting values work at all. A `forwards` fill would have pinned every element's
+    transform for the life of the slide.
+- **Per-element motion, tuned to what the element is:** headings blur-rise, cards and stats pop
+  with a slight scale, glass mocks arrive with depth, card icons and team avatars spring in just
+  behind their card.
+- **Slow drift on the photographic backdrops.** Four pan directions cycled down the deck so
+  consecutive slides never move the same way.
+- **Directional slide transitions.** Incoming slides rise when moving forward and sink when
+  moving back; the outgoing slide recedes under them rather than travelling alongside, so a
+  change reads as a push instead of a crossfade. The script flushes layout between setting the
+  direction and activating the slide, otherwise the first back-navigation animates from the
+  forward pose.
+- **The caregiver chart builds itself:** grid, then axes, then the trend line draws left to
+  right, the area washes in under it, and each weekly reading pops as the line reaches it. The
+  line carries `pathLength="1"` so the dash maths is unitless and survives a change of data.
+- **Figures count up** on the chart hero number, its delta, and the three domain priority
+  values, starting once their card has landed. The priority bars grow on `scaleX` rather than
+  `width`, so they composite instead of relaying out every frame.
+- **The logo assembles:** the hexagon outline draws itself, the six facets drop in one at a
+  time, and the finished mark breathes. A slow highlight travels across the gradient in the
+  wordmark.
+- **Deck chrome:** a progress hairline across the top edge, a roll on the slide counter, scale
+  feedback on the nav chevrons, and a lift on cards under the pointer.
+- Every one of the above is disabled under `prefers-reduced-motion`, including the count-ups,
+  which write their final figures straight in.
+
+### Changed
+
+- **Deck copy, at Basil's request:** dropped the "My People module already exists in the
+  codebase" footnote from the Who am I? slide; removed "sustained past 12 weeks" from the
+  seated-physical-activity strip, which read as contradicting the 5-8 week programme length two
+  paragraphs above (the frequency and session length stay, only the conflicting duration is
+  gone); and JingTong's team card now reads "RealityKit scene setup and hand tracking" with
+  gaze input removed.
+- **Route on the Remember the Way map is now green** (`#30D158`, Apple's dark-appearance system
+  green) instead of blue, along with the start dot, its pulse ring, the route glow and the
+  walker's halo. About 9:1 against the map panel, so it still leads the eye. It fails the
+  dataviz validator's dark-mode lightness band (0.48-0.67), but that check exists to keep
+  multiple categorical series mutually distinguishable and does not apply to a single accent
+  line; chroma and contrast both pass. All colours live in `deck/template.html`, so `map.svg`
+  did not need regenerating.
+
+
+### Added
+
+- **The Remember the Way slide now shows a real 3D map of Tiong Bahru** instead of the abstract
+  block diagram. New `deck/build_map.py` reads the app's own `SpatialRehab/TiongBahruMap.json`
+  (the Overpass extract `NeighborhoodWorld.swift` meshes at runtime) and emits `deck/map.svg`:
+  135 real building footprints extruded by their real `building:levels`, 381 real road
+  segments, and a route found by Dijkstra over the walkable street graph, so the line follows
+  actual Tiong Bahru streets rather than an invented path. `build.py` inlines it at a new
+  `<!--__MAP_SVG__-->` marker.
+  - Asked for as "the 3D Apple Maps overview with the animated line". A live Apple map is not
+    possible here: MapKit JS needs an Apple Developer JWT and loads its script and tiles from
+    external hosts, which the Artifact content policy blocks outright, and the same applies to
+    Google and Mapbox. Building from the app's own OSM data gives the same read, ships with no
+    network calls, and is the geometry the product actually renders.
+  - Projection is a shallow isometric (`ISO_Y = 0.34`) rather than true 2:1, which reads as a
+    map tilt and fits the slide's wide, short frame. Painter's algorithm sorts buildings back
+    to front; walls are shaded by edge orientation so the extrusion reads as 3D.
+  - Animation reworked for the new geometry: roads fade in, the massing rises, the route draws
+    itself along the streets via an SVG mask wipe, the home pin lands, then a marker walks the
+    route on a loop. Still disabled under `prefers-reduced-motion`.
+  - Map data © OpenStreetMap contributors, credited under the map as ODbL requires.
+
+
+### Fixed
+
+- **Deck backgrounds looked soft; the pipeline was the main culprit, not the photographs.**
+  Backgrounds were being baked to 1500x940 at JPEG quality 60, which discards most of a
+  3000-8000px source and then gets stretched past 1:1 on any retina display. Now baked at
+  **2400x1504, quality 80** (`deck/bake.py`). Blur radii are unchanged at 2, but because the
+  canvas is 1.6x larger the apparent blur is proportionally softer, so the photographs read
+  more clearly as well as more sharply.
+- **Two backgrounds genuinely were low quality** and were being upscaled: `agewell2` (1314px
+  wide) and `ivhand` (1024px). Both dropped. Five higher-resolution first-party photographs
+  were sourced from Age Well SG's sub-pages to replace them and to give every slide its own
+  image again: seniors cooking (6000px), two seniors at a table game (5141px), neighbours
+  talking in an HDB corridor (6000px), a care worker taking a blood-pressure reading at home
+  (8121px), and an elderly couple at home (6000px).
+  - Every one of the 13 sources is now at least 3195px wide, so nothing is upscaled.
+  - Remapped so the subject matches the slide more closely than before: cooking backs
+    functional independence, the table game backs the eight baseline games, and the home
+    blood-pressure reading backs the caregiver dashboard.
+  - AIC's resistance-band photo was dropped (2048px, the weakest remaining source); the Age
+    Well SG exercise-class photo backs the physical-activity panel instead. Closing-slide
+    credit narrowed to the Ministry of Health and Age Well SG accordingly.
+  - Page weight rises from 1.3 MB to 4.4 MB, still well inside the 16 MB artifact limit.
+
 ## 2026-08-09
 
 ### Fixed
@@ -195,6 +298,111 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   coordinator (guards against double-launch while the space is opening/open; the card
   just retracts if the person is already mid-activity), and the name-card window now
   receives `appModel` in its environment.
+
+### Changed
+
+- **All 13 deck backdrops replaced with Singapore government healthcare photography** (MOH,
+  Age Well SG, Agency for Integrated Care), replacing the Unsplash set, on Basil's instruction
+  that a partnership with those bodies covers the usage. Closing-slide credit rewritten to
+  "courtesy of the Ministry of Health, Age Well SG and the Agency for Integrated Care,
+  Singapore. Used with permission."
+  - Mapping is subject-matched: an elderly woman with a Singapore flag opens and closes the
+    deck, an active-ageing-centre exercise class backs the baseline games, three men walking
+    in a park back Remember the Way, AIC's resistance-band photo backs the physical-activity
+    panel, and a grandfather with his grandchild backs the name card.
+  - 11 images cover 13 slides. `photos.json` gained a `slides` list (was a single `slide`) so
+    one image can back more than one, and `bake.py` now URL-encodes sources and only appends
+    Unsplash sizing params to Unsplash hosts, since the government filenames contain spaces.
+  - **Deliberately excluded** `Depositphotos_613877344_L.jpg` from moh.gov.sg. It is commercial
+    stock MOH licensed for its own use; an MOH partnership is not the stock library's grant to
+    give. Several other files on those sites look like licensed stock too (descriptive
+    filenames, "-transformed" suffixes) and were used per instruction, but are flagged in
+    `deck/README.md` for anyone adding more.
+  - Centre wash on the two centred slides strengthened slightly (0.92/0.80/0.32) because the
+    new title portrait sat directly behind the wordmark.
+
+
+### Fixed
+
+- **Team slide cards no longer misalign** (`deck/template.html`). Role labels wrapped to one or
+  two lines depending on length, so each description started at a different height and the row
+  read as ragged. `.member .role` now reserves `min-height: 2.7em`, exactly two lines at its
+  size and line-height, so every description begins on the same baseline whatever the role is
+  called. Added `text-wrap: balance` on the role so two-line roles split evenly rather than
+  orphaning a word, `text-wrap: pretty` on the description, and non-breaking spaces in
+  "Apple Vision Pro" so balancing cannot split the product name. Nicole's description was
+  trimmed to one clause so the block weights sit closer together.
+
+
+### Added
+
+- **New deck slide 3, "Why it matters"**, on functional independence, inserted between the
+  problem and the errorless-learning principle so the deck argues problem, then goal, then
+  method. Headline: the goal is not a cure, it is keeping the everyday doable. Three cards
+  cover low risk (a route can be mis-walked from a chair, with no traffic and no fall), low
+  worry (nothing to fail, no score reaches the patient), and transfer (cues fade so the skill
+  ends up with the person, not the headset). A closing panel carries the ageing-society case:
+  Singapore is projected to become a super-aged society in 2026 and by 2030 one in four
+  citizens will be 65 or above, cited to the Ministry of Health
+  (https://www.moh.gov.sg/ageing-well/ageing-in-the-community/) since slide 11 promises every
+  number has a source.
+  - New background photograph (`indep1`, an older woman cooking in her own kitchen) baked into
+    `deck/backgrounds/`; `deck/photos.json` slide numbers renumbered and the closing-slide
+    photography credits extended.
+  - Slide comments in `deck/template.html` renumbered 1 to 13; deck count updated in
+    `deck/README.md`. Deep links shift by one from slide 3 onward (the old `#3` is now `#4`).
+
+
+### Changed
+
+- **Deck copy revised after a review pass** (`deck/template.html`):
+  - Slide 2 no longer uses medication as the example of a fraying routine. There is no
+    medication feature in the Swift sources, and none on the `README.md` roadmap, so leading
+    the problem slide with it promised something the deck never pays off. (3D assets for it
+    do exist: pill organisers, medicine bottles, a medicine cabinet.)
+  - Dropped the word "battery" on slides 5 and 10. It is clinical jargon and reads like a
+    device battery; both now say "eight games".
+  - Slide 7 reframed as the patient's own notebook rather than an instruction: the card reads
+    "This is me" instead of "This is you", a "My notes" chip joins the mock, and the copy
+    covers letting them write their own notes and reminders about each person. Flagged
+    honestly as the next step, since `Person.note` is currently authored in code
+    (`Views/MyPeopleView.swift`).
+  - Slide 10 lost "not from what looks good on stage", gained a "Cognitive stimulation" label
+    over the existing figures, and gained a seated-physical-activity block: chair-based
+    movement as a fall-safe way to raise activity, 3 to 4 times a week, 30 to 45 minutes,
+    past 12 weeks. Tagged "Planned" because no exercise feature exists yet.
+  - Spelling made consistent (programme, not program).
+
+
+### Added
+
+- **Presentation deck checked into the repo** at `deck/`, so the whole team can edit it rather
+  than only the person who generated it. 12 slides: the problem, errorless learning, the
+  product, the 8-game baseline battery, Remember the Way, the name card, the caregiver
+  dashboard, the recommendation engine, the evidence base, the team, and open/close slides.
+  - `deck/template.html` is the source. `deck/build.py` (standard library only) inlines the
+    backgrounds as base64 data URIs and writes `deck/spatialrehab-deck.html`. The built page is
+    committed too, so anyone can open it without running anything. **Edit the template, not the
+    built file** — the latter is regenerated and overwritten.
+  - Backgrounds have to be embedded rather than linked: the deck is published as a Claude
+    Artifact, which runs under a policy blocking every external host, so a
+    `url(backgrounds/x.jpg)` reference silently fails to load there.
+  - `deck/bake.py` (needs Pillow) crops, blurs, and grades the source photographs per
+    `deck/photos.json`. The baked results in `deck/backgrounds/` are committed, so building the
+    deck does not require this step. Blur is baked in rather than applied via CSS so that a
+    screenshot matches the live page exactly. Originals download into untracked `deck/.sources/`.
+  - Slide 6 (Remember the Way) animates on entry: blocks fade in, the route draws itself from
+    Start to Home via an SVG mask wipe, the home pin lands, then a marker walks the route on a
+    loop. Disabled under `prefers-reduced-motion`.
+  - Photographs are from Unsplash under its free licence, each photographer credited on the
+    closing slide. Content deliberately mirrors the root `README.md`: logo from
+    `assets/logo.svg`, `#007AFF` accent, the README's own tagline and closing line, and its
+    "hackathon prototype, not a medical device" disclaimer on the evidence slide.
+  - One deliberate divergence from `README.md`: the team slide lists Nicole as "Clinical
+    Research & Product Management" per a direct request, where `README.md` and `AGENTS.md`
+    still say "Clinical Research & Content".
+  - Editing workflow and slide anatomy are documented in `deck/README.md`.
+
 
 ### Changed
 
