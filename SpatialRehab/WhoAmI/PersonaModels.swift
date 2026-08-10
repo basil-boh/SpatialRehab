@@ -26,6 +26,9 @@ enum DemoPersona {
         icNumber: "S1234567D",
         emergencyContact: "Mei Ling (daughter · 女儿) · 8123 4567",
         aboutMe: "Loves gardening, morning taiji, and a good bowl of laksa · 爱园艺、晨间太极和叻沙",
+        // What Ah Pek calls her in his greeting clip ("Ah Bu, come drink kopi with me").
+        familiarName: "Ah Bu",
+        familiarChineseName: "招母",
         childrenIDs: []
     )
 
@@ -157,7 +160,20 @@ struct FamilyMember: Identifiable, Hashable, Sendable {
     var emergencyContact: String? = nil
     /// One reminiscence line (person-centred care) — shown under the data zone.
     var aboutMe: String? = nil
+    /// What the family actually calls this person, for greetings ("Good morning, Ah Bu").
+    /// Separate from `englishName`, which is the full legal name the ID card needs: reading
+    /// "Good morning, Lim Chio Bu" to someone in her own home is not a greeting, it is a
+    /// roll call. Added 2026-08-10 for the home screen's orientation header; falls back to
+    /// `englishName` wherever it is unset.
+    var familiarName: String? = nil
+    /// The 中文 counterpart of `familiarName`, same reasoning.
+    var familiarChineseName: String? = nil
     let childrenIDs: [ID]
+
+    /// The greeting form of this person's name in each language, falling back to the full
+    /// name when no familiar form has been recorded.
+    var greetingName: String { familiarName ?? englishName }
+    var greetingChineseName: String { familiarChineseName ?? chineseName }
 
     var bilingualRelation: String {
         "\(relationEnglish) · \(relationChinese)"

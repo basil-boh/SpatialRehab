@@ -16,13 +16,18 @@ struct WhoAmIButton: View {
             whoAmISession.present()
             openWindow(id: SceneID.nameCard)
         } label: {
-            Label("Who am I?", systemImage: "person.crop.circle")
+            // Bilingual as of 2026-08-10, like the rest of the patient-facing layer: this
+            // is the one control that has to be recognisable to someone who has lost the
+            // thread, and in dementia the first language is the one that survives longest.
+            Label("Who am I? · 我是谁", systemImage: "person.crop.circle")
                 .font(.title3)
         }
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)
         .controlSize(.large)
-        .tint(.orange)
+        // The one saturated tint in the window layer — see `RehabTint.lifeline`.
+        .tint(RehabTint.lifeline)
+        .accessibilityLabel("Who am I?")
     }
 }
 

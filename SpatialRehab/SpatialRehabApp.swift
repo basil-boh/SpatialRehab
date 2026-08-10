@@ -40,27 +40,51 @@ struct SpatialRehabApp: App {
         // specific window around the immersive activity (see `SceneID.main`) — a
         // `WindowGroup` with no id can't be targeted by `dismissWindow`/`openWindow`.
         WindowGroup(id: SceneID.main) {
-            if hasCompletedBaseline {
-                ContentView()
-                    // Persistent "Who am I?" affordance for dementia patients: a bottom
-                    // ornament rides the window itself, so it stays in the same spot on
-                    // every screen this window shows (home, Daily Practice, the caregiver
-                    // dashboard sheet) instead of living inside any one screen's layout.
-                    // Deliberately absent from the baseline branch below — the assessment
-                    // must not offer mid-test escapes — and from the `name-card` window,
-                    // which is the card itself. `RouteMemoryTableView`'s control panel
-                    // hosts the same button while this window is dismissed mid-activity.
-                    .ornament(attachmentAnchor: .scene(.bottom)) {
-                        WhoAmIButton()
+            Group {
+                if hasCompletedBaseline {
+                    ContentView()
+                        // Persistent "Who am I?" affordance for dementia patients: a bottom
+                        // ornament rides the window itself, so it stays in the same spot on
+                        // every screen this window shows (home, Daily Practice, the caregiver
+                        // dashboard sheet) instead of living inside any one screen's layout.
+                        // Deliberately absent from the baseline branch below — the assessment
+                        // must not offer mid-test escapes — and from the `name-card` window,
+                        // which is the card itself. `RouteMemoryTableView`'s control panel
+                        // hosts the same button while this window is dismissed mid-activity.
+                        //
+                        // The music toggle rides along with it for the same reason: one fixed
+                        // place to silence the bed from, on every screen.
+                        //
+                        // One tray, one tint (2026-08-10): the music toggle used to be a
+                        // second saturated capsule next to this one, so a mute switch read
+                        // as urgently as the reorientation lifeline. It is now a neutral
+                        // circle behind a divider — present, clearly secondary.
+                        .ornament(attachmentAnchor: .scene(.bottom)) {
+                            HStack(spacing: 12) {
+                                WhoAmIButton()
+
+                                Divider()
+                                    .frame(height: 28)
+
+                                AmbientMusicToggle(iconOnly: true)
+                            }
                             .padding(12)
                             .glassBackgroundEffect()
-                    }
-                    .environment(appModel)
-                    .environment(whoAmISession)
-            } else {
-                BaselineAssessmentView(session: baselineSession, onFinished: {
-                    hasCompletedBaseline = true
-                })
+                        }
+                        .environment(appModel)
+                        .environment(whoAmISession)
+                } else {
+                    BaselineAssessmentView(session: baselineSession, onFinished: {
+                        hasCompletedBaseline = true
+                    })
+                }
+            }
+            // Starts the ambient bed for the whole app, from whichever branch above is
+            // showing. `AmbientMusic` is a process-wide singleton that ignores repeat
+            // starts, so it keeps playing when this window is dismissed for the Remember
+            // the Way activity and does not restart when the window comes back.
+            .task {
+                AmbientMusic.shared.start()
             }
         }
         // Taller than the wayfinding branch's 600 so `ClockDrawingView`'s canvas + prompt +

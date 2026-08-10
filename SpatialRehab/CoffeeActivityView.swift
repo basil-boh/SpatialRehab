@@ -982,10 +982,19 @@ struct CoffeeActivityView: View {
 
     private var controlPanel: some View {
         VStack(spacing: 20) {
-            Text(panelPrompt)
-                .font(.system(size: 32, weight: .semibold))
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: 620)
+            // Only the closing message. The step instruction used to live here too, but
+            // the main window's guidance panel (`ContentView.inActivity`) states it as of
+            // 2026-08-10 — with step dots, "Say it again", "Show me" and "Take a break"
+            // around it — and this panel floats close enough to that window that the two
+            // read as the same sentence printed twice (simulator, 2026-08-10). The window
+            // is the surface that stays put, so it keeps the words; this one keeps the
+            // controls that only make sense in the space. @JingTong.
+            if exercise.phase == .finished {
+                Text(panelPrompt)
+                    .font(.system(size: 32, weight: .semibold))
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 620)
+            }
 
             HStack(spacing: 16) {
                 if exercise.phase == .finished {

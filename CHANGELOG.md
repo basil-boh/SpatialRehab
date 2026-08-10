@@ -5,6 +5,132 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-10
+
+### Added
+
+- **Ambient music throughout the app** (`AmbientMusic.swift`). A slow bed of pad chords over a
+  low drone with occasional soft bells, playing from launch across every surface — baseline
+  assessment, home screen, Daily Practice, the name card, and all three immersive activities.
+  Started once from the main window's `.task` in `SpatialRehabApp`; it is a process-wide
+  singleton, so it survives that window being dismissed for Remember the Way and does not
+  restart when the window returns. UX/spatial-design call, so **Brian** should have final say
+  on the levels and on whether the toggle belongs in the ornament.
+  - Synthesized in code, no audio assets, following `MahjongAudio`. A single 60-second loop
+    carries a six-chord progression (D – Bm – G – A – F♯m – G) written with wrap-around
+    indices, so the last chord's tail is already the first chord's bed when the buffer
+    repeats. Measured at the seam: the largest sample-to-sample jump there is 0.010 against
+    0.233 elsewhere in the same signal, i.e. well inside the material's own variation.
+  - Clinically shaped rather than just pretty, for **Nicole** to sanity-check: no percussion
+    and no melody line — nothing that asks for attention or implies a task — and the bed
+    swells six times a minute, the pace of slow resonance breathing.
+  - Voiced for the device, not for headphones. The audio pods have little output below about
+    120 Hz, so the bass voices and the drone are held back and the top note is doubled an
+    octave up; energy landed at 21% below 120 Hz, 58% in 120–400, 20% in 400–1200, and
+    essentially nothing above 3 kHz.
+  - The pad is read from a 4096-point wavetable rather than by calling `sin` per partial per
+    sample, which keeps building the whole 60-second bed to a fraction of a second. It is
+    rendered off the main actor on first play regardless, and faded in over 8 seconds.
+  - Survives disruption: an `AVAudioEngineConfigurationChange` (AirPods connecting) or an
+    interruption that ends with `.shouldResume` re-schedules the loop, rather than leaving the
+    app silent for the rest of the session.
+  - Deliberately does **not** touch the shared `AVAudioSession` category. Under the default
+    `soloAmbient` the app already stops other audio on launch; switching to `.ambient` to
+    layer under a person's own music would change behaviour for `VoiceGuide`, `MahjongAudio`
+    and `SoundEffects` too, which is a decision for whoever owns the audio session, not a
+    side effect of adding music.
+- **Music on/off toggle** (`Views/AmbientMusicToggle.swift`), persisted in `UserDefaults` under
+  `ambientMusic.isEnabled`. Sits beside `WhoAmIButton` in the main window's bottom ornament so
+  it is in the same place on every screen, and again as an icon-only button in
+  `RouteMemoryTableView`'s control panel, which is the only surface on screen while that
+  activity runs. Turning it off fades over 2.5 s and parks the engine; turning it back on is
+  instant, because the rendered buffers are kept.
+- **A shared visual language for the window layer** (`DesignSystem.swift`). Relative text
+  styles (`.rehabDisplay` … `.rehabLabel`), one action tint plus one reserved lifeline tint
+  (`RehabTint`), card/row radii and a 60pt minimum target (`RehabMetrics`), shared timings
+  (`RehabMotion`), a `BilingualText` view, and `rehabCard` / `rehabEntrance` /
+  `rehabAttention` modifiers. Replaces the hardcoded `.system(size: 80/44/40/34/30)` calls
+  that were scattered per screen — nothing scaled with Dynamic Type before this, which
+  matters more here than in most apps given who the audience is. Deliberately **not** applied
+  to `CaregiverDashboardView` or `BaselineResultsDebugView`: those read to a caregiver and
+  keep the default non-rounded face.
+  - Every animated surface routes through `RehabMotion.honouring(reduceMotion:)`, which
+    returns a `nil` animation under Reduce Motion, so honouring the setting is one call at
+    each site rather than a branch.
+
+### Changed
+
+- **Home screen re-ranked into three tiers** (`ContentView.welcome`). Daily Practice is now
+  the single primary action; Remember the Way is featured below it at the same width but
+  unfilled; the kopi and mahjong activities moved under a "Games" heading as a smaller pair;
+  the Caregiver Dashboard drops to last on its own, since it is for the caregiver rather than
+  the person wearing the device. Previously all three immersive activities were equally
+  prominent and Daily Practice — the thing a person is actually here to do most days — was
+  one of the two smallest buttons on the screen.
+  - Kopi and mahjong stay directly tappable rather than sitting behind a single "Games"
+    button. Basil's call, on the grounds that an extra navigation layer is somewhere a person
+    with dementia can lose the thread of what they came for.
+  - Daily Practice needed `.tint(.blue)`, not just `.borderedProminent`: on visionOS a
+    prominent button renders as the same glass capsule as a bordered one, and in the
+    simulator the two top buttons were indistinguishable. Colour is what separates a primary
+    action here, the same way the ornament's orange and teal buttons work. Verified against a
+    simulator screenshot; the taller screen still fits the 900×780 window without clipping.
+- **`VoiceGuide` now ducks the music while it speaks.** A private `SpeechDuckingObserver`
+  becomes the synthesizer's delegate and drives `AmbientMusic.setSpeaking(_:)`; the bed drops
+  to 30% over 0.45 s and lifts again over 1.8 s. The lift is held for 500 ms first, because
+  queued utterances report `didFinish` then `didStart` back to back and the bed would
+  otherwise swell audibly in the gap between two sentences. `VoiceGuide` gained an `init` to
+  install the delegate — `AVSpeechSynthesizer` does not retain it.
+- **Window UI pass** (`ContentView`, `Views/DailyPracticeHubView`, `Views/AmbientMusicToggle`,
+  `WhoAmI/WhoAmIButton`, `SpatialRehabApp`), from the design review Basil signed off on. The
+  three-tier ranking above is kept exactly as ranked; this restyles it and fixes the rest of
+  the flat-window layer. The caregiver dashboard was explicitly excluded and is untouched.
+  - *Orientation for free.* The home screen now opens with the weekday, date and time of day
+    (English + 中文) and greets the person by name. The baseline battery ships an
+    **orientation** mini-game precisely because that is what slips first, and the screen she
+    sees every session was withholding all of it.
+  - *Bilingual patient-facing copy.* `FamilyMember` carried `chineseName` /
+    `relationChinese` / bilingual `videoLine`s from the start and only the name card rendered
+    them; every patient-facing string outside the baseline battery now carries both. New
+    `familiarName` / `familiarChineseName` on `FamilyMember` ("Ah Bu", from Ah Pek's greeting
+    clip) so a greeting is a greeting and not a roll call of her full legal name.
+  - *The guidance panel has controls.* While kopi or mahjong runs, that window is the only
+    guidance surface, and it was two static lines with no way to hear the instruction again,
+    no way to ask for help, and no way to stop. It now shows the live step text from
+    `CoffeeExercise` / `MahjongExercise` with step dots, plus **Say it again** (replays
+    through `VoiceGuide`), **Show me** (kopi only — names the glowing item, i.e. hands over
+    the answer *before* a mistake, which is what errorless learning actually asks for), and
+    **Take a break**. "Show me" is deliberately absent for mahjong: there is no single right
+    answer to reveal, and a button that says nothing useful is worse than no button.
+  - *No tally on the finished screen.* Dropped `"N of 8 activities completed"`. It is a
+    completion count rather than a score, but it sat on the one screen whose entire job is
+    unconditional affirmation, which is the exact thing `BaselineAssessmentView`'s own note
+    says it refuses to do. The screen now names what she made ("That's your kopi, Ah Bu")
+    rather than grading the attempt. Counting stays in the caregiver dashboard.
+  - *Daily Practice progress is legible.* The 30-dot grid (6pt dots on 3pt gaps in a 79pt
+    box) is now six segments plus a level chip. At the distance a visionOS window sits, thirty
+    6pt dots are a texture, not a count — and they were the tile's only progress signal.
+    Precision moved to the number; legibility to the bar. Back and calendar became 60pt
+    targets in a header row instead of a plain ~22pt text button and a floating circle.
+  - *One tint in the ornament.* The music toggle gave up its teal and is now a neutral icon
+    circle behind a divider, leaving orange to `WhoAmIButton` alone. A mute switch should not
+    read as urgently as the reorientation lifeline. **Brian** may want a look, since he owns
+    the ornament question flagged above.
+  - *Tint change to note:* the Daily Practice primary is now jade (`RehabTint.action`) rather
+    than `.blue`. Basil's underlying finding stands and is why it is tinted at all — on
+    visionOS a prominent button renders as the same glass capsule as a bordered one, so colour
+    is what separates a primary action. Jade only so it never collides with a system control
+    that happens to be on screen.
+  - *Motion.* Staggered entrances on the home screen and practice tiles, cross-fades between
+    session phases and screens, spring-advancing step dots, progress bars that fill on
+    arrival, `.numericText()` on the level chips, a symbol bounce on the finished badge and
+    the music toggle, and a slow breathing outline on the featured card as an attentional cue
+    toward the recommended action. All of it no-ops under Reduce Motion.
+  - Buttons across the changed files follow `.skills/spatial-swiftui-developer`'s shape
+    policy: card-like rows use `.borderless` with a `buttonBorderShape` radius matched to the
+    background, so the gaze-hover highlight stops overshooting them, and icon-only controls
+    use `.circle` with the label kept for VoiceOver.
+
 ## 2026-08-09
 
 ### Fixed

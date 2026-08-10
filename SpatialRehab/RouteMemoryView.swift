@@ -782,6 +782,10 @@ struct RouteMemoryTableView: View {
                         .controlSize(.large)
 
                         voiceButton
+                        // This panel is the only surface on screen during the activity —
+                        // the main window and its ornament are dismissed — so the music
+                        // toggle has to be reachable from here too.
+                        AmbientMusicToggle(iconOnly: true)
                     }
                 } else {
                     HStack(spacing: 16) {
@@ -805,6 +809,7 @@ struct RouteMemoryTableView: View {
                         .controlSize(.large)
 
                         voiceButton
+                        AmbientMusicToggle(iconOnly: true)
                     }
 
                     if showAdjust {

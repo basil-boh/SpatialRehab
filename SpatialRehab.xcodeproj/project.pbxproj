@@ -132,6 +132,7 @@
 		4C3204DAF9F9ED9A621001C7 /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3FDA9786721E2113516A87BF /* floor_lamp__rec_floor_lamp_33d017a55ba347bfa023f7b8598458f2.usdz */; };
 		4D97153BBE428EF0C94FD021 /* char_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 944B91DF938AE23981372B3B /* char_7.png */; };
 		4DDEAB1E31BD873F5DDDEF92 /* wind_south.png in Resources */ = {isa = PBXBuildFile; fileRef = 33E10356FA19CA93F05D5D11 /* wind_south.png */; };
+		4F711406FC533CD4B3F7A36D /* AmbientMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81853EB34EB5D3707B9271A2 /* AmbientMusic.swift */; };
 		4F7904C43DF6825CC8994C1C /* chest_of_drawers__rec_chest_of_drawers_d1312e58d48f4248845185f2f4f33d3e_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 5048CA23DA0FF6C7AC7EF552 /* chest_of_drawers__rec_chest_of_drawers_d1312e58d48f4248845185f2f4f33d3e_physics.usdz */; };
 		4F8E249D610E9D6B7BC759E1 /* ScoreTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1532E9A9485ED331E5C6859 /* ScoreTrendChart.swift */; };
 		4F9B0832A3F47440E79D7CE4 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_f3c7ad3114cb4d3c9a2de478641c85ba_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 8F836FF26DE1CC00BFDC5193 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_f3c7ad3114cb4d3c9a2de478641c85ba_physics.usdz */; };
@@ -250,6 +251,7 @@
 		95C8C1A1E4361E4172085C2E /* milk_jug_with_fill_level_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 0EF093D2FA1D14F8C371CD4B /* milk_jug_with_fill_level_physics.usdz */; };
 		9636BBA8C773C7A904785AA6 /* childproof_medicine_bottle__rec_childproof_medicine_bottle_6387c557f45c4387ad1c62724b6aa557_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 8291604B0D18831C0080AF7D /* childproof_medicine_bottle__rec_childproof_medicine_bottle_6387c557f45c4387ad1c62724b6aa557_physics.usdz */; };
 		96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC95DF015FBB8EFEE7176499 /* ContentView.swift */; };
+		AA11BB22CC33DD44EE550001 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE550002 /* DesignSystem.swift */; };
 		974305B31E12ABEDEA6F2DA0 /* floor_lamp__rec_floor_lamp_2f0beec8816e4a4f90324a0e7b2719ba_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 8010018B6755911E140B4A36 /* floor_lamp__rec_floor_lamp_2f0beec8816e4a4f90324a0e7b2719ba_physics.usdz */; };
 		9914DAF4D6C1FC882CD5E091 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3E94F4315457BFB499F46310 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9.usdz */; };
 		9A3A7B96B7DFB3AF820994B6 /* sugar_bowl_with_free_cubes_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = A2C00315F10F5E382279CADF /* sugar_bowl_with_free_cubes_physics.usdz */; };
@@ -276,6 +278,7 @@
 		A694C1512F0DFBAFD49618ED /* medicine_cabinet_with_mirror_door__rec_medicine_cabinet_with_mirror_door_32f9ea9fc9eb42bca61874ead88b01f0.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 5D67B87DEDDE075BF66F65F0 /* medicine_cabinet_with_mirror_door__rec_medicine_cabinet_with_mirror_door_32f9ea9fc9eb42bca61874ead88b01f0.usdz */; };
 		A6B596B753EA90149D020831 /* cereal_box_with_top_flaps__rec_cereal_box_with_top_flaps_ee1678dfaa9a451cafb8187983487428.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 9619AAD8D44B4DC030A055E4 /* cereal_box_with_top_flaps__rec_cereal_box_with_top_flaps_ee1678dfaa9a451cafb8187983487428.usdz */; };
 		A6CBE3266ABC286F730E206B /* screwcap_bottle__rec_screwcap_bottle_d1902c30078e437a8f0180d6b85f02ed_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = E9F8A6E70C36609B72860AB7 /* screwcap_bottle__rec_screwcap_bottle_d1902c30078e437a8f0180d6b85f02ed_physics.articulation.json */; };
+		A723FD86ED70CE8363DBDBC8 /* AmbientMusicToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4FD85E1992961006A52702 /* AmbientMusicToggle.swift */; };
 		A8447AE4C403B7946B8F88F7 /* sewing_box_with_simple_hinged_lid__rec_sewing_box_with_simple_hinged_lid_8560e3b865944fa48df65ad03429727f_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 60BA918E2B2DF5D843C367D8 /* sewing_box_with_simple_hinged_lid__rec_sewing_box_with_simple_hinged_lid_8560e3b865944fa48df65ad03429727f_physics.articulation.json */; };
 		A8DBFA921906AFFE0BDF34FF /* dots_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 74FFF0E91B9CD31DB02DC921 /* dots_3.png */; };
 		A9AB5CFBD82766FABCC52A0D /* tackle_box_with_simple_hinged_lid__rec_tackle_box_with_simple_hinged_lid_a750c95f7f1a44728f3bdbe0571c4092_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3AA9CCC98870CF0D6C69DAB2 /* tackle_box_with_simple_hinged_lid__rec_tackle_box_with_simple_hinged_lid_a750c95f7f1a44728f3bdbe0571c4092_physics.usdz */; };
@@ -472,6 +475,7 @@
 		2AB2434E476BDE24B8571DF8 /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_b08703b107c44ed986a93f87cf8c1c73_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_b08703b107c44ed986a93f87cf8c1c73_physics.articulation.json; sourceTree = "<group>"; };
 		2B554805A0312341F3410150 /* pump_bottle__rec_pump_bottle_b2e3e58b0efd4342a3184e0409dc59ad_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = pump_bottle__rec_pump_bottle_b2e3e58b0efd4342a3184e0409dc59ad_physics.usdz; sourceTree = "<group>"; };
 		2BB64149DE090C20F7E962AE /* PracticeDifficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeDifficulty.swift; sourceTree = "<group>"; };
+		2C4FD85E1992961006A52702 /* AmbientMusicToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientMusicToggle.swift; sourceTree = "<group>"; };
 		2CA6C83BCB756C47C22A6D37 /* microwave_oven__rec_microwave_oven_8e914d88611048d4b25ba2980feca0d1_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = microwave_oven__rec_microwave_oven_8e914d88611048d4b25ba2980feca0d1_physics.articulation.json; sourceTree = "<group>"; };
 		2CA909666A1E57D05F864904 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2D76C554852AF3BD8D3A2D86 /* junhao_portrait.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = junhao_portrait.mov; sourceTree = "<group>"; };
@@ -606,6 +610,7 @@
 		8010018B6755911E140B4A36 /* floor_lamp__rec_floor_lamp_2f0beec8816e4a4f90324a0e7b2719ba_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = floor_lamp__rec_floor_lamp_2f0beec8816e4a4f90324a0e7b2719ba_physics.usdz; sourceTree = "<group>"; };
 		80A34D8D2307F7BFAD7066F4 /* coffee_mug_with_fill_level.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = coffee_mug_with_fill_level.usdz; sourceTree = "<group>"; };
 		80D74428BC2E96679DE2BB97 /* refrigerator_with_hinged_doors__rec_refrigerator_with_hinged_doors_3a99fa41d0324636a05d95598e4cb978.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = refrigerator_with_hinged_doors__rec_refrigerator_with_hinged_doors_3a99fa41d0324636a05d95598e4cb978.usdz; sourceTree = "<group>"; };
+		81853EB34EB5D3707B9271A2 /* AmbientMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientMusic.swift; sourceTree = "<group>"; };
 		8291604B0D18831C0080AF7D /* childproof_medicine_bottle__rec_childproof_medicine_bottle_6387c557f45c4387ad1c62724b6aa557_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = childproof_medicine_bottle__rec_childproof_medicine_bottle_6387c557f45c4387ad1c62724b6aa557_physics.usdz; sourceTree = "<group>"; };
 		82D8824E63F68B0E6606350F /* chest_of_drawers__rec_chest_of_drawers_70f68308bf2d4a3693b6c2b997aed329.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = chest_of_drawers__rec_chest_of_drawers_70f68308bf2d4a3693b6c2b997aed329.usdz; sourceTree = "<group>"; };
 		842496E18F29A7B82BE73A32 /* szehao_greeting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = szehao_greeting.mov; sourceTree = "<group>"; };
@@ -750,6 +755,7 @@
 		DBDA8CF88DD6BAFD1D34E797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC729DEF9DA99CF2F20153C3 /* desk_with_drawer__rec_desk_with_drawer_f4edf601404a42509df03fbe06ea84e3_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = desk_with_drawer__rec_desk_with_drawer_f4edf601404a42509df03fbe06ea84e3_physics.articulation.json; sourceTree = "<group>"; };
 		DC95DF015FBB8EFEE7176499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE550002 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		DCC04B0395D1BC4B2DDE7DDD /* ReactionTimeGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTimeGameView.swift; sourceTree = "<group>"; };
 		DD6BE1857146EA6A211D6EF3 /* adjustable_hospital_bed__rec_adjustable_hospital_bed_edd0ebd382e947a79f0a07d3264bdde5_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = adjustable_hospital_bed__rec_adjustable_hospital_bed_edd0ebd382e947a79f0a07d3264bdde5_physics.articulation.json; sourceTree = "<group>"; };
 		DED0E0FA95DE93E58A6D79EC /* adjustable_hospital_bed__rec_adjustable_hospital_bed_edd0ebd382e947a79f0a07d3264bdde5_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = adjustable_hospital_bed__rec_adjustable_hospital_bed_edd0ebd382e947a79f0a07d3264bdde5_physics.usdz; sourceTree = "<group>"; };
@@ -894,6 +900,7 @@
 		A21599DEB113797AEF2917DB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2C4FD85E1992961006A52702 /* AmbientMusicToggle.swift */,
 				7FCA598D42781F13DFB0AE34 /* ArithmeticGameView.swift */,
 				0D31B3D8C80BF4322FBA3918 /* BaselineAssessmentView.swift */,
 				13552C52A4878A4F97A7227C /* BaselineResultsDebugView.swift */,
@@ -937,6 +944,7 @@
 				9CEBE297CD934B737ABBE9AF /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_14ac4c8c9e35416b864382571fa27e62_physics.articulation.json */,
 				8AA7CCD2A5F387ECD1F2DED5 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_14ac4c8c9e35416b864382571fa27e62_physics.usdz */,
 				6EEA58CB719614CD51855869 /* air_fryer_with_pullout_basket__rec_air_fryer_with_pullout_basket_14ac4c8c9e35416b864382571fa27e62.usdz */,
+				81853EB34EB5D3707B9271A2 /* AmbientMusic.swift */,
 				04515E485DDA30EC03C61143 /* AppModel.swift */,
 				D274C23E7B105453603CC954 /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c_physics.articulation.json */,
 				7BAC24D5A30AA1D924C205BA /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c_physics.usdz */,
@@ -1008,6 +1016,7 @@
 				EA3550EF8578F7BB26922A12 /* CoffeeActivityView.swift */,
 				916D1120009D504476AC074D /* CoffeeExercise.swift */,
 				DC95DF015FBB8EFEE7176499 /* ContentView.swift */,
+				AA11BB22CC33DD44EE550002 /* DesignSystem.swift */,
 				E85B8244AB091DDD41CF446A /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862_physics.articulation.json */,
 				43CB3472C37C6100CEFF40F6 /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862_physics.usdz */,
 				D65891696D9448D8749E7ECA /* conventional_oven_with_dropdown_door__rec_conventional_oven_with_dropdown_door_db9fbba8562444428b87dd498d28a862.usdz */,
@@ -1670,6 +1679,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F711406FC533CD4B3F7A36D /* AmbientMusic.swift in Sources */,
+				A723FD86ED70CE8363DBDBC8 /* AmbientMusicToggle.swift in Sources */,
 				0C5B91F021F89786B348395F /* AppModel.swift in Sources */,
 				50B59D6F42CB227A59992951 /* ArithmeticGameView.swift in Sources */,
 				54E345F2806BA2A5AFA0FB8C /* ArithmeticResult.swift in Sources */,
@@ -1685,6 +1696,7 @@
 				37A2F09BE5F8BA6BC7CDBE33 /* CoffeeExercise.swift in Sources */,
 				C405F87D5A4F4E211D37C2FE /* CognitiveDomain.swift in Sources */,
 				96D25EA543B6E6B0F48977B9 /* ContentView.swift in Sources */,
+				AA11BB22CC33DD44EE550001 /* DesignSystem.swift in Sources */,
 				4A60C65887D952F50942CE7D /* DailyPracticeHubView.swift in Sources */,
 				B3E8DEB675344830FED1056F /* DigitSpanGameView.swift in Sources */,
 				CFAFE89067BA7983336D603F /* DigitSpanResult.swift in Sources */,
