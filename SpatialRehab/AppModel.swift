@@ -28,6 +28,9 @@ final class AppModel {
     let coffee = CoffeeExercise()
     let mahjong = MahjongExercise()
     let voice = VoiceGuide()
+    /// The growing home-screen garden + keepsake postcards (gamification that
+    /// only ever accumulates — no streaks, no losses, no timers).
+    let garden = GardenStore()
 
     /// Starts the Remember the Way activity: begins the exercise, opens the shared
     /// immersive space, and dismisses the main window on success (the space's own control

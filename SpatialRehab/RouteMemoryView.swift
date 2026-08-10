@@ -582,11 +582,18 @@ struct RouteMemoryTableView: View {
         let done = target.id < exercise.nextCornerIndex
         let wrong = exercise.lastWrongTapID == target.id
         return Circle()
-            .fill(done ? Color.cyan : Color.white.opacity(0.9))
+            .fill(done ? GardenAccent.jade : Color.white.opacity(0.9))
             .frame(width: 36, height: 36)
             .overlay {
+                if done {
+                    Image(systemName: "checkmark")
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .overlay {
                 Circle().strokeBorder(
-                    Color.orange.opacity(wrong ? 1.0 : 0.7),
+                    done ? Color.white.opacity(0.9) : Color.orange.opacity(wrong ? 1.0 : 0.7),
                     lineWidth: wrong ? 5 : 2
                 )
             }
@@ -756,8 +763,14 @@ struct RouteMemoryTableView: View {
 
     private var controlPanel: some View {
         VStack(spacing: 24) {
+            Image(systemName: insideMode ? "figure.walk" : "map.fill")
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(GardenAccent.jade)
+                .frame(width: 52, height: 52)
+                .background(GardenAccent.jade.opacity(0.14), in: RoundedRectangle(cornerRadius: 14))
+
             Text(prompt)
-                .font(.system(size: 34, weight: .semibold))
+                .font(.system(size: 34, weight: .semibold, design: .rounded))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 640)
 
@@ -778,6 +791,7 @@ struct RouteMemoryTableView: View {
                         }
                         .font(.title3)
                         .buttonStyle(.borderedProminent)
+                        .tint(GardenAccent.jade)
                         .buttonBorderShape(.capsule)
                         .controlSize(.large)
 
@@ -785,17 +799,21 @@ struct RouteMemoryTableView: View {
                     }
                 } else {
                     HStack(spacing: 16) {
-                        Button("Step inside") {
+                        Button {
                             stepInside()
+                        } label: {
+                            Label("Step inside", systemImage: "figure.walk")
+                                .font(.title3)
                         }
-                        .font(.title3)
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(.bordered)
                         .buttonBorderShape(.capsule)
                         .controlSize(.large)
                         .disabled(!miniatureBuilt || exercise.state == .drawing)
 
                         Button {
-                            showAdjust.toggle()
+                            withAnimation(.spring(duration: 0.5)) {
+                                showAdjust.toggle()
+                            }
                         } label: {
                             Label("Adjust table", systemImage: "slider.horizontal.3")
                                 .font(.title3)
@@ -809,6 +827,7 @@ struct RouteMemoryTableView: View {
 
                     if showAdjust {
                         adjustRow
+                            .transition(.opacity)
                     }
                 }
             }
@@ -820,6 +839,7 @@ struct RouteMemoryTableView: View {
             WhoAmIButton()
         }
         .padding(36)
+        .fontDesign(.rounded)
         .glassBackgroundEffect()
     }
 
@@ -886,11 +906,13 @@ struct RouteMemoryTableView: View {
         switch exercise.state {
         case .idle, .loading:
             ProgressView("Preparing the route…")
+                .tint(GardenAccent.jade)
 
         case .failed:
             Button("Try again") { exercise.begin() }
                 .font(.title3)
                 .buttonStyle(.borderedProminent)
+                .tint(GardenAccent.jade)
                 .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
 
@@ -898,6 +920,7 @@ struct RouteMemoryTableView: View {
             Button("I'm ready") { exercise.startDrawing() }
                 .font(.title3)
                 .buttonStyle(.borderedProminent)
+                .tint(GardenAccent.jade)
                 .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
                 .disabled(insideMode)
@@ -916,6 +939,7 @@ struct RouteMemoryTableView: View {
                     Button("I'm done") { exercise.finishDrawing() }
                         .font(.title3)
                         .buttonStyle(.borderedProminent)
+                        .tint(GardenAccent.jade)
                         .buttonBorderShape(.capsule)
                         .controlSize(.extraLarge)
                         .disabled(exercise.drawnPath.count < 2)
@@ -937,6 +961,7 @@ struct RouteMemoryTableView: View {
                 }
                 .font(.title3)
                 .buttonStyle(.borderedProminent)
+                .tint(GardenAccent.jade)
                 .buttonBorderShape(.capsule)
                 .controlSize(.extraLarge)
             }
