@@ -1047,14 +1047,15 @@ struct CoffeeActivityView: View {
                 .font(.caption)
                 .foregroundStyle(isCurrent ? .primary : .secondary)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(
-            Capsule().fill(isCurrent ? Color.orange.opacity(0.85) : Color.black.opacity(0.35))
+        .padding(.horizontal, 16)
+        .padding(.vertical, 9)
+        .background(GardenAccent.jade.opacity(isCurrent ? 0.22 : 0), in: Capsule())
+        .glassBackgroundEffect(in: .capsule)
+        .overlay(
+            Capsule().strokeBorder(GardenAccent.jade.opacity(isCurrent ? 0.9 : 0), lineWidth: 2)
         )
-        .foregroundStyle(.white)
-        .scaleEffect(isCurrent ? 1.18 : 1.0)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isCurrent)
+        .scaleEffect(isCurrent ? 1.15 : 1.0)
+        .animation(.spring(duration: 0.5), value: isCurrent)
     }
 
     private var controlPanel: some View {
@@ -1066,6 +1067,7 @@ struct CoffeeActivityView: View {
             }
         }
         .padding(32)
+        .fontDesign(.rounded)
         .glassBackgroundEffect()
     }
 
@@ -1073,57 +1075,80 @@ struct CoffeeActivityView: View {
     /// by what the app will do rather than by how well she is expected to cope —
     /// "let me try myself" has to read as a preference, never as the hard mode.
     private var guidanceChooser: some View {
-        VStack(spacing: 22) {
-            VStack(spacing: 8) {
+        VStack(spacing: 24) {
+            VStack(spacing: 6) {
                 Text("Before we start")
-                    .font(.system(size: 19, weight: .semibold))
+                    .font(.headline)
                     .foregroundStyle(.secondary)
                 Text("How much help would you like?")
-                    .font(.system(size: 34, weight: .semibold))
+                    .font(.largeTitle.weight(.semibold))
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: 640)
 
             HStack(alignment: .top, spacing: 14) {
                 ForEach(CoffeeExercise.GuidanceLevel.allCases) { level in
-                    Button {
-                        chooseGuidance(level)
-                    } label: {
-                        VStack(spacing: 10) {
-                            Image(systemName: level.symbolName)
-                                .font(.system(size: 30))
-                                .frame(height: 38)
-                            Text(level.title)
-                                .font(.system(size: 21, weight: .semibold))
-                                .multilineTextAlignment(.center)
-                            Text(level.detail)
-                                .font(.system(size: 15))
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .frame(width: 214)
-                        .padding(.vertical, 22)
-                        .padding(.horizontal, 12)
-                    }
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.roundedRectangle(radius: 26))
-                    .accessibilityLabel("\(level.title). \(level.detail)")
+                    guidanceOptionCard(level)
                 }
             }
 
             Text("You can change your mind next time. Nothing here is timed or scored.")
-                .font(.system(size: 15))
-                .foregroundStyle(.tertiary)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
 
             voiceToggle
         }
     }
 
+    /// One way of being helped, presented as a calm, equal choice — an icon
+    /// chip, a short title, and a plain description on a quiet card.
+    private func guidanceOptionCard(_ level: CoffeeExercise.GuidanceLevel) -> some View {
+        Button {
+            chooseGuidance(level)
+        } label: {
+            VStack(spacing: 14) {
+                Image(systemName: level.symbolName)
+                    .font(.system(size: 26, weight: .semibold))
+                    .foregroundStyle(GardenAccent.jade)
+                    .frame(width: 60, height: 60)
+                    .background(GardenAccent.jade.opacity(0.14), in: RoundedRectangle(cornerRadius: 16))
+                VStack(spacing: 5) {
+                    Text(level.title)
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.center)
+                    Text(level.detail)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .padding(.vertical, 22)
+            .padding(.horizontal, 16)
+            .frame(width: 226)
+            .frame(minHeight: 214, alignment: .top)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))
+        }
+        .buttonStyle(.plain)
+        .hoverEffect(.lift)
+        .accessibilityLabel("\(level.title). \(level.detail)")
+    }
+
     private var brewingPanel: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 22) {
+            if exercise.phase == .brewing, let step = exercise.currentStep {
+                stepProgress(step)
+            } else if exercise.phase == .finished {
+                Image(systemName: "cup.and.saucer.fill")
+                    .font(.system(size: 30, weight: .semibold))
+                    .foregroundStyle(GardenAccent.jade)
+                    .frame(width: 68, height: 68)
+                    .background(GardenAccent.jade.opacity(0.14), in: RoundedRectangle(cornerRadius: 18))
+            }
+
             Text(panelPrompt)
-                .font(.system(size: 32, weight: .semibold))
+                .font(.title.weight(.semibold))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 620)
 
@@ -1146,6 +1171,7 @@ struct CoffeeActivityView: View {
                     }
                     .font(.title3)
                     .buttonStyle(.borderedProminent)
+                    .tint(GardenAccent.jade)
                     .buttonBorderShape(.capsule)
                     .controlSize(.large)
                 }
@@ -1153,6 +1179,30 @@ struct CoffeeActivityView: View {
                 voiceToggle
             }
         }
+    }
+
+    /// A quiet "Step N of 5" chip: five jade pips (the current one stretched)
+    /// in an `.ultraThinMaterial` capsule — read at a glance, never a score.
+    private func stepProgress(_ step: CoffeeExercise.Step) -> some View {
+        HStack(spacing: 10) {
+            HStack(spacing: 6) {
+                ForEach(CoffeeExercise.Step.allCases, id: \.rawValue) { each in
+                    Capsule()
+                        .fill(each.rawValue <= step.rawValue
+                            ? AnyShapeStyle(GardenAccent.jade)
+                            : AnyShapeStyle(.quaternary))
+                        .frame(width: each == step ? 22 : 8, height: 8)
+                }
+            }
+            Text("Step \(step.rawValue + 1) of \(CoffeeExercise.Step.allCases.count)")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .monospacedDigit()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(.ultraThinMaterial, in: Capsule())
+        .animation(.spring(duration: 0.5), value: step)
     }
 
     private var voiceToggle: some View {

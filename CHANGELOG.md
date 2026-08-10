@@ -5,7 +5,77 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
-## 2026-08-10
+## 2026-08-11 (branch: feature/memory-garden-ui)
+
+### Changed
+
+- **Home settled on plain simplicity** (after three hero experiments — illustrated garden,
+  Canvas dusk scene, 3D skyline — each reverted on user verdict): native glass window with
+  the greeting, the amber star-coins chip, ONE activity card ("Something else" swaps its
+  offer — a card carousel, never a menu), and the "For caregivers" tuck. Phases cross-fade
+  in place; the finished phase keeps the postcard mint + sparkle and one "Back home" button.
+  `LightGardenView`/`GardenNight` and the skyline assets are removed; `GardenStore`
+  (coins/counts/postcards) stays as the data layer. The one surviving ambience charm: the
+  red Chinese lantern with swaying tassel over the mahjong table (`Ambience.load` helper).
+- **One-button dusk garden** (user round 2: "not intuitive… too many buttons", "the garden
+  is lowkey a poor show"): the home window is now one continuous place — a full-bleed dusk
+  scene over a Singapore bay (star-flecked gradient sky, waning moon with halo, silhouetted
+  shophouse row + tower cluster with twinkling windows, water with ripple shimmer and
+  lantern reflections, and a small always-lit house on the right bank — "home"). Alive at
+  zero progress via drifting fireflies; kopi grows glowing reeds on the bank, mahjong
+  releases floating paper lanterns with water trails, each remembered route lights one more
+  waypoint on the path toward the house, and the newest light blooms with expanding rings.
+  The patient sees exactly ONE button: a single activity card ("Something else" swaps what
+  the card offers — a gentle carousel, never a menu); phases cross-fade as overlays in the
+  same scene (welcome → dimmed waiting → postcard mint over the garden with "Back to my
+  garden"). Removed from the patient's view: activity grid, moments shelf, stat chips,
+  Daily Practice/Dashboard on finished, baseline count label. Card tap fades the overlay
+  out before the space opens.
+- **Intuitive-simplicity pass** (user: "too rigid, a lot of buttons all over the place"):
+  one visible decision per moment. Home screen tucks Daily Practice + Caregiver Dashboard
+  behind a quiet "For caregivers" footnote reveal (clinical tools leave the patient's
+  decision space); mahjong's claim window offers at most TWO buttons — the single best
+  claim (win > pong > chow, engine unchanged, display-level pick) plus "No, thanks" —
+  instead of up to four competing meld choices.
+- **Kopi panel restyle** (`CoffeeActivityView.swift`, visual layer only): the immersive
+  control panel now follows the Memory Garden design language — the guidance chooser's three
+  options (Show me how / A little hint / Let me try myself) become `.regularMaterial` option
+  cards with jade icon chips, `.largeTitle` system heading and `.headline` eyebrow (was
+  size-19/34 custom fonts); the brewing prompt drops size-32 for `.title` semibold and gains
+  a "Step N of 5" jade-pip chip in an `.ultraThinMaterial` capsule; the finished state heads
+  with a jade cup icon chip and the Done button tints jade; floating item tags swap their
+  orange/black capsules and hard-coded white text for glass capsules with `.primary`/
+  `.secondary` text and a jade ring + soft jade wash on the current item; rounded font design
+  on the panel. PourSound, PourEffects, entity anatomy, physics, cue scheduling, spoken
+  strings, and `CoffeeExercise` untouched; `CoffeeGuidanceIndicators.swift` is pure
+  RealityKit (no SwiftUI) and was left alone.
+- **Remember the Way panel restyle** (`RouteMemoryView.swift`, visual layer only): the
+  floating control panel now follows the Memory Garden design language — a jade icon chip
+  (map, or walking figure while inside) heads the panel, the prompt keeps its 34 pt weight
+  but gains rounded design, every phase's single primary action (I'm ready / I'm done /
+  Done / Try again / Back to table) is `.borderedProminent` jade while "Step inside" steps
+  down to a bordered Label with a walk glyph, the Adjust row reveals with a restrained
+  spring, and the tap-corner dots on the table map turn jade with a white checkmark when
+  done (pending/wrong states unchanged). Map registration, route colors, grab-bar logic,
+  walking loop, and spoken strings untouched.
+- **Mahjong panel restyle** (`MahjongActivityView.swift`, visual layer only): the immersive
+  control panel now follows the Memory Garden design language — prompt drops the size-32
+  custom font for `.title` semibold system type, the points chip becomes the exemplar amber
+  star Label in an `.ultraThinMaterial` capsule (was yellow-on-black), claim buttons keep
+  their hierarchy but move to accent tints (Mahjong! amber, Pong!/Chow!/Done jade), rounded
+  font design on the container; the floating "Your new tile can rest here" tag swaps its
+  hard-coded black capsule/white text for a glass capsule with `.secondary` text. No logic,
+  phases, actions, or entity code touched.
+- **In-activity wait screen restyled to the garden design language** (`ContentView.swift`,
+  `inActivity`): jade icon chip showing the running activity's glyph (same symbols as the
+  activity cards and garden stat chips), 34 pt rounded bold title replacing the 44 pt custom
+  size, `.title3` secondary guidance line capped at 520 pt, and a slow iterative-variable-color
+  ellipsis as a quiet "in progress" pulse (no spinner, no bounce). Visual only — phase logic,
+  guidance strings, and activity routing untouched.
+- **Baseline battery — lightest accent pass** (`Views/BaselineAssessmentView.swift`): the three
+  prominent buttons (Next / Begin / Continue) now tint `GardenAccent.jade` with capsule border
+  shape, and the summary checkmark uses jade instead of system green. No structural, copy, or
+  game-view changes; indigo logo mark deliberately left as-is.
 
 ### Changed
 
@@ -23,6 +93,166 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Added
 
+- **Light Garden home screen** (`MemoryGarden.swift`, registered by hand in the pbxproj):
+  dementia-first gamification, product-grade — growth without loss, rendered as a calm
+  deep-jade panel (first iteration was illustrated orchids/lanterns/emoji; user verdict
+  "not clean and professional", so v2 is Canvas-drawn light: slender glowing stems per kopi,
+  drifting amber lantern-lights per mahjong afternoon, a faint dotted way-home path with
+  bright waypoints per route). Slow 30 fps motion, metric chips in system materials below,
+  positive-only star coins, all persisted in `GardenStore` (UserDefaults JSON).
+- **Moment cards**: every completed activity mints a keepsake card (SF Symbol chip, warm
+  line, date, stars) into a horizontally scrolling "Recent moments" shelf; the finished
+  screen's `PostcardMintView` springs the card in under a brief amber sparkle burst —
+  celebration with restraint, no confetti carnival.
+- **Home screen redesign**: time-of-day greeting by name from the Who-am-I persona ("Good
+  morning, Chio Bu"), ONE suggested activity card (least-played wins — choice paralysis is
+  real in dementia) as a glass-material card with jade symbol chip and hover lift, the other
+  two behind "More activities"; system typography (rounded), `.primary`/`.secondary` text on
+  native materials, single jade accent + amber reward colour; Daily Practice / Caregiver
+  Dashboard preserved as secondary actions.
+
+## 2026-08-10
+
+### Fixed
+
+- **Mahjong playtest round 2 (team feedback, 7 items)**:
+  - *"Cannot take tiles from the wall" / "just like a regular"*: the draw-and-throw shortcut
+    read most releases (especially simulator mouse drags, which land mid-table) as an instant
+    discard of the drawn tile. Removed — a wall tile released anywhere sensible (hand zone,
+    pad, or table middle) now flies into the hand row and the draw resolves normally.
+  - *"Almost always a winning hand"*: kindness now paces the game. Before turn 6 the rig works
+    in reverse (early winning wall tiles are quietly pushed back, AI opponents avoid discarding
+    claim-winning faces); from turn 6 the original bring-the-winner-forward kindness and the
+    left seat's feeding resume. Sessions breathe instead of ending on turn two.
+  - *Narration*: "the shining one is lucky" → "take the glowing tile from the wall and bring it
+    to your tiles"; "glowing river" → "the middle of the table"; removed "just like a regular".
+    Panel prompts updated to match.
+  - *Two competing instruction windows*: the main window (still showing the old pairs-game text
+    "place it beside its twin") floated in front of the immersive panel. Mahjong now dismisses
+    the main window on start (same pattern as Remember the Way) and reopens it on every exit
+    path; the stale guidance text and the home button's "Play Mahjong Pairs" label fixed too.
+  - *"Place tiles here" pad confusion*: the green pad + caption now appear only while a draw is
+    expected, with clearer wording ("Your new tile can rest here").
+
+### Added
+
+- **Mahjong points** (team request): visible, positive-only score on the floating panel —
+  +1 per discard turn, +2 per flower, +5 per Pong/Chow, +25 for Mahjong. Never decreases;
+  stored in `MahjongExercise.points` for Basil's metrics.
+
+### Changed (on-device diagnosis: the wall now serves the tile)
+
+- Device console instrumentation revealed the real "cannot take tiles" failure: the patient
+  grabbed non-glowing wall tiles **eleven times in a row** and the strict-glow rule silently
+  rejected each one — one thin ring among 96 identical face-down tiles on four walls is not
+  findable, and the four wall segments read as the opponents' "hidden decks". Redesigned:
+  - **The wall serves the draw.** On the patient's turn the next-in-order tile slides out of
+    the wall to a glowing spot right in front of them; pick it up and put it anywhere sensible.
+  - **Any wall tile is honored again** as the draw (the offered tile makes the intended one
+    obvious; grabbing another is accepted, never rejected).
+  - The unchosen offered tile slides back into its wall slot; releasing the offered tile
+    outside the zones returns it to the serving spot, not the wall.
+  - Discard pad enlarged (0.36×0.17 → 0.5×0.24 m) — throws were landing in the patient's own
+    row because the patch read as decoration — plus a once-per-phase spoken hint when a throw
+    settles back into the row.
+  - Narration follows the new model ("here's your tile, on the glowing spot").
+  - Temporary `[MJDBG]` console diagnostics left in for the team's device sessions.
+  - Round 2 (device log showed two mechanically perfect turns that *felt* broken): the served
+    tile now **pops up out of the wall in place** instead of sliding across the felt (reach in
+    and take it, like real life), and after each discard the hand row **slides closed over the
+    gap** — the visible "one fewer" moment that was missing (13 tiles before and after a throw
+    looked like nothing was removed).
+  - Round 12: **eager throws bounced back into the rack** — the 400 ms async draw-resolution
+    window rejected any throw made right after the tile clicked in ("when I discard, it's
+    stuck in my deck"; scripted opponents never hit it). Ordinary draws now resolve
+    synchronously (the discard phase opens the instant the tile lands), and a throw made
+    during any remaining busy window (flower resolution, AI round) is remembered as
+    `pendingThrowPrim` and executed the moment the phase opens instead of snapping back.
+  - Round 11: **rivers could stack after 18 discards** — `min(count/6, 2)` pinned every later
+    throw onto the same row, so long games (which the pacing fix made normal) piled new
+    discards exactly on top of old ones in front of the player. Rivers now run 6×4 per band
+    with fresh bands opening sideways, and river columns use the measured tile width.
+  - Round 10: **row spacing derives from the measured asset width** (`tileWidth` from
+    `visualBounds` at load) instead of an assumed 2.8 cm — wider tiles interpenetrated every
+    neighbor by the difference; hand rows, the win reveal, and the deal all use it. And
+    **flower replacements fly from the far wall straight into the row in one motion** — the
+    old two-hop staging left the row a tile short for over a second, which read as "the card
+    didn't consistently show in your deck" (~1 draw in 8 is a bonus tile).
+  - Round 9: `layoutRow` now also **sweeps the row band** — any non-hand tile left standing
+    among the hand tiles (whatever path put it there) is ushered out front on every layout
+    pass, a construction-level guarantee against "fused" tiles (team screenshot showed a
+    staged tile wedged between 六萬 and 七萬).
+  - Round 8: closed the last two overlay windows — the drawn tile now enters the row model
+    **at the instant of release** (it glides into its slot and the row parts; the old
+    settle-then-absorb path stacked it on the row for ~700 ms), and flower replacements
+    stage in front of the row line instead of on it. Release-time insert also required:
+    drawn flowers leave the row list before flying to the side, and the win path no longer
+    double-appends.
+  - Round 7: **the row is now a sequential, owned model** (user-suggested architecture:
+    "remove the old tile first, then add the new one, in sequential order"). `handPrims`
+    order IS the rack: every mutation is remove → insert → `layoutRow()`, which lays the
+    whole centered row out from the list alone — positions are never inferred back from
+    entity locations, so stacking is impossible by construction. Replaces the slot/band
+    heuristics (`placeInHandRow`/`settleInHandArea`/`tidyHandRow`/`handRowTargets`), which
+    drifted as animations raced each other over a session. Row tiles click back into the
+    rack line at the chosen spot; a `heldPrims` set (ManipulationEvents.WillBegin) stops
+    the layout from yanking a tile out of the patient's fingers.
+  - Round 6: **short throws counted as rearranges** — the discard needed a release forward of
+    z 0.27 while the hand zone began at 0.28, so a toss landing between the patch and the row
+    silently settled back among the hand tiles ("you're not actually removing the tiles I
+    throw away") and the next draw crowded in on top. Throw intent is now generous (anywhere
+    forward of the row line, z < 0.33, during a discard), the zone dead-gap is closed, the
+    occupied-slot band widened to 15 cm, and the row tidies itself the moment each discard
+    choice opens so no placement can sit stacked.
+  - Round 5: the **draw order now starts at the patient's own wall segment** — it previously
+    started at the right seat, so every raised tile popped up on the opponents' side ("I can
+    touch my opponents wall / I can't touch my own hidden deck") while the wall at the
+    patient's fingertips stayed locked. Their side serves the first ~24 draws, within arm's
+    reach.
+  - Round 4: the **wall is now solid** — only the raised, offered tile (and player-bound
+    flower replacements) can be picked up; grabbing arbitrary wall tiles read as "stealing
+    from the opponents' hidden decks" and let early draws bypass the pacing rig. And
+    **throw-first is honored as a swap**: discarding a hand tile while the new tile is still
+    raised no longer bounces it back with a scolding — the throw goes to the river and the
+    raised tile flies into the row, one motion (flower chains resolve first, wins take
+    precedence).
+  - Round 3: tiles could land **on top of each other** in the hand area — freeform settles had
+    no tile-collision check, and the row-slot finder only saw tiles within 6 cm of the ideal
+    row line, so tiles parked deeper were stacked straight through. New `settleInHandArea`
+    routes colliding placements into a free row slot (real tiles never stack), and the
+    occupied-slot band widened to 12 cm.
+
+### Fixed (post-review of the above, adversarially verified)
+
+- Patience rig parked deferred winning tiles at the wall's tail — exactly where flower
+  replacements draw from, handing the win right back (or losing it into an AI hand). Deferred
+  winners now park mid-wall, clear of both the draw head and the replacement tail.
+- The "any wall tile" house rule let early grabs bypass the pacing rig entirely; the draw is
+  now strictly the glowing next-in-order tile (real rules), others return with a gentle spoken
+  reminder.
+- `playerTurns` no longer counts flower-replacement draws, so bonus chains can't flip the rig
+  into kindness mode early; Mei Mei's win-feed threshold aligned to the same turn.
+- Dismissing the main window during mahjong removed the patient's persistent "Who am I?"
+  button; the mahjong panel now hosts `WhoAmIButton`, same as Remember the Way's panel.
+### Added
+
+- **The deck now walks the demo in the order the demo actually runs.** Slides 6 to 13 are
+  baseline games, mahjong, kopi, the identity card, the family card, the greeting video,
+  wayfinding on the tabletop, and wayfinding at life size. Caregiver dashboard,
+  personalisation, evidence, team and closing follow, so the deck runs 18 slides rather than
+  13. Five new slides were written to fill the beats the deck had no page for:
+  - **Mahjong (7).** The four-seat table, live Pong/Chow/Mahjong claims, the near-win deal
+    and kind wall, opponents that feed claimable tiles, and the fact that turns, claims and
+    misdrops are counted only for the caregiver view.
+  - **Making kopi (8).** The five-step sequence as a flow, then the three guidance levels in
+    their own words with the real cue timings, and the amber/cyan meaning of the table
+    indicators.
+  - **The family card (10)**, split out of the old "Who am I?" slide, with an SVG family tree
+    drawn from the app's own personas (Ah Pek, Chio Bu, Wei Ming, Mei Ling, Jun Hao, Sze Hao).
+  - **The greeting video (11).** Moving portraits, one retained looping player each, and a
+    greeting that plays once when a face is pinched.
+  - **Walking it at life size (13)**, split out of "Remember the Way": the pinch-and-hold
+    glide, the 150 ms velocity ramp, blink-cut corners, spoken guidance, and the arrival line.
 - **A guidance chooser before the kopi activity starts.** `CoffeeExercise` gains a
   `.choosingGuidance` phase ahead of `.brewing`, and the immersive control panel opens on
   three options: **Show me how**, **A little hint**, and **Let me try myself**. Nothing is
@@ -57,6 +287,49 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Changed
 
+- **Slide 2 ("The problem") is now a bento grid with drawn figures**, replacing the three
+  cards over three plain number tiles. Twelve columns let the top row run 5 / 4 / 3 — a
+  pictogram, a bar pair and a gauge — over the three symptom tiles on 4 / 4 / 4:
+  - **1 in 11** is drawn as eleven SVG figures with one picked out in the brand gradient,
+    and a second row of two figures carries "past 85, one in two" instead of burying it in
+    prose. Figures land one after another on a `--gd` stagger.
+  - **152,000 by 2030** is two bars (74,000 in 2023 against the projection), because those
+    are the only two honest readings; the bars grow on `scaleY`, and a dashed link and
+    `≈2×` fade in after them. The figure counts up on the existing `data-count-to` hook.
+  - **74% of caregivers** is a dial whose arc carries `pathLength="100"`, so the dash maths
+    is the figure itself and the arc draws to 74 with the number counting up inside it.
+  - New `.bento` / `.btile` components reuse the deck's glass card treatment, join the
+    `.card`/`.stat` hover-lift and the script's entrance walker (`CONTAINERS` / `LEAVES`),
+    reflow to 6 columns under 900px and one column under 560px, and rest flat under
+    `prefers-reduced-motion`. Slide copy is unchanged apart from folding "And it is not a
+    small room" into the lede.
+- **"Who am I?" is now two slides**, the identity card (9) and the family card (10), because
+  the demo shows them as two separate moments. The card mock gained the real fields the app
+  carries: name in English and Chinese, birthday, address, and who to call.
+- **"Remember the Way" is now two slides**, the tabletop miniature (12) and stepping inside
+  (13). The tabletop slide keeps the map and drops to two steps, Study and Recall.
+- **Backgrounds are shared across the longer deck.** No new photography was licensed for the
+  five new slides; five of the thirteen baked backdrops now back two slides each, recorded in
+  `photos.json`. Slide numbers in `photos.json` and in the CSS section comments were renumbered
+  to match the new order.
+- Slide 7's hand photograph is capped at 760px wide, and its copy trimmed, so the photo and
+  the three cards under it fit a laptop viewport together.
+- **Mahjong slide winning hand.** Slide 7 replaces the CSS letter-tile row (which garbled
+  without CJK fonts) with a transparent tile-only graphic of a complete 14-tile win
+  (`deck/assets/mahjong-win.png`: 123萬 · 555筒 · 東東東 · 789索 with 九 highlighted · 發發),
+  sized to fit the slide with the three cards below, base64-inlined by `deck/build.py`.
+- **Family tree living portraits.** Slide 10 swaps emoji faces for generated portraits of the
+  Lim family under `deck/assets/family/`, with a visionOS-style blue eye-gaze ring that
+  drifts between people and pulses like a look-cursor. The same Chio Bu portrait is used on
+  the identity namecard (slide 9).
+- **Kopi table still (slide 8).** Uses `assets/coffee_table.jpg` (no multi-frame video).
+- **Greeting card (slide 11).** Embeds
+  `assets/grok-video-49be710f-e5b2-412e-ac27-954c5e323d73.mp4` (Ah Pek, 720×1280) as a
+  muted looping portrait clip in the videocard.
+- **Team slide portraits.** The deck team cards no longer use letter initials — each member
+  shows a face crop from `deck/assets/` (Aditya, Brian/Sze Hao, JingTong, Nicole, Basil).
+  Face-cropped 256px JPEGs live in `deck/assets/avatars/` and are base64-embedded by
+  `deck/build.py` so the deck stays self-contained for Claude Artifacts.
 - The old single cyan `glowRing` under the current kopi item is replaced by the indicator
   halo, which carries the same meaning with a fade and a pulse instead of a hard on/off.
 - Kopi item tags no longer highlight the current step while the guidance chooser is up:

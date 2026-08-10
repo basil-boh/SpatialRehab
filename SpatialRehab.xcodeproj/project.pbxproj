@@ -254,6 +254,7 @@
 		9914DAF4D6C1FC882CD5E091 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3E94F4315457BFB499F46310 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9.usdz */; };
 		9A3A7B96B7DFB3AF820994B6 /* sugar_bowl_with_free_cubes_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = A2C00315F10F5E382279CADF /* sugar_bowl_with_free_cubes_physics.usdz */; };
 		9AFCF08B51C7B1BA244A0E25 /* MahjongRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF4AAC540AC4A2BFF726779 /* MahjongRules.swift */; };
+		FAB1E0000000000000000A01 /* MemoryGarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E0000000000000000B01 /* MemoryGarden.swift */; };
 		9B3C24D656F8476A321D5FE1 /* dishwasher_with_dropdown_door_and_sliding_racks__rec_dishwasher_with_dropdown_door_and_sliding_racks_54d5155c80f94e739c3c4d6a828f67c5_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = E68710EE21C5A29A613C704F /* dishwasher_with_dropdown_door_and_sliding_racks__rec_dishwasher_with_dropdown_door_and_sliding_racks_54d5155c80f94e739c3c4d6a828f67c5_physics.articulation.json */; };
 		9C7666B8C6E7A139696F1C33 /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_b08703b107c44ed986a93f87cf8c1c73_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = BD23B06677676E3FE86CBE52 /* wardrobe_with_hinged_doors_and_drawer__rec_wardrobe_with_hinged_doors_and_drawer_b08703b107c44ed986a93f87cf8c1c73_physics.usdz */; };
 		9CA758793133ECF656F58ADD /* photo_album_with_hinged_cover__rec_photo_album_with_hinged_cover_aee5ad9903414f338b0491cf31a7beba_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 9FD56D354A9FFD26F584E138 /* photo_album_with_hinged_cover__rec_photo_album_with_hinged_cover_aee5ad9903414f338b0491cf31a7beba_physics.usdz */; };
@@ -309,6 +310,7 @@
 		BC76AC5D6C77B4507E47A95B /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9_physics.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 6A216171A2841AB4C54C2A29 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9_physics.usdz */; };
 		BC9564ECB31842288BB7B8BF /* pump_bottle__rec_pump_bottle_4a8b5acea3e5458f8bc1071d19621b24_physics.articulation.json in Resources */ = {isa = PBXBuildFile; fileRef = BE7E37FC68B8900DBF926972 /* pump_bottle__rec_pump_bottle_4a8b5acea3e5458f8bc1071d19621b24_physics.articulation.json */; };
 		BD4B5D8973D3D5EF028170E2 /* milk_jug_with_fill_level.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 6C41F120071ED3A2FB4E953D /* milk_jug_with_fill_level.usdz */; };
+		FAB1E000000000000000A200 /* chinese_lantern_with_swaying_tassel.usdz in Resources */ = {isa = PBXBuildFile; fileRef = FAB1E000000000000000B200 /* chinese_lantern_with_swaying_tassel.usdz */; };
 		BD85F9A10BF8ABAA4802CA20 /* microwave_oven__rec_microwave_oven_8e914d88611048d4b25ba2980feca0d1.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B0439FED5BA6C04C25897485 /* microwave_oven__rec_microwave_oven_8e914d88611048d4b25ba2980feca0d1.usdz */; };
 		BE3E54D19E1394B3A373D306 /* refrigerator_with_hinged_doors__rec_refrigerator_with_hinged_doors_b6330c25046542158bb3f8c4048de904.usdz in Resources */ = {isa = PBXBuildFile; fileRef = CB3A925577EA2AC98F111FDC /* refrigerator_with_hinged_doors__rec_refrigerator_with_hinged_doors_b6330c25046542158bb3f8c4048de904.usdz */; };
 		BE74B714D43F9825C507D5EF /* TaskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5634B06A4388B5CAB30C5784 /* TaskSession.swift */; };
@@ -573,6 +575,7 @@
 		6A216171A2841AB4C54C2A29 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = office_chair__rec_office_chair_a096695885434a94868e2de826775da9_physics.usdz; sourceTree = "<group>"; };
 		6BA8B5733B4270B254DB32E9 /* toaster_oven__rec_toaster_oven_01872b0fc73b4470a60b9118897f4cb5_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = toaster_oven__rec_toaster_oven_01872b0fc73b4470a60b9118897f4cb5_physics.articulation.json; sourceTree = "<group>"; };
 		6C41F120071ED3A2FB4E953D /* milk_jug_with_fill_level.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = milk_jug_with_fill_level.usdz; sourceTree = "<group>"; };
+		FAB1E000000000000000B200 /* chinese_lantern_with_swaying_tassel.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = chinese_lantern_with_swaying_tassel.usdz; sourceTree = "<group>"; };
 		6CC1EC2A8537808718BC5D11 /* teapot_with_hinged_lid__rec_teapot_with_hinged_lid_09fb7698eaec4a808c1ed865215659f3_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = teapot_with_hinged_lid__rec_teapot_with_hinged_lid_09fb7698eaec4a808c1ed865215659f3_physics.usdz; sourceTree = "<group>"; };
 		6D0976996D2088CC42884101 /* animal_centipede.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animal_centipede.png; sourceTree = "<group>"; };
 		6D345212F3CCADF8016BB43C /* drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = drawer_cabinet_with_sliding_drawers__rec_drawer_cabinet_with_sliding_drawers_bf398a85e67f45469cfff19a88fed0dc_physics.usdz; sourceTree = "<group>"; };
@@ -657,6 +660,7 @@
 		9F6CD4E8C60A343AD040C302 /* pump_bottle__rec_pump_bottle_4a8b5acea3e5458f8bc1071d19621b24_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = pump_bottle__rec_pump_bottle_4a8b5acea3e5458f8bc1071d19621b24_physics.usdz; sourceTree = "<group>"; };
 		9FD56D354A9FFD26F584E138 /* photo_album_with_hinged_cover__rec_photo_album_with_hinged_cover_aee5ad9903414f338b0491cf31a7beba_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = photo_album_with_hinged_cover__rec_photo_album_with_hinged_cover_aee5ad9903414f338b0491cf31a7beba_physics.usdz; sourceTree = "<group>"; };
 		9FF4AAC540AC4A2BFF726779 /* MahjongRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongRules.swift; sourceTree = "<group>"; };
+		FAB1E0000000000000000B01 /* MemoryGarden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGarden.swift; sourceTree = "<group>"; };
 		A1FF1E9898EC9811E114EFCE /* articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = articulated_task_lamp__rec_articulated_task_lamp_7438b7845cdf4c3fa5c1f7138edd595c.usdz; sourceTree = "<group>"; };
 		A262D33D8C89180F8E367EF4 /* lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_415793483ae540319d0cf39f68455281_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = lounge_chair_with_independent_backrest_and_footrest__rec_lounge_chair_with_independent_backrest_and_footrest_415793483ae540319d0cf39f68455281_physics.usdz; sourceTree = "<group>"; };
 		A2B37BB32F578D2E45A038AE /* screwcap_bottle__rec_screwcap_bottle_d1902c30078e437a8f0180d6b85f02ed_physics.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = screwcap_bottle__rec_screwcap_bottle_d1902c30078e437a8f0180d6b85f02ed_physics.usdz; sourceTree = "<group>"; };
@@ -1085,6 +1089,7 @@
 				D0742D4FD06AED63F8F76F91 /* MahjongAudio.swift */,
 				5AC425BEC80955291B7B5CA3 /* MahjongExercise.swift */,
 				9FF4AAC540AC4A2BFF726779 /* MahjongRules.swift */,
+				FAB1E0000000000000000B01 /* MemoryGarden.swift */,
 				CB927845A83459F2C108BA91 /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_52fca84feb804623960b37c75fe153a9_physics.articulation.json */,
 				7FEE2C504B7E92FADE061A4A /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_52fca84feb804623960b37c75fe153a9_physics.usdz */,
 				0E6D56BAE3ACD3A00FA7D19D /* mailbox_with_front_access_door__rec_mailbox_with_front_access_door_52fca84feb804623960b37c75fe153a9.usdz */,
@@ -1106,6 +1111,7 @@
 				46C23D417DA7EFE2625DE507 /* milk_jug_with_fill_level_physics.articulation.json */,
 				0EF093D2FA1D14F8C371CD4B /* milk_jug_with_fill_level_physics.usdz */,
 				6C41F120071ED3A2FB4E953D /* milk_jug_with_fill_level.usdz */,
+				FAB1E000000000000000B200 /* chinese_lantern_with_swaying_tassel.usdz */,
 				ADA1290FEF3A15D2616B37F5 /* NeighborhoodWorld.swift */,
 				17FEB1905604CDAB6104F0DD /* office_chair__rec_office_chair_a2b415a194414139a5181e474dfb93dd_physics.articulation.json */,
 				51AD434504E2998549A99517 /* office_chair__rec_office_chair_a2b415a194414139a5181e474dfb93dd_physics.usdz */,
@@ -1299,7 +1305,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					9C43EF49CEE355740DBB0D6E = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1536,6 +1541,7 @@
 				28E8789A4CEF66F1BF7A4C14 /* microwave_oven__rec_microwave_oven_8e914d88611048d4b25ba2980feca0d1_physics.articulation.json in Resources */,
 				5681D1E312F425B66A2E42E4 /* microwave_oven__rec_microwave_oven_8e914d88611048d4b25ba2980feca0d1_physics.usdz in Resources */,
 				BD4B5D8973D3D5EF028170E2 /* milk_jug_with_fill_level.usdz in Resources */,
+				FAB1E000000000000000A200 /* chinese_lantern_with_swaying_tassel.usdz in Resources */,
 				CF913E6DBCFFC1E593220F54 /* milk_jug_with_fill_level_physics.articulation.json in Resources */,
 				95C8C1A1E4361E4172085C2E /* milk_jug_with_fill_level_physics.usdz in Resources */,
 				9914DAF4D6C1FC882CD5E091 /* office_chair__rec_office_chair_a096695885434a94868e2de826775da9.usdz in Resources */,
@@ -1703,6 +1709,7 @@
 				022FDA55B4B0C4C957AB365B /* MahjongAudio.swift in Sources */,
 				8D1C00F6D2AE170472CC3CD3 /* MahjongExercise.swift in Sources */,
 				9AFCF08B51C7B1BA244A0E25 /* MahjongRules.swift in Sources */,
+				FAB1E0000000000000000A01 /* MemoryGarden.swift in Sources */,
 				8DF182C74ECA761D71507C64 /* MovingPortraitView.swift in Sources */,
 				5FD22381EA3F6AD3FA31C4DA /* MyPeopleView.swift in Sources */,
 				EF6A507D92BE9B88C6BA2C57 /* NameCardView.swift in Sources */,
@@ -1815,7 +1822,7 @@
 				ASSETCATALOG_COMPILER_GLOBALACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82785P97XY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpatialRehab/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SpatialRehab;
@@ -1843,7 +1850,7 @@
 				ASSETCATALOG_COMPILER_GLOBALACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82785P97XY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpatialRehab/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SpatialRehab;

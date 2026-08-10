@@ -186,6 +186,7 @@
   }
   .slide.active .card.anim,
   .slide.active .stat.anim,
+  .slide.active .btile.anim,
   .slide.active .member.anim,
   .slide.active .step.anim,
   .slide.active .row.anim,
@@ -218,6 +219,7 @@
   @keyframes iconPop { from { opacity: 0; transform: scale(0.45) rotate(-14deg); } }
 
   /* Small marks land just behind the card that carries them. */
+  .slide.active .bt-sym.anim .icon,
   .slide.active .card.anim .icon,
   .slide.active .member.anim .av {
     animation: iconPop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) calc(var(--d, 0ms) + 130ms) backwards;
@@ -243,10 +245,10 @@
 
   /* Glass panels lift under the pointer. Only possible because the entrance
      animation leaves no forwards fill on transform. */
-  .card, .stat, .member {
+  .card, .stat, .btile, .member {
     transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
   }
-  .card:hover, .stat:hover, .member:hover {
+  .card:hover, .stat:hover, .btile:hover, .member:hover {
     transform: translateY(-4px);
     box-shadow: 0 2px 4px rgba(74, 56, 30, 0.06), 0 18px 44px rgba(74, 56, 30, 0.14);
   }
@@ -349,7 +351,101 @@
   .slide.active .shine { animation: shimmer 5.5s ease-in-out 1.2s infinite alternate; }
   @keyframes shimmer { from { background-position: 0% 0; } to { background-position: 100% 0; } }
 
-  /* ============ Slide 4 — Product mock ============ */
+  /* ============ Slide 2 — Problem bento ============ */
+  /* Twelve columns, so the top row can run 5 / 4 / 3 — a pictogram, a pair of
+     bars and a gauge, each figure drawn in the form that suits it — while the
+     three symptoms sit level underneath on a plain 4 / 4 / 4. */
+  .bento {
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 14px; margin-top: 30px;
+  }
+  .btile {
+    background: rgba(255, 255, 255, 0.74);
+    -webkit-backdrop-filter: blur(26px) saturate(1.15);
+    backdrop-filter: blur(26px) saturate(1.15);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 22px;
+    padding: 20px 22px 18px;
+    box-shadow: 0 1px 2px rgba(74, 56, 30, 0.05), 0 10px 30px rgba(74, 56, 30, 0.09);
+    display: flex; flex-direction: column;
+  }
+  .bt-people { grid-column: span 5; }
+  .bt-trend  { grid-column: span 4; }
+  .bt-gauge  { grid-column: span 3; }
+  .bt-sym    { grid-column: span 4; }
+
+  .btile .bt-label {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .btile .bt-n {
+    margin-top: 5px; font-size: clamp(1.7rem, 2.5vw, 2.25rem); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .btile .bt-n .in { font-size: 0.45em; font-weight: 600; color: var(--ink-3); letter-spacing: 0; }
+  .btile .bt-t {
+    margin-top: auto; padding-top: 12px;
+    font-size: 13px; line-height: 1.45; color: var(--ink-2);
+  }
+  .btile svg { display: block; width: 100%; height: auto; }
+  .btile .fig-cap { font-size: 10.5px; font-weight: 600; fill: var(--ink-3); }
+
+  /* Pictogram — eleven figures, one of them ours. The auto block margins let
+     the figure ride the slack in a row sized by its tallest tile, instead of
+     leaving one hole under the drawing. Same trick on the gauge. */
+  .pict { margin: auto 0; }
+  .bt-people .bt-t, .bt-gauge .bt-t { margin-top: 0; }
+  .pg { fill: rgba(29, 29, 31, 0.16); }
+  .pg.on { fill: url(#p2-people); }
+  .slide.active .btile.anim .pg {
+    animation: pgIn 0.5s var(--ease) calc(var(--d, 0ms) + 0.3s + var(--gd, 0s)) backwards;
+  }
+  @keyframes pgIn { from { opacity: 0; transform: translateY(3px); } }
+
+  /* Trend — two bars, because there are only two honest readings. */
+  .bt-trend .tr-base { stroke: rgba(29, 29, 31, 0.16); stroke-width: 1; }
+  .bt-trend .tr-link {
+    fill: none; stroke: var(--accent); stroke-width: 1.6;
+    stroke-dasharray: 5 5; opacity: 0.5;
+  }
+  .bt-trend .tr-val { font-size: 12.5px; font-weight: 700; fill: var(--ink); }
+  .bar { transform-box: fill-box; transform-origin: 50% 100%; }
+  .slide.active .btile.anim .bar {
+    animation: barRise 0.85s cubic-bezier(0.22, 0.85, 0.2, 1)
+               calc(var(--d, 0ms) + 0.3s + var(--bd, 0s)) backwards;
+  }
+  .slide.active .btile.anim .tr-link,
+  .slide.active .btile.anim .tr-val {
+    animation: fadeIn 0.7s var(--ease) calc(var(--d, 0ms) + 0.95s) backwards;
+  }
+  @keyframes barRise { from { transform: scaleY(0); opacity: 0.5; } }
+
+  /* Gauge — the arc carries pathLength="100", so the dash maths is the figure. */
+  .gauge { max-width: 138px; margin: auto; }
+  .gg-track { fill: none; stroke: rgba(29, 29, 31, 0.11); stroke-width: 11; }
+  .gg-arc {
+    fill: none; stroke: url(#p2-arc); stroke-width: 11; stroke-linecap: round;
+    stroke-dasharray: 74 100;
+  }
+  .gg-num { font-size: 30px; font-weight: 700; fill: var(--ink); letter-spacing: -0.02em; }
+  .gg-num .pct { font-size: 0.55em; font-weight: 600; fill: var(--ink-2); }
+  .slide.active .btile.anim .gg-arc {
+    animation: ggDraw 1.3s var(--ease) calc(var(--d, 0ms) + 0.32s) backwards;
+  }
+  @keyframes ggDraw { from { stroke-dashoffset: 74; } }
+
+  /* Symptom tiles — the same three cards, on a tighter beat. */
+  .bt-sym .icon {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--accent-soft); color: var(--accent);
+    display: grid; place-items: center; margin-bottom: 12px;
+  }
+  .bt-sym .icon svg { width: 18px; height: 18px; }
+  .bt-sym h3 { font-size: 16.5px; font-weight: 600; letter-spacing: -0.012em; margin-bottom: 6px; }
+  .bt-sym p  { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+  .bento + .footnote { margin-top: 20px; font-size: 12px; }
+
+  /* ============ Slide 5 — Product mock ============ */
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 8px; }
   .split .points { list-style: none; margin-top: 30px; display: grid; gap: 18px; }
   .split .points li { display: flex; gap: 14px; align-items: flex-start; font-size: 15.5px; line-height: 1.45; color: var(--ink-2); }
@@ -404,7 +500,7 @@
     72%      { box-shadow: 0 0 0 20px rgba(0, 122, 255, 0.00); }
   }
 
-  /* ============ Slide 5 — Battery grid ============ */
+  /* ============ Slide 6 — Battery grid ============ */
   .battery { grid-template-columns: repeat(4, 1fr); }
   .battery .card { padding: 22px 20px; }
   .battery .num {
@@ -417,7 +513,7 @@
   .battery .icon { width: 36px; height: 36px; border-radius: 10px; margin-bottom: 14px; }
   .battery .icon svg { width: 19px; height: 19px; }
 
-  /* ============ Slide 6 — Remember the Way (dark) ============ */
+  /* ============ Slide 12 — Remember the Way (dark) ============ */
   .rw-visual {
     margin-top: 26px;
     background: #141418;
@@ -499,7 +595,7 @@
     padding: 6px 13px; border-radius: 100px;
   }
 
-  /* ============ Slide 7 — Name card ============ */
+  /* ============ Slide 9 — Identity card ============ */
   .namecard {
     width: 100%; max-width: 380px;
     background: rgba(255, 255, 255, 0.66);
@@ -511,15 +607,42 @@
     text-align: center;
     box-shadow: 0 1px 2px rgba(74, 56, 30, 0.05), 0 10px 30px rgba(74, 56, 30, 0.09);
   }
+  /* Head block keeps the portrait above the name — no overlap. */
+  .namecard .head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
   .namecard .avatar {
     width: 84px; height: 84px; border-radius: 50%;
-    background: var(--grad); color: #fff;
-    display: grid; place-items: center;
+    background-image: var(--grad); color: #fff;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    display: block;
+    flex: none;
     font-size: 26px; font-weight: 600; letter-spacing: 0.01em;
-    margin: 0 auto 20px;
+    margin: 0;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(74, 56, 30, 0.12);
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
   }
-  .namecard .nm { font-size: 24px; font-weight: 700; letter-spacing: -0.015em; }
-  .namecard .rel { margin-top: 4px; font-size: 14px; color: var(--ink-2); }
+  /* Photo class + face-* rule (from build) replace the gradient. */
+  .namecard .avatar.photo {
+    color: transparent; font-size: 0;
+    background-color: #E8E8ED;
+  }
+  /* Family face CSS for namecard / other circular avatars (build.py). */
+  /*__FAMILY_CSS__*/
+  .namecard .nm {
+    font-size: 24px; font-weight: 700; letter-spacing: -0.015em;
+    line-height: 1.2; margin: 0; position: relative; z-index: 1;
+  }
+  .namecard .rel { margin-top: 2px; font-size: 14px; color: var(--ink-2); }
   .namecard .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
   .namecard .chip {
     font-size: 13px; font-weight: 500; color: var(--ink);
@@ -544,7 +667,218 @@
     max-width: 34em;
   }
 
-  /* ============ Slide 8 — Dashboard chart ============ */
+  /* ---- Identity card details, mirroring the app's name card rows ---- */
+  .namecard .cn { margin-top: 0; font-size: 15px; color: var(--ink-2); line-height: 1.3; }
+  .namecard .rows { margin-top: 20px; display: grid; gap: 9px; text-align: left; }
+  .namecard .rows > div { display: flex; justify-content: space-between; gap: 14px; font-size: 13px; }
+  .namecard .rows .k { color: var(--ink-3); flex: none; }
+  .namecard .rows .v { color: var(--ink); font-weight: 500; text-align: right; }
+
+  /* ============ Slide 7 — Mahjong hand ============ */
+  /* Tile row only (no felt). Sized to leave room for the three cards below. */
+  .hand-photo {
+    margin-top: 22px;
+    width: 100%;
+    max-width: 720px;
+    height: 92px;
+    border-radius: 12px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-color: transparent;
+  }
+  /*__HAND_CSS__*/
+  .tiles-note { margin-top: 10px; font-size: 13.5px; color: var(--ink-3); max-width: 52em; }
+  .cards.snug { margin-top: 24px; }
+
+  /* ============ Slide 8 — Kopi step flow ============ */
+  /* The demo film sits beside the steps rather than under them: stacked, the
+     film plus the three guidance cards ran past the bottom of the slide. */
+  .kopi-split { gap: 44px; margin-top: 24px; align-items: center; }
+  .kopi-split .flow { margin-top: 0; }
+  .kopi-demo {
+    margin-top: 0;
+    width: 100%;
+    max-width: 560px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    box-shadow: 0 1px 2px rgba(74, 56, 30, 0.05), 0 12px 28px rgba(74, 56, 30, 0.12);
+    background-color: #f2f0eb;
+    background-size: cover;
+    background-position: center;
+    aspect-ratio: 16 / 9;
+  }
+  /*__KOPI_CSS__*/
+  .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+  .flow .st {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    padding: 9px 15px 9px 10px; border-radius: 100px;
+  }
+  .flow .st .i {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    display: grid; place-items: center; font-size: 11.5px; font-weight: 700;
+  }
+  .flow .arw { color: var(--ink-3); font-size: 15px; }
+  .cards.stack-col { grid-template-columns: 1fr; margin-top: 0; }
+  .cards.stack-col .card { padding: 20px 22px; }
+  .cards.stack-col .card h3 { margin-bottom: 5px; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
+  .swatch.amber { background: #FFB840; }
+  .swatch.cyan { background: #73DEF2; }
+
+  /* ============ Slide 10 — Family tree ============ */
+  /* Glass panel over the photo backdrop; faces are real portraits, not emoji. */
+  .tree {
+    margin-top: 26px; padding: 20px 22px 14px; border-radius: 22px;
+    background: rgba(255, 255, 255, 0.62);
+    -webkit-backdrop-filter: blur(20px) saturate(1.1);
+    backdrop-filter: blur(20px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    box-shadow: 0 1px 2px rgba(74, 56, 30, 0.05), 0 10px 30px rgba(74, 56, 30, 0.08);
+  }
+  .tree svg { width: 100%; height: auto; max-height: 300px; display: block; margin: 0 auto; }
+  .tree .lnk { fill: none; stroke: rgba(0, 122, 255, 0.4); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1; }
+  .tree .face-ring {
+    fill: none; stroke: rgba(255, 255, 255, 0.95); stroke-width: 2.5;
+    filter: drop-shadow(0 1px 2px rgba(74, 56, 30, 0.12));
+  }
+  .tree .face-ring.me {
+    stroke: rgba(0, 122, 255, 0.55); stroke-width: 2.5;
+  }
+  .tree .face-disc { fill: #F2F2F7; }
+  .tree .nm { font-size: 13.5px; font-weight: 600; fill: var(--ink); }
+  .tree .rl { font-size: 11.5px; fill: var(--ink-3); }
+  .tree .heart { fill: #FF375F; }
+  /* Portrait micro-motion: a quiet living presence behind the circle. */
+  .tree .face {
+    transform-box: fill-box; transform-origin: center;
+  }
+  .slide.active .tree.anim .face {
+    animation: faceBreathe 4.8s ease-in-out calc(var(--d, 0ms) + 0.5s) infinite;
+  }
+  .slide.active .tree.anim .node:nth-child(2n) .face { animation-delay: calc(var(--d, 0ms) + 0.9s); }
+  .slide.active .tree.anim .node:nth-child(3n) .face { animation-delay: calc(var(--d, 0ms) + 1.3s); }
+  @keyframes faceBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.035); }
+  }
+  /* visionOS-style eye gaze: soft blue ring that settles, pulses, and drifts. */
+  .tree .gaze {
+    fill: none;
+    stroke: #007AFF;
+    stroke-width: 2.75;
+    stroke-linecap: round;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px rgba(0, 122, 255, 0.55));
+  }
+  .tree .gaze-soft {
+    fill: none;
+    stroke: rgba(0, 122, 255, 0.45);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .tree .gaze-pulse {
+    fill: none;
+    stroke: rgba(0, 122, 255, 0.55);
+    stroke-width: 2;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .slide.active .tree.anim .gaze-pulse {
+    animation: gazePulse 2.2s ease-out infinite;
+  }
+  @keyframes gazePulse {
+    0%   { transform: scale(1);    opacity: 0.7; }
+    70%  { transform: scale(1.38); opacity: 0; }
+    100% { transform: scale(1.38); opacity: 0; }
+  }
+  .slide.active .tree.anim .lnk { animation: draw 1.6s var(--ease) calc(var(--d, 0ms) + 0.25s) backwards; }
+  .slide.active .tree.anim .node { animation: popIn 0.55s var(--ease) calc(var(--d, 0ms) + 0.35s) backwards; transform-box: fill-box; transform-origin: center; }
+
+  /* ============ Slide 11 — Greeting video ============ */
+  .videocard {
+    width: 100%; max-width: 320px;
+    background: rgba(255, 255, 255, 0.66);
+    -webkit-backdrop-filter: blur(22px) saturate(1.1);
+    backdrop-filter: blur(22px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 26px; padding: 18px;
+    box-shadow: 0 1px 2px rgba(74, 56, 30, 0.05), 0 10px 30px rgba(74, 56, 30, 0.09);
+  }
+  .videocard .frame {
+    position: relative; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(158deg, #33333D 0%, #16161C 100%);
+    aspect-ratio: 9 / 16; max-height: 360px; margin: 0 auto;
+    display: grid; place-items: center;
+  }
+  .videocard .frame video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .videocard .frame .face { font-size: 96px; line-height: 1; margin-bottom: 18px; }
+  /* Decorative chrome — video plays under them. */
+  .videocard .play {
+    position: absolute; left: 14px; bottom: 28px; z-index: 2;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    display: grid; place-items: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+  }
+  .videocard .play svg { width: 14px; height: 14px; fill: #1D1D1F; margin-left: 2px; }
+  .videocard .scrub {
+    position: absolute; left: 14px; right: 14px; bottom: 12px; z-index: 2;
+    height: 4px; border-radius: 100px; background: rgba(255, 255, 255, 0.28);
+    pointer-events: none;
+  }
+  .videocard .scrub i { display: block; height: 100%; width: 34%; border-radius: 100px; background: rgba(255, 255, 255, 0.9); }
+  .slide.active .videocard.anim .scrub i {
+    animation: scrubRun 6s linear calc(var(--d, 0ms) + 0.4s) infinite;
+  }
+  @keyframes scrubRun { from { width: 0%; } to { width: 100%; } }
+  .videocard .who { margin-top: 15px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .videocard .rel { margin-top: 2px; font-size: 13px; color: var(--ink-3); }
+  .videocard .line { margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); font-style: italic; }
+  .slide.active .videocard.anim .play { animation: iconPop 0.75s cubic-bezier(0.2, 1.4, 0.4, 1) calc(var(--d, 0ms) + 0.35s) backwards; }
+
+  /* ============ Slide 13 — Stepping inside (dark) ============ */
+  .glide {
+    margin-top: 26px; border-radius: 20px; overflow: hidden;
+    border: 1px solid rgba(245, 245, 247, 0.12);
+    background: linear-gradient(#0E0E13, #191921);
+  }
+  .glide svg { width: 100%; height: auto; max-height: 250px; display: block; }
+  .glide .gd-block { fill: #22222B; }
+  .glide .gd-block.far { fill: #1A1A22; }
+  .glide .gd-ground { fill: #101018; }
+  .glide .gd-route { fill: rgba(48, 209, 88, 0.22); }
+  .glide .gd-edge { stroke: #30D158; stroke-width: 2; fill: none; }
+  /* The rungs travel toward the viewer on a stagger, which is the only motion
+     that reads as "moving forward" without moving the camera. Rects rather than
+     lines, so transform-box: fill-box has a real box to work from. */
+  .glide .gd-rung {
+    fill: rgba(48, 209, 88, 0.6); opacity: 0;
+    transform-box: fill-box; transform-origin: center;
+  }
+  .glide .gd-label { font-size: 12px; fill: var(--dark-ink-2); }
+  .glide .gd-pinch { fill: none; stroke: #6CB9FF; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .slide.active .glide.anim .gd-rung {
+    animation: rungRun 3.4s linear calc(var(--d, 0ms) + var(--rd, 0s)) infinite;
+  }
+  @keyframes rungRun {
+    0%   { opacity: 0; transform: translateY(0) scaleX(0.22); }
+    16%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(104px) scaleX(1); }
+  }
+
+  /* ============ Slide 14 — Dashboard chart ============ */
   .chart-card {
     background: rgba(255, 255, 255, 0.92);
     -webkit-backdrop-filter: blur(26px);
@@ -585,7 +919,7 @@
   @keyframes draw   { from { stroke-dashoffset: 1; } }
   @keyframes dotPop { from { opacity: 0; transform: scale(0); } }
 
-  /* ============ Slide 9 — Priority bars ============ */
+  /* ============ Slide 15 — Priority bars ============ */
   .prio { margin-top: 40px; display: grid; gap: 22px; max-width: 620px; }
   .prio .row { display: grid; grid-template-columns: 170px 1fr 52px; align-items: center; gap: 18px; }
   .prio .name { font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; }
@@ -613,7 +947,7 @@
     padding: 9px 16px; border-radius: 10px;
   }
 
-  /* ============ Slide 10 — Evidence stats ============ */
+  /* ============ Slide 16 — Evidence stats ============ */
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
   .stat {
     background: rgba(255, 255, 255, 0.74); border-radius: 22px; padding: 30px 26px;
@@ -653,7 +987,7 @@
   .strip-body { font-size: 14px; line-height: 1.5; color: var(--ink-2); max-width: 68em; }
   .strip-source { margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
 
-  /* ============ Slide 11 — Team ============ */
+  /* ============ Slide 17 — Team ============ */
   .team { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 46px; }
   .member {
     background: rgba(255, 255, 255, 0.72); border-radius: 20px; padding: 24px 18px;
@@ -664,12 +998,19 @@
     box-shadow: 0 1px 2px rgba(74, 56, 30, 0.05), 0 8px 24px rgba(74, 56, 30, 0.08);
   }
   .member .av {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.95);
+    width: 72px; height: 72px; border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 8px rgba(74, 56, 30, 0.12);
     display: grid; place-items: center;
     font-size: 17px; font-weight: 600; color: var(--ink);
     margin: 0 auto 14px;
+    overflow: hidden;
   }
+  /* Portrait data-URIs injected by build.py at the marker below. */
+  /*__AVATAR_CSS__*/
   .member .nm { font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; }
   .member .role {
     margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--accent);
@@ -682,7 +1023,7 @@
     text-wrap: pretty;
   }
 
-  /* ============ Slide 12 — Close ============ */
+  /* ============ Slide 18 — Close ============ */
   .s-close { text-align: center; }
   .s-close .mark {
     width: 66px; height: 66px; margin: 0 auto 28px;
@@ -750,6 +1091,10 @@
     .slide { padding: 84px 28px 96px; }
     .split { grid-template-columns: 1fr; gap: 38px; }
     .cards.three, .cards.four, .battery { grid-template-columns: repeat(2, 1fr); }
+    .bento { grid-template-columns: repeat(6, 1fr); }
+    .bt-people { grid-column: span 6; }
+    .bt-trend, .bt-gauge { grid-column: span 3; }
+    .bt-sym { grid-column: span 2; }
     .rw-steps { grid-template-columns: 1fr; }
     .team { grid-template-columns: repeat(2, 1fr); }
     .stats { grid-template-columns: 1fr; }
@@ -760,6 +1105,8 @@
   }
   @media (max-width: 560px) {
     .cards.three, .cards.four, .battery { grid-template-columns: 1fr; }
+    .bento { grid-template-columns: 1fr; }
+    .bt-people, .bt-trend, .bt-gauge, .bt-sym { grid-column: auto; }
     .team { grid-template-columns: 1fr; }
   }
 
@@ -781,6 +1128,12 @@
     .slide.active .mark polygon,
     .slide.active .shine,
     .slide.active .card.anim .icon,
+    .slide.active .bt-sym.anim .icon,
+    .slide.active .btile.anim .pg,
+    .slide.active .btile.anim .bar,
+    .slide.active .btile.anim .tr-link,
+    .slide.active .btile.anim .tr-val,
+    .slide.active .btile.anim .gg-arc,
     .slide.active .member.anim .av,
     .slide.active .points li.anim .tick,
     .slide.active .namecard .avatar,
@@ -792,12 +1145,24 @@
     .slide.active .chart-card .ck-line,
     .slide.active .chart-card .ck-area,
     .slide.active .chart-card .ck-cap,
-    .slide.active .chart-card .ck-dot {
+    .slide.active .chart-card .ck-dot,
+    .slide.active .videocard.anim .play,
+    .slide.active .videocard.anim .scrub i,
+    .slide.active .tree.anim .lnk,
+    .slide.active .tree.anim .node,
+    .slide.active .tree.anim .face,
+    .slide.active .tree.anim .gaze-pulse {
       animation: none !important;
     }
-    .dots button, .navbtn, .card, .stat, .member, .progress i { transition: none; }
+    .tree .lnk { stroke-dashoffset: 0; }
+    /* Hide the drifting gaze; the static .me ring on Chio Bu remains. */
+    .tree .gaze-cursor { display: none; }
+    /* The receding rungs are the one thing here that cannot rest anywhere
+       sensible, so they simply do not appear. */
+    .glide .gd-rung { display: none; }
+    .dots button, .navbtn, .card, .stat, .btile, .member, .progress i { transition: none; }
     .navbtn:hover, .navbtn:active { transform: translateY(-50%); }
-    .card:hover, .stat:hover, .member:hover { transform: none; }
+    .card:hover, .stat:hover, .btile:hover, .member:hover { transform: none; }
   }
 </style>
 
@@ -809,7 +1174,7 @@
       <span class="dot"><svg viewBox="0 0 128 128" fill="none" aria-hidden="true"><g transform="translate(64 64)"><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="#5856D6"></polygon><polygon points="0,0 0,-56 48.5,-28" fill="#007AFF" opacity="0.6"></polygon><polygon points="0,0 48.5,-28 48.5,28" fill="#007AFF" opacity="0.4"></polygon><polygon points="0,0 48.5,28 0,56" fill="#007AFF" opacity="0.2"></polygon><polygon points="0,0 0,56 -48.5,28" fill="#007AFF" opacity="0.15"></polygon><polygon points="0,0 -48.5,28 -48.5,-28" fill="#007AFF" opacity="0.35"></polygon><polygon points="0,0 -48.5,-28 0,-56" fill="#007AFF" opacity="0.8"></polygon><g stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"><line x1="0" y1="0" x2="0" y2="-56"></line><line x1="0" y1="0" x2="48.5" y2="-28"></line><line x1="0" y1="0" x2="48.5" y2="28"></line><line x1="0" y1="0" x2="0" y2="56"></line><line x1="0" y1="0" x2="-48.5" y2="28"></line><line x1="0" y1="0" x2="-48.5" y2="-28"></line></g><polygon points="0,-56 48.5,-28 48.5,28 0,56 -48.5,28 -48.5,-28" fill="none" stroke="#5856D6" stroke-width="3"></polygon></g></svg></span>
       SpatialRehab
     </div>
-    <div class="counter"><span id="cur">01</span> / <span id="total">12</span></div>
+    <div class="counter"><span id="cur">01</span> / <span id="total">18</span></div>
   </header>
 
   <main id="slides">
@@ -840,24 +1205,116 @@
         <h2>Dementia takes the everyday first.</h2>
         <p class="lede">For someone in moderate cognitive decline, the hardest part of the
         day is the ordinary part. Long before anything dramatic, the small
-        skills that hold a day together begin to fray.</p>
-        <div class="cards three">
-          <div class="card">
+        skills that hold a day together begin to fray. And it is not a small room.</p>
+        <div class="bento">
+
+          <!-- Prevalence, drawn as people rather than as a number. -->
+          <div class="btile bt-people">
+            <p class="bt-label">Singapore &middot; dementia prevalence</p>
+            <p class="bt-n">1 <span class="in">in</span> 11</p>
+            <svg class="pict" viewBox="0 0 320 66" role="img"
+                 aria-label="One figure in eleven highlighted for ages sixty and over; one in two for ages eighty-five and over">
+              <defs>
+                <linearGradient id="p2-people" x1="0" y1="0" x2="0" y2="26" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#5856D6"></stop>
+                  <stop offset="1" stop-color="#007AFF"></stop>
+                </linearGradient>
+                <g id="p2-fig">
+                  <circle cx="0" cy="5.5" r="4.5"></circle>
+                  <path d="M-7 24v-5c0-3.9 3.1-7 7-7s7 3.1 7 7v5z"></path>
+                </g>
+              </defs>
+              <text class="fig-cap" x="0" y="16">60+</text>
+              <g transform="translate(34 0)"><g class="pg on" style="--gd: 0s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(60 0)"><g class="pg" style="--gd: 0.05s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(86 0)"><g class="pg" style="--gd: 0.10s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(112 0)"><g class="pg" style="--gd: 0.15s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(138 0)"><g class="pg" style="--gd: 0.20s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(164 0)"><g class="pg" style="--gd: 0.25s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(190 0)"><g class="pg" style="--gd: 0.30s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(216 0)"><g class="pg" style="--gd: 0.35s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(242 0)"><g class="pg" style="--gd: 0.40s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(268 0)"><g class="pg" style="--gd: 0.45s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(294 0)"><g class="pg" style="--gd: 0.50s"><use href="#p2-fig"></use></g></g>
+              <text class="fig-cap" x="0" y="54">85+</text>
+              <g transform="translate(34 38)"><g class="pg on" style="--gd: 0.62s"><use href="#p2-fig"></use></g></g>
+              <g transform="translate(60 38)"><g class="pg" style="--gd: 0.67s"><use href="#p2-fig"></use></g></g>
+              <text class="fig-cap" x="76" y="54">one in two</text>
+            </svg>
+            <p class="bt-t">Singaporeans aged 60 and over live with dementia, and the
+            share climbs steeply with age.</p>
+          </div>
+
+          <!-- Two honest readings, so two bars rather than a fitted curve. -->
+          <div class="btile bt-trend">
+            <p class="bt-label">Projected &middot; by 2030</p>
+            <p class="bt-n"><span data-count-to="152">152</span>,000</p>
+            <svg viewBox="0 0 240 132" role="img"
+                 aria-label="Bar chart: about 74,000 people in 2023 rising to a projected 152,000 in 2030">
+              <defs>
+                <linearGradient id="p2-bar" x1="0" y1="24" x2="0" y2="108" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#5856D6"></stop>
+                  <stop offset="1" stop-color="#32ADE6"></stop>
+                </linearGradient>
+              </defs>
+              <line class="tr-base" x1="14" y1="108" x2="226" y2="108"></line>
+              <rect class="bar" style="--bd: 0s" x="34" y="67" width="58" height="41" rx="7"
+                    fill="rgba(29, 29, 31, 0.14)"></rect>
+              <rect class="bar" style="--bd: 0.18s" x="140" y="24" width="58" height="84" rx="7"
+                    fill="url(#p2-bar)"></rect>
+              <path class="tr-link" d="M80 58 156 30"></path>
+              <text class="tr-val" x="106" y="36" text-anchor="middle" fill="#007AFF">&#8776;2&#215;</text>
+              <text class="tr-val" x="63" y="56" text-anchor="middle">74,000</text>
+              <text class="tr-val" x="169" y="16" text-anchor="middle">152,000</text>
+              <text class="fig-cap" x="63" y="126" text-anchor="middle">2023</text>
+              <text class="fig-cap" x="169" y="126" text-anchor="middle">2030</text>
+            </svg>
+            <p class="bt-t">People living with dementia here by 2030, up from about
+            74,000 in 2023.</p>
+          </div>
+
+          <!-- The caregiver figure, as a dial the arc has to fill. -->
+          <div class="btile bt-gauge">
+            <p class="bt-label">Family caregivers</p>
+            <svg class="gauge" viewBox="0 0 120 120" role="img"
+                 aria-label="Dial showing 74 percent">
+              <defs>
+                <linearGradient id="p2-arc" x1="14" y1="14" x2="106" y2="106" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#5856D6"></stop>
+                  <stop offset="1" stop-color="#32ADE6"></stop>
+                </linearGradient>
+              </defs>
+              <circle class="gg-track" cx="60" cy="60" r="46"></circle>
+              <circle class="gg-arc" cx="60" cy="60" r="46" pathLength="100"
+                      transform="rotate(-90 60 60)"></circle>
+              <!-- Baselines, not dominant-baseline: the dy drops the glyph box onto
+                   the ring's centre, and the x nudge pays for the hanging per-cent
+                   sign so the digits themselves read as centred. -->
+              <text class="gg-num" x="66" y="60" dy="0.35em" text-anchor="middle"
+                ><tspan data-count-to="74">74</tspan><tspan class="pct">%</tspan></text>
+            </svg>
+            <p class="bt-t">Say they are overwhelmed by what the role asks of them.</p>
+          </div>
+
+          <div class="btile bt-sym">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3 2"></path></svg></div>
             <h3>Routines</h3>
             <p>The steps of a familiar morning start arriving out of order, or not at all.</p>
           </div>
-          <div class="card">
+          <div class="btile bt-sym">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.5 8.5-2.2 5-4.8 2 2.2-5z"></path></svg></div>
             <h3>Wayfinding</h3>
             <p>A walk taken for thirty years suddenly stops feeling familiar.</p>
           </div>
-          <div class="card">
+          <div class="btile bt-sym">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5.5 19.5c1-3.4 3.5-5 6.5-5s5.5 1.6 6.5 5"></path></svg></div>
             <h3>Identity</h3>
             <p>Faces stay warm, but the names attached to them start to slip.</p>
           </div>
         </div>
+        <p class="footnote">Sources: Well-being of the Singapore Elderly (WiSE) study, Institute of
+        Mental Health, 2023; Ministry of Health projection, 2021; Dementia Singapore and Milieu
+        Insight caregiver survey of 1,500 people, July 2023.</p>
       </div>
     </section>
 
@@ -983,14 +1440,272 @@
       </div>
     </section>
 
-    <!-- 7 · Remember the Way (dark) -->
+    <!-- 7 · Mahjong -->
+    <section data-scrim="strong" class="slide" aria-label="Mahjong">
+      <div class="photo ph-pottery" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="eyebrow">The first activity</p>
+        <h2>Mahjong, by the real rules.</h2>
+        <p class="lede">Singapore mahjong on a proper four-seat table against three computer
+        players, with Pong, Chow and Mahjong claims live on every discard. The rules are not
+        simplified. The deal is.</p>
+        <div class="hand-photo img-mahjong-win"
+             role="img"
+             aria-label="A completed winning hand: 1-2-3 Characters, three 5 Dots, three East Winds, 7-8-9 Bamboo with the nine highlighted, and a pair of Green Dragons."></div>
+        <p class="tiles-note">Fourteen tiles and the win. The seat on her left discarded the nine
+        she was waiting on; the Chow claim was live only because that discard was genuinely legal.</p>
+        <div class="cards three snug">
+          <div class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M9 15h6M9 9h.01M15 9h.01"></path></svg></div><h3>A hand already nearly there</h3><p>The deal is a genuine near-win and the wall is kind, so the game stays reachable.</p></div>
+          <div class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h11M11 8l4 4-4 4"></path><path d="M19 5v14"></path></svg></div><h3>Opponents that feed</h3><p>The computer players put out tiles she can use, and a claim button appears only when the claim is legal.</p></div>
+          <div class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 14.2 9.4 19.5 10l-3.9 3.6 1 5.3-4.6-2.6-4.6 2.6 1-5.3L4.5 10l5.3-.6z"></path></svg></div><h3>No score at the table</h3><p>Turns, claims and misdrops are counted quietly for the caregiver view. What she sees is the win.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · Making kopi -->
+    <section class="slide" data-bg="surface" aria-label="Making kopi">
+      <div class="photo ph-cooking" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="eyebrow">An everyday sequence</p>
+        <h2>Making kopi, one step at a time.</h2>
+        <p class="lede">An activity of daily living, hand tracked on a real tabletop: procedural
+        memory and task sequencing, practised in the order she would actually do it.</p>
+        <div class="split kopi-split">
+          <div>
+            <div class="flow" aria-label="The five steps of the kopi sequence">
+              <span class="st"><span class="i" aria-hidden="true">1</span>Water</span>
+              <span class="arw" aria-hidden="true">&rsaquo;</span>
+              <span class="st"><span class="i" aria-hidden="true">2</span>Coffee</span>
+              <span class="arw" aria-hidden="true">&rsaquo;</span>
+              <span class="st"><span class="i" aria-hidden="true">3</span>Sugar</span>
+              <span class="arw" aria-hidden="true">&rsaquo;</span>
+              <span class="st"><span class="i" aria-hidden="true">4</span>Milk</span>
+              <span class="arw" aria-hidden="true">&rsaquo;</span>
+              <span class="st"><span class="i" aria-hidden="true">5</span>Stir</span>
+            </div>
+            <p class="lede" style="margin-top: 22px;">Before anything is poured, she chooses how much
+            help she wants. Nothing is highlighted or demonstrated until she has picked, and
+            &ldquo;Make another&rdquo; asks again, so the level can come down as she grows more sure.</p>
+          </div>
+          <div class="kopi-demo img-coffee-table"
+               role="img"
+               aria-label="Kopi table: kettle, cup and coffee sock ready to pour"></div>
+        </div>
+        <div class="cards three">
+          <div class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5V5.6a1.6 1.6 0 0 1 3.2 0v4.2m0-1.1a1.6 1.6 0 0 1 3.2 0v1.1m0-.6a1.6 1.6 0 0 1 3.2 0v4.7a5.6 5.6 0 0 1-5.6 5.6h-1.3a5 5 0 0 1-4.3-2.5l-2.1-3.6a1.6 1.6 0 0 1 2.6-1.8L9 14"></path></svg></div><h3>Show me how</h3><p>&ldquo;I&rsquo;ll talk you through every step and show you how it&rsquo;s done.&rdquo; Every cue arrives at once, the demonstration within two seconds.</p></div>
+          <div class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 18h4.8M10.4 21h3.2M12 3a6 6 0 0 0-3.6 10.8c.6.5.9 1.2.9 1.9h5.4c0-.7.3-1.4.9-1.9A6 6 0 0 0 12 3z"></path></svg></div><h3>A little hint</h3><p>&ldquo;I&rsquo;ll point out what&rsquo;s next, and show you if you&rsquo;d like a moment.&rdquo; The cues join in from five seconds, the demonstration at twenty.</p></div>
+          <div class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.1"></circle><path d="M12 8.2v6.6m0 0-2.6 6.2M12 14.8l2.6 6.2M8.3 10.6 12 9.2l3.7 1.4"></path></svg></div><h3>Let me try myself</h3><p>&ldquo;I&rsquo;ll stay quiet, and step in only if you&rsquo;d like a hand.&rdquo; Twelve seconds of silence, and only the step is named, never the recipe.</p></div>
+        </div>
+        <p class="footnote">The levels fade the cues, never the task: every level still ends up
+        offering the full demonstration, and the clock restarts the moment she picks the right thing
+        up. On the table, <span class="swatch amber" aria-hidden="true"></span>amber is the thing to
+        pick up and <span class="swatch cyan" aria-hidden="true"></span>cyan is where it goes.</p>
+      </div>
+    </section>
+
+    <!-- 9 · The identity card -->
+    <section data-scrim="strong" class="slide" aria-label="Identity card">
+      <div class="photo ph-agewell5" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Identity</p>
+            <h2>&ldquo;Who am I?&rdquo;<br>Always one tap away.</h2>
+            <p class="lede">A floating card she can open from anywhere in the app: her photo, her
+            name in English and Chinese, when she was born, where she lives, who to call. The
+            things a person reaches for when the ground moves under them.</p>
+            <p class="lede" style="margin-top: 14px;">It is built to read as her own keepsake
+            rather than a test. Layered glass, entrances that arrive slowly and springily, a sheen
+            that sweeps once and stops. Nothing on this card is ever asked back.</p>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <div class="namecard" aria-label="Mockup of the personal identity card">
+              <div class="head">
+                <div class="avatar photo face-chio-bu" role="img" aria-label="Lim Chio Bu"></div>
+                <p class="nm">Lim Chio Bu</p>
+                <p class="cn">&#26519;&#25307;&#27597;</p>
+                <p class="rel">This is me</p>
+              </div>
+              <div class="rows">
+                <div><span class="k">Born</span><span class="v">12 March 1948</span></div>
+                <div><span class="k">Home</span><span class="v">Blk 5 Banda Street #08-42</span></div>
+                <div><span class="k">Call</span><span class="v">Mei Ling &middot; 8123 4567</span></div>
+              </div>
+              <div class="chips">
+                <span class="chip">My family</span>
+                <span class="chip">A greeting</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · The family card -->
+    <section class="slide" data-bg="surface" aria-label="Family card">
+      <div class="photo ph-grandkid" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="eyebrow">The people who matter</p>
+        <h2>The card flips, and the family is there.</h2>
+        <p class="lede">Six people, laid out as a tree whose every line is drawn between the real,
+        measured positions of the tiles, so no one floats unconnected and each name has a line
+        physically touching it. She is marked at the centre of her own family.</p>
+        <div class="tree">
+          <svg viewBox="0 0 900 370" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="Family tree with living portraits: Ah Pek and Chio Bu, their children Wei Ming, Mei Ling and Jun Hao, and Mei Ling's son Sze Hao. A blue gaze ring moves like an eye cursor.">
+            <defs>
+              <clipPath id="clip-ah-pek"><circle cx="362" cy="40" r="26"></circle></clipPath>
+              <clipPath id="clip-chio-bu"><circle cx="538" cy="40" r="26"></circle></clipPath>
+              <clipPath id="clip-wei-ming"><circle cx="180" cy="170" r="26"></circle></clipPath>
+              <clipPath id="clip-mei-ling"><circle cx="450" cy="170" r="26"></circle></clipPath>
+              <clipPath id="clip-jun-hao"><circle cx="720" cy="170" r="26"></circle></clipPath>
+              <clipPath id="clip-sze-hao"><circle cx="450" cy="290" r="26"></circle></clipPath>
+            </defs>
+            <path class="lnk" pathLength="1" d="M388 40h48"></path>
+            <path class="lnk" pathLength="1" d="M512 40h-48"></path>
+            <path class="lnk" pathLength="1" d="M450 54v66"></path>
+            <path class="lnk" pathLength="1" d="M180 120h540"></path>
+            <path class="lnk" pathLength="1" d="M180 120v24"></path>
+            <path class="lnk" pathLength="1" d="M450 120v24"></path>
+            <path class="lnk" pathLength="1" d="M720 120v24"></path>
+            <path class="lnk" pathLength="1" d="M450 244v20"></path>
+            <path class="heart" d="M0 6 C-7 0.5 -7 -4.5 -3.4 -5.8 C-1.2 -6.6 0 -4.6 0 -3.4 C0 -4.6 1.2 -6.6 3.4 -5.8 C7 -4.5 7 0.5 0 6 Z" transform="translate(450 40)"></path>
+
+            <g class="node">
+              <circle class="face-disc" cx="362" cy="40" r="26"></circle>
+              <image class="face" href="__FAMILY_ah-pek__" xlink:href="__FAMILY_ah-pek__" x="336" y="14" width="52" height="52" clip-path="url(#clip-ah-pek)" preserveAspectRatio="xMidYMid slice"></image>
+              <circle class="face-ring" cx="362" cy="40" r="26"></circle>
+              <text class="nm" x="362" y="88" text-anchor="middle">Lim Ah Pek</text>
+              <text class="rl" x="362" y="105" text-anchor="middle">Her husband</text>
+            </g>
+            <g class="node">
+              <circle class="face-disc" cx="538" cy="40" r="26"></circle>
+              <image class="face" href="__FAMILY_chio-bu__" xlink:href="__FAMILY_chio-bu__" x="512" y="14" width="52" height="52" clip-path="url(#clip-chio-bu)" preserveAspectRatio="xMidYMid slice"></image>
+              <circle class="face-ring me" cx="538" cy="40" r="26"></circle>
+              <text class="nm" x="538" y="88" text-anchor="middle">Lim Chio Bu</text>
+              <text class="rl" x="538" y="105" text-anchor="middle">This is me</text>
+            </g>
+            <g class="node">
+              <circle class="face-disc" cx="180" cy="170" r="26"></circle>
+              <image class="face" href="__FAMILY_wei-ming__" xlink:href="__FAMILY_wei-ming__" x="154" y="144" width="52" height="52" clip-path="url(#clip-wei-ming)" preserveAspectRatio="xMidYMid slice"></image>
+              <circle class="face-ring" cx="180" cy="170" r="26"></circle>
+              <text class="nm" x="180" y="218" text-anchor="middle">Lim Wei Ming</text>
+              <text class="rl" x="180" y="235" text-anchor="middle">Her son</text>
+            </g>
+            <g class="node">
+              <circle class="face-disc" cx="450" cy="170" r="26"></circle>
+              <image class="face" href="__FAMILY_mei-ling__" xlink:href="__FAMILY_mei-ling__" x="424" y="144" width="52" height="52" clip-path="url(#clip-mei-ling)" preserveAspectRatio="xMidYMid slice"></image>
+              <circle class="face-ring" cx="450" cy="170" r="26"></circle>
+              <text class="nm" x="450" y="218" text-anchor="middle">Lim Mei Ling</text>
+              <text class="rl" x="450" y="235" text-anchor="middle">Her daughter</text>
+            </g>
+            <g class="node">
+              <circle class="face-disc" cx="720" cy="170" r="26"></circle>
+              <image class="face" href="__FAMILY_jun-hao__" xlink:href="__FAMILY_jun-hao__" x="694" y="144" width="52" height="52" clip-path="url(#clip-jun-hao)" preserveAspectRatio="xMidYMid slice"></image>
+              <circle class="face-ring" cx="720" cy="170" r="26"></circle>
+              <text class="nm" x="720" y="218" text-anchor="middle">Lim Jun Hao</text>
+              <text class="rl" x="720" y="235" text-anchor="middle">Her son</text>
+            </g>
+            <g class="node">
+              <circle class="face-disc" cx="450" cy="290" r="26"></circle>
+              <image class="face" href="__FAMILY_sze-hao__" xlink:href="__FAMILY_sze-hao__" x="424" y="264" width="52" height="52" clip-path="url(#clip-sze-hao)" preserveAspectRatio="xMidYMid slice"></image>
+              <circle class="face-ring" cx="450" cy="290" r="26"></circle>
+              <text class="nm" x="450" y="338" text-anchor="middle">Sze Hao</text>
+              <text class="rl" x="450" y="355" text-anchor="middle">Her grandson</text>
+            </g>
+
+            <!-- Eye-gaze cursor: drifts around the tree like looking with Vision Pro -->
+            <g class="gaze-cursor" aria-hidden="true">
+              <circle class="gaze-soft" r="32">
+                <animate attributeName="cx" dur="14s" repeatCount="indefinite" calcMode="spline"
+                  keyTimes="0;0.12;0.28;0.44;0.6;0.76;0.9;1"
+                  keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                  values="538;362;180;450;720;450;538;538"></animate>
+                <animate attributeName="cy" dur="14s" repeatCount="indefinite" calcMode="spline"
+                  keyTimes="0;0.12;0.28;0.44;0.6;0.76;0.9;1"
+                  keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                  values="40;40;170;170;170;290;40;40"></animate>
+              </circle>
+              <circle class="gaze" r="28">
+                <animate attributeName="cx" dur="14s" repeatCount="indefinite" calcMode="spline"
+                  keyTimes="0;0.12;0.28;0.44;0.6;0.76;0.9;1"
+                  keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                  values="538;362;180;450;720;450;538;538"></animate>
+                <animate attributeName="cy" dur="14s" repeatCount="indefinite" calcMode="spline"
+                  keyTimes="0;0.12;0.28;0.44;0.6;0.76;0.9;1"
+                  keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                  values="40;40;170;170;170;290;40;40"></animate>
+              </circle>
+              <circle class="gaze-pulse" r="28">
+                <animate attributeName="cx" dur="14s" repeatCount="indefinite" calcMode="spline"
+                  keyTimes="0;0.12;0.28;0.44;0.6;0.76;0.9;1"
+                  keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                  values="538;362;180;450;720;450;538;538"></animate>
+                <animate attributeName="cy" dur="14s" repeatCount="indefinite" calcMode="spline"
+                  keyTimes="0;0.12;0.28;0.44;0.6;0.76;0.9;1"
+                  keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                  values="40;40;170;170;170;290;40;40"></animate>
+              </circle>
+            </g>
+          </svg>
+        </div>
+        <p class="quote">&ldquo;Brian usually buys me Min Jiang Kueh on Saturdays.&rdquo;</p>
+        <p class="footnote">Every person carries a note in her own words. Writing those notes
+        herself is the next step: her context, her reminders, whatever makes this face familiar again.</p>
+      </div>
+    </section>
+
+    <!-- 11 · The greeting plays -->
+    <section data-scrim="strong" class="slide" aria-label="Greeting video">
+      <div class="photo ph-caresupport" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Recognition</p>
+            <h2>A pinch on a face,<br>and they speak to her.</h2>
+            <p class="lede">Every face in the tree is already moving: a muted clip looping behind
+            the circle, so the family reads as people rather than a grid of photographs. Pinch one
+            and the card turns to a greeting recorded by that person, played once, and then she is
+            handed back to the tree.</p>
+            <ul class="points">
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"></path></svg></span>
+                <span><strong>Six loops at once.</strong> One retained looping player per portrait, built once and reused, because a player rebuilt on every re-render would throttle the device within a minute.</span></li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"></path></svg></span>
+                <span><strong>Quiet until asked.</strong> The portraits are muted and carry no controls. Sound arrives only when she chooses a face.</span></li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"></path></svg></span>
+                <span><strong>Nothing is asked back.</strong> No name to recall and no button to get right. She watches, it ends, and the card returns on its own.</span></li>
+            </ul>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <div class="videocard" aria-label="Greeting from Lim Ah Pek">
+              <div class="frame">
+                <video autoplay muted loop playsinline>
+                  <source src="__VIDEO_ah_pek_greeting__" type="video/mp4">
+                </video>
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.4v13.2L19 12z"></path></svg></span>
+                <span class="scrub" aria-hidden="true"><i></i></span>
+              </div>
+              <p class="who">Lim Ah Pek</p>
+              <p class="rel">Her husband &middot; &#24744;&#30340;&#19976;&#22827;</p>
+              <p class="line">&ldquo;Ah Bu, come drink kopi with me. &middot; &#25307;&#27597;&#65292;&#26469;&#21917;&#26479;&#21654;&#21857;&#12290;&rdquo;</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 · Remember the Way (dark) -->
     <section data-scrim="dark" class="slide" data-bg="dark" data-tone="dark" aria-label="Remember the Way">
       <div class="photo ph-walkpark" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
       <div class="wrap">
         <p class="eyebrow">The flagship exercise</p>
         <h2>Remember the Way.</h2>
-        <p class="lede">A real OpenStreetMap extract of Tiong Bahru, procedurally meshed at
+        <p class="lede">A real OpenStreetMap extract of the user's neighbourhood, procedurally meshed at
         runtime, with shophouses, road ribbons, street lamps and trees, then
         mounted as a miniature on a holographic tabletop.</p>
         <div class="rw-visual" aria-label="Isometric map of Tiong Bahru with the route home drawn across it">
@@ -999,49 +1714,55 @@
         <p class="map-credit">Real building footprints and street geometry, drawn from the same
         OpenStreetMap extract the app meshes at runtime. Map data &copy; OpenStreetMap
         contributors.</p>
-        <div class="rw-steps">
+        <div class="rw-steps two">
           <div class="step"><span class="k">STUDY</span><h3>The route draws itself</h3><p>The path animates along the tabletop and repeats, so it has a chance to encode.</p></div>
           <div class="step"><span class="k">RECALL</span><h3>Trace it from memory</h3><p>The map locks and the person draws the route back. Scored by distance from the real polyline, never shown as pass or fail.</p></div>
-          <div class="step"><span class="k">STEP INSIDE</span><h3>Walk it at life size</h3><p>The miniature scales up around them. Seated pinch-and-hold to move, constant velocity, blink-cut turns, spoken guidance throughout.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- 8 · Who am I? -->
-    <section data-scrim="strong" class="slide" aria-label="Who am I">
-      <div class="photo ph-grandkid" aria-hidden="true"></div>
+    <!-- 13 · Walking it at life size (dark) -->
+    <section data-scrim="dark" class="slide" data-bg="dark" data-tone="dark" aria-label="Walking the route at life size">
+      <div class="photo ph-outreach" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
       <div class="wrap">
-        <div class="split">
-          <div>
-            <p class="eyebrow">Identity</p>
-            <h2>&ldquo;Who am I?&rdquo;<br>Always one tap away.</h2>
-            <p class="lede">A personal card they can open at any moment: their photo, their
-            name, the people who matter. It flips to a family tree, and a pinch on a
-            face plays a short greeting from home.</p>
-            <p class="lede" style="margin-top: 14px;">It reads as their own notebook rather
-            than a test. Every person carries a note in the patient&rsquo;s own words, and
-            writing those notes themselves is the next step: their context, their
-            reminders, whatever helps this face feel familiar again.</p>
-            <p class="quote">&ldquo;Brian usually buys me Min Jiang Kueh on Saturdays.&rdquo;</p>
-          </div>
-          <div style="display: flex; justify-content: center;">
-            <div class="namecard" aria-label="Mockup of the personal name card">
-              <div class="avatar" aria-hidden="true">LC</div>
-              <p class="nm">Lim Chio Bu</p>
-              <p class="rel">This is me</p>
-              <div class="chips">
-                <span class="chip">Family tree</span>
-                <span class="chip">My notes</span>
-                <span class="chip">Greeting from Sze Hao</span>
-              </div>
-            </div>
-          </div>
+        <p class="eyebrow">Then step inside</p>
+        <h2>The map scales up around her.</h2>
+        <p class="lede">The same estate and the same route, at life size. She stays seated. A pinch
+        held between finger and thumb carries her forward along the path, and letting go stops her.
+        There is no stick to steer and no direction to get wrong.</p>
+        <div class="glide">
+          <svg viewBox="0 0 900 250" role="img" aria-label="Looking down the route at life size, the path receding toward the horizon">
+            <rect class="gd-ground" x="0" y="0" width="900" height="250"></rect>
+            <ellipse cx="450" cy="96" rx="170" ry="30" fill="rgba(108, 185, 255, 0.09)"></ellipse>
+            <rect x="0" y="95" width="900" height="1.4" fill="rgba(245, 245, 247, 0.14)"></rect>
+            <polygon class="gd-block far" points="250,84 340,96 340,150 250,140"></polygon>
+            <polygon class="gd-block far" points="650,84 560,96 560,150 650,140"></polygon>
+            <polygon class="gd-block" points="120,60 250,84 250,140 120,180"></polygon>
+            <polygon class="gd-block" points="780,60 650,84 650,140 780,180"></polygon>
+            <polygon class="gd-block" points="0,26 120,60 120,180 0,235"></polygon>
+            <polygon class="gd-block" points="900,26 780,60 780,180 900,235"></polygon>
+            <polygon class="gd-route" points="430,96 470,96 640,250 260,250"></polygon>
+            <path class="gd-edge" d="M430 96 260 250"></path>
+            <path class="gd-edge" d="M470 96 640 250"></path>
+            <rect class="gd-rung" x="300" y="110" width="300" height="5" rx="2.5" style="--rd: 0s"></rect>
+            <rect class="gd-rung" x="300" y="110" width="300" height="5" rx="2.5" style="--rd: 0.85s"></rect>
+            <rect class="gd-rung" x="300" y="110" width="300" height="5" rx="2.5" style="--rd: 1.7s"></rect>
+            <rect class="gd-rung" x="300" y="110" width="300" height="5" rx="2.5" style="--rd: 2.55s"></rect>
+            <path class="gd-pinch" d="M26 214c6-5 14-5 20 0M26 232c6 5 14 5 20 0"></path>
+            <circle cx="36" cy="223" r="3.4" fill="#6CB9FF"></circle>
+            <text class="gd-label" x="60" y="228">Hold the pinch to move</text>
+          </svg>
+        </div>
+        <div class="rw-steps">
+          <div class="step"><span class="k">COMFORT</span><h3>One slow, constant speed</h3><p>Velocity eases in and out over about 150 milliseconds and never varies with how hard she pinches. Small heading changes snap invisibly; sharp corners take a blink cut rather than a swung camera.</p></div>
+          <div class="step"><span class="k">GUIDANCE</span><h3>A voice the whole way</h3><p>Spoken directions travel with her, and the arrival is said out loud: &ldquo;You&rsquo;ve reached home. Well done.&rdquo;</p></div>
+          <div class="step"><span class="k">ENDING</span><h3>It ends at her front door</h3><p>The walk finishes where the route finishes and nothing restarts on its own. Stopping is only ever letting go.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- 9 · Caregiver dashboard -->
+    <!-- 14 · Caregiver dashboard -->
     <section class="slide" data-bg="surface" aria-label="Caregiver dashboard">
       <div class="photo ph-moh1791" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
@@ -1113,7 +1834,7 @@
       </div>
     </section>
 
-    <!-- 10 · Personalization -->
+    <!-- 15 · Personalization -->
     <section data-scrim="strong" class="slide" aria-label="Personalization">
       <div class="photo ph-caresupport" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
@@ -1148,7 +1869,7 @@
       </div>
     </section>
 
-    <!-- 11 · Evidence -->
+    <!-- 16 · Evidence -->
     <section data-scrim="strong" class="slide" data-bg="surface" aria-label="Evidence base">
       <div class="photo ph-agewell5" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
@@ -1187,7 +1908,7 @@
       </div>
     </section>
 
-    <!-- 12 · Team -->
+    <!-- 17 · Team -->
     <section class="slide" aria-label="Team">
       <div class="photo ph-outreach" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
@@ -1196,31 +1917,31 @@
         <h2>Five people, each owning a slice.</h2>
         <div class="team">
           <div class="member">
-            <div class="av" aria-hidden="true">A</div>
+            <div class="av av-aditya" role="img" aria-label="Aditya"></div>
             <p class="nm">Aditya</p>
             <p class="role">3D Assets &amp; Environment</p>
             <p class="del">Interactive 3D models and scenes.</p>
           </div>
           <div class="member">
-            <div class="av" aria-hidden="true">B</div>
+            <div class="av av-brian" role="img" aria-label="Brian"></div>
             <p class="nm">Brian</p>
             <p class="role">UX/UI &amp; Spatial Design</p>
             <p class="del">Onboarding, guidance, interaction flow.</p>
           </div>
           <div class="member">
-            <div class="av" aria-hidden="true">J</div>
+            <div class="av av-jingtong" role="img" aria-label="JingTong"></div>
             <p class="nm">JingTong</p>
             <p class="role">Apple&nbsp;Vision&nbsp;Pro Development</p>
             <p class="del">RealityKit scene setup and hand tracking.</p>
           </div>
           <div class="member">
-            <div class="av" aria-hidden="true">N</div>
+            <div class="av av-nicole" role="img" aria-label="Nicole"></div>
             <p class="nm">Nicole</p>
             <p class="role">Clinical Research &amp; Product Management</p>
             <p class="del">Evidence-based exercise design and validation, plus product direction.</p>
           </div>
           <div class="member">
-            <div class="av" aria-hidden="true">B</div>
+            <div class="av av-basil" role="img" aria-label="Basil"></div>
             <p class="nm">Basil</p>
             <p class="role">AI, Analytics &amp; Integration</p>
             <p class="del">Baseline metrics, recommendation engine, caregiver dashboard.</p>
@@ -1229,7 +1950,7 @@
       </div>
     </section>
 
-    <!-- 13 · Close -->
+    <!-- 18 · Close -->
     <section data-scrim="centre" class="slide" aria-label="Closing">
       <div class="photo ph-pottery" aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
@@ -1240,7 +1961,7 @@
         feel like home again.</p>
         <p class="thanks">Thank you.</p>
         <p class="credits">Photography courtesy of the Ministry of Health and
-        Age Well SG, Singapore. Used with permission.</p>
+        Age Well SG, Singapore</p>
       </div>
     </section>
 
@@ -1286,9 +2007,9 @@
        the timing follows the DOM, so re-ordering or adding a card needs
        no CSS change at all.
        --------------------------------------------------------------- */
-    var CONTAINERS = ".split, .split > div, .cards, .stats, .team, .prio, " +
+    var CONTAINERS = ".split, .split > div, .cards, .stats, .bento, .team, .prio, " +
                      ".rw-steps, .points, .vp-scene, .stack";
-    var LEAVES = ".card, .stat, .member, .vp-window, .namecard, .chart-card, .rw-visual";
+    var LEAVES = ".card, .stat, .btile, .member, .vp-window, .namecard, .chart-card, .rw-visual";
     var STEP_TOP = 80, STEP_IN = 52, CAP = 900;
 
     slides.forEach(function (slide) {
