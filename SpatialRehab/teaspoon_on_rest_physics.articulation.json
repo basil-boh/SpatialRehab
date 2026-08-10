@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "object": "ceramic_spoon_rest_with_teaspoon",
+  "root_prim": "/ceramic_spoon_rest_with_teaspoon",
+  "links": [
+    {
+      "name": "spoon_rest",
+      "usd_path": "/ceramic_spoon_rest_with_teaspoon/spoon_rest",
+      "mass": null
+    },
+    {
+      "name": "teaspoon",
+      "usd_path": "/ceramic_spoon_rest_with_teaspoon/spoon_rest/teaspoon",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "rest_to_teaspoon",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/ceramic_spoon_rest_with_teaspoon/spoon_rest",
+      "child_path": "/ceramic_spoon_rest_with_teaspoon/spoon_rest/teaspoon",
+      "origin_xyz": [
+        0.006,
+        0.0,
+        0.019707
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0436332
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

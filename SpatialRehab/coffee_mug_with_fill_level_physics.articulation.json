@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "object": "cream_ceramic_coffee_mug",
+  "root_prim": "/cream_ceramic_coffee_mug",
+  "links": [
+    {
+      "name": "mug",
+      "usd_path": "/cream_ceramic_coffee_mug/mug",
+      "mass": null
+    },
+    {
+      "name": "coffee",
+      "usd_path": "/cream_ceramic_coffee_mug/mug/coffee",
+      "mass": null
+    },
+    {
+      "name": "fill_opening",
+      "usd_path": "/cream_ceramic_coffee_mug/mug/fill_opening",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "fill_level",
+      "usd_path": "/cream_ceramic_coffee_mug/Joints/fill_level",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/cream_ceramic_coffee_mug/mug",
+      "child_path": "/cream_ceramic_coffee_mug/mug/coffee",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.021
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower": 0.0,
+      "upper": 0.08,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "fill_opening_mount",
+      "usd_path": "/cream_ceramic_coffee_mug/Joints/fill_opening_mount",
+      "type": "fixed",
+      "free": false,
+      "parent_path": "/cream_ceramic_coffee_mug/mug",
+      "child_path": "/cream_ceramic_coffee_mug/mug/fill_opening",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.109
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

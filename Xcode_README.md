@@ -123,7 +123,11 @@ If you have no visionOS runtime: **Xcode → Settings → Components** (called *
    - **Start** — Remember the Way (opens the shared `ActivitySpace` immersive space)
    - **Daily Practice** — leveled mini-games hub
    - **Caregiver Dashboard** — trend charts (sheet)
-   - **Who am I?** — name card / family tree windows
+   - **Who am I?** — bottom **ornament** on the window, not an inline button, so it stays in
+     the same spot across the home screen, Daily Practice, and the dashboard sheet. Opens the
+     name card / family tree windows. Deliberately absent during the baseline battery (no
+     mid-test escape); `RouteMemoryTableView`'s control panel hosts the same button while the
+     main window is dismissed mid-activity.
 
 ---
 

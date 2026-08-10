@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "object": "classic_mahjong_carrying_case",
+  "root_prim": "/classic_mahjong_carrying_case",
+  "links": [
+    {
+      "name": "body",
+      "usd_path": "/classic_mahjong_carrying_case/body",
+      "mass": null
+    },
+    {
+      "name": "lid",
+      "usd_path": "/classic_mahjong_carrying_case/body/lid",
+      "mass": null
+    },
+    {
+      "name": "tray",
+      "usd_path": "/classic_mahjong_carrying_case/body/tray",
+      "mass": null
+    },
+    {
+      "name": "die_0",
+      "usd_path": "/classic_mahjong_carrying_case/body/tray/die_0",
+      "mass": null
+    },
+    {
+      "name": "die_1",
+      "usd_path": "/classic_mahjong_carrying_case/body/tray/die_1",
+      "mass": null
+    },
+    {
+      "name": "front_clasp",
+      "usd_path": "/classic_mahjong_carrying_case/body/lid/front_clasp",
+      "mass": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "tray_to_die_0",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/classic_mahjong_carrying_case/body/tray",
+      "child_path": "/classic_mahjong_carrying_case/body/tray/die_0",
+      "origin_xyz": [
+        -0.05,
+        -0.032,
+        0.018
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "tray_to_die_1",
+      "usd_path": null,
+      "type": "floating",
+      "free": true,
+      "parent_path": "/classic_mahjong_carrying_case/body/tray",
+      "child_path": "/classic_mahjong_carrying_case/body/tray/die_1",
+      "origin_xyz": [
+        0.01,
+        0.032,
+        0.018
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": null,
+      "upper": null,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_lid",
+      "usd_path": "/classic_mahjong_carrying_case/Joints/body_to_lid",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/classic_mahjong_carrying_case/body",
+      "child_path": "/classic_mahjong_carrying_case/body/lid",
+      "origin_xyz": [
+        -0.215,
+        0.0,
+        0.096
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 1.35,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "body_to_tray",
+      "usd_path": "/classic_mahjong_carrying_case/Joints/body_to_tray",
+      "type": "prismatic",
+      "free": false,
+      "parent_path": "/classic_mahjong_carrying_case/body",
+      "child_path": "/classic_mahjong_carrying_case/body/tray",
+      "origin_xyz": [
+        0.0,
+        0.0,
+        0.016
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.17,
+      "rest": 0.0,
+      "mimic": null
+    },
+    {
+      "name": "lid_to_clasp",
+      "usd_path": "/classic_mahjong_carrying_case/Joints/lid_to_clasp",
+      "type": "revolute",
+      "free": false,
+      "parent_path": "/classic_mahjong_carrying_case/body/lid",
+      "child_path": "/classic_mahjong_carrying_case/body/lid/front_clasp",
+      "origin_xyz": [
+        0.4515,
+        0.0,
+        -0.002
+      ],
+      "origin_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "lower": 0.0,
+      "upper": 0.95,
+      "rest": 0.0,
+      "mimic": null
+    }
+  ]
+}

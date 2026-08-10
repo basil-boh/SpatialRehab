@@ -808,67 +808,77 @@ struct RouteMemoryTableView: View {
                     }
 
                     if showAdjust {
-                        HStack(spacing: 14) {
-                            Button {
-                                adjustScale(by: 1 / 1.3)
-                            } label: {
-                                Label("Smaller", systemImage: "minus.magnifyingglass")
-                                    .labelStyle(.iconOnly)
-                                    .font(.title3)
-                                    .frame(width: 54, height: 54)
-                            }
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.circle)
-
-                            Button {
-                                adjustScale(by: 1.3)
-                            } label: {
-                                Label("Bigger", systemImage: "plus.magnifyingglass")
-                                    .labelStyle(.iconOnly)
-                                    .font(.title3)
-                                    .frame(width: 54, height: 54)
-                            }
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.circle)
-
-                            Button("Table height") {
-                                placeTable(onFloor: false)
-                            }
-                            .font(.title3)
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.capsule)
-
-                            Button("On the floor") {
-                                placeTable(onFloor: true)
-                            }
-                            .font(.title3)
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.capsule)
-
-                            Button {
-                                resetTable()
-                            } label: {
-                                Label("Reset", systemImage: "arrow.counterclockwise")
-                                    .labelStyle(.iconOnly)
-                                    .font(.title3)
-                                    .frame(width: 54, height: 54)
-                            }
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.circle)
-
-                            Button(exercise.drawMode == .tapCorners ? "Mode: Tap corners" : "Mode: Trace") {
-                                exercise.toggleDrawMode()
-                            }
-                            .font(.title3)
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.capsule)
-                        }
+                        adjustRow
                     }
                 }
             }
+
+            // The main window — and with it the persistent "Who am I?" ornament — is
+            // dismissed while this activity runs, so the panel carries the button
+            // instead: a fixed bottom-row spot across every exercise state, matching
+            // the ornament's always-same-place role for reorienting mid-exercise.
+            WhoAmIButton()
         }
         .padding(36)
         .glassBackgroundEffect()
+    }
+
+    private var adjustRow: some View {
+        HStack(spacing: 14) {
+            Button {
+                adjustScale(by: 1 / 1.3)
+            } label: {
+                Label("Smaller", systemImage: "minus.magnifyingglass")
+                    .labelStyle(.iconOnly)
+                    .font(.title3)
+                    .frame(width: 54, height: 54)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.circle)
+
+            Button {
+                adjustScale(by: 1.3)
+            } label: {
+                Label("Bigger", systemImage: "plus.magnifyingglass")
+                    .labelStyle(.iconOnly)
+                    .font(.title3)
+                    .frame(width: 54, height: 54)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.circle)
+
+            Button("Table height") {
+                placeTable(onFloor: false)
+            }
+            .font(.title3)
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+
+            Button("On the floor") {
+                placeTable(onFloor: true)
+            }
+            .font(.title3)
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+
+            Button {
+                resetTable()
+            } label: {
+                Label("Reset", systemImage: "arrow.counterclockwise")
+                    .labelStyle(.iconOnly)
+                    .font(.title3)
+                    .frame(width: 54, height: 54)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.circle)
+
+            Button(exercise.drawMode == .tapCorners ? "Mode: Tap corners" : "Mode: Trace") {
+                exercise.toggleDrawMode()
+            }
+            .font(.title3)
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+        }
     }
 
     @ViewBuilder

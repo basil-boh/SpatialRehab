@@ -110,6 +110,195 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ## 2026-08-09
 
+### Fixed
+
+- **Ultracode audit pass over mahjong + kopi (16 confirmed findings, 5-lens adversarially
+  verified workflow)**, all fixed:
+  - *Wall exhaustion soft-lock*: when the wall ran out the game looped back to a draw phase
+    with nothing to draw and no working button. New `MahjongExercise.wallExhausted()` /
+    `.drawn` phase ends the game warmly ("the wall is finished") with a Done button, from
+    the player draw, the AI draws, and the no-replacement flower path.
+  - *Flower replacement could re-draw a tile already in play*: draws removed prims from
+    `wallResidents` but never `wallOrderList`, so the replacement pop from the list's far
+    end could yank a tile out of a hand or river and double-count its face in the engine —
+    making Mahjong permanently impossible. New `consumeWallPrim`/`replacementWallPrim`
+    helpers keep every wall structure in lockstep on all draw paths.
+  - *Opponents' concealed tiles were grabbable*: all 148 tiles got a ManipulationComponent
+    at load; AI hands are now locked at the deal, so the patient can't pick up, read, or
+    strand opponents' tiles (their river discards inherit the lock).
+  - *AI turns outlived the session*: the aiRound/handleDrawnTile tasks were unstructured
+    and kept speaking + mutating the shared engine after the immersive space closed —
+    corrupting a relaunched game. Tasks are now stored and cancelled in `onDisappear`, with
+    `sessionActive` guards at every resume point (including the ceremony's cancellation
+    path, which used to speak the full rules over the home screen after quitting).
+  - *AI-drawn flowers stayed concealed* and could be discarded face-up into the river;
+    opponents now expose bonus tiles to the side with far-wall replacements mid-game,
+    same as the deal.
+  - *Ceremony-time releases hung mid-air*: a tile grabbed during the wash/deal froze where
+    released; it now settles to the felt (or back to its wall home), and a new tidy pass in
+    `completeSetup` glides every stray back to its rightful spot before play begins.
+  - *Draw-and-throw now works*: releasing the freshly drawn wall tile straight into the
+    discard area — real mahjong's most natural motion — used to silently snap it back to
+    the wall; it now draws and (if ordinary) discards in one breath.
+  - *Hand-row slot race*: two quick pad drops could be assigned the same slot while the
+    first tile was still gliding; slots are now reserved via `handRowTargets`.
+  - *Kopi pour-audio crash in the simulator*: `PourSound.prepare()` swallowed
+    `AVAudioEngine.start()` failure but still called `player.play()`, which raises an
+    uncatchable NSException when the engine isn't running. Start is now checked and the
+    sound stays silent instead of crashing; `MahjongAudio.shutdown()` is likewise terminal
+    per instance so a straggler clack can't resurrect the engine after the activity closes.
+- **Mahjong froze after the first discard** (team playtest report: "can't take/throw tiles",
+  "after taking the card it's not in our deck"). `resolveDiscard` set `isResolving = true`
+  before the AI round, but `aiRound`'s normal completion never reset it — so from turn two
+  onward every tile release was silently ignored: drops on the green pad did nothing and the
+  drawn tile never joined the hand. The AI round now resets the flag when play returns to the
+  patient. Also restructured `tileReleased` so the tidy-settle fallbacks always run even while
+  a turn is resolving — a tile released mid-AI-round now lands on the felt instead of hanging
+  in the air where the pinch let go (game actions stay gated until it's the patient's turn).
+- **`feature/moving-portraits` build failure**: the committed `SpatialRehab.xcodeproj` referenced
+  `SpatialRehab/hand gestures.md`, a local notes file that was never committed — xcodegen globs
+  everything under `SpatialRehab/`, so whoever regenerated the project had it in their tree, and
+  every other machine died at the copy-resources step (`lstat … No such file or directory`).
+  Regenerated the project from the actual tree. Also removed **147 Finder-duplicate assets**
+  (`* 2.usdz` / `* 2.json`, ~12 MB) that came in with the same commit — every one verified
+  byte-identical to its base file and referenced from no code before deletion.
+
+### Added
+
+- **Moving portraits in the family tree ("Harry Potter" effect)** — a relative's avatar can now
+  be a short clip that loops silently and endlessly inside the circular tile, instead of a still
+  photo. New `WhoAmI/MovingPortraitView.swift`: `AVQueuePlayer` + `AVPlayerLooper` for a seamless
+  gapless loop, drawn through a bare `AVPlayerLayer` (not `VideoPlayer`, which drags in playback
+  controls and its own tap handling on top of the tile's Button). The circle is cut by the layer's
+  own `cornerRadius` rather than a SwiftUI `clipShape`, which does not reliably mask hosted layers.
+  New `FamilyMember.portraitVideoName` / `.portraitVideoURL`, kept separate from `videoFileName`
+  because the two clips have opposite requirements: the portrait loop is muted, seamless, and
+  neutral, while the greeting is spoken and plays once on pinch.
+  - Deliberately silent and neutral: six faces mouthing words at once would unsettle someone with
+    dementia rather than comfort them. Motion is decorative; the greeting stays behind the pinch.
+  - Cheap by construction: loops are muted, pause on `onDisappear`
+    (the tree is conditionally constructed in `NameCardView`, so a flip genuinely tears it down)
+    and pause when `scenePhase` leaves `.active`. Under Reduce Motion no player is created at all
+    and the still face shows instead.
+  - The still photo/emoji stays layered beneath every moving portrait, so a tile is never blank
+    while the first frame decodes. Members without a clip keep their still face, so the tree can
+    mix moving and still portraits while footage is still being gathered.
+- **Five placeholder portrait clips** in `WhoAmI/` — `ahpek` (544², remuxed losslessly),
+  `weiming` (544²), `meiling` (544², from 560×544), `junhao` (512², from 576×512) and `szehao`
+  (464², from 656×464). All H.264, 6.0s, audio stripped, 0.4–1.5 MB each; the non-square sources
+  were centre-cropped to the largest centred square rather than left to `resizeAspectFill`, so the
+  crop is controlled and verified rather than incidental. Stand-ins only — swap for real footage.
+  Bundled via the `SpatialRehab` folder source rule, landing in the Resources build phase.
+  `chiobu_portrait.mov` is wired but not yet supplied, so the owner keeps her still photo.
+- **All six members pre-wired with `portraitVideoName`** (`chiobu_`, `ahpek_`, `weiming_`,
+  `meiling_`, `junhao_`, `szehao_` + `_portrait.mov`). `portraitVideoURL` resolves to nil for a
+  clip that is not bundled, so a member without footage simply keeps their still face. Adding a
+  portrait is therefore drop the file into `SpatialRehab/WhoAmI/` and run `xcodegen generate` —
+  no Swift edit, so the rest of the team can add footage without touching code.
+- **Bilingual `videoLine` for the four portrait-only relatives** — Ah Pek, Wei Ming, Mei Ling and
+  Jun Hao now each have a line, written against the owner's own profile so the card reads personal
+  rather than generic (Jun Hao echoes her `aboutMe` laksa, Mei Ling echoes being her
+  `emergencyContact`). Placeholder content for the mock: these are invented words, not anything a
+  relative recorded, so they need replacing before the card is shown to a clinician or a patient.
+
+### Fixed
+
+- **Pinching a relative who has no spoken greeting showed a giant emoji** (teammate feedback):
+  Ah Pek has a looping portrait but `hasGreetingVideo: false`, and the greeting slab dropped
+  straight to an 80pt emoji — which reads as a missing asset, the worst thing to show someone who
+  opened the card specifically to remember who a relative is. The slab now falls back in order of
+  how much it looks like a person: looping portrait (large, circular) → still photo → emoji.
+- **A pinched relative with no spoken greeting closed after 1.6s with a frozen progress bar** —
+  the old `playGreeting` guard branch cleared `playingMemberID` on a fixed 1.6s timer and never
+  advanced `videoProgress`, so a portrait clip would vanish in a quarter of one loop while the bar
+  sat empty. The dwell is now chosen by what there is to look at: 6s (a full loop) when a portrait
+  clip exists, 4s when a greeting is declared but its file is missing from the bundle, 1.6s when
+  there is nothing but the relation line — and the progress bar animates across all three.
+- **A relative's `videoLine` never rendered unless they also had a greeting video** — the caption
+  was gated on `videoLine != nil && hasGreetingVideo`, so a line added to a portrait-only relative
+  would have been silently dropped, and they fell through to "A short greeting will play here
+  soon." while their face was visibly looping on screen. The caption now renders whenever a line
+  exists; the "soon" copy is reserved for relatives who genuinely have nothing yet.
+
+### Changed
+
+- **Merged `feature/wayfinding-activities` (kopi + mahjong) into `feature/whoami-card-redesign`**.
+  Reconciliations: the shared immersive space keeps Aditya's `currentActivity` routing with the
+  Who-am-I environment injected around it; `startActivity` routes Remember the Way through
+  `AppModel.startWayHome` (window dismissed, immersive panel is the guidance) while kopi/mahjong
+  keep the main window open showing Aditya's per-activity guidance; `startWayHome` now sets
+  `currentActivity = .routeMemory` so the card's "way home" can't reopen a previous game;
+  deployment target stays **26.2** (their 26.0 code runs on it); the welcome screen shows the
+  three activity buttons plus Daily Practice / Caregiver Dashboard, with Who am I? staying in
+  the window ornament; hands-tracking usage description in `project.yml` merged to cover both
+  branches' uses (`Info.plist` is xcodegen-generated, so the wording lives there).
+
+### Added
+
+- **Persistent "Who am I?" button everywhere except the baseline assessment** (user request:
+  a guide for dementia patients to remember who they are, reachable no matter where they are
+  in the app). New `WhoAmI/WhoAmIButton.swift` — one reusable orange capsule button that
+  presents the name card and opens the `name-card` window — hosted in two places so it is
+  always on screen: a bottom **ornament** on the main window (rides the window itself, so it
+  keeps the same spot across the home screen, Daily Practice, and the caregiver-dashboard
+  sheet), and a fixed bottom row in `RouteMemoryTableView`'s control panel (the main window
+  is dismissed while Remember the Way runs, so the panel is the only surface left). The
+  ornament is attached only to the post-baseline branch in `SpatialRehabApp`, so the baseline
+  battery never shows a mid-test escape. The inline "Who am I?" buttons on `ContentView`'s
+  welcome/finished screens are removed in favor of the single consistent ornament; the
+  `"name-card"` window id is centralized as `SceneID.nameCard`; `whoAmISession` is now also
+  injected into the activity `ImmersiveSpace`'s environment. `RouteMemoryView`'s table-adjust
+  controls moved unchanged into a private `adjustRow` helper during the panel edit.
+  `SpatialRehab.xcodeproj` regenerated via `xcodegen` to pick up the new file.
+
+- **"Who am I?" card visual redesign** (user report: "it looks very plain… I want the UI/UX
+  to look great and professional"). Face side is now a proper identity-card layout: real
+  portrait photo (new `whoami-owner` imageset, downscaled from a provided photo) in a
+  rounded-rect frame with gradient ring and breathing glow, "MEMORY CARD · 记忆卡" header,
+  bilingual "THIS IS YOU" eyebrow, rounded-display name typography, birthday + age chips,
+  hairline gradient rules, and layered card chrome (glass → warm radial washes → faint
+  watermark → hairline gradient border). Choreographed entrances: staggered fade-up rows
+  (~60 ms apart), one-shot light sheen sweep on present, all gated behind Reduce Motion.
+  Family tree side (`FamilyTreeView`) moved from the flat cream slab to warm glass, tiles
+  are now material cards with correct hover shapes (`.borderless` + matching
+  `buttonBorderShape`, per the buttons skill), and avatars support photos
+  (`FamilyMember.photoName`). Greeting turn refreshed to match (serif quote line, relation
+  capsule, softer frames). `FamilyMember` gained `photoName` and an `age` helper.
+
+- **Family tree rebuilt in real genealogy layout** (user report: "i dont like how the family
+  tree looks"). Connector lines are no longer eyeballed with width fractions — every tile
+  registers its bounds via `anchorPreference` and a `ConnectorsShape` draws stem → rail →
+  per-child drops from the resolved rects, so the lines stay glued to the layout at any
+  size. A glass heart node sits between the spouses (classic marriage-node genealogy
+  notation) and the stem grows out of it; the whole path draws itself in sequence with one
+  `.trim`, after the couple tiles have landed and before the children rise in. Tiles are
+  generation-sized (couple 92pt avatars > children 78 > grandchild 62), the self tile gets
+  a warm tint + photo, Sze Hao's avatar carries a small play badge since he has a greeting
+  video, the "Pinch for grandchild" hint became a proper `Grandchild · 孙子` capsule, and a
+  faint tree watermark sits in the panel corner. All entrances stagger generation by
+  generation and skip under Reduce Motion.
+
+- **Every family member now has a connector line touching them, and the card watermark is
+  black** (user request). `ConnectorsShape` gained marriage stubs — husband tile → heart →
+  self tile — so the couple is wired in, not just the children; the Mei Ling → Sze Hao link
+  moved out of the slot's loose 16 pt rectangle into the same anchored overlay as an
+  anchored `GrandchildLineShape` that trims in over 0.4 s when the grandchild expands (and
+  resets instantly on collapse). The face side's `person.text.rectangle` watermark switched
+  from orange 4.5 % to black 12 % so the motif is actually visible.
+
+- **Name card: home address, occupation, and a "Show me the way home" button** (user
+  request). `FamilyMember` gained optional `homeAddress` and `occupation`; the demo owner
+  lives at Blk 5 Banda Street (deliberately at the route-memory map's Chinatown
+  coordinates, so the demo stays coherent) and is a retired schoolteacher. The card face
+  shows both in an ID-style data zone (icon circle + small-caps bilingual label + value,
+  hairline divider between rows). "Show me the way home · 带我回家" is now the card's single
+  prominent action — it retracts the card and launches the Remember the Way activity;
+  My Family and Put away demoted to a secondary bordered row. The launch logic moved from
+  `ContentView.startActivity` to a shared `AppModel.startWayHome(openImmersiveSpace:dismissWindow:)`
+  coordinator (guards against double-launch while the space is opening/open; the card
+  just retracts if the person is already mid-activity), and the name-card window now
+  receives `appModel` in its environment.
+
 ### Changed
 
 - **All 13 deck backdrops replaced with Singapore government healthcare photography** (MOH,
@@ -217,6 +406,91 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Changed
 
+- **Merged `origin/main` (580de07) into the local "Who am I?" work.** `CHANGELOG.md` conflicted
+  because both sides opened a `## 2026-08-09` section — resolved by keeping both, ordered
+  Added / Changed / Fixed / Removed. `Xcode_README.md` conflicted because upstream rewrote the
+  run-instructions section the local branch had patched one line of; resolved toward upstream,
+  whose rewrite already drops the stale "draw a circle / Summon / nest" description the local
+  patch existed to fix. `SpatialRehab.xcodeproj/project.pbxproj` auto-merged (local file-ref
+  changes vs upstream build-setting changes touched different regions). Also corrected
+  upstream's "What you should see after launch" list, which still described **Who am I?** as an
+  inline home-screen button — it is a window ornament as of the change logged under Added above.
+
+- **Coffee rebuilt around the assets' real anatomy** (user: pour physics "not there", use the USDZ assets properly; anatomy discovered by inspecting the USDCs + `.articulation.json` manifests):
+  - Streams now emit from each vessel's **named spout entity** (`pour_spout` on the kettle and milk jug) instead of a bounds guess; pour threshold eased to ~54°.
+  - The mug's **own internal `coffee` liquid mesh** (prismatic fill joint in the asset) rises and tints through water → kopi-o → kopi-c — the fake overlay cylinder is gone; the kettle's `water_column` and the jug's `milk` mesh **visibly deplete** as they pour.
+  - The sugar bowl's **hinged lid swings open** when tilted and its **five real `sugar_cube` entities tumble out** with physics — cubes that land in the mug dissolve into the coffee (2 completes the step); misses stay scattered on the table. The coffee tin's lid opens for the grounds.
+  - **Steam wisps** curl off the mug once the hot water is in; lids close on settle; reset restores cubes, lids, and fill levels.
+- **Real Singapore Mahjong rules** (friend's review: game wasn't playing to the actual rules; full SG rules provided by user):
+  - `MahjongRules.swift` — pure rules engine over the SG148 taxonomy (bamboo/dots/char suits, dragons + winds as honors, flowers/seasons/animals as bonus): backtracking hand decomposition for the **real win condition — four sets (chows/pongs) plus one eye**, winning-tile search (tenpai detection), chow-option enumeration, and an isolation-based discard suggester.
+  - **Flowers/seasons/animals behave per the rules**: never held — they fly to the exposed area with a spoken explanation and a replacement is drawn from the far wall (patient's automatic; opponents expose theirs after the deal).
+  - **Claims**: after every opponent discard the engine checks the patient's hand — **Mahjong! / Pong! / Chow!** buttons appear (chow only from Mei Mei on the left, per the rules), 12 s window then auto-pass, claimed melds animate to the exposed area and count toward the four sets. Win-on-discard supported.
+  - **Kind but honest**: the deal is a verified genuine tenpai (three sets + eye + waiting pair), draw kindness ramps toward actual winning tiles, opponents preferentially feed pongable tiles, and Mei Mei may throw the winning tile after turn three. The final reveal lays the real 14-tile hand face-up: "Mahjong! Four sets and a pair."
+  - Consciously deferred: kongs, fan scoring, banker/prevailing-wind rotation, pay-all scenarios (documented for future work).
+- **Authentic wall procedure + no racks** (user's detailed corrections, Q&A confirmed pong+chow and accept-any-draw):
+  - **Strict shared draw order**: top tile then bottom tile of each stack, marching around the wall from the patient's right — the glow marks the true next-in-order tile and the three opponents visibly draw in exact sequence; the patient may take any wall tile (chosen house rule, zero friction).
+  - **Kindness went invisible**: instead of glowing arbitrary lucky tiles, the engine silently swaps two face-down wall tiles so the next-in-order tile is a winning one — physically undetectable, procedurally perfect.
+  - **Racks removed** (all four seats): tiles stand directly on the felt, as at a real home table; free self-arrangement of the hand unchanged.
+  - **Pong-assist**: the claimable discarded tile itself glows in the river while the Pong/Chow/Mahjong buttons and voice prompt run; claimed melds remain open at the side of the hand.
+  - **Hand drop pad**: a soft green pad ("Put tiles here") beside the hand row — a drawn wall tile dropped there becomes the draw AND auto-slots into the first free position in the row; the patient's own tiles dropped there re-join the neat line. Stray wall tiles now glide back to their wall slot instead of lying loose.
+
+### Fixed
+
+- **Discards not deducting** (user report): the discard target was a small invisible rectangle over the glow pad — tiles thrown anywhere else in the middle silently stayed in the hand. Now any central table area accepts the throw (like a real toss to the middle; the glowing pad remains just a suggestion), and throwing before drawing gets a spoken rules correction ("First take the shining tile from the wall") with the tile returning to the row.
+- **Smoothness pass** (user: "still feels a little jarring"):
+  - `VoiceGuide` now **queues** utterances instead of cutting the current sentence off mid-word (interrupt only on explicit `interrupting: true`); short pre-utterance breath added. Benefits every activity.
+  - **Pour flow ramps with tilt** (0…1 per vessel, eased both directions): the stream's width, arc speed, splash rate, grain count, and the pour-hiss volume all scale with how far the vessel is actually tipped — no more binary on/off at a threshold angle.
+  - Released items **settle with distance-scaled travel time** (0.3–0.85 s) instead of a fixed-speed glide, so nothing reads as teleporting.
+  - Ghost demos **fade in and out** (~0.25 s opacity ramps) instead of popping.
+- **Mahjong v5 — proper four-seat table** (per the newly installed `.claude/skills/mahjong-ui-components` skill; the user's download link 404'd so the skill was installed from their pasted content):
+  - Standard tile geometry (3.4 cm height normalization, 2.8 cm spacing), square table with per-side rims, **four racks and four seats** — the patient (East) plus three named opponents: **Ah Hua** (right), **Uncle Lim** (across), **Mei Mei** (left), each with 13 standing face-away tiles.
+  - **Hollow-square wall**: double-stacked columns on all four sides, sized to exactly the 96 tiles remaining after four deals — assembled from the wash in waves.
+  - **Per-seat 3×6 discard rivers** oriented to their owners; the patient discards into their own glowing river pad (replaces the shared center circle); melds sort to the patient's far right (skill convention).
+  - **Humanized AI turns** (skill: 0.6–1.5 s + 5 mm hover): each opponent visibly draws from their side of the wall, hesitates over a tile, and discards to their river with a clack; their hand closes the gap. AIs never win.
+  - **Rack placement fix** (user report): dropping a tile on the wooden rack strip now seats it into the hand line at that spot; patient hand tiles keep the skill's −15° ergonomic pitch.
+  - Consciously NOT adopted from the skill: Riichi scoring, steals (Pon/Chii/Kan), dead wall, anti-cheat culling — the SG148 set and the dementia audience keep rules at "two sets wins," errorless.
+
+- `NSHandsTrackingUsageDescription` in `Info.plist` — required privacy text for the new `HandWashTracker` (ARKit `HandTrackingProvider`) that feeds real palm positions to the mahjong wash phase.
+- **Mahjong "full RealityKit" naturalness pass** (built via parallel agent workflow + orchestrator integration):
+  - `MahjongAudio.swift` — fully procedural table soundscape (44.1 kHz buffers synthesized at setup): tile **clack** (noise burst + 1.8–2.2 kHz ping, 5-buffer/5-node round-robin pool so rapid clacks overlap), softer pick-up **click**, two-note meld **chime** (E5→A5), and a seamless 2 s **wash rumble** loop (low-passed noise bed + 48 randomized micro-clacks, crossfaded seam).
+  - `HandWashTracker.swift` — ARKit `HandTrackingProvider` per the repo skill: exposes live palm positions (wrist→middleFingerMetacarpal offset), silent no-op on simulator/denied auth.
+  - **Wash with your real hands**: during the opening wash the tile carpet flees the patient's palms (repulsion within 15 cm at table height) over a gentle ambient swirl fallback, with wash rumble + throttled clacks while pushing.
+  - Sounds wired through the whole game: wall-building waves clack, deal clicks per tile, draw landing clack, meld chime, every discard clack.
+  - **Free rack arrangement**: the hand no longer auto-sorts — the drawn tile lands at the rack's end like a real draw, and any hand tile re-slots at whatever position it's released (index from drop x), exactly how experienced players manage their rack.
+- **Mahjong v4 — free placement + crash-proof ceremony** (user: still couldn't grab freely, fixed slots are anti-mahjong, table looked bugged):
+  - Root cause of the mess: the whole ceremony ran inside RealityView's make closure; SwiftUI task cancellation collapsed every stagger to zero and stranded the wash pile. Ceremony now runs in `.task` with cancellation-guarded pauses and a **deterministic instant-finish** (every tile's final transform precomputed up front — on any interruption the table completes itself correctly).
+  - **Zones, not slots**: every tile always grabbable and stays wherever it's placed (settled upright on the felt, clamped to the table, clack on landing). Bringing ANY wall tile to your side of the table = your draw; dropping one of your tiles in the circle = your discard; everything else just lies there like a real table. No snap-backs anywhere.
+  - Extraction reverted to `clone(recursive:)` — the path that provably preserves tile face materials (the white-blob tiles came from the detach path).
+  - Hand-tracker start no longer blocks the ceremony (fires in a background task; palms join the wash whenever authorization lands).
+
+- **"Play Mahjong Pairs" activity** (third activity) — find-the-twins matching with the generated SG148 mahjong assets:
+  - Twelve real tiles (6 pairs from high-contrast faces) extracted from `mahjong_full_set_sg148.usdz` by prim name via the bundled `.tiles.json` manifest, cloned, normalized, and dealt onto a felt-topped table in a shuffled grid.
+  - **Physical matching**: tiles are picked up with the system grab and set down beside their twin; matched pairs lift and fly side-by-side onto the real `mahjong_tile_rack`; wrong pairings get a gentle spoken redirect and settle back to their slot; loose drops settle home.
+  - **Stuck support**: after 18 s without progress, cyan rings glow under one unmatched pair with a spoken hint (hint count recorded invisibly, alongside wrong attempts and duration).
+  - Voice intro/praise/celebration; panel shows pairs progress; simulator smoke test confirms tile faces render and extraction works.
+- **Reworked to full mahjong vs the computer** (user feedback: sparse pairs looked wrong — missing manifest faces silently dropped pairs; wants all 148 tiles + an opponent):
+  - All 148 tiles dealt onto a proper table: patient's rack with 13 standing sorted tiles (dealt as 4 pairs + 5 singles — near-melds from the start), computer's rack across the table with tiles facing away, and **walls of the remaining 122 tiles** (three rows each side + far rows, backs to the center).
+  - Turn loop: the next wall tile glows → patient physically picks it up → snaps into the sorted hand → voice evaluates ("that matches yours — keep it!") → three-of-a-kind **melds slide forward automatically** → discard by carrying any hand tile to the glowing center circle → the computer visibly draws and discards → repeat. **Two melds = "Mahjong!"** win.
+  - Wall draws invisibly rigged toward the patient's pairs; discard suggestion glows (their choice still free); wrong drops counted invisibly; faces now driven entirely from the runtime manifest (no hardcoded face names — the earlier missing-tiles bug is structurally gone).
+  - Note: the dice seen on the rack in device testing are modeled into the `mahjong_tile_rack` asset itself.
+- **Mahjong v3 — proper ritual + fixed pickup** (user: couldn't grab tiles; wants the opening shuffle and a proper look):
+  - **Grab fix**: every tile re-wrapped with a base pivot and a hit box computed from its real bounds (`visualBounds`-derived collision) — the v2 pivot-offset boxes floated away from the visuals, which is why tiles couldn't be picked up.
+  - **Opening ceremony**: all 148 tiles spill face-down into the center → traditional **wash** (two slow swirls, voice: "First, we wash the tiles — just like at home") → tiles fly into **four proper walls, two tiles high, lying face-down** → animated deal of 13 to each rack.
+  - **Agency**: the whole hand is always grabbable; any of the six nearest top wall tiles may be drawn (glow = suggested lucky tile, rigging preserved); stray wall tiles tuck themselves back; melds and discards now lie **face-up flat** in the middle like a real game; wooden rim added around the felt.
+  - Face-up/face-down orientations are single constants (`faceUp`/`faceDown`) in case the tile pivot proves flipped on device.
+- **Ceremony cleanup** (user: "tiles just lying around, not smooth"): root cause was 148 tiles sent at 122 wall slots — 26 orphans stayed scattered mid-table. Now every tile's destination (hand/opponent/wall) is decided **before** any placement, wall slots extend to exactly match the wall count, the wash is a tidy non-overlapping face-down carpet that rotates gently (no interpenetration/z-fighting), and all flights run in staggered waves (walls 10-per-wave, deal tile-by-tile) instead of 148 simultaneous animations.
+
+### Fixed
+
+- **`main` did not build after 580de07**: that commit's regenerated `SpatialRehab.xcodeproj`
+  references `SpatialRehab/hand gestures.md`, a file that was never committed — `xcodegen`
+  globs the source directory, so an untracked scratch file on one machine became a hard
+  resource reference for everyone else (`CpResource … hand gestures.md` → **BUILD FAILED**).
+  Fixed by re-running `xcodegen generate` against the actual tracked tree, which drops the
+  dangling reference and picks up `WhoAmI/WhoAmIButton.swift` plus the `whoami-owner` imageset.
+  Verified: `xcodebuild -scheme SpatialRehab -destination 'generic/platform=visionOS Simulator'`
+  → **BUILD SUCCEEDED**. Worth knowing generally — never run `xcodegen generate` with untracked
+  files sitting in `SpatialRehab/`, or commit the pbxproj without checking `git status` first.
 - **Deployment target locked to visionOS 26.2**: `project.yml` (`options.deploymentTarget.visionOS`
   and the `SpatialRehab` target's own `deploymentTarget`) raised from `2.0` to `26.2` and
   `SpatialRehab.xcodeproj` regenerated via `xcodegen generate` (`XROS_DEPLOYMENT_TARGET = 26.2`,
@@ -235,6 +509,83 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   source layout (`Models/`, `Views/`, `WhoAmI/`, wayfinding files), Info.plist AR keys, XcodeGen
   workflow, device vs Simulator guidance. Setup target kept as visionOS **26.2** (SDK + minimum
   deployment) as the team run target.
+
+### Fixed
+
+- **"Who am I?" no longer spawns duplicate card windows** (user report: "it shouldnt be
+  able to create multiple windows of the same thing"). The name-card scene changed from
+  `WindowGroup(id:)` to `Window("Who am I?", id:)` — on visionOS every `openWindow` on a
+  window *group* creates another instance, while a `Window` is single-instance and the
+  same call just brings the existing card forward. Pressing the button while the card is
+  already up now refocuses it (and re-presents the face side for reorientation) instead
+  of stacking copies.
+
+- **Family tree connector lines never rendered** (user report with screenshot: "there is no
+  lines connecting the family tree"). The tile-level `anchorPreference` was *replacing* the
+  avatar anchors registered inside the same subtree — `anchorPreference` overwrites
+  descendants' values where `transformAnchorPreference` merges — and since the connector
+  overlay needs the husband's avatar anchor to place the heart, its guard failed and the
+  entire overlay (heart + every line) silently drew nothing. Both registrations now use
+  `transformAnchorPreference`. Same screenshot also showed the tile backgrounds not hugging
+  the avatars (circles poking out the top) — the tile surface moved inside the button label
+  so background and content can never disagree — and Mei Ling's relation text truncating,
+  fixed by widening the child/grandchild text columns (130→138 / 110→118) plus
+  `fixedSize(vertical:)` so bilingual relations wrap instead of clipping.
+
+- **Family tree was cramped and clipping at the window edges; grandson now always visible**
+  (user report with screenshot: "show the full family tree and space out the people a bit").
+  The name-card window grew 660×760 → 900×960 (sized for three generations at readable
+  tile sizes), spacing opened up (couple gap 40→56, children gap 20→32, generation gap
+  40→56), and tiles scaled up (avatars 92/78/62 → 100/84/68). Sze Hao is now a permanent
+  part of the tree under Mei Ling — the pinch-to-expand ritual, its `Grandchild · 孙子`
+  placeholder capsule, the fixed-height slot, and `WhoAmISessionModel.showExpandedGrandchild`
+  are all gone (tapping Mei Ling now plays her greeting beat like everyone else), and his
+  connector line joined the main `ConnectorsShape` so the single trim reaches him last,
+  after his mother. Face and greeting sides cap their content at 700 pt so they stay
+  composed cards inside the tree-sized window; the face portrait scaled up to 220×264 to
+  match.
+
+- **Intermittent gray "shadow box" over the family tree during interaction** (user report
+  with screenshot: "it looks a bit glitchy… a shadow box appearing occasionally when I
+  interact"). Root cause: three stacked material layers (window glass → tree panel
+  `.thinMaterial` → tile `.regularMaterial`) plus `.shadow` applied to material-filled
+  shapes — visionOS materials sample the backdrop and don't nest reliably, and shadowing
+  a material forces offscreen compositing that intermittently flattens to a gray plate.
+  The card's `.ultraThinMaterial` is now the *only* material: the tree panel became a
+  plain gradient wash, tiles/heart node/face chips/data zone use solid translucent white
+  fills, the card-level orange `.shadow` and tile shadows are gone (remaining shadows sit
+  on images/gradients only, which is safe), and the face's `.plusLighter` sheen layer now
+  unmounts two seconds after its one-shot sweep instead of living over the glass forever.
+
+- **Family tree: self tile highlighted in green, and an explicit back button** (user
+  requests). The "You" tile's tint, border, avatar ring, glow, and `You · 您自己` label all
+  switched from the family amber to green so "this one is me" reads at a glance — everyone
+  else stays orange. A bordered `Back to my card · 返回名片` capsule now sits at the bottom
+  of the tree (tapping your own tile still flips back too, but a labeled button is the
+  affordance a disoriented person can actually find).
+
+- **Card face: IC number, emergency contact, today's date, and an "About me" line** (user
+  request; extras chosen from suggested options). `FamilyMember` gained `icNumber`,
+  `emergencyContact`, and `aboutMe`. The NRIC (fictional `S1234567D` for the demo — never
+  ship a real one) joins the birthday/age chips; "IF YOU NEED HELP · 求助" (call Mei Ling)
+  became a third data-zone row, with the zone's rows refactored into a data-driven
+  `ForEach`; a reality-orientation strip under the header shows "Today is Saturday, 9
+  August · 星期六" bilingually (recomputed per render — the card is short-lived, so no
+  midnight-refresh plumbing); and a serif-italic reminiscence line (gardening, taiji,
+  laksa) sits under the data zone for person-centred warmth.
+
+- **"Who am I?" no longer requires drawing a circle** — that gesture-summon ritual (draw a
+  circle over a glowing nest to open the name card) wasn't the intended interaction and was
+  removed: `WhoAmIView.swift`, `NestView.swift`, and `CircleDrawCanvas.swift` are deleted,
+  along with `WhoAmISessionModel`'s circle-quality math (`beginStroke`/`continueStroke`/
+  `endStroke`/`evaluateCircle`/`circleClosureHint`/`pathLength`) and the `drawPoints`/
+  `glowProgress`/`.drawing`/`.nest` state that only existed to support it. `ContentView`'s
+  "Who am I?" button now calls the session directly (`whoAmISession.present()`) and opens
+  the `name-card` window straight away — tappable at any point, no separate summon screen.
+  The `"who-am-i"` `WindowGroup` is gone from `SpatialRehabApp.swift`; `whoAmISession` is now
+  shared into `ContentView`'s environment instead. `Phase` simplified to
+  `closed`/`presenting`/`open`/`puttingAway`. The actual name card, family-tree flip, and
+  greeting-video flow (`NameCardView.swift`, `FamilyTreeView.swift`) are unchanged.
 
 ### Removed
 
@@ -313,6 +664,23 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   overlapping rotated squares) after the user asked for "some geometric shape." Each round
   presented rendered-preview mockups before implementing. `assets/logo.svg` kept in sync
   with the in-app mark at every step.
+- **"Make a Cup of Kopi" activity** — guided ADL (activity of daily living) coffee-making on a virtual wooden table, using the generated USDZ assets (water kettle, coffee tin with scoop, sugar bowl, milk jug, coffee mug, teaspoon; auto-normalized to real-world sizes from their bounds):
+  - Five-step guided sequence (hot water → coffee → sugar → milk → stir) with spoken instructions and praise per step; wrong picks get a gentle spoken redirect and an invisible metric (`CoffeeExercise`).
+  - **Floating tags on every asset** (name + role, orange-highlighted and enlarged on the current step) so the patient always knows what each thing is — a fully guided process.
+  - **3D step demonstrations**: a translucent ghost of the current item lifts, tips over the mug, and returns, looping until the patient taps the real item; the real pour shows a colored stream and the mug's liquid visibly rises and darkens (water → kopi-o → kopi-c) with a stirring finale.
+  - Glow ring under the current item, cyan; tap targets padded around each asset's bounds.
+  - Welcome screen offers both activities again (`ActivityKind.routeMemory` / `.coffee`); coffee runs in mixed immersion (patient's real room).
+- **Physical pouring rework** (user: "actually hold and pour… like the real world"; deployment target raised **2.0 → 26.0** for `ManipulationComponent`):
+  - Items are genuinely **picked up** with the system's natural grab (pinch-hold, follows the wrist, hand-to-hand transfer); tilting a held vessel past ~63° emits physics droplets/grains from its lip (position + velocity follow the vessel's actual tilt direction; dynamic bodies, ≤70 live, 30 Hz simulation loop).
+  - Droplets that land in the mug's catch volume fill it (level + color mix computed from actual caught counts: water → kopi-o → kopi-c); misses bounce on the table's static collision and fade. Steps complete when enough of the *right* ingredient is really poured in (water 22, coffee 14, sugar 10, milk 16).
+  - **Stirring is real**: hold the teaspoon in the mug and move it in circles — angular travel is accumulated (2 full turns completes).
+  - Wrong-ingredient pours get one gentle spoken note per step and an invisible metric; released items **settle gently upright onto the table** (clamped to its surface) instead of floating or toppling — errorless physicality.
+  - Ghost demos, floating tags, glow ring, and voice guidance all retained; tap-to-pour removed.
+- **Realistic pour rendering** (user: droplet beads ≠ liquid):
+  - `PourEffects` — water/milk render as a **continuous ballistic stream**: tapered 14-segment tube along the real parabola from the vessel's lip (velocity from actual tilt), translucent PBR water / opaque cream milk; splash droplets pool at the impact point; fill accounting switches to stream-ticks-on-target (water 70, milk 50).
+  - Coffee/sugar pour as dense fine grains (3 mm, 4/tick) with physics, replacing pebble-sized drops.
+  - Mug liquid is now **translucent PBR** while it's just water, turning opaque as coffee/milk mix in.
+  - `PourSound` — procedural pouring hiss (looped filtered brown noise via `AVAudioEngine`), ramped on while a stream flows.
 
 ### Removed
 

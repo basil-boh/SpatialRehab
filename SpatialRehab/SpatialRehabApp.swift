@@ -30,7 +30,9 @@ struct SpatialRehabApp: App {
     @State private var immersionStyle: any ImmersionStyle = .mixed
 
     /// Session for the "Who am I?" name-card / family-tree flow from the szehao-id-card
-    /// branch — its own top-level windows, unrelated to `appModel`'s activity system.
+    /// branch — shared with the persistent `WhoAmIButton` (main-window ornament + the
+    /// Remember the Way control panel) and the `name-card` window below; unrelated to
+    /// `appModel`'s own activity system.
     @State private var whoAmISession = WhoAmISessionModel()
 
     var body: some Scene {
@@ -40,7 +42,21 @@ struct SpatialRehabApp: App {
         WindowGroup(id: SceneID.main) {
             if hasCompletedBaseline {
                 ContentView()
+                    // Persistent "Who am I?" affordance for dementia patients: a bottom
+                    // ornament rides the window itself, so it stays in the same spot on
+                    // every screen this window shows (home, Daily Practice, the caregiver
+                    // dashboard sheet) instead of living inside any one screen's layout.
+                    // Deliberately absent from the baseline branch below — the assessment
+                    // must not offer mid-test escapes — and from the `name-card` window,
+                    // which is the card itself. `RouteMemoryTableView`'s control panel
+                    // hosts the same button while this window is dismissed mid-activity.
+                    .ornament(attachmentAnchor: .scene(.bottom)) {
+                        WhoAmIButton()
+                            .padding(12)
+                            .glassBackgroundEffect()
+                    }
                     .environment(appModel)
+                    .environment(whoAmISession)
             } else {
                 BaselineAssessmentView(session: baselineSession, onFinished: {
                     hasCompletedBaseline = true
@@ -53,8 +69,21 @@ struct SpatialRehabApp: App {
         .defaultSize(width: 900, height: 780)
 
         ImmersiveSpace(id: AppModel.activitySpaceID) {
-            RouteMemoryTableView()
-                .environment(appModel)
+            Group {
+                switch appModel.currentActivity {
+                case .routeMemory:
+                    RouteMemoryTableView()
+                case .coffee:
+                    CoffeeActivityView()
+                case .mahjong:
+                    MahjongActivityView()
+                }
+            }
+            .environment(appModel)
+            // For the `WhoAmIButton` in RouteMemoryTableView's control panel — the main
+            // window (and its ornament) is dismissed while that activity runs, so the
+            // panel is the only place left to reach the name card from.
+            .environment(whoAmISession)
         }
         .immersionStyle(
             selection: Binding(
@@ -69,17 +98,22 @@ struct SpatialRehabApp: App {
         }
         .immersionStyle(selection: $immersionStyle, in: .mixed)
 
-        // “Who am I?” — nest + circle summon (name card opens as a second window).
-        WindowGroup(id: "who-am-i") {
-            WhoAmIView()
-                .environment(whoAmISession)
-        }
-        .defaultSize(width: 1100, height: 720)
-
-        WindowGroup(id: "name-card") {
+        // “Who am I?” name card — opened directly from the persistent `WhoAmIButton`, no
+        // separate summon screen; `whoAmISession` is shared into both of that button's
+        // hosts above so it can call `present()` before opening this.
+        // A `Window`, not a `WindowGroup`: there is exactly one identity, so there must
+        // be exactly one card — with a group, every button press spawned another copy
+        // (user report, 2026-08-09); openWindow on a Window brings the existing one
+        // forward instead.
+        Window("Who am I?", id: SceneID.nameCard) {
             NameCardView(session: whoAmISession)
+                // For the card's "Show me the way home" button, which starts the
+                // Remember the Way activity via `AppModel.startWayHome`.
+                .environment(appModel)
         }
-        .defaultSize(width: 660, height: 760)
+        // Sized for the family-tree side: three generations at readable tile sizes were
+        // clipping the edges of the old 660×760 window (user screenshot, 2026-08-09).
+        .defaultSize(width: 900, height: 960)
     }
 }
 
@@ -91,4 +125,6 @@ enum ImmersiveSpaceID {
 /// Centralized so call sites dismissing/reopening the main window agree on the identifier.
 enum SceneID {
     static let main = "MainWindow"
+    /// The “Who am I?” name-card window, opened by `WhoAmIButton` from either host.
+    static let nameCard = "name-card"
 }
