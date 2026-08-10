@@ -42,6 +42,9 @@ final class MahjongExercise {
     private(set) var playerTurns = 0
     private(set) var claimsMade = 0
     private(set) var wrongDrops = 0
+    /// Visible, positive-only encouragement: points are only ever earned,
+    /// never lost — no score anxiety for a dementia patient.
+    private(set) var points = 0
     private(set) var startedAt: Date?
     private(set) var completedAt: Date?
 
@@ -72,6 +75,7 @@ final class MahjongExercise {
         playerTurns = 0
         claimsMade = 0
         wrongDrops = 0
+        points = 0
         startedAt = .now
         completedAt = nil
     }
@@ -87,11 +91,14 @@ final class MahjongExercise {
     }
 
     func drew(_ face: String) -> DrawResult {
-        playerTurns += 1
         if MahjongRules.isBonus(face) {
             bonusFaces.append(face)
+            points += 2
             return .bonus(face)
         }
+        // Counted only for real draws: flower-replacement chains must not
+        // inflate the turn count and flip the pacing rig early.
+        playerTurns += 1
         handFaces.append(face)
         handFaces.sort()
         if MahjongRules.isWinningHand(handFaces, exposedSets: exposedSetCount) {
@@ -106,6 +113,7 @@ final class MahjongExercise {
         if let index = handFaces.firstIndex(of: face) {
             handFaces.remove(at: index)
         }
+        points += 1
         phase = .computerTurn
     }
 
@@ -148,6 +156,7 @@ final class MahjongExercise {
         }
         exposedMelds.append([claim.discardFace] + used)
         claimsMade += 1
+        points += 5
         pendingClaim = nil
         phase = .playerDiscard
         return used
@@ -163,6 +172,7 @@ final class MahjongExercise {
         }
         exposedMelds.append(([claim.discardFace] + option).sorted())
         claimsMade += 1
+        points += 5
         pendingClaim = nil
         phase = .playerDiscard
         return option
@@ -190,6 +200,7 @@ final class MahjongExercise {
     }
 
     private func win() {
+        points += 25
         phase = .won
         completedAt = .now
     }

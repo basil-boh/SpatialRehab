@@ -737,7 +737,7 @@
 		5A1F5DD796DAD9DCF71F48DE /* microwave_oven__rec_microwave_oven_5a5f26978bfc439fbb591477d2f5a453_physics 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = "microwave_oven__rec_microwave_oven_5a5f26978bfc439fbb591477d2f5a453_physics 2.usdz"; sourceTree = "<group>"; };
 		5AC425BEC80955291B7B5CA3 /* MahjongExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongExercise.swift; sourceTree = "<group>"; };
 		5B480CEE4F03E91CF1D8F561 /* wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b_physics.articulation 2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "wheelchair__rec_wheelchair_dc33bf4ebb0d4bfd85569212d087706b_physics.articulation 2.json"; sourceTree = "<group>"; };
-		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BA81EF00053FE815B5B6407 /* SpatialRehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpatialRehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDC232A80CE860AA6889840 /* WhoAmISessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoAmISessionModel.swift; sourceTree = "<group>"; };
 		5BDF3455FDEAC5F564D7DD10 /* bread_maker_with_hinged_lid__rec_bread_maker_with_hinged_lid_0040cadef29b4bba95f01db8a2373a5e_physics.articulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bread_maker_with_hinged_lid__rec_bread_maker_with_hinged_lid_0040cadef29b4bba95f01db8a2373a5e_physics.articulation.json; sourceTree = "<group>"; };
 		5C2875BB4625B9FC4F7C50A0 /* toaster_oven__rec_toaster_oven_b7924b610ed54f96ba47823b4f872969_physics.articulation 2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "toaster_oven__rec_toaster_oven_b7924b610ed54f96ba47823b4f872969_physics.articulation 2.json"; sourceTree = "<group>"; };
@@ -1719,7 +1719,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					9C43EF49CEE355740DBB0D6E = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -2375,7 +2374,7 @@
 				ASSETCATALOG_COMPILER_GLOBALACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82785P97XY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpatialRehab/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SpatialRehab;
@@ -2403,7 +2402,7 @@
 				ASSETCATALOG_COMPILER_GLOBALACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82785P97XY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SpatialRehab/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SpatialRehab;

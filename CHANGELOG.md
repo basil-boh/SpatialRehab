@@ -5,6 +5,130 @@ All notable changes to this project are recorded here.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/).  
 Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
+## 2026-08-10
+
+### Fixed
+
+- **Mahjong playtest round 2 (team feedback, 7 items)**:
+  - *"Cannot take tiles from the wall" / "just like a regular"*: the draw-and-throw shortcut
+    read most releases (especially simulator mouse drags, which land mid-table) as an instant
+    discard of the drawn tile. Removed — a wall tile released anywhere sensible (hand zone,
+    pad, or table middle) now flies into the hand row and the draw resolves normally.
+  - *"Almost always a winning hand"*: kindness now paces the game. Before turn 6 the rig works
+    in reverse (early winning wall tiles are quietly pushed back, AI opponents avoid discarding
+    claim-winning faces); from turn 6 the original bring-the-winner-forward kindness and the
+    left seat's feeding resume. Sessions breathe instead of ending on turn two.
+  - *Narration*: "the shining one is lucky" → "take the glowing tile from the wall and bring it
+    to your tiles"; "glowing river" → "the middle of the table"; removed "just like a regular".
+    Panel prompts updated to match.
+  - *Two competing instruction windows*: the main window (still showing the old pairs-game text
+    "place it beside its twin") floated in front of the immersive panel. Mahjong now dismisses
+    the main window on start (same pattern as Remember the Way) and reopens it on every exit
+    path; the stale guidance text and the home button's "Play Mahjong Pairs" label fixed too.
+  - *"Place tiles here" pad confusion*: the green pad + caption now appear only while a draw is
+    expected, with clearer wording ("Your new tile can rest here").
+
+### Added
+
+- **Mahjong points** (team request): visible, positive-only score on the floating panel —
+  +1 per discard turn, +2 per flower, +5 per Pong/Chow, +25 for Mahjong. Never decreases;
+  stored in `MahjongExercise.points` for Basil's metrics.
+
+### Changed (on-device diagnosis: the wall now serves the tile)
+
+- Device console instrumentation revealed the real "cannot take tiles" failure: the patient
+  grabbed non-glowing wall tiles **eleven times in a row** and the strict-glow rule silently
+  rejected each one — one thin ring among 96 identical face-down tiles on four walls is not
+  findable, and the four wall segments read as the opponents' "hidden decks". Redesigned:
+  - **The wall serves the draw.** On the patient's turn the next-in-order tile slides out of
+    the wall to a glowing spot right in front of them; pick it up and put it anywhere sensible.
+  - **Any wall tile is honored again** as the draw (the offered tile makes the intended one
+    obvious; grabbing another is accepted, never rejected).
+  - The unchosen offered tile slides back into its wall slot; releasing the offered tile
+    outside the zones returns it to the serving spot, not the wall.
+  - Discard pad enlarged (0.36×0.17 → 0.5×0.24 m) — throws were landing in the patient's own
+    row because the patch read as decoration — plus a once-per-phase spoken hint when a throw
+    settles back into the row.
+  - Narration follows the new model ("here's your tile, on the glowing spot").
+  - Temporary `[MJDBG]` console diagnostics left in for the team's device sessions.
+  - Round 2 (device log showed two mechanically perfect turns that *felt* broken): the served
+    tile now **pops up out of the wall in place** instead of sliding across the felt (reach in
+    and take it, like real life), and after each discard the hand row **slides closed over the
+    gap** — the visible "one fewer" moment that was missing (13 tiles before and after a throw
+    looked like nothing was removed).
+  - Round 12: **eager throws bounced back into the rack** — the 400 ms async draw-resolution
+    window rejected any throw made right after the tile clicked in ("when I discard, it's
+    stuck in my deck"; scripted opponents never hit it). Ordinary draws now resolve
+    synchronously (the discard phase opens the instant the tile lands), and a throw made
+    during any remaining busy window (flower resolution, AI round) is remembered as
+    `pendingThrowPrim` and executed the moment the phase opens instead of snapping back.
+  - Round 11: **rivers could stack after 18 discards** — `min(count/6, 2)` pinned every later
+    throw onto the same row, so long games (which the pacing fix made normal) piled new
+    discards exactly on top of old ones in front of the player. Rivers now run 6×4 per band
+    with fresh bands opening sideways, and river columns use the measured tile width.
+  - Round 10: **row spacing derives from the measured asset width** (`tileWidth` from
+    `visualBounds` at load) instead of an assumed 2.8 cm — wider tiles interpenetrated every
+    neighbor by the difference; hand rows, the win reveal, and the deal all use it. And
+    **flower replacements fly from the far wall straight into the row in one motion** — the
+    old two-hop staging left the row a tile short for over a second, which read as "the card
+    didn't consistently show in your deck" (~1 draw in 8 is a bonus tile).
+  - Round 9: `layoutRow` now also **sweeps the row band** — any non-hand tile left standing
+    among the hand tiles (whatever path put it there) is ushered out front on every layout
+    pass, a construction-level guarantee against "fused" tiles (team screenshot showed a
+    staged tile wedged between 六萬 and 七萬).
+  - Round 8: closed the last two overlay windows — the drawn tile now enters the row model
+    **at the instant of release** (it glides into its slot and the row parts; the old
+    settle-then-absorb path stacked it on the row for ~700 ms), and flower replacements
+    stage in front of the row line instead of on it. Release-time insert also required:
+    drawn flowers leave the row list before flying to the side, and the win path no longer
+    double-appends.
+  - Round 7: **the row is now a sequential, owned model** (user-suggested architecture:
+    "remove the old tile first, then add the new one, in sequential order"). `handPrims`
+    order IS the rack: every mutation is remove → insert → `layoutRow()`, which lays the
+    whole centered row out from the list alone — positions are never inferred back from
+    entity locations, so stacking is impossible by construction. Replaces the slot/band
+    heuristics (`placeInHandRow`/`settleInHandArea`/`tidyHandRow`/`handRowTargets`), which
+    drifted as animations raced each other over a session. Row tiles click back into the
+    rack line at the chosen spot; a `heldPrims` set (ManipulationEvents.WillBegin) stops
+    the layout from yanking a tile out of the patient's fingers.
+  - Round 6: **short throws counted as rearranges** — the discard needed a release forward of
+    z 0.27 while the hand zone began at 0.28, so a toss landing between the patch and the row
+    silently settled back among the hand tiles ("you're not actually removing the tiles I
+    throw away") and the next draw crowded in on top. Throw intent is now generous (anywhere
+    forward of the row line, z < 0.33, during a discard), the zone dead-gap is closed, the
+    occupied-slot band widened to 15 cm, and the row tidies itself the moment each discard
+    choice opens so no placement can sit stacked.
+  - Round 5: the **draw order now starts at the patient's own wall segment** — it previously
+    started at the right seat, so every raised tile popped up on the opponents' side ("I can
+    touch my opponents wall / I can't touch my own hidden deck") while the wall at the
+    patient's fingertips stayed locked. Their side serves the first ~24 draws, within arm's
+    reach.
+  - Round 4: the **wall is now solid** — only the raised, offered tile (and player-bound
+    flower replacements) can be picked up; grabbing arbitrary wall tiles read as "stealing
+    from the opponents' hidden decks" and let early draws bypass the pacing rig. And
+    **throw-first is honored as a swap**: discarding a hand tile while the new tile is still
+    raised no longer bounces it back with a scolding — the throw goes to the river and the
+    raised tile flies into the row, one motion (flower chains resolve first, wins take
+    precedence).
+  - Round 3: tiles could land **on top of each other** in the hand area — freeform settles had
+    no tile-collision check, and the row-slot finder only saw tiles within 6 cm of the ideal
+    row line, so tiles parked deeper were stacked straight through. New `settleInHandArea`
+    routes colliding placements into a free row slot (real tiles never stack), and the
+    occupied-slot band widened to 12 cm.
+
+### Fixed (post-review of the above, adversarially verified)
+
+- Patience rig parked deferred winning tiles at the wall's tail — exactly where flower
+  replacements draw from, handing the win right back (or losing it into an AI hand). Deferred
+  winners now park mid-wall, clear of both the draw head and the replacement tail.
+- The "any wall tile" house rule let early grabs bypass the pacing rig entirely; the draw is
+  now strictly the glowing next-in-order tile (real rules), others return with a gentle spoken
+  reminder.
+- `playerTurns` no longer counts flower-replacement draws, so bonus chains can't flip the rig
+  into kindness mode early; Mei Mei's win-feed threshold aligned to the same turn.
+- Dismissing the main window during mahjong removed the patient's persistent "Who am I?"
+  button; the mahjong panel now hosts `WhoAmIButton`, same as Remember the Way's panel.
+
 ## 2026-08-09
 
 ### Fixed

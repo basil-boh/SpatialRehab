@@ -85,7 +85,7 @@ struct ContentView: View {
                 Button {
                     Task { await startActivity(.mahjong) }
                 } label: {
-                    Label("Play Mahjong Pairs", systemImage: "square.grid.3x3.fill")
+                    Label("Play Mahjong", systemImage: "square.grid.3x3.fill")
                         .font(.title2)
                         .frame(maxWidth: 400)
                 }
@@ -192,7 +192,9 @@ struct ContentView: View {
         case .coffee:
             return "Follow the glowing tags and make your kopi, one step at a time."
         case .mahjong:
-            return "Pick up a tile and place it beside its twin."
+            // Rarely seen: the window is dismissed while mahjong runs (its
+            // immersive panel is the single guidance surface).
+            return "The table will guide you — take a tile, then throw one."
         }
     }
 
@@ -218,6 +220,13 @@ struct ContentView: View {
         switch await openImmersiveSpace(id: AppModel.activitySpaceID) {
         case .opened:
             appModel.phase = .inActivity
+            // Mahjong's floating panel is its only guidance surface — this
+            // window just sat in front of it (team screenshot, 2026-08-10).
+            // `MahjongActivityView.onDisappear` reopens it. Kopi keeps the
+            // window: its guidance genuinely lives here.
+            if activity == .mahjong {
+                dismissWindow(id: SceneID.main)
+            }
         case .userCancelled, .error:
             appModel.phase = .welcome
         @unknown default:
