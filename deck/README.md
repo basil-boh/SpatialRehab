@@ -1,6 +1,6 @@
 # Presentation deck
 
-The SpatialRehab design/pitch deck: 13 slides, built as a single self-contained HTML page.
+The SpatialRehab design/pitch deck: 18 slides, built as a single self-contained HTML page.
 
 **Published (private) copy:** https://claude.ai/code/artifact/d68cc6a0-2654-4964-a946-559e020171a4
 
@@ -38,8 +38,19 @@ is © OpenStreetMap contributors, credited under the map.
 
 and reopen `spatialrehab-deck.html`.
 
-All thirteen slides live at the bottom of `template.html` as plain `<section class="slide">`
-blocks in presentation order, so changing wording needs no CSS knowledge. The styling sits in
+### Team portraits
+
+Full-frame team photos live in `assets/` (`aditya.jpg`, `szehao.jpg` → Brian,
+`jingtong.jpg`, `nicole.jpg`, `bazil.jpg` → Basil). Face crops for the team slide are
+committed under `assets/avatars/` as 256px JPEGs; `build.py` embeds them as
+`.av-<name>` CSS rules. To swap a portrait, replace the matching file in
+`assets/avatars/` and re-run `python3 deck/build.py`.
+
+All eighteen slides live at the bottom of `template.html` as plain `<section class="slide">`
+blocks in presentation order, so changing wording needs no CSS knowledge. Slides 6 to 13 follow
+the live demo beat for beat: baseline games, mahjong, kopi, the identity card, the family card,
+the greeting video, wayfinding on the tabletop, then wayfinding at life size. Keep them in that
+order unless the demo itself changes. The styling sits in
 one `<style>` block at the top.
 
 ## How a slide is put together
@@ -59,7 +70,7 @@ slides with copy on the left), or use `strong` for a darker or busier photograph
 centred slides, `dark` for the one dark slide. If text ever looks washed out or hard to read,
 that attribute is the dial to turn.
 
-Slide 6 ("Remember the Way") animates: the blocks fade in, the route draws itself from Start to
+Slide 12 ("Remember the Way") animates: the blocks fade in, the route draws itself from Start to
 Home, the home pin lands, then a dot walks the route on a loop. It replays whenever you return
 to the slide, and is disabled automatically for anyone using reduced-motion.
 
@@ -85,7 +96,8 @@ along with your edit.
 ### Where the photographs come from
 
 All thirteen backdrops are Singapore government healthcare photography, from the Ministry of
-Health and Age Well SG, used under a partnership arrangement Basil has with those bodies. The
+Health and Age Well SG, used under a partnership arrangement Basil has with those bodies. Five of
+them back two slides each, which `photos.json` records in the `slides` list for that image. The
 closing slide credits them; **keep that credit accurate** if you swap an image.
 
 Backgrounds are baked at **2400x1504, quality 80**. Only use a source at least 2400px wide:

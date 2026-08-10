@@ -130,6 +130,23 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
   button; the mahjong panel now hosts `WhoAmIButton`, same as Remember the Way's panel.
 ### Added
 
+- **The deck now walks the demo in the order the demo actually runs.** Slides 6 to 13 are
+  baseline games, mahjong, kopi, the identity card, the family card, the greeting video,
+  wayfinding on the tabletop, and wayfinding at life size. Caregiver dashboard,
+  personalisation, evidence, team and closing follow, so the deck runs 18 slides rather than
+  13. Five new slides were written to fill the beats the deck had no page for:
+  - **Mahjong (7).** The four-seat table, live Pong/Chow/Mahjong claims, the near-win deal
+    and kind wall, opponents that feed claimable tiles, and the fact that turns, claims and
+    misdrops are counted only for the caregiver view.
+  - **Making kopi (8).** The five-step sequence as a flow, then the three guidance levels in
+    their own words with the real cue timings, and the amber/cyan meaning of the table
+    indicators.
+  - **The family card (10)**, split out of the old "Who am I?" slide, with an SVG family tree
+    drawn from the app's own personas (Ah Pek, Chio Bu, Wei Ming, Mei Ling, Jun Hao, Sze Hao).
+  - **The greeting video (11).** Moving portraits, one retained looping player each, and a
+    greeting that plays once when a face is pinched.
+  - **Walking it at life size (13)**, split out of "Remember the Way": the pinch-and-hold
+    glide, the 150 ms velocity ramp, blink-cut corners, spoken guidance, and the arrival line.
 - **A guidance chooser before the kopi activity starts.** `CoffeeExercise` gains a
   `.choosingGuidance` phase ahead of `.brewing`, and the immersive control panel opens on
   three options: **Show me how**, **A little hint**, and **Let me try myself**. Nothing is
@@ -164,6 +181,49 @@ Coding agents: see `AGENTS.md` — update this file whenever you edit the repo.
 
 ### Changed
 
+- **Slide 2 ("The problem") is now a bento grid with drawn figures**, replacing the three
+  cards over three plain number tiles. Twelve columns let the top row run 5 / 4 / 3 — a
+  pictogram, a bar pair and a gauge — over the three symptom tiles on 4 / 4 / 4:
+  - **1 in 11** is drawn as eleven SVG figures with one picked out in the brand gradient,
+    and a second row of two figures carries "past 85, one in two" instead of burying it in
+    prose. Figures land one after another on a `--gd` stagger.
+  - **152,000 by 2030** is two bars (74,000 in 2023 against the projection), because those
+    are the only two honest readings; the bars grow on `scaleY`, and a dashed link and
+    `≈2×` fade in after them. The figure counts up on the existing `data-count-to` hook.
+  - **74% of caregivers** is a dial whose arc carries `pathLength="100"`, so the dash maths
+    is the figure itself and the arc draws to 74 with the number counting up inside it.
+  - New `.bento` / `.btile` components reuse the deck's glass card treatment, join the
+    `.card`/`.stat` hover-lift and the script's entrance walker (`CONTAINERS` / `LEAVES`),
+    reflow to 6 columns under 900px and one column under 560px, and rest flat under
+    `prefers-reduced-motion`. Slide copy is unchanged apart from folding "And it is not a
+    small room" into the lede.
+- **"Who am I?" is now two slides**, the identity card (9) and the family card (10), because
+  the demo shows them as two separate moments. The card mock gained the real fields the app
+  carries: name in English and Chinese, birthday, address, and who to call.
+- **"Remember the Way" is now two slides**, the tabletop miniature (12) and stepping inside
+  (13). The tabletop slide keeps the map and drops to two steps, Study and Recall.
+- **Backgrounds are shared across the longer deck.** No new photography was licensed for the
+  five new slides; five of the thirteen baked backdrops now back two slides each, recorded in
+  `photos.json`. Slide numbers in `photos.json` and in the CSS section comments were renumbered
+  to match the new order.
+- Slide 7's hand photograph is capped at 760px wide, and its copy trimmed, so the photo and
+  the three cards under it fit a laptop viewport together.
+- **Mahjong slide winning hand.** Slide 7 replaces the CSS letter-tile row (which garbled
+  without CJK fonts) with a transparent tile-only graphic of a complete 14-tile win
+  (`deck/assets/mahjong-win.png`: 123萬 · 555筒 · 東東東 · 789索 with 九 highlighted · 發發),
+  sized to fit the slide with the three cards below, base64-inlined by `deck/build.py`.
+- **Family tree living portraits.** Slide 10 swaps emoji faces for generated portraits of the
+  Lim family under `deck/assets/family/`, with a visionOS-style blue eye-gaze ring that
+  drifts between people and pulses like a look-cursor. The same Chio Bu portrait is used on
+  the identity namecard (slide 9).
+- **Kopi table still (slide 8).** Uses `assets/coffee_table.jpg` (no multi-frame video).
+- **Greeting card (slide 11).** Embeds
+  `assets/grok-video-49be710f-e5b2-412e-ac27-954c5e323d73.mp4` (Ah Pek, 720×1280) as a
+  muted looping portrait clip in the videocard.
+- **Team slide portraits.** The deck team cards no longer use letter initials — each member
+  shows a face crop from `deck/assets/` (Aditya, Brian/Sze Hao, JingTong, Nicole, Basil).
+  Face-cropped 256px JPEGs live in `deck/assets/avatars/` and are base64-embedded by
+  `deck/build.py` so the deck stays self-contained for Claude Artifacts.
 - The old single cyan `glowRing` under the current kopi item is replaced by the indicator
   halo, which carries the same meaning with a fade and a pulse instead of a hard on/off.
 - Kopi item tags no longer highlight the current step while the guidance chooser is up:
